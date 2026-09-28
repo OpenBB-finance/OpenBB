@@ -1415,7 +1415,7 @@
       "tag": "other_taxes_payable",
       "label": "Other Taxes Payable",
       "description": "Carrying value as of the balance sheet date of obligations incurred and payable for statutory income, sales, use, payroll, excise, real, property and other taxes. Used to reflect the current portion of the liabilities (due within one year or within the normal operating cycle if longer).",
-      "parent": "other_current_liabilities",
+      "parent": "total_current_liabilities",
       "sequence": 38,
       "factor": "+",
       "balance": "credit",
@@ -2486,7 +2486,7 @@
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
-      "period_type": "duration",
+      "period_type": "instant",
       "xbrl_tags": [
         {
           "tag": "StockholdersEquityOther",
@@ -4596,7 +4596,7 @@
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
-      "period_type": "duration",
+      "period_type": "instant",
       "xbrl_tags": [
         {
           "tag": "StockholdersEquityOther",
@@ -6204,7 +6204,7 @@
       "tag": "other_taxes_payable",
       "label": "Other Taxes Payable",
       "description": "Carrying value as of the balance sheet date of obligations incurred and payable for statutory income, sales, use, payroll, excise, real, property and other taxes. Used to reflect the current portion of the liabilities (due within one year or within the normal operating cycle if longer).",
-      "parent": "other_current_liabilities",
+      "parent": "total_liabilities",
       "sequence": 38,
       "factor": "+",
       "balance": "credit",
@@ -7275,7 +7275,7 @@
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
-      "period_type": "duration",
+      "period_type": "instant",
       "xbrl_tags": [
         {
           "tag": "StockholdersEquityOther",
@@ -9261,7 +9261,7 @@
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
-      "period_type": "duration",
+      "period_type": "instant",
       "xbrl_tags": [
         {
           "tag": "StockholdersEquityOther",

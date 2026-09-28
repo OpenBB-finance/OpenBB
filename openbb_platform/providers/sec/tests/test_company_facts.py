@@ -4,6 +4,7 @@
 
 import asyncio
 import json
+from datetime import datetime, timedelta
 from pathlib import Path
 from unittest.mock import patch
 
@@ -53,7 +54,12 @@ def create_mock_facts(entries: list):
         start = e.get("start")
         end = e["end"]
         form = e.get("form", "10-K")
-        filed = e.get("filed", "2024-03-01")
+        filed = e.get(
+            "filed",
+            (datetime.strptime(end, "%Y-%m-%d") + timedelta(days=45)).strftime(
+                "%Y-%m-%d"
+            ),
+        )
         fy = e.get("fy", int(end[:4]))
 
         # Determine fp if not provided.
@@ -641,20 +647,16 @@ class TestBLKIncomeStatement:
 
     # --- Imputed values ---
 
-    def test_costs_and_expenses_rollup(self, blk_annual):
-        """C&E is imputed as sum of mapped children (diversified template)."""
+    def test_costs_and_expenses_from_operating_expenses(self, blk_annual):
+        """C&E takes the reported OperatingExpenses total; its other line holds the remainder."""
         v, s = _val(blk_annual.income_statement, "costs_and_expenses")
-        assert v == 3_067_000_000
-        assert "imputed-rollup" in s
-        # Enriched source should list child tags with their signs
-        assert "sga_expense(+)" in s
-        assert "restructuring_charge(+)" in s
-        assert "depreciation_and_amortization(+)" in s
-        # Should be sum of sga_expense (2731M) + D&A (297M) + restructuring_charge (39M)
+        assert v == 17_171_000_000
+        assert s == "us-gaap:OperatingExpenses"
         sga, _ = _val(blk_annual.income_statement, "sga_expense")
-        da, _ = _val(blk_annual.income_statement, "depreciation_and_amortization")
         restr, _ = _val(blk_annual.income_statement, "restructuring_charge")
-        assert v == sga + da + restr
+        other, s_other = _val(blk_annual.income_statement, "other_operating_expenses")
+        assert other == v - sga - restr
+        assert s_other.startswith("imputed-plug")
 
     def test_income_before_equity_method(self, blk_annual):
         """income_before_equity_method from XBRL (same tag as total_pretax_income for BLK)."""
@@ -670,14 +672,12 @@ class TestBLKIncomeStatement:
         assert "imputed" in s
 
     def test_plug_rows_present(self, blk_annual):
-        """Plug rows fill the balancing remainder in each IS sub-hierarchy."""
+        """Each total's other line holds its remainder."""
         plugs = {
-            "other_operating_income",
-            "other_other_income",
+            "other_operating_expenses",
+            "other_income",
             "other_pretax_income",
-            "other_net_income",
-            "other_net_income_to_common",
-            "other_comprehensive_income",
+            "other_adjustments_to_net_income_to_common",
         }
         for tag in plugs:
             v, s = _val(blk_annual.income_statement, tag)
@@ -745,14 +745,14 @@ class TestBLKBalanceSheet:
         assert ta == tle
 
     def test_liabilities_plus_equity_plus_mezzanine(self, blk_annual):
-        """L + ENCI + other_l&e (mezzanine) = L&E."""
+        """L + ENCI + redeemable NCI = L&E."""
         tl, _ = _val(blk_annual.balance_sheet, "total_liabilities")
         teni, _ = _val(
             blk_annual.balance_sheet, "total_equity_and_noncontrolling_interests"
         )
-        other_le, _ = _val(blk_annual.balance_sheet, "other_liabilities_and_equity")
+        rnci, _ = _val(blk_annual.balance_sheet, "redeemable_noncontrolling_interest")
         tle, _ = _val(blk_annual.balance_sheet, "total_liabilities_and_equity")
-        assert tl + teni + other_le == tle
+        assert tl + teni + rnci == tle
 
     # --- Mezzanine equity (redeemable NCI) ---
 
@@ -763,11 +763,10 @@ class TestBLKBalanceSheet:
         assert "imputed" in s
         assert "total_liabilities_and_equity" in s
 
-    def test_mezzanine_equals_other_liabilities_and_equity(self, blk_annual):
-        """Redeemable NCI fills the same slot as other_liabilities_and_equity."""
-        mezz, _ = _val(blk_annual.balance_sheet, "redeemable_noncontrolling_interest")
+    def test_mezzanine_leaves_no_liabilities_and_equity_remainder(self, blk_annual):
+        """Redeemable NCI closes L&E, so no other line is created for it."""
         other_le, _ = _val(blk_annual.balance_sheet, "other_liabilities_and_equity")
-        assert mezz == other_le
+        assert other_le is None
 
     # --- Rollups ---
 
@@ -876,21 +875,15 @@ class TestBLKCashFlow:
     # --- Plug rows ---
 
     def test_operating_plug(self, blk_annual):
-        v, s = _val(
-            blk_annual.cash_flow, "other_net_cash_from_continuing_operating_activities"
-        )
+        v, s = _val(blk_annual.cash_flow, "other_operating_activities")
         assert "imputed-plug" in s
 
     def test_investing_plug(self, blk_annual):
-        v, s = _val(
-            blk_annual.cash_flow, "other_net_cash_from_continuing_investing_activities"
-        )
+        v, s = _val(blk_annual.cash_flow, "other_investing_activities_net")
         assert "imputed-plug" in s
 
     def test_financing_plug(self, blk_annual):
-        v, s = _val(
-            blk_annual.cash_flow, "other_net_cash_from_continuing_financing_activities"
-        )
+        v, s = _val(blk_annual.cash_flow, "other_financing_activities_net")
         assert "imputed-plug" in s
 
 
@@ -957,7 +950,7 @@ class TestBLKImputationCounts:
             for r in blk_annual.income_statement
             if r["period_ending"] == "2025-12-31" and "imputed" in r["source"]
         ]
-        assert len(imputed) == 8
+        assert len(imputed) == 5
 
     def test_bs_imputed_count(self, blk_annual):
         imputed = [
@@ -965,7 +958,7 @@ class TestBLKImputationCounts:
             for r in blk_annual.balance_sheet
             if r["period_ending"] == "2025-12-31" and "imputed" in r["source"]
         ]
-        assert len(imputed) == 5
+        assert len(imputed) == 4
 
     def test_cf_imputed_count(self, blk_annual):
         imputed = [

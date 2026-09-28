@@ -20,12 +20,16 @@ from openbb_sec.utils.statement_schema._rules import (
     IS_IMPUTE_COMMON,
     IS_VERIFY,
     MAX_IMPUTE_PASSES,
+    OTHER_LINES,
+    PROMOTABLE_MEMOS,
+    ROLLUP_REQUIRES,
 )
 from openbb_sec.utils.statement_schema._types import (
     CompanyType,
     Frequency,
     RowResult,
     StatementName,
+    StatementResult,
     ValidationWarning,
     _tolerance,
 )
@@ -55,6 +59,20 @@ def _run_imputation_passes(
     Returns True if any value was derived across all passes.
     """
     any_changed = False
+    parent_of = {r.tag: r.parent for r in rows}
+
+    def is_ancestor(anc: str, tag: str) -> bool:
+        seen: set[str] = set()
+        p = parent_of.get(tag)
+
+        while p and p not in seen:
+            if p == anc:
+                return True
+
+            seen.add(p)
+            p = parent_of.get(p)
+
+        return False
 
     for _pass in range(MAX_IMPUTE_PASSES):
         changed = False
@@ -83,7 +101,10 @@ def _run_imputation_passes(
 
                     src_val = rows[src_i].values.get(date)
 
-                    if src_val is None:
+                    if src_val is None or (
+                        rows[src_i].sources.get(date, "").startswith("imputed-rollup")
+                        and is_ancestor(src_tag, target_tag)
+                    ):
                         all_present = False
                         break
 
@@ -106,9 +127,10 @@ def _apply_hierarchical_articulation(
     rows: list[RowResult],
     filing_dates: set[str],
 ) -> None:
-    """Enforce parent-child math by rolling up missing parents or generating plugs."""
+    """Roll up parents without a value and reconcile each reported parent with its children."""
     tag_to_row = {r.tag: r for r in rows}
     children_by_parent: dict[str, list[RowResult]] = {}
+    memos_by_parent: dict[str, list[RowResult]] = {}
     depth_map: dict[str, int] = {}
 
     def get_depth(tag: str) -> int:
@@ -126,89 +148,341 @@ def _apply_hierarchical_articulation(
     for row in rows:
         get_depth(row.tag)
 
-        if row.parent and row.factor in ("+", "-"):
-            if row.parent not in children_by_parent:
-                children_by_parent[row.parent] = []
-
-            children_by_parent[row.parent].append(row)
+        if row.parent and row.parent in tag_to_row:
+            if row.factor in ("+", "-"):
+                children_by_parent.setdefault(row.parent, []).append(row)
+            elif row.tag in PROMOTABLE_MEMOS:
+                memos_by_parent.setdefault(row.parent, []).append(row)
 
     parents = list(children_by_parent.keys())
     parents.sort(key=get_depth, reverse=True)
     new_rows: list[RowResult] = []
 
-    for parent_tag in parents:
-        parent_row = tag_to_row[parent_tag]
-        children = children_by_parent[parent_tag]
+    def sign(row: RowResult, date: str) -> float:
+        return -1.0 if row.factor_on(date) == "-" else 1.0
 
-        for date in filing_dates:
-            children_sum = 0.0
-            has_child_val = False
-            contributing_children: list[str] = []
+    def ancestors(row: RowResult) -> set[str]:
+        seen: set[str] = set()
+        tag = row.parent
 
-            for child in children:
-                if child.tag.startswith(
-                    "other_"
-                ) and "imputed-plug" in child.sources.get(date, ""):
-                    continue
+        while tag and tag not in seen and tag in tag_to_row:
+            seen.add(tag)
+            tag = tag_to_row[tag].parent
 
-                c_val = child.values.get(date)
+        return seen
 
-                if c_val is not None:
-                    has_child_val = True
-                    sign = 1.0 if child.factor == "+" else -1.0
-                    children_sum += c_val * sign
-                    contributing_children.append(f"{child.tag}({child.factor})")
+    def other_line(parent_tag: str) -> RowResult | None:
+        kids = children_by_parent.get(parent_tag, [])
 
-            if not has_child_val:
-                continue
+        for line in OTHER_LINES.get(parent_tag, ()):
+            for c in kids:
+                if c.tag == line:
+                    return c
 
-            p_val = parent_row.values.get(date)
-            children_detail = " + ".join(contributing_children)
+        base = f"other_{parent_tag.removeprefix('total_')}"
 
-            if p_val is None:
-                parent_row.values[date] = children_sum
-                parent_row.sources[date] = f"imputed-rollup: {children_detail}"
-            else:
-                diff = p_val - children_sum
+        return next((c for c in kids if c.tag == base), None)
 
-                if abs(diff) > _tolerance(p_val, children_sum):
-                    base = parent_tag.removeprefix("total_")
-                    plug_tag = f"other_{base}"
+    def complete(row: RowResult, date: str) -> bool:
+        if not row.sources.get(date, "").startswith("imputed-rollup"):
+            return True
 
-                    if plug_tag not in tag_to_row:
-                        plug_seq = parent_row.sequence
-                        base_label = parent_row.label.removeprefix("Total ")
-                        plug_row = RowResult(
-                            tag=plug_tag,
-                            label=f"Other {base_label}",
-                            description="Synthetic balancing plug derived from "
-                            + f"{parent_row.label} minus explicitly mapped children.",
-                            parent=parent_tag,
-                            sequence=plug_seq - 0.01,
-                            factor="+",
-                            balance=parent_row.balance,
-                            unit=parent_row.unit,
-                            period_type=parent_row.period_type,
-                            values={},
-                            sources={},
+        line = other_line(row.tag)
+
+        if line is None or line.values.get(date) is None:
+            return False
+
+        return not line.sources.get(date, "").startswith(("imputed", "Q4-derived"))
+
+    def contained(
+        candidates: list[tuple[RowResult, float]],
+        date: str,
+        gap: float,
+        tolerance: float,
+    ) -> list[tuple[RowResult, float]]:
+        pool: list[tuple[RowResult, float]] = []
+
+        def walk(row: RowResult, path_sign: float) -> None:
+            value = row.values.get(date)
+
+            if value is None or row.factor_on(date) not in ("+", "-"):
+                return
+
+            row_sign = path_sign * sign(row, date)
+            source = row.sources.get(date, "")
+
+            if (
+                row.factor in ("+", "-")
+                and abs(value) > tolerance
+                and not source.startswith("imputed-plug")
+            ):
+                pool.append((row, row_sign * value))
+
+            if source.startswith("imputed-rollup"):
+                for child in children_by_parent.get(row.tag, []):
+                    walk(child, row_sign)
+
+        for row, path_sign in candidates:
+            walk(row, path_sign)
+
+        lineage = {id(r): ancestors(r) for r, _ in pool}
+        singles = [(r, c) for r, c in pool if abs(gap + c) <= tolerance]
+
+        if singles:
+            deepest = max(singles, key=lambda rc: get_depth(rc[0].tag))
+
+            if all(r is deepest[0] or r.tag in lineage[id(deepest[0])] for r, _ in singles):
+                return [deepest]
+
+            return []
+
+        pairs = [
+            (a, b)
+            for i, a in enumerate(pool)
+            for b in pool[i + 1 :]
+            if a[0].tag not in lineage[id(b[0])]
+            and b[0].tag not in lineage[id(a[0])]
+            and abs(gap + a[1] + b[1]) <= tolerance
+        ]
+
+        return list(pairs[0]) if len(pairs) == 1 else []
+
+    def presented(
+        memos: list[RowResult], date: str, gap: float, tolerance: float
+    ) -> RowResult | None:
+        hits = [
+            m
+            for m in memos
+            if m.factor_on(date) == "0"
+            and m.values.get(date) is not None
+            and abs(m.values[date]) > tolerance
+            and abs(gap - m.values[date]) <= tolerance
+        ]
+
+        return hits[0] if len(hits) == 1 else None
+
+    for _ in range(2 * len(parents) + 4):
+        changed = False
+
+        for parent_tag in parents:
+            parent_row = tag_to_row[parent_tag]
+            children = children_by_parent[parent_tag]
+            memos = memos_by_parent.get(parent_tag, [])
+            other_row = other_line(parent_tag)
+            other_tag = (
+                other_row.tag
+                if other_row is not None
+                else f"other_{parent_tag.removeprefix('total_')}"
+            )
+            required = ROLLUP_REQUIRES.get(parent_tag)
+            required_children = [
+                c for c in children if required is not None and c.tag in required
+            ]
+            own_plug = f"imputed-plug: {parent_tag} - "
+
+            def absorbable(row: RowResult, date: str) -> bool:
+                source = row.sources.get(date, "")
+
+                if source.startswith(own_plug):  # noqa: B023
+                    return True
+
+                return source.startswith("imputed-rollup") and " + " in source
+
+            for date in filing_dates:
+                before = (
+                    parent_row.values.get(date),
+                    other_row.values.get(date) if other_row is not None else None,
+                )
+
+                if parent_row.sources.get(date, "").startswith("imputed-rollup"):
+                    parent_row.values.pop(date, None)
+                    parent_row.sources.pop(date, None)
+
+                other_popped = False
+
+                if other_row is not None and other_row.sources.get(date, "").startswith(
+                    "imputed-plug"
+                ):
+                    other_row.values.pop(date, None)
+                    other_row.sources.pop(date, None)
+                    other_popped = True
+
+                present = [
+                    (c, c.values[date])
+                    for c in children
+                    if c is not other_row
+                    and c.values.get(date) is not None
+                    and c.factor_on(date) in ("+", "-")
+                ] + [
+                    (m, m.values[date])
+                    for m in memos
+                    if m.factor_on(date) == "+" and m.values.get(date) is not None
+                ]
+                other_val = (
+                    other_row.values.get(date) if other_row is not None else None
+                )
+                other_sign = sign(other_row, date) if other_row is not None else 1.0
+                explicit_sum = sum(sign(c, date) * v for c, v in present)
+                detail = " + ".join(f"{c.tag}({c.factor_on(date)})" for c, _ in present)
+                p_val = parent_row.values.get(date)
+
+                if p_val is None:
+                    if required is not None and not any(
+                        c.values.get(date) is not None for c in required_children
+                    ):
+                        pass
+                    elif other_val is not None and other_row is not None:
+                        parent_row.values[date] = explicit_sum + other_val * other_sign
+                        parent_row.sources[date] = "imputed-rollup: " + " + ".join(
+                            [detail, f"{other_row.tag}({other_row.factor_on(date)})"]
+                            if detail
+                            else [f"{other_row.tag}({other_row.factor_on(date)})"]
                         )
-                        tag_to_row[plug_tag] = plug_row
-                        new_rows.append(plug_row)
+                    elif present:
+                        parent_row.values[date] = explicit_sum
+                        parent_row.sources[date] = f"imputed-rollup: {detail}"
+                elif present:
+                    gap = p_val - explicit_sum
+                    unexplained = gap - (other_val or 0.0) * other_sign
+                    tolerance = _tolerance(p_val, explicit_sum)
 
-                    plug_row = tag_to_row[plug_tag]
-                    existing_source = plug_row.sources.get(date, "")
+                    if abs(unexplained) > tolerance:
+                        candidates = [(c, 1.0) for c, _ in present]
 
-                    if date in plug_row.values and "imputed" not in existing_source:
-                        continue
+                        if other_row is not None and other_row.sources.get(
+                            date, ""
+                        ).startswith("imputed-rollup"):
+                            candidates += [
+                                (g, other_sign)
+                                for g in children_by_parent.get(other_row.tag, [])
+                            ]
 
-                    plug_row.values[date] = diff
-                    plug_row.sources[date] = (
-                        f"imputed-plug: {parent_tag} - ({children_detail})"
-                    )
+                        hits = contained(candidates, date, unexplained, tolerance)
+
+                        if (
+                            len(hits) == 1
+                            and other_val is not None
+                            and abs(other_val * other_sign - hits[0][1]) <= tolerance
+                        ):
+                            hits = []
+
+                        if hits:
+                            for hit, _ in hits:
+                                hit.date_factors[date] = "0"
+                            changed = True
+                            continue
+
+                        memo_hit = presented(memos, date, unexplained, tolerance)
+
+                        if memo_hit is not None:
+                            memo_hit.date_factors[date] = "+"
+                            changed = True
+                            continue
+
+                        absorbers = [
+                            c
+                            for c, _ in present
+                            if absorbable(c, date)
+                            and (
+                                c.sources.get(date, "").startswith(own_plug)
+                                or not complete(c, date)
+                            )
+                        ]
+
+                        if other_row is not None and (
+                            other_popped
+                            or (
+                                other_val is not None
+                                and absorbable(other_row, date)
+                                and not complete(other_row, date)
+                            )
+                        ):
+                            absorbers.append(other_row)
+
+                        if len(absorbers) == 1 and absorbers[0] is not other_row:
+                            absorber = absorbers[0]
+                            absorber.values[date] += unexplained * sign(absorber, date)
+                            absorber.sources[date] = own_plug + "(" + " + ".join(
+                                f"{c.tag}({c.factor_on(date)})"
+                                for c, _ in present
+                                if c is not absorber
+                            ) + ")"
+                        elif other_row is not None or other_tag not in tag_to_row:
+                            if other_row is None:
+                                other_row = RowResult(
+                                    tag=other_tag,
+                                    label=f"Other {parent_row.label.removeprefix('Total ')}",
+                                    description="Synthetic balancing plug derived from "
+                                    + f"{parent_row.label} minus explicitly mapped children.",
+                                    parent=parent_tag,
+                                    sequence=parent_row.sequence - 0.01,
+                                    factor="+",
+                                    balance=parent_row.balance,
+                                    unit=parent_row.unit,
+                                    period_type=parent_row.period_type,
+                                    values={},
+                                    sources={},
+                                )
+                                tag_to_row[other_tag] = other_row
+                                children.append(other_row)
+                                new_rows.append(other_row)
+
+                            other_row.values[date] = gap * sign(other_row, date)
+                            other_row.sources[date] = f"{own_plug}({detail})"
+
+                after = (
+                    parent_row.values.get(date),
+                    other_row.values.get(date) if other_row is not None else None,
+                )
+
+                if after != before:
+                    changed = True
+
+        if not changed:
+            break
 
     if new_rows:
         rows.extend(new_rows)
         rows.sort(key=lambda r: float(r.sequence))
+
+
+def _net_change_from_balances(
+    rows: list[RowResult],
+    filing_dates: set[str],
+    frequency: Frequency,
+) -> None:
+    """Net change in cash from consecutive period-end cash balances where no net change is reported."""
+    by_tag = {r.tag: r for r in rows}
+    ncc = by_tag.get("net_change_in_cash")
+    eop = by_tag.get("cash_at_end_of_period")
+
+    if ncc is None or eop is None:
+        return
+
+    low, high = (330, 400) if frequency == "annual" else (80, 200)
+    dates = sorted(filing_dates)
+
+    for prev, date in zip(dates, dates[1:]):
+        end, start = eop.values.get(date), eop.values.get(prev)
+
+        if (
+            ncc.values.get(date) is not None
+            or end is None
+            or start is None
+            or eop.sources.get(date, "").removesuffix("(fallback)")
+            != eop.sources.get(prev, "").removesuffix("(fallback)")
+        ):
+            continue
+
+        days = (
+            datetime.strptime(date, "%Y-%m-%d") - datetime.strptime(prev, "%Y-%m-%d")
+        ).days
+
+        if low <= days <= high:
+            ncc.values[date] = end - start
+            ncc.sources[date] = (
+                f"imputed: cash_at_end_of_period - cash_at_end_of_period({prev})"
+            )
 
 
 def impute(
@@ -320,6 +594,9 @@ def impute(
                     _nic.values[_d] -= _dv
                     _nic.sources[_d] = _s + "(disc-adjusted)"
 
+    if statement == "cash_flow":
+        _net_change_from_balances(rows, filing_dates, frequency)
+
     _apply_hierarchical_articulation(rows, filing_dates)
     tag_idx = {r.tag: i for i, r in enumerate(rows)}
 
@@ -365,15 +642,17 @@ def impute(
                 missing_children = []
                 sibling_sum = 0.0
                 for child in children:
+                    if child.factor_on(fy_end) not in ("+", "-"):
+                        continue
                     c_val = child.values.get(fy_end)
                     if c_val is None:
                         missing_children.append(child)
                     else:
-                        sign = 1.0 if child.factor == "+" else -1.0
+                        sign = 1.0 if child.factor_on(fy_end) == "+" else -1.0
                         sibling_sum += c_val * sign
                 if len(missing_children) == 1:
                     mc = missing_children[0]
-                    mc_sign = 1.0 if mc.factor == "+" else -1.0
+                    mc_sign = 1.0 if mc.factor_on(fy_end) == "+" else -1.0
                     mc.values[fy_end] = (q4_val - sibling_sum) * mc_sign
                     mc.sources[fy_end] = f"Q4-derived: {parent_tag} \u2212 siblings"
         tag_idx = {r.tag: i for i, r in enumerate(rows)}
@@ -441,6 +720,7 @@ def impute(
                     and opinc_val is not None
                     and rev_val is not None
                     and "imputed" not in cogs_src
+                    and "imputed" not in opex_row.sources.get(date, "")
                     and abs(ce_val - (rev_val - opinc_val))
                     <= _tolerance(ce_val, rev_val, opinc_val)
                     and (cogs_val + opex_val) < ce_val * 0.95
@@ -492,7 +772,7 @@ def impute(
                     and cogs_val is not None
                     and "imputed" not in gp_src
                     and abs(rev_val - cogs_val - gp_val)
-                    > _tolerance(rev_val, cogs_val, gp_val)
+                    > _tolerance(rev_val - cogs_val, gp_val)
                 ):
                     cogs_row.values[date] = rev_val - gp_val
                     cogs_row.sources[date] = (
@@ -525,7 +805,7 @@ def impute(
                 if (
                     opex_val > gp_val
                     or abs(gp_val - opex_val - opinc_val)
-                    > _tolerance(gp_val, opex_val, opinc_val)
+                    > _tolerance(gp_val - opex_val, opinc_val)
                     and "imputed" not in opinc_row.sources.get(date, "")
                 ):
                     opex_row.values[date] = gp_val - opinc_val
@@ -1799,3 +2079,117 @@ def impute(
         _apply_hierarchical_articulation(rows, filing_dates)
 
     return rows, diagnostics
+
+
+def reconcile_fiscal_year_ends(
+    quarterly: StatementResult,
+    annual: StatementResult,
+    schema_tags: set[str],
+) -> None:
+    """Rebuild each fiscal-year-end column of a quarterly statement from the annual statement.
+
+    Balance-sheet rows and instant rows take the annual value. Monetary duration rows take
+    FY minus the three interim quarters of the fiscal year, and balancing plugs are
+    re-articulated.
+    """
+    annual_rows = {r.tag: r for r in annual.rows}
+    quarterly_rows = {r.tag: r for r in quarterly.rows}
+    quarterly_dates = sorted(quarterly.dates)
+    common = sorted(set(annual.dates) & set(quarterly.dates))
+    balance_sheet = quarterly.statement == "balance_sheet"
+    copied_tags = sorted(
+        {r.tag for r in annual.rows if balance_sheet or r.period_type == "instant"}
+        | {r.tag for r in quarterly.rows if balance_sheet or r.period_type == "instant"}
+    )
+
+    for fy_end in common:
+        for tag in copied_tags:
+            if tag == "cash_at_beginning_of_period":
+                continue
+
+            a_row = annual_rows.get(tag)
+            a_val = a_row.values.get(fy_end) if a_row is not None else None
+            q_row = quarterly_rows.get(tag)
+
+            if a_row is None or a_val is None:
+                if q_row is not None:
+                    q_row.values.pop(fy_end, None)
+                    q_row.sources.pop(fy_end, None)
+                continue
+
+            if q_row is None:
+                q_row = RowResult(
+                    tag=a_row.tag,
+                    label=a_row.label,
+                    description=a_row.description,
+                    parent=a_row.parent,
+                    sequence=a_row.sequence,
+                    factor=a_row.factor,
+                    balance=a_row.balance,
+                    unit=a_row.unit,
+                    period_type=a_row.period_type,
+                    values={},
+                    sources={},
+                )
+                quarterly.rows.append(q_row)
+                quarterly_rows[tag] = q_row
+
+            q_row.values[fy_end] = a_val
+            q_row.sources[fy_end] = a_row.sources.get(fy_end, "")
+
+        end_dt = datetime.strptime(fy_end, "%Y-%m-%d")
+        window = [
+            d
+            for d in quarterly_dates
+            if 0 < (end_dt - datetime.strptime(d, "%Y-%m-%d")).days < 355
+        ]
+
+        if balance_sheet or len(window) != 3:
+            continue
+
+        for row in quarterly.rows:
+            if row.period_type != "duration":
+                continue
+
+            a_row = annual_rows.get(row.tag)
+            a_val = a_row.values.get(fy_end) if a_row is not None else None
+            a_source = a_row.sources.get(fy_end, "") if a_row is not None else ""
+
+            if "imputed-plug" in row.sources.get(fy_end, ""):
+                row.values.pop(fy_end, None)
+                row.sources.pop(fy_end, None)
+
+            if row.tag not in schema_tags or "imputed-plug" in a_source:
+                continue
+
+            parts = [row.values.get(d) for d in window]
+
+            if (
+                row.unit != "monetary"
+                or a_row is None
+                or a_val is None
+                or any(p is None for p in parts)
+            ):
+                continue
+
+            labels = "+".join(
+                f"Q{i + 1}[{row.sources.get(d, '')}]" for i, d in enumerate(window)
+            )
+            row.values[fy_end] = a_val - sum(p for p in parts if p is not None)
+            row.sources[fy_end] = f"Q4: FY[{a_source}] \u2212 ({labels})"
+
+        rows = list(quarterly.rows)
+        existing = {id(r) for r in rows}
+        _apply_hierarchical_articulation(rows, {fy_end})
+        added = [r for r in rows if id(r) not in existing]
+
+        if added:
+            quarterly.rows.extend(added)
+            quarterly.rows.sort(key=lambda r: float(r.sequence))
+            quarterly_rows.update({r.tag: r for r in added})
+
+    for date in quarterly.preliminary_dates:
+        for row in quarterly.rows:
+            source = row.sources.get(date)
+            if source is not None and not source.startswith("preliminary:"):
+                row.sources[date] = f"preliminary:{source}"

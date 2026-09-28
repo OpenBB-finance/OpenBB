@@ -34,6 +34,14 @@ IS_IMPUTE: dict[str, list[tuple[str, list[tuple[str, int]]]]] = {
         ),
         (
             "total_other_income",
+            [
+                ("total_pretax_income", 1),
+                ("total_operating_income", -1),
+                ("equity_method_investments", -1),
+            ],
+        ),
+        (
+            "total_other_income",
             [("total_pretax_income", 1), ("total_operating_income", -1)],
         ),
     ],
@@ -52,6 +60,14 @@ IS_IMPUTE: dict[str, list[tuple[str, list[tuple[str, int]]]]] = {
         ),
         (
             "total_other_income",
+            [
+                ("total_pretax_income", 1),
+                ("total_operating_income", -1),
+                ("equity_method_investments", -1),
+            ],
+        ),
+        (
+            "total_other_income",
             [("total_pretax_income", 1), ("total_operating_income", -1)],
         ),
     ],
@@ -67,6 +83,14 @@ IS_IMPUTE: dict[str, list[tuple[str, list[tuple[str, int]]]]] = {
         (
             "total_revenue",
             [("net_interest_income", 1), ("total_noninterest_income", 1)],
+        ),
+        (
+            "total_revenue",
+            [
+                ("total_pretax_income", 1),
+                ("total_noninterest_expense", 1),
+                ("provision_for_credit_losses", 1),
+            ],
         ),
         (
             "total_revenue",
@@ -289,18 +313,52 @@ CF_IMPUTE: list[tuple[str, list[tuple[str, int]]]] = [
         ],
     ),
     (
-        "effect_of_exchange_rate_changes",
-        [
-            ("net_change_in_cash", 1),
-            ("net_cash_from_operating_activities", -1),
-            ("net_cash_from_investing_activities", -1),
-            ("net_cash_from_financing_activities", -1),
-        ],
-    ),
-    (
         "depreciation_and_amortization",
         [("depreciation_expense", 1), ("amortization_expense", 1)],
     ),
 ]
+
+OTHER_LINES: dict[str, tuple[str, ...]] = {
+    "total_gross_profit": ("total_cost_of_revenue",),
+    "total_operating_income": ("total_operating_expenses", "costs_and_expenses"),
+    "total_pretax_income": ("total_other_income", "benefits_costs_expenses"),
+    "total_other_income": ("other_income",),
+    "costs_and_expenses": ("other_operating_expenses",),
+    "total_noninterest_expense": ("other_operating_expenses",),
+    "benefits_costs_expenses": ("other_operating_expenses",),
+    "net_interest_income": ("total_interest_expense",),
+    "net_income_to_common": ("other_adjustments_to_net_income_to_common",),
+    "comprehensive_income": ("comprehensive_income_nci",),
+    "total_assets": ("total_noncurrent_assets",),
+    "total_liabilities": ("total_noncurrent_liabilities", "other_long_term_liabilities"),
+    "total_equity": ("total_common_equity",),
+    "redeemable_noncontrolling_interest": ("redeemable_nci_other",),
+    "total_common_equity": ("other_equity",),
+    "net_cash_from_continuing_operating_activities": ("other_operating_activities",),
+    "increase_decrease_in_operating_capital": (
+        "change_in_other_operating_assets_and_liabilities",
+    ),
+    "net_cash_from_continuing_investing_activities": ("other_investing_activities_net",),
+    "net_cash_from_continuing_financing_activities": ("other_financing_activities_net",),
+    "net_change_in_cash": ("other_net_changes_in_cash",),
+}
+
+ROLLUP_REQUIRES: dict[str, tuple[str, ...]] = {
+    "total_gross_profit": ("total_cost_of_revenue",),
+    "total_operating_income": ("total_operating_expenses", "costs_and_expenses"),
+    "net_interest_income": ("total_interest_expense",),
+    "total_assets": ("total_noncurrent_assets",),
+    "total_liabilities": ("total_noncurrent_liabilities",),
+    "comprehensive_income_parent": (),
+    "comprehensive_income_nci": (),
+}
+
+PROMOTABLE_MEMOS: frozenset[str] = frozenset(
+    {
+        "depreciation_and_amortization",
+        "net_cash_from_discontinued_operations",
+        "total_operating_expenses",
+    }
+)
 
 MAX_IMPUTE_PASSES: int = 10

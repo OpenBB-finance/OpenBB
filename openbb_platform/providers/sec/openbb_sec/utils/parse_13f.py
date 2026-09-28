@@ -228,7 +228,9 @@ async def parse_13f_hr(filing: str, use_cache: bool = True):
             df.drop(columns=col, inplace=True)
 
     total_value = df.value.sum()
-    df["weight"] = round(df.value.astype(float) / total_value, 6)
+    df["weight"] = (
+        round(df.value.astype(float) / total_value, 6) if total_value else 0.0
+    )
 
     records = (
         df.reset_index()

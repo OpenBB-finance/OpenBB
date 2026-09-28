@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from collections import Counter
+from functools import partial
 from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -13,20 +14,24 @@ from openbb_sec.utils.statement_schema._detection import (
     detect_type,
     get_filing_dates,
     get_fiscal_meta,
+    preliminary_view,
 )
 from openbb_sec.utils.statement_schema._extraction import (
     _get_annual_values,
     compute_ref_filings,
     extract_row_values,
-    quarterly_ref_filings,
 )
-from openbb_sec.utils.statement_schema._imputation import impute
+from openbb_sec.utils.statement_schema._imputation import (
+    impute,
+    reconcile_fiscal_year_ends,
+)
 from openbb_sec.utils.statement_schema._types import (
     _SCHEMAS_DIR,
     QUARTERLY_FORMS,
     SEMI_ANNUAL_FORMS,
     CompanyType,
     Frequency,
+    PreliminaryFacts,
     RowDef,
     RowResult,
     StatementName,
@@ -108,6 +113,13 @@ class StatementSchema:
         self._min_financial_signals: int = self._detection.get(
             "min_financial_signals", 2
         )
+        self._measures: dict[str, list[str]] = self._detection.get("measures", {})
+        self._min_insurance_share: float = self._detection.get(
+            "min_insurance_share", 0.0
+        )
+        self._min_financial_share: float = self._detection.get(
+            "min_financial_share", 0.0
+        )
 
     @property
     def version(self) -> str:
@@ -151,6 +163,11 @@ class StatementSchema:
             diversified_signals=self._diversified_signals,
             industrial_signals=self._industrial_signals,
             min_financial_signals=self._min_financial_signals,
+            revenue_measures=self._measures.get("revenue", []),
+            insurance_measures=self._measures.get("insurance", []),
+            financial_measures=self._measures.get("financial", []),
+            min_insurance_share=self._min_insurance_share,
+            min_financial_share=self._min_financial_share,
         )
 
     def get_filing_dates(
@@ -174,6 +191,17 @@ class StatementSchema:
     def _detect_reporting_currency(self, facts: dict[str, Any]) -> str:
         return detect_reporting_currency(facts)
 
+    @staticmethod
+    def _preliminary_facts(
+        facts: dict[str, Any], include_preliminary: bool, pit_mode: bool
+    ) -> dict[str, Any]:
+        """Return the preliminary view of facts when preliminary data is requested."""
+        if not include_preliminary or (
+            isinstance(facts, PreliminaryFacts) and facts.pit_mode == pit_mode
+        ):
+            return facts
+        return preliminary_view(facts, pit_mode)
+
     def _compute_ref_filings(
         self,
         facts: dict[str, Any],
@@ -192,13 +220,6 @@ class StatementSchema:
             pit_mode=pit_mode,
         )
 
-    def _quarterly_ref_filings(
-        self,
-        facts: dict[str, Any],
-        ref_filed_map: dict[str, str],
-    ) -> dict[str, str]:
-        return quarterly_ref_filings(facts, ref_filed_map)
-
     def extract_row_values(
         self,
         facts: dict[str, Any],
@@ -209,6 +230,7 @@ class StatementSchema:
         cross_targets: dict[str, float] | None = None,
         statement: StatementName | None = None,
         include_preliminary: bool = False,
+        annual_ref_map: dict[str, str] | None = None,
     ) -> tuple[dict[str, float], dict[str, str]]:
         return extract_row_values(
             facts,
@@ -219,6 +241,7 @@ class StatementSchema:
             cross_targets=cross_targets,
             statement=statement or "",
             include_preliminary=include_preliminary,
+            annual_ref_map=annual_ref_map,
         )
 
     def extract(  # noqa: PLR0912
@@ -234,8 +257,11 @@ class StatementSchema:
         cross_identities: dict[str, dict[str, float]] | None = None,
         pit_mode: bool = False,
         include_preliminary: bool = False,
+        annual_ref_map: dict[str, str] | None = None,
     ) -> StatementResult:
-        facts = company_facts.get("facts", company_facts)
+        facts = self._preliminary_facts(
+            company_facts.get("facts", company_facts), include_preliminary, pit_mode
+        )
 
         if company_type is None:
             company_type = self.detect_type(facts)
@@ -263,12 +289,16 @@ class StatementSchema:
                 include_preliminary=include_preliminary,
                 pit_mode=pit_mode,
             )
-            if (
-                frequency == "quarterly"
-                and statement != "balance_sheet"
-                and not pit_mode
-            ):
-                ref_filed_map = self._quarterly_ref_filings(facts, ref_filed_map)
+
+        if frequency == "quarterly" and annual_ref_map is None:
+            annual_ref_map = self._compute_ref_filings(
+                facts,
+                rows_def,
+                "annual",
+                currency,
+                include_preliminary=include_preliminary,
+                pit_mode=pit_mode,
+            )
 
         _CF_SIGN_KEEP = frozenset(
             {"net_income", "net_income_continuing", "net_income_discontinued"}
@@ -288,6 +318,7 @@ class StatementSchema:
                 cross_targets,
                 statement,
                 include_preliminary=include_preliminary,
+                annual_ref_map=annual_ref_map,
             )
             values = {d: v for d, v in values.items() if d in filing_dates}
             sources = {d: s for d, s in sources.items() if d in filing_dates}
@@ -328,6 +359,23 @@ class StatementSchema:
 
         diagnostics: list[ValidationWarning] = []
 
+        if statement == "cash_flow":
+            eop_row = next(
+                (r for r in result_rows if r.tag == "cash_at_end_of_period"), None
+            )
+            eop_def = next(
+                (rd for rd in rows_def if rd.tag == "cash_at_end_of_period"), None
+            )
+
+            if eop_row and eop_def:
+                standalone, standalone_src = extract_row_values(
+                    facts, eop_def, frequency, currency
+                )
+                for date in filing_dates:
+                    if date not in eop_row.values and date in standalone:
+                        eop_row.values[date] = standalone[date]
+                        eop_row.sources[date] = standalone_src.get(date, "standalone")
+
         if not skip_imputation:
             result_rows, diagnostics = impute(
                 result_rows,
@@ -338,32 +386,15 @@ class StatementSchema:
                 frequency=frequency,
                 currency=currency,
                 get_rows_fn=self.get_rows,
-                get_annual_values_fn=_get_annual_values,
+                get_annual_values_fn=partial(
+                    _get_annual_values, ref_filed_map=annual_ref_map
+                ),
             )
 
         if statement == "cash_flow":
             tag_map = {r.tag: r for r in result_rows}
             eop_row = tag_map.get("cash_at_end_of_period")
             bop_row = tag_map.get("cash_at_beginning_of_period")
-
-            if eop_row:
-                eop_def = None
-
-                for rd in rows_def:
-                    if rd.tag == "cash_at_end_of_period":
-                        eop_def = rd
-                        break
-
-                if eop_def:
-                    standalone, standalone_src = extract_row_values(
-                        facts, eop_def, frequency, currency
-                    )
-                    for date in filing_dates:
-                        if date not in eop_row.values and date in standalone:
-                            eop_row.values[date] = standalone[date]
-                            eop_row.sources[date] = standalone_src.get(
-                                date, "standalone"
-                            )
 
             if eop_row and bop_row:
                 sorted_dates = sorted(filing_dates)
@@ -551,8 +582,11 @@ class StatementSchema:
         skip_imputation: bool = False,
         pit_mode: bool = False,
         include_preliminary: bool = False,
+        annual_results: dict[str, StatementResult] | None = None,
     ) -> dict[str, StatementResult]:
-        facts = company_facts.get("facts", company_facts)
+        facts = self._preliminary_facts(
+            company_facts.get("facts", company_facts), include_preliminary, pit_mode
+        )
 
         if company_type is None:
             company_type = self.detect_type(facts)
@@ -609,16 +643,23 @@ class StatementSchema:
             pit_mode=pit_mode,
         )
 
-        if frequency == "quarterly" and not pit_mode:
-            shared_ref_map_q = self._quarterly_ref_filings(facts, shared_ref_map)
-        else:
-            shared_ref_map_q = shared_ref_map
+        annual_ref_map = (
+            self._compute_ref_filings(
+                facts,
+                all_rows,
+                "annual",
+                currency,
+                include_preliminary=include_preliminary,
+                pit_mode=pit_mode,
+            )
+            if frequency == "quarterly"
+            else None
+        )
 
         results: dict[str, StatementResult] = {}
         cross_identities: dict[str, dict[str, float]] = {}
 
         for stmt in _STMTS:
-            ref = shared_ref_map if stmt == "balance_sheet" else shared_ref_map_q
             results[stmt] = self.extract(
                 facts,
                 stmt,
@@ -626,10 +667,11 @@ class StatementSchema:
                 frequency=frequency,
                 company_type=company_type,
                 filing_dates=filing_dates,
-                ref_filed_map=ref,
+                ref_filed_map=shared_ref_map,
                 cross_identities=cross_identities,
                 pit_mode=pit_mode,
                 include_preliminary=include_preliminary,
+                annual_ref_map=annual_ref_map,
             )
 
             for r in results[stmt].rows:
@@ -687,6 +729,24 @@ class StatementSchema:
                 row.sources = {
                     d: s for d, s in row.sources.items() if d in common_dates
                 }
+
+        if frequency == "quarterly":
+            if annual_results is None:
+                annual_results = self.extract_all(
+                    facts,
+                    frequency="annual",
+                    company_type=company_type,
+                    skip_imputation=skip_imputation,
+                    pit_mode=pit_mode,
+                    include_preliminary=include_preliminary,
+                )
+
+            for stmt in _STMTS:
+                reconcile_fiscal_year_ends(
+                    results[stmt],
+                    annual_results[stmt],
+                    {rd.tag for rd in self.get_rows(stmt, company_type)},
+                )
 
         return results
 

@@ -49,8 +49,9 @@ def _get_annual_values(
     row: RowDef,
     currency: str = "USD",
     include_preliminary: bool = False,
+    ref_filed_map: dict[str, str] | None = None,
 ) -> dict[str, tuple[str, float, str]]:
-    """Return {fy_end_date: (fy_start_date, value, xbrl_source)} for annual periods."""
+    """Return {fy_end_date: (fy_start_date, value, xbrl_source)} for annual periods, resolved at the reference filing when a map is given."""
     if row.period_type != "duration":
         return {}
 
@@ -119,6 +120,42 @@ def _get_annual_values(
     result: dict[str, tuple[str, float, str]] = {}
 
     for end_date in all_dates:
+        if ref_filed_map is not None:
+            ref_filed = ref_filed_map.get(end_date)
+
+            if ref_filed is None:
+                continue
+
+            for i, tc in enumerate(tag_candidates):
+                filings = tc.get(end_date)
+
+                if filings and ref_filed in filings:
+                    start, val = filings[ref_filed]
+                    xbrl_e = row.xbrl_tags[i]
+                    result[end_date] = (
+                        start,
+                        val,
+                        f"{xbrl_e['namespace']}:{xbrl_e['tag']}",
+                    )
+                    break
+            else:
+                for i, tc in enumerate(tag_candidates):
+                    filings = tc.get(end_date)
+
+                    if filings:
+                        before = [f for f in filings if f <= ref_filed]
+                        best = max(before) if before else min(filings)
+                        start, val = filings[best]
+                        xbrl_e = row.xbrl_tags[i]
+                        result[end_date] = (
+                            start,
+                            val,
+                            f"{xbrl_e['namespace']}:{xbrl_e['tag']}(fallback)",
+                        )
+                        break
+
+            continue
+
         ref_filed = None
 
         for tc in tag_candidates:
@@ -255,6 +292,7 @@ def extract_row_values(  # noqa: PLR0912
     cross_targets: dict[str, float] | None = None,
     statement: str = "",
     include_preliminary: bool = False,
+    annual_ref_map: dict[str, str] | None = None,
 ) -> tuple[dict[str, float], dict[str, str]]:
     """Extract values for a single schema row across all periods."""
     period_type = row.period_type
@@ -366,6 +404,8 @@ def extract_row_values(  # noqa: PLR0912
             ytd_tag_candidates.append(ytd_entries_by_date)
 
     all_dates: set[str] = set()
+    rank_by_date: dict[str, int] = {}
+    n_tags = len(row.xbrl_tags)
 
     for tc in tag_candidates:
         all_dates.update(tc.keys())
@@ -410,56 +450,42 @@ def extract_row_values(  # noqa: PLR0912
         if matched_identity:
             continue
 
-        if frequency == "quarterly" and period_type == "duration":
-            for i, tc in enumerate(tag_candidates):
-                filings = tc.get(end_date)
+        for i, tc in enumerate(tag_candidates):
+            filings = tc.get(end_date)
 
-                if not filings:
-                    continue
-
+            if filings and ref_filed in filings:
+                values_by_date[end_date] = filings[ref_filed]
+                rank_by_date[end_date] = i
                 xbrl_e = row.xbrl_tags[i]
-
-                if ref_filed in filings:
-                    values_by_date[end_date] = filings[ref_filed]
-                    sources_by_date[end_date] = f"{xbrl_e['namespace']}:{xbrl_e['tag']}"
-                else:
-                    before = [f for f in filings if f <= ref_filed]
-                    best = max(before) if before else min(filings)
-                    values_by_date[end_date] = filings[best]
-                    sources_by_date[end_date] = (
-                        f"{xbrl_e['namespace']}:{xbrl_e['tag']}(fallback)"
-                    )
+                sources_by_date[end_date] = f"{xbrl_e['namespace']}:{xbrl_e['tag']}"
                 break
         else:
             for i, tc in enumerate(tag_candidates):
                 filings = tc.get(end_date)
 
-                if filings and ref_filed in filings:
-                    values_by_date[end_date] = filings[ref_filed]
+                if filings:
+                    before = [f for f in filings if f <= ref_filed]
+                    best = max(before) if before else min(filings)
+                    values_by_date[end_date] = filings[best]
+                    rank_by_date[end_date] = n_tags + i
                     xbrl_e = row.xbrl_tags[i]
-                    sources_by_date[end_date] = f"{xbrl_e['namespace']}:{xbrl_e['tag']}"
+                    sources_by_date[end_date] = (
+                        f"{xbrl_e['namespace']}:{xbrl_e['tag']}(fallback)"
+                    )
                     break
-            else:
-                for i, tc in enumerate(tag_candidates):
-                    filings = tc.get(end_date)
-
-                    if filings:
-                        before = [f for f in filings if f <= ref_filed]
-                        best = max(before) if before else min(filings)
-                        values_by_date[end_date] = filings[best]
-                        xbrl_e = row.xbrl_tags[i]
-                        sources_by_date[end_date] = (
-                            f"{xbrl_e['namespace']}:{xbrl_e['tag']}(fallback)"
-                        )
-                        break
 
     if frequency == "quarterly" and period_type == "duration":
         annual_vals = _get_annual_values(
-            facts, row, currency, include_preliminary=include_preliminary
+            facts,
+            row,
+            currency,
+            include_preliminary=include_preliminary,
+            ref_filed_map=annual_ref_map,
         )
 
         if collect_ytd and ytd_tag_candidates:
             ytd_resolved: dict[str, tuple[str, float, str]] = {}
+            ytd_rank: dict[str, int] = {}
             ytd_all_dates: set[str] = set()
 
             for ytc in ytd_tag_candidates:
@@ -481,26 +507,39 @@ def extract_row_values(  # noqa: PLR0912
                 if ref is None:
                     continue
 
-                for i, ytc in enumerate(ytd_tag_candidates):
-                    ytd_fdata = ytc.get(end_date)
+                chosen = next(
+                    (
+                        i
+                        for i, ytc in enumerate(ytd_tag_candidates)
+                        if ref in ytc.get(end_date, {})
+                    ),
+                    None,
+                )
 
-                    if not ytd_fdata:
-                        continue
-
-                    if ref in ytd_fdata:
-                        start_d, val = ytd_fdata[ref]
-                    else:
-                        before = [f for f in ytd_fdata if f <= ref]
-                        best = max(before) if before else min(ytd_fdata)
-                        start_d, val = ytd_fdata[best]
-
-                    xbrl_e = row.xbrl_tags[i]
-                    ytd_resolved[end_date] = (
-                        start_d,
-                        val,
-                        f"{xbrl_e['namespace']}:{xbrl_e['tag']}",
+                if chosen is None:
+                    chosen = next(
+                        i
+                        for i, ytc in enumerate(ytd_tag_candidates)
+                        if ytc.get(end_date)
                     )
-                    break
+
+                ytd_fdata = ytd_tag_candidates[chosen][end_date]
+
+                if ref in ytd_fdata:
+                    start_d, val = ytd_fdata[ref]
+                    ytd_rank[end_date] = chosen
+                else:
+                    before = [f for f in ytd_fdata if f <= ref]
+                    best = max(before) if before else min(ytd_fdata)
+                    start_d, val = ytd_fdata[best]
+                    ytd_rank[end_date] = n_tags + chosen
+
+                xbrl_e = row.xbrl_tags[chosen]
+                ytd_resolved[end_date] = (
+                    start_d,
+                    val,
+                    f"{xbrl_e['namespace']}:{xbrl_e['tag']}",
+                )
 
             if ytd_resolved:
                 by_fy_start: dict[str, list[tuple[str, float, str]]] = defaultdict(list)
@@ -529,9 +568,14 @@ def extract_row_values(  # noqa: PLR0912
                     all_q_dates = sorted(set(fy_q_dates) | set(ytd_map.keys()))
 
                     prev_cum = 0.0
+                    prev_tag: int | None = None
                     for d in all_q_dates:
-                        has_standalone = d in values_by_date
                         has_ytd = d in ytd_map
+                        has_standalone = d in values_by_date and not (
+                            has_ytd
+                            and ytd_rank[d] < rank_by_date.get(d, -1)
+                            and prev_tag == ytd_rank[d] % n_tags
+                        )
 
                         if not has_standalone and has_ytd:
                             ytd_val, ytd_src = ytd_map[d]
@@ -540,16 +584,14 @@ def extract_row_values(  # noqa: PLR0912
 
                         if has_ytd:
                             prev_cum = ytd_map[d][0]
+                            prev_tag = ytd_rank[d] % n_tags
                         elif has_standalone:
                             prev_cum += values_by_date[d]
+                            prev_tag = (
+                                rank_by_date[d] % n_tags if d in rank_by_date else -1
+                            )
 
-        if row.unit == "shares":
-            for fy_end, (fy_start, fy_val, fy_xbrl_src) in annual_vals.items():
-                if fy_end not in values_by_date:
-                    values_by_date[fy_end] = fy_val
-                    sources_by_date[fy_end] = f"Q4: FY[{fy_xbrl_src}]"
-
-        else:
+        if row.unit == "monetary":
             for fy_end, (fy_start, fy_val, fy_xbrl_src) in annual_vals.items():
                 q_sum = 0.0
                 q_count = 0
@@ -684,55 +726,3 @@ def compute_ref_filings(
                     ref_map[end_date] = filed
 
     return ref_map
-
-
-def quarterly_ref_filings(
-    facts: dict[str, Any],
-    base_ref_map: dict[str, str],
-) -> dict[str, str]:
-    """Override quarterly ref filings to prefer 10-K vintage."""
-    fy_filings: dict[str, tuple[str, str]] = {}
-
-    for ns_facts in facts.values():
-        for tag_data in ns_facts.values():
-            for entries in tag_data.get("units", {}).values():
-                for entry in entries:
-                    form = entry.get("form", "")
-
-                    if form not in ANNUAL_PERIOD_FORMS:
-                        continue
-
-                    start = entry.get("start", "")
-                    end = entry.get("end", "")
-                    filed = entry.get("filed", "")
-
-                    if not start or not end or not filed or start == end:
-                        continue
-
-                    try:
-                        days = (
-                            datetime.strptime(end, "%Y-%m-%d")
-                            - datetime.strptime(start, "%Y-%m-%d")
-                        ).days
-                    except (ValueError, TypeError):
-                        continue
-
-                    if 300 <= days <= 400 and (
-                        end not in fy_filings or filed < fy_filings[end][1]
-                    ):
-                        fy_filings[end] = (start, filed)
-
-    if not fy_filings:
-        return base_ref_map
-
-    result = dict(base_ref_map)
-    sorted_fys = sorted(fy_filings.keys())
-
-    for date in base_ref_map:
-        for fy_end in sorted_fys:
-            fy_start, fy_filed = fy_filings[fy_end]
-            if fy_start < date <= fy_end:
-                result[date] = fy_filed
-                break
-
-    return result

@@ -315,6 +315,58 @@ def test_parse_13f_hr_single_info_table():
     assert records[0]["weight"] == 1.0
 
 
+def test_parse_13f_hr_zero_value_filing_weights_zero():
+    """A filing whose only row is the zero-value placeholder weights it 0.0."""
+    xml = """<?xml version="1.0"?>
+<edgarSubmission>
+<headerData><filerInfo><periodOfReport>03-31-2026</periodOfReport></filerInfo></headerData>
+<informationTable>
+ <infoTable>
+  <nameOfIssuer>NA</nameOfIssuer>
+  <titleOfClass>COM</titleOfClass>
+  <cusip>000000000</cusip>
+  <value>0</value>
+  <shrsOrPrnAmt><sshPrnamt>0</sshPrnamt><sshPrnamtType>SH</sshPrnamtType></shrsOrPrnAmt>
+  <investmentDiscretion>SOLE</investmentDiscretion>
+  <votingAuthority><Sole>0</Sole><Shared>0</Shared><None>0</None></votingAuthority>
+ </infoTable>
+</informationTable>
+</edgarSubmission>"""
+    records = asyncio.run(parse_13f.parse_13f_hr(xml))
+    assert len(records) == 1
+    assert records[0]["value"] == 0
+    assert records[0]["weight"] == 0.0
+
+
+@pytest.mark.parametrize("prefix", ["", "ns1", "n1"])
+def test_parse_13f_hr_sgml_submission_keeps_ampersands(prefix):
+    """Entities in an SGML-wrapped complete submission decode to ``&``."""
+    p = f"{prefix}:" if prefix else ""
+    xmlns = f"xmlns:{prefix}" if prefix else "xmlns"
+    filing = (
+        "<SEC-DOCUMENT>0000000000-26-000001.txt : 20260515\n<SEC-HEADER>\n</SEC-HEADER>\n"
+        "<DOCUMENT>\n<TYPE>13F-HR\n<TEXT>\n<XML>\n"
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        "<edgarSubmission><headerData><filerInfo>"
+        "<periodOfReport>03-31-2026</periodOfReport>"
+        "</filerInfo></headerData></edgarSubmission>\n</XML>\n</TEXT>\n</DOCUMENT>\n"
+        "<DOCUMENT>\n<TYPE>INFORMATION TABLE\n<TEXT>\n<XML>\n"
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        f'<{p}informationTable {xmlns}="http://www.sec.gov/edgar/x">'
+        f"<{p}infoTable><{p}nameOfIssuer>BABCOCK &amp; WILCOX</{p}nameOfIssuer>"
+        f"<{p}titleOfClass>S&amp;P500 EQL WGT</{p}titleOfClass>"
+        f"<{p}cusip>05614L209</{p}cusip><{p}value>100</{p}value>"
+        f"<{p}shrsOrPrnAmt><{p}sshPrnamt>10</{p}sshPrnamt>"
+        f"<{p}sshPrnamtType>SH</{p}sshPrnamtType></{p}shrsOrPrnAmt>"
+        f"<{p}investmentDiscretion>SOLE</{p}investmentDiscretion>"
+        f"<{p}votingAuthority><{p}Sole>10</{p}Sole></{p}votingAuthority></{p}infoTable>"
+        f"</{p}informationTable>\n</XML>\n</TEXT>\n</DOCUMENT>\n</SEC-DOCUMENT>\n"
+    )
+    records = asyncio.run(parse_13f.parse_13f_hr(filing))
+    assert records[0]["nameOfIssuer"] == "BABCOCK & WILCOX"
+    assert records[0]["titleOfClass"] == "S&P500 EQL WGT"
+
+
 def test_parse_13f_hr_non_numeric_share_and_voting_values():
     """Non-numeric share/voting values trigger the ``except ValueError`` branches.
 

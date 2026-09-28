@@ -21,8 +21,13 @@ from openbb_sec.utils.statement_schema._imputation import (
     _format_impute_source,
     _run_imputation_passes,
     impute,
+    reconcile_fiscal_year_ends,
 )
-from openbb_sec.utils.statement_schema._types import RowDef, RowResult
+from openbb_sec.utils.statement_schema._types import (
+    RowDef,
+    RowResult,
+    StatementResult,
+)
 
 _M = 1_000_000
 _D = "2023-12-31"
@@ -140,6 +145,42 @@ class TestRunImputationPasses:
         rules = [("nonexistent_target", [("a", 1)])]
         assert _run_imputation_passes(rows, rules, idx, {d}) is False
 
+    def test_rolled_up_ancestor_source_is_skipped(self):
+        d = _D
+        rows = [
+            _rr("parent", {d: 30.0}, sources={d: "imputed-rollup: a(+)"}),
+            _rr("a", {d: 30.0}, parent="parent"),
+            _rr("b", {}, parent="parent"),
+        ]
+        idx = {r.tag: i for i, r in enumerate(rows)}
+        rules = [("b", [("parent", 1), ("a", -1)])]
+        assert _run_imputation_passes(rows, rules, idx, {d}) is False
+        assert d not in rows[2].values
+
+    def test_tagged_ancestor_source_is_used(self):
+        d = _D
+        rows = [
+            _rr("parent", {d: 30.0}, sources={d: "us-gaap:Parent"}),
+            _rr("a", {d: 20.0}, parent="parent"),
+            _rr("b", {}, parent="parent"),
+        ]
+        idx = {r.tag: i for i, r in enumerate(rows)}
+        rules = [("b", [("parent", 1), ("a", -1)])]
+        assert _run_imputation_passes(rows, rules, idx, {d}) is True
+        assert rows[2].values[d] == 10.0
+
+    def test_ancestor_walk_stops_on_parent_cycle(self):
+        d = _D
+        rows = [
+            _rr("x", {d: 5.0}, parent="y"),
+            _rr("y", {}, parent="x"),
+            _rr("z", {d: 7.0}, sources={d: "imputed-rollup: q(+)"}),
+        ]
+        idx = {r.tag: i for i, r in enumerate(rows)}
+        rules = [("y", [("z", 1)])]
+        assert _run_imputation_passes(rows, rules, idx, {d}) is True
+        assert rows[1].values[d] == 7.0
+
 
 class TestApplyHierarchicalArticulation:
     def test_no_child_values_leaves_parent_untouched(self):
@@ -162,8 +203,7 @@ class TestApplyHierarchicalArticulation:
         assert d not in _by_tag(rows, "total_assets").values
         assert _by_tag(rows, "other_assets") is None
 
-    def test_existing_nonimputed_plug_not_overwritten(self):
-        # An other_* child that already holds a non-imputed value is left alone.
+    def test_tagged_other_line_replaced_by_remainder(self):
         d = _D
         rows = [
             _rr(
@@ -192,11 +232,56 @@ class TestApplyHierarchicalArticulation:
             ),
         ]
         _apply_hierarchical_articulation(rows, {d})
-        # The hard-sourced other_assets is a real child (counts toward sum) and is
-        # not overwritten by a plug.
         oa = _by_tag(rows, "other_assets")
-        assert oa.values[d] == 7.0 * _M
-        assert "us-gaap:OtherAssets" in oa.sources[d]
+        assert oa.values[d] == 100.0 * _M
+        assert oa.sources[d].startswith("imputed-plug")
+
+    def test_tagged_other_line_kept_when_articulating(self):
+        d = _D
+        rows = [
+            _rr("total_assets", {d: 200.0 * _M}, period_type="instant", sequence=10),
+            _rr(
+                "cash",
+                {d: 100.0 * _M},
+                parent="total_assets",
+                sequence=1,
+                period_type="instant",
+            ),
+            _rr(
+                "other_assets",
+                {d: 100.0 * _M},
+                parent="total_assets",
+                sequence=2,
+                period_type="instant",
+                sources={d: "us-gaap:OtherAssets"},
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "other_assets").sources[d] == "us-gaap:OtherAssets"
+
+    def test_mapped_other_line_holds_remainder(self):
+        d = _D
+        rows = [
+            _rr("total_other_income", {d: 50.0 * _M}, sequence=10),
+            _rr(
+                "total_interest_income",
+                {d: 20.0 * _M},
+                parent="total_other_income",
+                sequence=1,
+            ),
+            _rr(
+                "other_income",
+                {d: 5.0 * _M},
+                parent="total_other_income",
+                sequence=2,
+                sources={d: "us-gaap:OtherNonoperatingIncomeExpense"},
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        oi = _by_tag(rows, "other_income")
+        assert oi.values[d] == 30.0 * _M
+        assert oi.sources[d].startswith("imputed-plug")
+        assert _by_tag(rows, "other_other_income") is None
 
     def test_imputed_plug_child_excluded_then_replug(self):
         # An other_* child already carrying an imputed-plug is excluded from the
@@ -238,6 +323,69 @@ class TestApplyHierarchicalArticulation:
 # ---------------------------------------------------------------------------
 # impute() -- empty-ruleset early return
 # ---------------------------------------------------------------------------
+
+
+class TestReconcileFiscalYearEnds:
+    def test_annual_instant_row_created_in_quarterly(self):
+        annual = StatementResult(
+            statement="balance_sheet",
+            company_type="industrial",
+            frequency="annual",
+            currency="USD",
+            dates=[_D],
+            rows=[
+                _rr(
+                    "goodwill",
+                    {_D: 50.0},
+                    period_type="instant",
+                    sources={_D: "us-gaap:Goodwill"},
+                )
+            ],
+        )
+        quarterly = StatementResult(
+            statement="balance_sheet",
+            company_type="industrial",
+            frequency="quarterly",
+            currency="USD",
+            dates=["2023-09-30", _D],
+            rows=[],
+        )
+        reconcile_fiscal_year_ends(quarterly, annual, {"goodwill"})
+        row = _by_tag(quarterly.rows, "goodwill")
+        assert row.values == {_D: 50.0}
+        assert row.sources == {_D: "us-gaap:Goodwill"}
+
+    def test_preliminary_dates_prefixed_once(self):
+        d = "2024-03-31"
+        annual = StatementResult(
+            statement="income_statement",
+            company_type="industrial",
+            frequency="annual",
+            currency="USD",
+            dates=[_D],
+            rows=[],
+        )
+        quarterly = StatementResult(
+            statement="income_statement",
+            company_type="industrial",
+            frequency="quarterly",
+            currency="USD",
+            dates=[d],
+            rows=[
+                _rr("total_revenue", {d: 10.0}, sources={d: "us-gaap:Revenues"}),
+                _rr("other_revenue", {d: 1.0}, sources={d: "preliminary:us-gaap:X"}),
+                _rr("total_cost_of_revenue", {}),
+            ],
+            preliminary_dates={d},
+        )
+        reconcile_fiscal_year_ends(quarterly, annual, set())
+        assert _by_tag(quarterly.rows, "total_revenue").sources[d] == (
+            "preliminary:us-gaap:Revenues"
+        )
+        assert _by_tag(quarterly.rows, "other_revenue").sources[d] == (
+            "preliminary:us-gaap:X"
+        )
+        assert _by_tag(quarterly.rows, "total_cost_of_revenue").sources == {}
 
 
 class TestImputeEmptyRuleset:
@@ -592,7 +740,7 @@ class TestImputeQuarterlyQ4Correction:
         )
         child = _rr(
             "share_class_a",
-            {_Q1: 100.0},
+            {_Q1: 100.0, _FY_END: 100.0},
             parent="weighted_average_shares_outstanding",
             factor="+",
             sequence=2,
@@ -653,7 +801,7 @@ class TestImputeQuarterlyQ4Correction:
         )
         child = _rr(
             "segment_a",
-            {_Q1: 100.0 * _M},
+            {_Q1: 100.0 * _M, _FY_END: 9.0 * _M},
             parent="total_revenue",
             factor="+",
             sequence=2,
@@ -692,7 +840,7 @@ class TestImputeQuarterlyQ4Correction:
         )
         child = _rr(
             "segment_a",
-            {_Q1: 100.0 * _M},
+            {_Q1: 100.0 * _M, _FY_END: 9.0 * _M},
             parent="total_revenue",
             factor="+",
             sequence=2,
@@ -717,7 +865,7 @@ class TestImputeQuarterlyQ4Correction:
         )
         child = _rr(
             "segment_a",
-            {_Q1: 100.0 * _M},
+            {_Q1: 100.0 * _M, _FY_END: 9.0 * _M},
             parent="total_revenue",
             factor="+",
             sequence=2,
@@ -2484,6 +2632,32 @@ class TestImputeIncomeStatement:
         # 800 (C&E) - 200 (opex) = 600
         assert cogs.values[d] == 600.0 * _M
         assert "corrected" in cogs.sources[d]
+
+    def test_costs_and_expenses_correction_skips_rolled_up_opex(self):
+        d = "2023-12-31"
+        rows = [
+            _rr("total_revenue", {d: 1000.0 * _M}, sequence=1),
+            _rr(
+                "total_cost_of_revenue",
+                {d: 100.0 * _M},
+                sequence=2,
+                sources={d: "us-gaap:CostOfRevenue"},
+            ),
+            _rr("total_gross_profit", {}, sequence=3),
+            _rr(
+                "sga_expense",
+                {d: 200.0 * _M},
+                parent="total_operating_expenses",
+                sequence=4,
+            ),
+            _rr("total_operating_expenses", {}, sequence=5),
+            _rr("total_operating_income", {d: 200.0 * _M}, sequence=6),
+            _rr("costs_and_expenses", {d: 800.0 * _M}, sequence=7),
+        ]
+        out, _ = impute(rows, "income_statement", "diversified", {d}, facts={})
+        cogs = _by_tag(out, "total_cost_of_revenue")
+        assert cogs.values[d] == 100.0 * _M
+        assert cogs.sources[d] == "us-gaap:CostOfRevenue"
 
     def test_no_rules_for_unknown_statement(self):
         d = "2023-12-31"

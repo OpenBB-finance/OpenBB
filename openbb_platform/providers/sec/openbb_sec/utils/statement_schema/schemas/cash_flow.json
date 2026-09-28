@@ -920,12 +920,6 @@
       "period_type": "duration",
       "xbrl_tags": [
         {
-          "tag": "NetCashProvidedByUsedInOperatingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
           "tag": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
@@ -936,6 +930,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -952,12 +952,6 @@
       "xbrl_tags": [
         {
           "tag": "CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInDiscontinuedOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -981,12 +975,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInOperatingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -1397,12 +1385,6 @@
       "period_type": "duration",
       "xbrl_tags": [
         {
-          "tag": "NetCashProvidedByUsedInInvestingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
           "tag": "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
@@ -1413,6 +1395,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInInvestingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -1452,12 +1440,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInInvestingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -1948,12 +1930,6 @@
       "period_type": "duration",
       "xbrl_tags": [
         {
-          "tag": "NetCashProvidedByUsedInFinancingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
           "tag": "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
@@ -1964,6 +1940,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInFinancingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -2003,12 +1985,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInFinancingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -2065,6 +2041,12 @@
         {
           "tag": "EffectOfExchangeRateOnCashAndCashEquivalentsDiscontinuedOperations",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations",
+          "namespace": "us-gaap",
+          "first_year": 2017,
+          "last_year": 2026
         }
       ]
     },
@@ -2073,7 +2055,7 @@
       "label": "Net Cash from Discontinued Operations",
       "description": "The net change in cash and cash equivalents resulting from the cash inflows and outflows of discontinued operations.",
       "parent": "net_change_in_cash",
-      "factor": "+",
+      "factor": "0",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
@@ -2368,7 +2350,7 @@
       "description": "Amount after tax of income (loss) from a discontinued operation including the portion attributable to the noncontrolling interest. Includes, but is not limited to, the income (loss) from operations during the phase-out period, gain (loss) on disposal, gain (loss) for reversal of write-down (write-down) to fair value, less cost to sell, and adjustments to a prior period gain (loss) on disposal.",
       "parent": "net_income_continuing",
       "sequence": 2,
-      "factor": "+",
+      "factor": "-",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",
@@ -3173,12 +3155,6 @@
       "period_type": "duration",
       "xbrl_tags": [
         {
-          "tag": "NetCashProvidedByUsedInOperatingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
           "tag": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
@@ -3189,6 +3165,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -3208,12 +3190,6 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInDiscontinuedOperations",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
         }
       ]
     },
@@ -3230,12 +3206,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInOperatingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -3626,12 +3596,6 @@
       "period_type": "duration",
       "xbrl_tags": [
         {
-          "tag": "NetCashProvidedByUsedInInvestingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
           "tag": "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
@@ -3642,6 +3606,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInInvestingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -3677,12 +3647,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInInvestingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -4092,12 +4056,6 @@
       "period_type": "duration",
       "xbrl_tags": [
         {
-          "tag": "NetCashProvidedByUsedInFinancingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
           "tag": "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
@@ -4108,6 +4066,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInFinancingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -4143,12 +4107,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInFinancingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -4205,6 +4163,12 @@
         {
           "tag": "EffectOfExchangeRateOnCashAndCashEquivalentsDiscontinuedOperations",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations",
+          "namespace": "us-gaap",
+          "first_year": 2017,
+          "last_year": 2026
         }
       ]
     },
@@ -4213,7 +4177,7 @@
       "label": "Net Cash from Discontinued Operations",
       "description": "The net change in cash and cash equivalents resulting from the cash inflows and outflows of discontinued operations.",
       "parent": "net_change_in_cash",
-      "factor": "+",
+      "factor": "0",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
@@ -5349,12 +5313,6 @@
       "period_type": "duration",
       "xbrl_tags": [
         {
-          "tag": "NetCashProvidedByUsedInOperatingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
           "tag": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
@@ -5365,6 +5323,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -5381,12 +5345,6 @@
       "xbrl_tags": [
         {
           "tag": "CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInDiscontinuedOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -5410,12 +5368,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInOperatingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -5814,12 +5766,6 @@
       "period_type": "duration",
       "xbrl_tags": [
         {
-          "tag": "NetCashProvidedByUsedInInvestingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
           "tag": "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
@@ -5830,6 +5776,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInInvestingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -5869,12 +5821,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInInvestingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -6349,12 +6295,6 @@
       "period_type": "duration",
       "xbrl_tags": [
         {
-          "tag": "NetCashProvidedByUsedInFinancingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
           "tag": "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
@@ -6365,6 +6305,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInFinancingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -6404,12 +6350,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInFinancingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -6466,6 +6406,12 @@
         {
           "tag": "EffectOfExchangeRateOnCashAndCashEquivalentsDiscontinuedOperations",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations",
+          "namespace": "us-gaap",
+          "first_year": 2017,
+          "last_year": 2026
         }
       ]
     },
@@ -6474,7 +6420,7 @@
       "label": "Net Cash from Discontinued Operations",
       "description": "The net change in cash and cash equivalents resulting from the cash inflows and outflows of discontinued operations.",
       "parent": "net_change_in_cash",
-      "factor": "+",
+      "factor": "0",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
@@ -6769,7 +6715,7 @@
       "description": "Amount after tax of income (loss) from a discontinued operation including the portion attributable to the noncontrolling interest. Includes, but is not limited to, the income (loss) from operations during the phase-out period, gain (loss) on disposal, gain (loss) for reversal of write-down (write-down) to fair value, less cost to sell, and adjustments to a prior period gain (loss) on disposal.",
       "parent": "net_income_continuing",
       "sequence": 2,
-      "factor": "+",
+      "factor": "-",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",
@@ -7550,12 +7496,6 @@
       "period_type": "duration",
       "xbrl_tags": [
         {
-          "tag": "NetCashProvidedByUsedInOperatingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
           "tag": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
@@ -7566,6 +7506,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -7585,12 +7531,6 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInDiscontinuedOperations",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
         }
       ]
     },
@@ -7607,12 +7547,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInOperatingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -8003,12 +7937,6 @@
       "period_type": "duration",
       "xbrl_tags": [
         {
-          "tag": "NetCashProvidedByUsedInInvestingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
           "tag": "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
@@ -8019,6 +7947,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInInvestingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -8054,12 +7988,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInInvestingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -8465,12 +8393,6 @@
       "period_type": "duration",
       "xbrl_tags": [
         {
-          "tag": "NetCashProvidedByUsedInFinancingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
           "tag": "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
@@ -8481,6 +8403,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInFinancingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -8516,12 +8444,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInFinancingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -8578,6 +8500,12 @@
         {
           "tag": "EffectOfExchangeRateOnCashAndCashEquivalentsDiscontinuedOperations",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations",
+          "namespace": "us-gaap",
+          "first_year": 2017,
+          "last_year": 2026
         }
       ]
     },
@@ -8586,7 +8514,7 @@
       "label": "Net Cash from Discontinued Operations",
       "description": "The net change in cash and cash equivalents resulting from the cash inflows and outflows of discontinued operations.",
       "parent": "net_change_in_cash",
-      "factor": "+",
+      "factor": "0",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",

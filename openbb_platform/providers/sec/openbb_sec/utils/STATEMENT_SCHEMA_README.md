@@ -563,10 +563,13 @@ not SIC/NAICS codes. The priority cascade:
 
 ```
 1. INSURANCE  — ≥ 1 insurance IS signal AND (IS + BS signals) ≥ 2
-   (defers to financial when the financial signal count exceeds the
-   insurance income-statement signal count, so a bank carrying an
-   insurance subsidiary — e.g., BMO — classifies as financial)
+   AND insurance measures ≥ 10% of revenue in the latest annual filing
+   (when both insurance and financial qualify, insurance wins only if the
+   insurance signal count (IS + BS) exceeds the financial signal count,
+   so a bank carrying an insurance subsidiary — e.g., BMO — classifies
+   as financial)
 2. FINANCIAL  — ≥ 2 financial signals
+   AND financial measures ≥ 10% of revenue in the latest annual filing
 3. INDUSTRIAL — any COGS or GrossProfit tag present **in recent filings**
 4. DIVERSIFIED — has CostsAndExpenses without COGS
 5. INDUSTRIAL — ultimate fallback
@@ -617,10 +620,53 @@ gross profit figures. With the recency check, EQR correctly classifies as
 diversified.
 
 The recency check is implemented via `_has_recent_data()`, which scans the
-raw Company Facts entries for 10-K/20-F filings with an `end` date within
-the cutoff window. Only industrial signals require this check — insurance
-and financial signals are structural to the company type and do not exhibit
-the same stale-tag pattern.
+raw Company Facts entries for annual filings (10-K, 20-F, 40-F and their
+amendments) with an `end` date within the cutoff window.
+
+#### 4.2.2 Materiality in the Latest Annual Filing
+
+Signal presence alone does not separate insurers and banks from companies
+that carry an insurance or finance subsidiary, or that report ordinary
+interest lines. `InterestIncomeExpenseNet` and
+`InterestAndDividendIncomeOperating` are the non-operating "interest, net"
+and "interest income" lines of many industrial filers (Nucor, Quest
+Diagnostics, Celsius), and IFRS industrials report
+`FinancialAssetsAtAmortisedCost` or `InterestIncomeOnLoansAndReceivables`
+in their notes (AstraZeneca, AB InBev). Captive insurance and warranty
+subsidiaries report premium and claim tags (U-Haul, Deere, insurance
+brokers). Each of these reaches the insurance or financial signal
+thresholds.
+
+The insurance and financial branches therefore also require the business
+to be material in the latest annual filing (10-K, 20-F or 40-F) that
+reports a revenue measure. For that filing's fiscal-year period and unit:
+
+- **Revenue** is the largest of the `measures.revenue` tags
+  (`Revenues`, `RevenueFromContractWithCustomerExcludingAssessedTax`,
+  `SalesRevenueNet`, `RevenuesNetOfInterestExpense`, IFRS `Revenue`).
+- **Insurance share** is the largest `measures.insurance` value (premiums
+  earned, insurance revenue, policyholder benefits and claims, Schedule III
+  premium revenue) divided by revenue. Insurance requires it to be at least
+  `min_insurance_share` (10%).
+- **Financial share** is the largest `measures.financial` value (operating
+  interest income, net interest income, noninterest income, loan interest
+  and fees, investment interest income, fee and commission income) divided
+  by revenue. Financial requires it to be at least `min_financial_share`
+  (10%).
+
+When no revenue measure is reported (common for banks, whose income
+statements have no total-revenue line), the insurance branch keeps its
+signal result, and the financial branch keeps its signal result unless the
+filer reports a COGS or GrossProfit tag in recent filings.
+
+The measure lists and thresholds live in `_meta.json` under `detection`.
+On the validation corpus, checked against SEC SIC codes, the gate moves
+every non-financial filer off the financial template (Nucor, H&R Block,
+Textron, Harley-Davidson, AstraZeneca, Quest Diagnostics, Insulet, CarMax,
+Celsius, RH, AB InBev, PDD) and moves captive-insurance and broker filers
+off the insurance template (U-Haul, Deere, Arthur J. Gallagher, Brown &
+Brown, Credit Acceptance), while every commercial bank, insurance carrier
+and broker-dealer keeps its template.
 
 ---
 
@@ -720,12 +766,19 @@ forms (8-K filings) are excluded by default because they may contain
 unaudited, incomplete, or press-release-grade figures.
 
 **`include_preliminary` parameter.** Both API functions accept
-`include_preliminary=True`, which adds `PRELIMINARY_FORMS` to the set of
-allowed forms during reference filing computation. This is useful when an
-issuer's only source of certain interim data is an 8-K (e.g., preliminary
-earnings releases before the 10-Q is filed). The parameter does not affect
-the extraction pipeline itself — it only widens the filing-date discovery
-window.
+`include_preliminary=True`, which admits 8-K data for periods that the
+regular filings have not reported yet (e.g., an earnings release filed before
+the 10-Q or 10-K). An 8-K fact is eligible only when its period ends after
+every period reported by a 10-K, 10-Q, 20-F, 40-F, or 6-K filed on or before
+the 8-K, and only when the 8-K itself was filed after the period ended. Most
+8-K XBRL in Company Facts is not preliminary: filers furnish recast financial
+statements on 8-K after the 10-K (segment changes, discontinued operations),
+and those facts are never eligible. Outside `pit_mode`, an eligible 8-K fact
+is also superseded once any regular filing reports its period, so periods the
+regular filings cover are extracted exactly as with `include_preliminary=False`;
+the parameter only adds periods (and Q4 of a fiscal year whose 10-K is not
+filed yet). Ineligible 8-K facts are hidden from form admission only; the raw
+lookups used during verification see the same facts in both modes.
 
 ### 6.2 Annual Extraction Pipeline
 
@@ -763,9 +816,16 @@ INPUT: Company Facts JSON, statement name, company type
 
  2. DISCOVER FILING DATES
     Find period-end dates from 10-K/20-F/40-F forms with 300–400 day
-    duration items. Deduplicate using the dominant fiscal-year-end
-    month-day pattern. Drop earliest date if no Assets instant exists
-    (incomplete early XBRL era).
+    duration items filed after the period ended (forward-looking facts,
+    such as future amortization schedules, never define a period).
+    Deduplicate using the fiscal-year-end anchor: the month-day whose
+    ±7-day window holds the most annual facts, ties broken by facts on the
+    exact month-day. Footnote-only 12-month periods (e.g., a calendar-year
+    401(k) plan cost at a June filer) therefore never outvote the
+    statements. For quarterly dates, interim ends within 7 days of a
+    fiscal-year end or of a better-supported interim end are collapsed
+    (a quarter re-dated in a later filing is one period). Drop earliest
+    date if no Assets instant exists (incomplete early XBRL era).
 
  3. COMPUTE REFERENCE FILINGS
     Per period-end, find the LATEST filing date across ALL rows in
@@ -814,8 +874,8 @@ INPUT: Company Facts JSON, statement name, company type
     Remove dates where every row is NULL.
 
 15. BUILD FISCAL METADATA
-    Compute fiscal_year/fiscal_period per date from SEC fy/fp fields.
-    Apply monotonicity correction for early XBRL era duplicates.
+    Fiscal year of each fiscal-year end from the original annual filing
+    (Section 6.4); interim periods numbered by position in that year.
 
 OUTPUT: StatementResult with dates, rows, currency, fiscal_data, diagnostics
 ```
@@ -830,6 +890,8 @@ When extracting all three statements via `extract_all`:
    are retained.
 4. For quarterly: trim incomplete leading fiscal years.
 5. Apply the aligned date set and unified fiscal metadata to all.
+6. For quarterly: rebuild every fiscal-year-end column from the annual
+   statements (Section 13.2).
 
 ### 6.4 The Fiscal Year Field (`fy`) and Comparative-Data Duplication
 
@@ -837,10 +899,28 @@ The SEC `fy` field carries the fiscal year of the *filing*, not the *period*.
 When Apple files a FY 2024 10-K, prior-year comparatives also carry
 `fy=2024`. The same `end` date can appear with multiple `fy` values.
 
-**Resolution:** `get_fiscal_meta()` selects the earliest `filed` date per
-`end` date to get the original filing's `fy`. A monotonicity correction
-walks backwards and decrements any `fy` ≥ the next date's — fixing the
-first-ever XBRL filing case where historical comparatives all share one `fy`.
+**Annual periods.** For each fiscal-year end, `get_fiscal_meta()` takes the
+earliest annual filing (10-K, 20-F, 40-F and amendments) that reports a
+300–400-day duration ending on that date *after* the date — facts filed
+before their period ends are forward-looking disclosures from an older
+filing and never label a period. The filing's `fy` is reduced by the whole
+years between the filing's own fiscal-year end (the latest such period end
+in the same accession) and the date, so comparatives presented in a filer's
+first XBRL 10-K are labelled with their own years. SEC `fy` values are
+occasionally wrong (e.g., one 10-K tagged a year early); a label that breaks
+strict ordering with a neighbour and departs from the filer's usual offset
+between `fy` and the calendar year 45 days before the fiscal-year end is
+replaced by that offset. Dates reported by no annual filing (6-K or 8-K
+annual periods) take the same offset. There is no backward cascade: one
+anomalous filing cannot relabel every earlier year.
+
+**Interim periods.** Quarterly labels are positional within the annual
+labels. An interim end belongs to the fiscal year of the next fiscal-year
+end; its quarter number is the elapsed time since the prior fiscal-year end
+in ~91-day steps. A fiscal-year end is `Q4` (or `H2`, Section 13.4), including
+a preliminary one not yet reported on a 10-K. Interim labels therefore always
+agree with the annual labels, and quarters known only as comparatives in the
+next year's 10-Q are not labelled with the next year.
 
 ---
 
@@ -860,6 +940,10 @@ The target is computed as: `target = Σ(source × sign)`.
 A rule fires only when:
 1. The target has no extracted value for the period
 2. ALL source tags have values for the period
+3. No source is an `imputed-rollup` value of an ancestor of the target. A
+   rolled-up parent is the sum of its present children, so deriving one of
+   its missing descendants from it only restates the parent's other
+   children.
 
 The **first applicable rule wins** for each target tag — if an identity is
 satisfied by one rule, later rules for the same target are skipped.
@@ -877,7 +961,8 @@ satisfied by one rule, later rules for the same target are skipped.
 | `total_cost_of_revenue` | = | `total_revenue` − `total_gross_profit` | GP inverse |
 | `total_operating_expenses` | = | `total_gross_profit` − `total_operating_income` | OpInc identity |
 | `total_operating_income` | = | `total_gross_profit` − `total_operating_expenses` | OpInc inverse |
-| `total_other_income` | = | `total_pretax_income` − `total_operating_income` | Below-the-line residual |
+| `total_other_income` | = | `total_pretax_income` − `total_operating_income` − `equity_method_investments` | Below-the-line residual |
+| `total_other_income` | = | `total_pretax_income` − `total_operating_income` | Below-the-line residual (no equity-method income) |
 
 The C&E-based rules fire first because when `costs_and_expenses` is directly
 reported (as many filers do), they can derive COGS even before GP is known.
@@ -892,6 +977,7 @@ the C&E decomposition path available in the first imputation pass.
 | `total_operating_income` | = | `total_pretax_income` − `total_other_income` |
 | `total_operating_income` | = | `total_revenue` − `costs_and_expenses` |
 | `costs_and_expenses` | = | `total_revenue` − `total_operating_income` |
+| `total_other_income` | = | `total_pretax_income` − `total_operating_income` − `equity_method_investments` |
 | `total_other_income` | = | `total_pretax_income` − `total_operating_income` |
 
 No gross profit decomposition — diversified companies report aggregate
@@ -904,6 +990,7 @@ costs rather than the COGS + SG&A split.
 | `total_interest_income` | = | `net_interest_income` + `total_interest_expense` |
 | `net_interest_income_after_provision` | = | `net_interest_income` − `provision_for_credit_losses` |
 | `total_revenue` | = | `net_interest_income` + `total_noninterest_income` |
+| `total_revenue` | = | `total_pretax_income` + `total_noninterest_expense` + `provision_for_credit_losses` |
 | `total_revenue` | = | `total_pretax_income` + `total_noninterest_expense` |
 
 Rule 3 handles cases like American Express pre-2015 where no direct revenue
@@ -957,12 +1044,13 @@ pretax + opex.
 | Target | = | Formula |
 |--------|---|---------|
 | `net_change_in_cash` | = | `operating` + `investing` + `financing` + `fx_effect` |
-| `effect_of_exchange_rate_changes` | = | `net_change` − `operating` − `investing` − `financing` |
 | `depreciation_and_amortization` | = | `depreciation_expense` + `amortization_expense` |
 
-The FX derivation is common after companies switch to the
-`...IncludingExchangeRateEffect` net-change tag, which embeds FX in the
-total and eliminates the separate FX line item.
+The FX line is never derived as a residual of the net change: a remainder of
+`net_change_in_cash` is held in its other line, `other_net_changes_in_cash`
+(Section 8.2). Filers that switched to the
+`...IncludingDisposalGroupAndDiscontinuedOperations` FX element are covered
+by its entry in the FX chain.
 
 ### 7.5 Multi-Pass Cascading
 
@@ -981,9 +1069,35 @@ Early exit occurs on the first pass with no new derivations.
 ### 8.1 The Parent-Child Tree
 
 Schema rows define a tree structure via the `parent` and `factor` fields.
-For example, `total_operating_expenses` is the parent node; `selling_general_and_admin`,
-`depreciation_and_amortization`, `research_and_development`, etc. are its
-children with `factor="+"`.
+For example, `total_operating_expenses` is the parent node; `sga_expense`,
+`rd_expense`, `restructuring_charge`, etc. are its children with
+`factor="+"`.
+
+Rows with `factor="0"` are memo rows: they are extracted and reported but
+never enter a parent's arithmetic. They are rows whose value is an
+alternative measure of, or is contained in, other lines of the same
+statement:
+
+| Row | Why it is not a component |
+|-----|---------------------------|
+| `income_before_equity_method` | An alternative pretax measure, not a part of pretax income |
+| `comprehensive_income` (root) | Net income plus OCI, not a part of net income |
+| `other_adjustments_to_consolidated_net_income` | Tagged with OCI, not a part of net income |
+| `depreciation_and_amortization` (income statement) | Sourced from cash flow tags and usually contained in cost of revenue or SG&A |
+| `net_interest_income_after_provision` (financial) | Net interest income less provision; both already enter revenue and pretax |
+| `policy_acquisition_costs` (financial, insurance) | A deferred acquisition cost balance, not a period expense |
+| `total_operating_expenses` (diversified) | The same cost total as `costs_and_expenses` |
+| `net_cash_from_discontinued_operations` (cash flow) | The sum of the per-activity discontinued-operations lines, which the operating, investing, and financing totals contain |
+
+In the cash flow statement, `net_cash_from_{operating,investing,financing}_activities`
+are totals including discontinued operations: continuing plus
+discontinued. Their chains hold no `...ContinuingOperations` tags; when a
+filer reports only the continuing amount, the total is the rollup of its
+continuing and discontinued children.
+
+In the diversified template `costs_and_expenses` is the cost total that
+operating income subtracts (Section 4.1): `total_operating_income =
+total_revenue - costs_and_expenses`.
 
 ### 8.2 Bottom-Up Rollup and Plug Generation
 
@@ -993,10 +1107,40 @@ Before imputation, the engine performs hierarchical articulation:
 2. **If a parent has no value**: impute it as the sum of its children
    (weighted by each child's factor). Source: `"imputed-rollup"`.
 3. **If a parent has a value that differs from the children sum beyond
-   tolerance**: generate a synthetic `other_{parent_tag}` plug row equal to
-   the difference. Source: `"imputed-plug"`.
+   tolerance**: the difference is the parent's remainder and is held in the
+   parent's other line. The other line is the child listed for the parent in
+   the table below (`OTHER_LINES` in `_rules.py`); otherwise it is
+   `other_{base}`, where `base` is the parent tag without its `total_`
+   prefix (`total_operating_expenses` → `other_operating_expenses`). When
+   the schema defines that row as a child of the parent, the remainder is
+   written there: a tagged value that
+   already articulates is kept, otherwise the row holds the parent minus
+   every explicit child, so a filer's own tagged "other" amount is inside
+   it. When the schema has no such child, a synthetic `other_{base}` row is
+   created. Source: `"imputed-plug"`. A parent whose only present child is
+   its other line keeps the tagged value.
 
-This ensures the statement tree always articulates exactly. The plug rows
+   | Parent | Other line |
+   |--------|------------|
+   | `total_other_income` | `other_income` |
+   | `costs_and_expenses` (diversified) | `other_operating_expenses` |
+   | `total_noninterest_expense` (financial) | `other_operating_expenses` |
+   | `benefits_costs_expenses` (insurance) | `other_operating_expenses` |
+   | `net_income_to_common` | `other_adjustments_to_net_income_to_common` |
+   | `total_liabilities` (financial, insurance) | `other_long_term_liabilities` |
+   | `redeemable_noncontrolling_interest` | `redeemable_nci_other` |
+   | `total_common_equity` | `other_equity` |
+   | `net_cash_from_continuing_operating_activities` | `other_operating_activities` |
+   | `increase_decrease_in_operating_capital` | `change_in_other_operating_assets_and_liabilities` |
+   | `net_cash_from_continuing_investing_activities` | `other_investing_activities_net` |
+   | `net_cash_from_continuing_financing_activities` | `other_financing_activities_net` |
+   | `net_change_in_cash` | `other_net_changes_in_cash` |
+4. **Recompute until stable**: remainders and rollups from earlier passes are
+   cleared and recomputed on every pass, and the passes repeat until no
+   value changes, so a remainder never outlives a later change to the
+   children and a rollup always reflects the current children.
+
+This ensures the statement tree always articulates exactly. The other lines
 represent line items the company reports but may not tag individually in XBRL
 (e.g., "other operating expenses" that aren't separately itemized).
 
@@ -1099,7 +1243,9 @@ Some companies (e.g., Verizon 2015–2017) report a *narrow*
 engine overrides: `COGS = C&E − OpEx`.
 
 Guards prevent false positives:
-- Only triggers on direct XBRL values (not already-imputed ones)
+- Only triggers when COGS and OpEx are direct XBRL values (not imputed or
+  rolled up); a rolled-up OpEx may be missing lines, and that gap belongs
+  to OpEx (Section 10.3), not to COGS
 - C&E must approximately equal `Revenue − OpInc` (within tolerance)
 - Reported COGS + OpEx must be < 95% of C&E (confirming COGS is partial)
 
@@ -1469,20 +1615,44 @@ the completed fiscal year and uses them to reconstruct Q4 for monetary flow
 items. Shares and per-share metrics are handled differently because they do
 not aggregate additively across quarters.
 
-### 13.2 10-K Vintage Override
+### 13.2 Shared Reference Vintage
 
-For quarters within a completed fiscal year, the reference filing date is
-overridden to the 10-K filing date for IS and CF only. This ensures restated
-comparatives match the annual total. BS is excluded — the 10-K only contains
-FY-end instant snapshots, not Q1/Q2/Q3 snapshots.
+Quarterly and annual series follow the same vintage rule: the reference
+filing for every period is the latest filing within 450 days of the period
+end that reports it (Section 6.1). For a completed fiscal year that is the
+following year's 10-K for the annual total and the following year's 10-Q
+comparatives for Q1–Q3, so restatements such as discontinued-operations
+recasts and full-retrospective ASC 606 adoption are reflected in both series.
 
-This override is a methodological choice in favor of internal consistency.
-Without it, a quarterly series can mix preliminary interim values from 10-Qs
-with the audited annual total from the 10-K, producing a Q4 residual that
-absorbs filing-vintage differences rather than economic activity. By forcing
-the completed fiscal year's duration series to reference the 10-K vintage,
-the system ensures that Q1 + Q2 + Q3 + Q4 ties back to the audited annual
-figure whenever a complete monetary series exists.
+Interim balance-sheet instants are reported only by the interim filing itself
+and resolve to it as `(fallback)` when a later filing is the period's
+reference.
+
+**Fiscal-year-end reconciliation.** The quarterly pipeline derives a working
+Q4 during extraction (fiscal-year value at the annual reference filing minus
+the extracted quarters) so that Q4 imputation and verification have inputs.
+After the annual and quarterly statements are both complete and aligned,
+every fiscal-year-end column of the quarterly statements is rebuilt from the
+annual statements:
+
+1. Every instant row takes the annual value at the fiscal-year end, and
+   instant values the annual statement does not report are removed, so the
+   Q4 balance sheet is the annual balance sheet. `cash_at_beginning_of_period`
+   is excluded: its Q4 value is the Q3 ending cash.
+2. For a fiscal year with exactly three interim quarters, every monetary
+   duration row with an annual value and all three quarters takes
+   `Q4 = FY − (Q1 + Q2 + Q3)`, where FY is the value the annual statement
+   reports (after its imputation, corrections, and identity enforcement)
+   and Q1–Q3 are the quarterly statement's final values.
+3. Balancing plugs in the Q4 column are cleared and re-articulated.
+
+`Q1 + Q2 + Q3 + Q4 = FY` therefore holds by construction for every reported,
+rolled-up, imputed, corrected, or identity-enforced row, and every linear
+identity that holds for the annual period and for Q1–Q3 holds for Q4. A row
+the annual statement reports but the interim filings do not (for example an
+amortization line disclosed only in the 10-K) has no Q4 value; the Q4 plug of
+its parent absorbs it. Semi-annual fiscal years keep the `H2` value from
+extraction.
 
 ### 13.3 Reconstruction Rules by Unit Type
 
@@ -1558,11 +1728,11 @@ the correct filing vintage and the correct annual anchor.
 
 ### 13.5 Point-in-Time Considerations
 
-**Design trade-off:** The 10-K vintage override (Section 13.2) optimizes for
-*accounting consistency* — ensuring `Q1 + Q2 + Q3 + Q4 = FY` — rather than
-*point-in-time (PIT) fidelity*. For a completed fiscal year, the Q1 record
-reflects the restated value from the annual audit, not the preliminary value
-that was publicly available at the end of Q1.
+**Design trade-off:** The shared reference vintage (Section 13.2) optimizes
+for *accounting consistency* — restated values with `Q1 + Q2 + Q3 + Q4 = FY` —
+rather than *point-in-time (PIT) fidelity*. For a completed fiscal year, the
+Q1 record reflects the value as re-presented in the following year's 10-Q,
+not the value that was publicly available at the end of Q1.
 
 **Who is affected:** Quantitative finance practitioners who backtest trading
 strategies against this data. Using the default (consistency) mode, a
@@ -1574,34 +1744,34 @@ of the decision — a form of look-ahead bias.
 Both `resolve_company_facts()` and `get_standardized_financials()` accept a
 `pit_mode=True` parameter. When enabled:
 
-1. The 10-K vintage override is **skipped** for quarterly IS and CF data.
+1. Every reference filing is the **earliest** filing that reports the period,
+   for annual and quarterly data alike: annual values are the original 10-K
+   values, and balance-sheet instants come from the filing that first
+   reported them.
 2. Each quarter's values reflect the filing vintage of the original 10-Q.
-3. Q4 values may not reconcile to the FY total (because Q1–Q3 values may
-   differ between the preliminary 10-Q and the restated 10-K comparatives).
+3. Q4 is the original 10-K annual total minus the original quarters, so
+   `Q1 + Q2 + Q3 + Q4 = FY` holds against the point-in-time annual series.
 
 **When to use each mode:**
 
 | Use Case | Mode | Rationale |
 |----------|------|-----------|
-| Financial analysis, screening, dashboards | Default (`pit_mode=False`) | Internal consistency matters more than temporal accuracy |
-| Backtesting, event studies, PIT databases | `pit_mode=True` | Temporal accuracy matters more than arithmetic consistency |
+| Financial analysis, screening, dashboards | Default (`pit_mode=False`) | Restated values, comparable across years |
+| Backtesting, event studies, PIT databases | `pit_mode=True` | Values as first reported |
 | Academic research | Depends on methodology | PIT for asset pricing; default for accounting studies |
 
-The `pit_mode` flag does not affect annual data (annual values are inherently
-per-filing) or balance sheet data (BS values are always per-filing because
-instant snapshots are only available from the filing that reported them).
-
-Additionally, `pit_mode` changes filing-date selection from *latest* to
-*earliest* in `compute_ref_filings`, and disables the 450-day filing cap
-(Section 6.1), since the goal is to capture the original filing regardless
-of when later amendments were filed.
+`pit_mode` changes filing-date selection from *latest* to *earliest* in
+`compute_ref_filings`, and disables the 450-day filing cap (Section 6.1),
+since the goal is to capture the original filing regardless of when later
+amendments were filed.
 
 **Combining with `include_preliminary`.** When both `pit_mode=True` and
-`include_preliminary=True` are set, 8-K filings are eligible for reference
-filing selection. This can capture preliminary earnings data released before
-the 10-Q is filed — the most temporally accurate view available. Use this
-combination for PIT databases that need to reflect what the market saw at the
-earliest possible date.
+`include_preliminary=True` are set, an 8-K that reported a period before any
+regular filing did (Section 6.1) remains eligible after the 10-Q or 10-K is
+filed, and as the earliest filing it becomes that period's reference. This
+captures preliminary earnings data as released — the most temporally accurate
+view available. Use this combination for PIT databases that need to reflect
+what the market saw at the earliest possible date.
 
 ---
 
@@ -2163,10 +2333,12 @@ quarterly frequencies. The validation checklist:
    These usually indicate a tag chain that crosses scope boundaries.
 
 **Quarterly consistency:**
-8. `Q1 + Q2 + Q3 + Q4 = FY` for all monetary duration items. Failures
-   here indicate the quarterly reference filing date override (Section 13.2)
-   isn't working correctly for that company's fiscal calendar. For
-   semi-annual IFRS filers, the analogous check is `H1 + H2 = FY`.
+8. `Q1 + Q2 + Q3 + Q4 = FY` for all monetary duration items, and the Q4
+   balance sheet equals the annual balance sheet. Both hold by construction
+   after fiscal-year-end reconciliation (Section 13.2); a failure means the
+   reconciliation did not run for that fiscal year (it needs exactly three
+   interim quarters). For semi-annual IFRS filers, the analogous check is
+   `H1 + H2 = FY`.
 
 **Edge cases:**
 9. Non-December fiscal year-ends (Apple September, Walmart January,
