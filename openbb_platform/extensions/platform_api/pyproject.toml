@@ -1,13 +1,13 @@
 [project]
 name = "openbb-platform-api"
-version = "2.0.0"
+version = "2.0.1"
 description = "OpenBB Platform API: launcher and widgets builder for the Open Data Platform REST API and OpenBB Workspace custom-backend connector."
 authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
 license = { text = "Apache-2.0" }
 readme = "README.md"
 requires-python = ">=3.10,<4"
 dependencies = [
-    "openbb-core>=2.0.0",
+    "openbb-core>=2.0.1",
     "deepdiff>=8.6.2",
     # Backport of stdlib ``tomllib`` for py3.10.
     "tomli>=2.0;python_version<'3.11'",
