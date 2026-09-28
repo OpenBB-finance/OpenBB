@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.10, <4"
 resolution-markers = [
     "python_full_version >= '3.14' and sys_platform == 'win32'",
@@ -2221,7 +2221,7 @@ wheels = [
 
 [[package]]
 name = "openbb-cli"
-version = "2.0.0"
+version = "2.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
@@ -2233,14 +2233,14 @@ dependencies = [
     { name = "rich" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/93/01/043189ce5bf7c782f674b02baec0da4bfa445305a731a774523779bb9150/openbb_cli-2.0.0.tar.gz", hash = "sha256:6694e898228502ac0f1a9d28088da0eec9a01efed6660d877801b54f9b48e5de", size = 371511, upload-time = "2026-09-27T21:25:32.68Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ba/cd/812dab5c18b57a7632e6f59c9350ed63b0604f8a7f67f1190623961477b5/openbb_cli-2.0.1.tar.gz", hash = "sha256:7336249bb2972decd1e7f8fbab2850c8d21de485871e38475e1109572cede202", size = 372273, upload-time = "2026-09-28T20:49:28.025Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/09/a0/efb5eaaaaf6e5ab2d691209ad120a915737ebfefb554a89e364573be94d8/openbb_cli-2.0.0-py3-none-any.whl", hash = "sha256:fa2a0681948f3206b60da6a290d1cac1c687584bf64e4a467bd920186a231e19", size = 406321, upload-time = "2026-09-27T21:25:30.981Z" },
+    { url = "https://files.pythonhosted.org/packages/0d/ee/1f661583c16697d9cf95336866d09e6cb6e70fb4de752131db6ac6e55bcd/openbb_cli-2.0.1-py3-none-any.whl", hash = "sha256:e115576afa02d538ef76ba0c8f944934cc9f7acbf719254b85a6e8b6d60b2825", size = 407073, upload-time = "2026-09-28T20:49:26.389Z" },
 ]
 
 [[package]]
 name = "openbb-core"
-version = "2.0.0"
+version = "2.0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -2258,9 +2258,9 @@ dependencies = [
     { name = "websockets", version = "16.1.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "websockets", version = "17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a4/9c/c3d082d234f15919cc1d626e7f4ed4694e3660cdad0fc91dddcfa8880f06/openbb_core-2.0.0.tar.gz", hash = "sha256:9418669e22c5dd191a1c50bf27bf1cdb24ec5932aa70717ace4ec5839957ebf0", size = 284642, upload-time = "2026-09-26T07:49:32.421Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a2/af/5e331eba80b1623df5310001e0107ba60854fec0cf7b254c831c004d4c16/openbb_core-2.0.1.tar.gz", hash = "sha256:c656d3c4bb86a689e5f07a295988ad787225707be3552cbb622b4ecef7da0dc8", size = 285163, upload-time = "2026-09-28T20:13:59.288Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/78/65/9e5d11b6ef5b49e21efc869a495f142419d658197fe59cd1676736311461/openbb_core-2.0.0-py3-none-any.whl", hash = "sha256:4b11b3efd2f1a7b225ba45344423fed1b9c3ac0a90f14a94791ce33352030908", size = 436126, upload-time = "2026-09-26T07:49:30.689Z" },
+    { url = "https://files.pythonhosted.org/packages/82/77/795eb63d7dd09d1a1766add005fa6216f2d7c17b09c020f31436caac9cac/openbb_core-2.0.1-py3-none-any.whl", hash = "sha256:4f5aa21ba00cbf194423f154a58f60ee413599531cf1c4abfe5ef3275a516f64", size = 436660, upload-time = "2026-09-28T20:13:57.814Z" },
 ]
 
 [package.optional-dependencies]
@@ -2300,7 +2300,7 @@ wheels = [
 
 [[package]]
 name = "openbb-mcp-server"
-version = "2.0.0"
+version = "2.0.1"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
@@ -2324,15 +2324,15 @@ dev = [
 requires-dist = [
     { name = "fastapi", specifier = ">=0.138.2" },
     { name = "fastmcp", specifier = ">=4.0.9" },
-    { name = "openbb-cli", marker = "extra == 'cli'", specifier = ">=2.0.0" },
-    { name = "openbb-core", specifier = ">=2.0.0" },
+    { name = "openbb-cli", marker = "extra == 'cli'", specifier = ">=2.0.1" },
+    { name = "openbb-core", specifier = ">=2.0.1" },
     { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.0" },
 ]
 provides-extras = ["cli"]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "openbb-cli", specifier = ">=2.0.0" },
+    { name = "openbb-cli", specifier = ">=2.0.1" },
     { name = "openbb-devtools", specifier = ">=2.0.1" },
 ]
 
