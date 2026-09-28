@@ -31,16 +31,7 @@ from pathlib import Path
 
 import pytest
 
-
-def _installed_openbb_dir() -> Path:
-    """Return the directory of the ``openbb`` package this interpreter imports."""
-    spec = importlib.util.find_spec("openbb")
-    if spec is None or not spec.submodule_search_locations:
-        raise RuntimeError("The `openbb` package is not installed in this interpreter.")
-    return Path(next(iter(spec.submodule_search_locations)))
-
-
-OPENBB_DIR = _installed_openbb_dir()
+OPENBB_DIR = Path(importlib.util.find_spec("openbb").origin).parent
 PACKAGE_DIR = OPENBB_DIR / "package"
 ASSETS_DIR = OPENBB_DIR / "assets"
 

@@ -1,68 +1,43 @@
 """Shared fixtures and ``openbb_core`` submodule bindings for the test suite."""
 
+import atexit
 import importlib
 import logging
 import shutil
 import socket
-import subprocess
 import sys
+import tempfile
 import threading
 import time
 from collections.abc import Iterator
 from contextlib import contextmanager
-from importlib.metadata import PackageNotFoundError, distribution
-from importlib.util import find_spec
 from pathlib import Path
 
-FIXTURE_EXTENSION = Path(__file__).parent / "fixtures" / "openbb_mcp_fixture"
+FIXTURES_DIR = Path(__file__).parent / "fixtures"
 
 
-def _pip_install_command() -> list[str]:
-    """Return the command that installs packages into the running interpreter.
+def _register_fixture_extension() -> None:
+    """Expose ``openbb_mcp_fixture.router`` as an ``openbb_core_extension`` entry point."""
+    metadata_root = Path(tempfile.mkdtemp(prefix="openbb_mcp_fixture_"))
+    atexit.register(shutil.rmtree, metadata_root, ignore_errors=True)
+    dist_info = metadata_root / "openbb_mcp_fixture-0.0.0.dist-info"
+    dist_info.mkdir()
+    (dist_info / "METADATA").write_text(
+        "Metadata-Version: 2.1\nName: openbb-mcp-fixture\nVersion: 0.0.0\n",
+        encoding="utf-8",
+    )
+    (dist_info / "entry_points.txt").write_text(
+        "[openbb_core_extension]\nmcp_fixture = openbb_mcp_fixture.router:router\n",
+        encoding="utf-8",
+    )
+    sys.path[:0] = [str(FIXTURES_DIR), str(metadata_root)]
+    importlib.invalidate_caches()
+    from openbb_core.app.extension_loader import ExtensionLoader
 
-    Returns
-    -------
-    list[str]
-        ``uv pip install`` when uv is available, otherwise ``pip install``.
-    """
-    if find_spec("uv"):
-        return [
-            sys.executable,
-            "-m",
-            "uv",
-            "pip",
-            "install",
-            "--python",
-            sys.executable,
-        ]
-    if uv := shutil.which("uv"):
-        return [uv, "pip", "install", "--python", sys.executable]
-    return [sys.executable, "-m", "pip", "install"]
+    type(ExtensionLoader)._instances.pop(ExtensionLoader, None)
 
 
-def _install_fixture_extension() -> None:
-    """Install the ``openbb-mcp-fixture`` extension the tests dispatch against."""
-    try:
-        distribution("openbb-mcp-fixture")
-    except PackageNotFoundError:
-        subprocess.run(  # noqa: S603
-            [
-                *_pip_install_command(),
-                "--no-deps",
-                "--editable",
-                str(FIXTURE_EXTENSION),
-            ],
-            check=True,
-        )
-        if str(FIXTURE_EXTENSION) not in sys.path:
-            sys.path.append(str(FIXTURE_EXTENSION))
-        importlib.invalidate_caches()
-        from openbb_core.app.extension_loader import ExtensionLoader
-
-        type(ExtensionLoader)._instances.pop(ExtensionLoader, None)
-
-
-_install_fixture_extension()
+_register_fixture_extension()
 
 import openbb_core.api
 import openbb_core.api.app_loader
@@ -146,10 +121,10 @@ def serve_app(app) -> Iterator[str]:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.bind(("127.0.0.1", 0))
     port = sock.getsockname()[1]
-    server = uvicorn.Server(uvicorn.Config(app, log_level="warning"))
+    server = uvicorn.Server(uvicorn.Config(app, log_level="warning", ws="none"))
     thread = threading.Thread(target=server.run, kwargs={"sockets": [sock]})
     thread.start()
-    while not server.started:
+    while thread.is_alive() and not server.started:
         time.sleep(0.01)
     try:
         yield f"http://127.0.0.1:{port}"
