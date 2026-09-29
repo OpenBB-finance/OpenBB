@@ -59,4 +59,3 @@ class Linters:
         if not self.verbose and not Env().DEBUG_MODE:
             flags.append("--silent")
         self.run(linter="ruff", flags=flags)
-        self.black()

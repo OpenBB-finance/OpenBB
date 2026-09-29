@@ -1,7 +1,5 @@
 """OpenBB MCP Server."""
 
-# pylint: disable=C0302, R0912, W0212
-
 import asyncio
 import json
 import os
@@ -627,7 +625,7 @@ def create_mcp_server(
             ]
 
         @mcp.tool(tags={"admin"})
-        async def available_tools(
+        def available_tools(
             category: Annotated[
                 str, Field(description="The category of tools to list")
             ],

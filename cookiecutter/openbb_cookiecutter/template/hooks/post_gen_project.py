@@ -1,6 +1,5 @@
 """OpenBB Platform extension post-generation script."""
 
-import os
 import re
 import shutil
 import subprocess

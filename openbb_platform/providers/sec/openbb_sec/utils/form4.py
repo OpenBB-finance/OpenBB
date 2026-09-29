@@ -193,7 +193,7 @@ async def get_form_4_data(url) -> dict:
 
     return (
         xml_data.get("ownershipDocument") if xml_data.get("ownershipDocument") else {}
-    )  # type: ignore
+    )
 
 
 async def parse_form_4_data(  # noqa: PLR0915, PLR0912
@@ -243,10 +243,10 @@ async def parse_form_4_data(  # noqa: PLR0915, PLR0912
         "symbol": issuer.get("issuerTradingSymbol", "").upper(),
         "form": data.get("documentType"),
         "owner": (
-            owners if owners else owner.get("reportingOwnerId", {}).get("rptOwnerName")  # type: ignore
+            owners if owners else owner.get("reportingOwnerId", {}).get("rptOwnerName")
         ),
         "owner_cik": (
-            ciks if ciks else owner.get("reportingOwnerId", {}).get("rptOwnerCik")  # type: ignore
+            ciks if ciks else owner.get("reportingOwnerId", {}).get("rptOwnerCik")
         ),
         "issuer": issuer.get("issuerName"),
         "issuer_cik": issuer.get("issuerCik"),

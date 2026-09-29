@@ -3,8 +3,6 @@
 from dataclasses import is_dataclass
 from typing import Literal
 
-from typing import Literal, Optional
-
 import pytest
 from pydantic.fields import FieldInfo
 

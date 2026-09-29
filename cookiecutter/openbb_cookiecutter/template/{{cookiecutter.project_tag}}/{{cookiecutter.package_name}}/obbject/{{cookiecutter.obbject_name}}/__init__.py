@@ -5,7 +5,6 @@
 
 from openbb_core.app.model.extension import Extension
 from openbb_core.app.model.obbject import OBBject
-{% if has_obbject %}
 
 ext = Extension(
     name="to_string",

@@ -4,7 +4,6 @@ from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.standard_models.cik_map import CikMapData, CikMapQueryParams
 from pydantic import Field
 

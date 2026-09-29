@@ -45,8 +45,6 @@ class Charting:
 
         from openbb_core.app.charting import get_hooks_manager
 
-        from openbb_charting.core.backend import Backend
-
         charting_settings_module = importlib.import_module(
             "openbb_core.app.model.charts.charting_settings", "ChartingSettings"
         )

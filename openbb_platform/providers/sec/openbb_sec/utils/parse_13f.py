@@ -83,7 +83,7 @@ def parse_header(filing_str: str) -> dict:
         header_dict = xmltodict.parse(str(header_xml))["headerData"]
     except KeyError:
         header_xml = soup.find("type")
-        header_dict = xmltodict.parse(str(header_xml)).get("type")  # type: ignore
+        header_dict = xmltodict.parse(str(header_xml)).get("type")
     if header_dict:
         return header_dict
     raise OpenBBError(

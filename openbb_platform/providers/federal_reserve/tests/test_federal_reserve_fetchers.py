@@ -30,12 +30,6 @@ from openbb_federal_reserve.models.primary_dealer_positioning import (
     FederalReservePrimaryDealerPositioningFetcher,
 )
 from openbb_federal_reserve.models.sofr import FederalReserveSOFRFetcher
-from openbb_federal_reserve.models.svensson_yield_curve import (
-    FederalReserveSvenssonFetcher,
-)
-from openbb_federal_reserve.models.total_factor_productivity import (
-    FederalReserveTfpFetcher,
-)
 from openbb_federal_reserve.models.treasury_rates import (
     FederalReserveTreasuryRatesFetcher,
 )

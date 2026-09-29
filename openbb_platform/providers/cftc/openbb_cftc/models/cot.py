@@ -6,7 +6,6 @@ from datetime import (
 )
 from typing import Any, Literal
 
-from openbb_cftc.utils import reports_dict
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.provider.abstract.data import Data
@@ -1842,8 +1841,7 @@ class CftcCotFetcher(Fetcher[CftcCotQueryParams, list[CftcCotData]]):
             else f"{today.year}-12-31"
         )
         date_range = (
-            "$where=Report_Date_as_YYYY_MM_DD"
-            f" between '{start_date}' AND '{end_date}'"
+            f"$where=Report_Date_as_YYYY_MM_DD between '{start_date}' AND '{end_date}'"
         )
         report_type = query.report_type.replace("financial", "tff")
 

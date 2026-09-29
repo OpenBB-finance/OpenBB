@@ -1,7 +1,7 @@
 """Tests for registering system, server, and inline prompts."""
 
 import json
-from unittest.mock import MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from fastapi import FastAPI
