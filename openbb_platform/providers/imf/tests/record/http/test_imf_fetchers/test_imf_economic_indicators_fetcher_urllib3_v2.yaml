@@ -5,23 +5,23 @@ interactions:
       Accept:
       - application/json
       Accept-Encoding:
-      - gzip, deflate, br, zstd
+      - gzip, deflate, zstd
       Connection:
       - keep-alive
     method: GET
     uri: https://api.imf.org/external/sdmx/3.0/availability/dataflow/IMF.STA/IL/%2B/*/COUNTRY
   response:
     body:
-      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:IL(13.0.1)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"9557","type":"sdmx_metrics"},{"id":"time_period_start","title":"1945-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2025-12-01","type":"sdmx_metrics"}],"id":"IL","name":"Data
+      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:IL(13.0.1)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"9581","type":"sdmx_metrics"},{"id":"time_period_start","title":"1945-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2026-05-01","type":"sdmx_metrics"}],"id":"IL","name":"Data
         Constraint","names":{"en":"Data Constraint"},"description":"Data Availability
-        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"13.0.1","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IL(13.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"COUNTRY","include":false,"removePrefix":false,"values":[{"value":"ABW"},{"value":"AFG"},{"value":"AGO"},{"value":"AIA"},{"value":"ALB"},{"value":"ANT"},{"value":"ARE"},{"value":"ARG"},{"value":"ARM"},{"value":"ATG"},{"value":"AUS"},{"value":"AUT"},{"value":"AZE"},{"value":"BCE"},{"value":"BDI"},{"value":"BEA"},{"value":"BEL"},{"value":"BGD"},{"value":"BGR"},{"value":"BHR"},{"value":"BHS"},{"value":"BIH"},{"value":"BIS"},{"value":"BLR"},{"value":"BLZ"},{"value":"BOL"},{"value":"BRA"},{"value":"BRB"},{"value":"BRN"},{"value":"BTN"},{"value":"BWA"},{"value":"CAF"},{"value":"CAN"},{"value":"CHE"},{"value":"CHL"},{"value":"CHN"},{"value":"CMR"},{"value":"COD"},{"value":"COG"},{"value":"COL"},{"value":"COM"},{"value":"CPV"},{"value":"CRI"},{"value":"CSK"},{"value":"CUB"},{"value":"CWX"},{"value":"CYM"},{"value":"CYP"},{"value":"CZE"},{"value":"DEU"},{"value":"DJI"},{"value":"DMA"},{"value":"DNK"},{"value":"DOM"},{"value":"DZA"},{"value":"ECB"},{"value":"ECU"},{"value":"EGY"},{"value":"ERI"},{"value":"ESP"},{"value":"EST"},{"value":"ETH"},{"value":"EZB"},{"value":"FIN"},{"value":"FJI"},{"value":"FRA"},{"value":"FSM"},{"value":"G001"},{"value":"G110"},{"value":"G163"},{"value":"G200"},{"value":"G205"},{"value":"G309"},{"value":"G400"},{"value":"G505"},{"value":"G603"},{"value":"G758"},{"value":"G759"},{"value":"G903"},{"value":"GAB"},{"value":"GBR"},{"value":"GEO"},{"value":"GHA"},{"value":"GIN"},{"value":"GMB"},{"value":"GNQ"},{"value":"GRC"},{"value":"GRD"},{"value":"GTM"},{"value":"GUY"},{"value":"GX010"},{"value":"HKG"},{"value":"HND"},{"value":"HRV"},{"value":"HTI"},{"value":"HUN"},{"value":"IDN"},{"value":"IMF"},{"value":"IND"},{"value":"IRL"},{"value":"IRN"},{"value":"IRQ"},{"value":"ISL"},{"value":"ISR"},{"value":"ITA"},{"value":"JAM"},{"value":"JOR"},{"value":"JPN"},{"value":"KAZ"},{"value":"KEN"},{"value":"KGZ"},{"value":"KHM"},{"value":"KNA"},{"value":"KOR"},{"value":"KOS"},{"value":"KWT"},{"value":"LAO"},{"value":"LBN"},{"value":"LBR"},{"value":"LBY"},{"value":"LCA"},{"value":"LKA"},{"value":"LSO"},{"value":"LTU"},{"value":"LUX"},{"value":"LVA"},{"value":"MAC"},{"value":"MAR"},{"value":"MDA"},{"value":"MDG"},{"value":"MDV"},{"value":"MEX"},{"value":"MKD"},{"value":"MLT"},{"value":"MNE"},{"value":"MNG"},{"value":"MOZ"},{"value":"MRT"},{"value":"MSR"},{"value":"MUS"},{"value":"MWI"},{"value":"MYS"},{"value":"NAM"},{"value":"NGA"},{"value":"NIC"},{"value":"NLD"},{"value":"NOR"},{"value":"NPL"},{"value":"NZL"},{"value":"OMN"},{"value":"PAK"},{"value":"PAN"},{"value":"PER"},{"value":"PHL"},{"value":"PNG"},{"value":"POL"},{"value":"PRT"},{"value":"PRY"},{"value":"QAT"},{"value":"ROU"},{"value":"RUS"},{"value":"RWA"},{"value":"SAU"},{"value":"SDN"},{"value":"SGP"},{"value":"SLB"},{"value":"SLE"},{"value":"SLV"},{"value":"SMR"},{"value":"SOM"},{"value":"SRB"},{"value":"SSD"},{"value":"STP"},{"value":"SUR"},{"value":"SVK"},{"value":"SVN"},{"value":"SWE"},{"value":"SWZ"},{"value":"SYC"},{"value":"SYR"},{"value":"TCD"},{"value":"THA"},{"value":"TJK"},{"value":"TKM"},{"value":"TLS"},{"value":"TON"},{"value":"TTO"},{"value":"TUN"},{"value":"TUR"},{"value":"TWN"},{"value":"TX752"},{"value":"TZA"},{"value":"UGA"},{"value":"UKR"},{"value":"URY"},{"value":"USA"},{"value":"UZB"},{"value":"VCT"},{"value":"VEN"},{"value":"VNM"},{"value":"VUT"},{"value":"WBG"},{"value":"WSM"},{"value":"YAR"},{"value":"YEM"},{"value":"YMD"},{"value":"YUG"},{"value":"ZAF"},{"value":"ZMB"},{"value":"ZWE"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF6976","test":false,"prepared":"2025-12-16T05:17:20.433171672Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
+        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"13.0.1","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IL(13.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"COUNTRY","include":false,"removePrefix":false,"values":[{"value":"ABW"},{"value":"AFG"},{"value":"AGO"},{"value":"AIA"},{"value":"ALB"},{"value":"ANT"},{"value":"ARE"},{"value":"ARG"},{"value":"ARM"},{"value":"ATG"},{"value":"AUS"},{"value":"AUT"},{"value":"AZE"},{"value":"BCE"},{"value":"BDI"},{"value":"BEA"},{"value":"BEL"},{"value":"BGD"},{"value":"BGR"},{"value":"BHR"},{"value":"BHS"},{"value":"BIH"},{"value":"BIS"},{"value":"BLR"},{"value":"BLZ"},{"value":"BOL"},{"value":"BRA"},{"value":"BRB"},{"value":"BRN"},{"value":"BTN"},{"value":"BWA"},{"value":"CAF"},{"value":"CAN"},{"value":"CHE"},{"value":"CHL"},{"value":"CHN"},{"value":"CMR"},{"value":"COD"},{"value":"COG"},{"value":"COL"},{"value":"COM"},{"value":"CPV"},{"value":"CRI"},{"value":"CSK"},{"value":"CUB"},{"value":"CWX"},{"value":"CYM"},{"value":"CYP"},{"value":"CZE"},{"value":"DEU"},{"value":"DJI"},{"value":"DMA"},{"value":"DNK"},{"value":"DOM"},{"value":"DZA"},{"value":"ECB"},{"value":"ECU"},{"value":"EGY"},{"value":"ERI"},{"value":"ESP"},{"value":"EST"},{"value":"ETH"},{"value":"EZB"},{"value":"FIN"},{"value":"FJI"},{"value":"FRA"},{"value":"FSM"},{"value":"G001"},{"value":"G110"},{"value":"G163"},{"value":"G200"},{"value":"G205"},{"value":"G309"},{"value":"G400"},{"value":"G505"},{"value":"G603"},{"value":"G758"},{"value":"G759"},{"value":"G903"},{"value":"GAB"},{"value":"GBR"},{"value":"GEO"},{"value":"GHA"},{"value":"GIN"},{"value":"GMB"},{"value":"GNQ"},{"value":"GRC"},{"value":"GRD"},{"value":"GTM"},{"value":"GUY"},{"value":"GX010"},{"value":"HKG"},{"value":"HND"},{"value":"HRV"},{"value":"HTI"},{"value":"HUN"},{"value":"IDN"},{"value":"IMF"},{"value":"IND"},{"value":"IRL"},{"value":"IRN"},{"value":"IRQ"},{"value":"ISL"},{"value":"ISR"},{"value":"ITA"},{"value":"JAM"},{"value":"JOR"},{"value":"JPN"},{"value":"KAZ"},{"value":"KEN"},{"value":"KGZ"},{"value":"KHM"},{"value":"KNA"},{"value":"KOR"},{"value":"KOS"},{"value":"KWT"},{"value":"LAO"},{"value":"LBN"},{"value":"LBR"},{"value":"LBY"},{"value":"LCA"},{"value":"LKA"},{"value":"LSO"},{"value":"LTU"},{"value":"LUX"},{"value":"LVA"},{"value":"MAC"},{"value":"MAR"},{"value":"MDA"},{"value":"MDG"},{"value":"MDV"},{"value":"MEX"},{"value":"MKD"},{"value":"MLT"},{"value":"MNE"},{"value":"MNG"},{"value":"MOZ"},{"value":"MRT"},{"value":"MSR"},{"value":"MUS"},{"value":"MWI"},{"value":"MYS"},{"value":"NAM"},{"value":"NGA"},{"value":"NIC"},{"value":"NLD"},{"value":"NOR"},{"value":"NPL"},{"value":"NZL"},{"value":"OMN"},{"value":"PAK"},{"value":"PAN"},{"value":"PER"},{"value":"PHL"},{"value":"PNG"},{"value":"POL"},{"value":"PRT"},{"value":"PRY"},{"value":"QAT"},{"value":"ROU"},{"value":"RUS"},{"value":"RWA"},{"value":"SAU"},{"value":"SDN"},{"value":"SGP"},{"value":"SLB"},{"value":"SLE"},{"value":"SLV"},{"value":"SMR"},{"value":"SOM"},{"value":"SRB"},{"value":"SSD"},{"value":"STP"},{"value":"SUR"},{"value":"SVK"},{"value":"SVN"},{"value":"SWE"},{"value":"SWZ"},{"value":"SYC"},{"value":"SYR"},{"value":"TCD"},{"value":"THA"},{"value":"TJK"},{"value":"TKM"},{"value":"TLS"},{"value":"TON"},{"value":"TTO"},{"value":"TUN"},{"value":"TUR"},{"value":"TWN"},{"value":"TX752"},{"value":"TZA"},{"value":"UGA"},{"value":"UKR"},{"value":"URY"},{"value":"USA"},{"value":"UZB"},{"value":"VCT"},{"value":"VEN"},{"value":"VNM"},{"value":"VUT"},{"value":"WBG"},{"value":"WSM"},{"value":"YAR"},{"value":"YEM"},{"value":"YMD"},{"value":"YUG"},{"value":"ZAF"},{"value":"ZMB"},{"value":"ZWE"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF1292","test":false,"prepared":"2026-05-25T16:20:45.172364538Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
     headers:
       Connection:
       - keep-alive
       Content-Type:
       - application/json
       Date:
-      - Tue, 16 Dec 2025 05:17:20 GMT
+      - Mon, 25 May 2026 16:20:45 GMT
       Request-Context:
       - appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
       Set-Cookie:
@@ -32,8 +32,8 @@ interactions:
       - chunked
       cache-control:
       - no-cache, no-store, max-age=0, must-revalidate
-      content-encoding:
-      - gzip
+      content-length:
+      - '4515'
       expires:
       - '0'
       pragma:
@@ -47,9 +47,9 @@ interactions:
       x-content-type-options:
       - nosniff
       x-correlation-id:
-      - cd9c374bd366cb1e31f4f9124bc59707
+      - a505a5ae895e1931eea95003a4f3115b
       x-envoy-upstream-service-time:
-      - '62'
+      - '159'
       x-frame-options:
       - DENY
       x-xss-protection:
@@ -63,16 +63,16 @@ interactions:
       Accept:
       - application/json
       Accept-Encoding:
-      - gzip, deflate, br, zstd
+      - gzip, deflate, zstd
       Connection:
       - keep-alive
     method: GET
     uri: https://api.imf.org/external/sdmx/3.0/availability/dataflow/IMF.STA/IL/%2B/JPN.RGV_REVS.*.*/FREQUENCY
   response:
     body:
-      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:IL(13.0.1)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"3","type":"sdmx_metrics"},{"id":"time_period_start","title":"1950-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2025-12-01","type":"sdmx_metrics"}],"id":"IL","name":"Data
+      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:IL(13.0.1)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"3","type":"sdmx_metrics"},{"id":"time_period_start","title":"1950-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2026-05-01","type":"sdmx_metrics"}],"id":"IL","name":"Data
         Constraint","names":{"en":"Data Constraint"},"description":"Data Availability
-        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"13.0.1","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IL(13.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"FREQUENCY","include":false,"removePrefix":false,"values":[{"value":"A"},{"value":"M"},{"value":"Q"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF9258","test":false,"prepared":"2025-12-16T05:17:20.912545745Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
+        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"13.0.1","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IL(13.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"FREQUENCY","include":false,"removePrefix":false,"values":[{"value":"A"},{"value":"M"},{"value":"Q"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF9232","test":false,"prepared":"2026-05-25T16:20:45.667621333Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
     headers:
       Connection:
       - keep-alive
@@ -81,7 +81,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 16 Dec 2025 05:17:20 GMT
+      - Mon, 25 May 2026 16:20:45 GMT
       Request-Context:
       - appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
       Set-Cookie:
@@ -101,9 +101,9 @@ interactions:
       x-content-type-options:
       - nosniff
       x-correlation-id:
-      - bc8d8fa6d41d9785feda7f0b4720497f
+      - 0103868bffdbfe7f0cbbd247eed879ba
       x-envoy-upstream-service-time:
-      - '73'
+      - '195'
       x-frame-options:
       - DENY
       x-xss-protection:
@@ -117,23 +117,23 @@ interactions:
       Accept:
       - application/json
       Accept-Encoding:
-      - gzip, deflate, br, zstd
+      - gzip, deflate, zstd
       Connection:
       - keep-alive
     method: GET
     uri: https://api.imf.org/external/sdmx/3.0/availability/dataflow/IMF.STA/IL/%2B/*.*.*.*/COUNTRY
   response:
     body:
-      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:IL(13.0.1)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"9557","type":"sdmx_metrics"},{"id":"time_period_start","title":"1945-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2025-12-01","type":"sdmx_metrics"}],"id":"IL","name":"Data
+      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:IL(13.0.1)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"9581","type":"sdmx_metrics"},{"id":"time_period_start","title":"1945-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2026-05-01","type":"sdmx_metrics"}],"id":"IL","name":"Data
         Constraint","names":{"en":"Data Constraint"},"description":"Data Availability
-        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"13.0.1","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IL(13.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"COUNTRY","include":false,"removePrefix":false,"values":[{"value":"ABW"},{"value":"AFG"},{"value":"AGO"},{"value":"AIA"},{"value":"ALB"},{"value":"ANT"},{"value":"ARE"},{"value":"ARG"},{"value":"ARM"},{"value":"ATG"},{"value":"AUS"},{"value":"AUT"},{"value":"AZE"},{"value":"BCE"},{"value":"BDI"},{"value":"BEA"},{"value":"BEL"},{"value":"BGD"},{"value":"BGR"},{"value":"BHR"},{"value":"BHS"},{"value":"BIH"},{"value":"BIS"},{"value":"BLR"},{"value":"BLZ"},{"value":"BOL"},{"value":"BRA"},{"value":"BRB"},{"value":"BRN"},{"value":"BTN"},{"value":"BWA"},{"value":"CAF"},{"value":"CAN"},{"value":"CHE"},{"value":"CHL"},{"value":"CHN"},{"value":"CMR"},{"value":"COD"},{"value":"COG"},{"value":"COL"},{"value":"COM"},{"value":"CPV"},{"value":"CRI"},{"value":"CSK"},{"value":"CUB"},{"value":"CWX"},{"value":"CYM"},{"value":"CYP"},{"value":"CZE"},{"value":"DEU"},{"value":"DJI"},{"value":"DMA"},{"value":"DNK"},{"value":"DOM"},{"value":"DZA"},{"value":"ECB"},{"value":"ECU"},{"value":"EGY"},{"value":"ERI"},{"value":"ESP"},{"value":"EST"},{"value":"ETH"},{"value":"EZB"},{"value":"FIN"},{"value":"FJI"},{"value":"FRA"},{"value":"FSM"},{"value":"G001"},{"value":"G110"},{"value":"G163"},{"value":"G200"},{"value":"G205"},{"value":"G309"},{"value":"G400"},{"value":"G505"},{"value":"G603"},{"value":"G758"},{"value":"G759"},{"value":"G903"},{"value":"GAB"},{"value":"GBR"},{"value":"GEO"},{"value":"GHA"},{"value":"GIN"},{"value":"GMB"},{"value":"GNQ"},{"value":"GRC"},{"value":"GRD"},{"value":"GTM"},{"value":"GUY"},{"value":"GX010"},{"value":"HKG"},{"value":"HND"},{"value":"HRV"},{"value":"HTI"},{"value":"HUN"},{"value":"IDN"},{"value":"IMF"},{"value":"IND"},{"value":"IRL"},{"value":"IRN"},{"value":"IRQ"},{"value":"ISL"},{"value":"ISR"},{"value":"ITA"},{"value":"JAM"},{"value":"JOR"},{"value":"JPN"},{"value":"KAZ"},{"value":"KEN"},{"value":"KGZ"},{"value":"KHM"},{"value":"KNA"},{"value":"KOR"},{"value":"KOS"},{"value":"KWT"},{"value":"LAO"},{"value":"LBN"},{"value":"LBR"},{"value":"LBY"},{"value":"LCA"},{"value":"LKA"},{"value":"LSO"},{"value":"LTU"},{"value":"LUX"},{"value":"LVA"},{"value":"MAC"},{"value":"MAR"},{"value":"MDA"},{"value":"MDG"},{"value":"MDV"},{"value":"MEX"},{"value":"MKD"},{"value":"MLT"},{"value":"MNE"},{"value":"MNG"},{"value":"MOZ"},{"value":"MRT"},{"value":"MSR"},{"value":"MUS"},{"value":"MWI"},{"value":"MYS"},{"value":"NAM"},{"value":"NGA"},{"value":"NIC"},{"value":"NLD"},{"value":"NOR"},{"value":"NPL"},{"value":"NZL"},{"value":"OMN"},{"value":"PAK"},{"value":"PAN"},{"value":"PER"},{"value":"PHL"},{"value":"PNG"},{"value":"POL"},{"value":"PRT"},{"value":"PRY"},{"value":"QAT"},{"value":"ROU"},{"value":"RUS"},{"value":"RWA"},{"value":"SAU"},{"value":"SDN"},{"value":"SGP"},{"value":"SLB"},{"value":"SLE"},{"value":"SLV"},{"value":"SMR"},{"value":"SOM"},{"value":"SRB"},{"value":"SSD"},{"value":"STP"},{"value":"SUR"},{"value":"SVK"},{"value":"SVN"},{"value":"SWE"},{"value":"SWZ"},{"value":"SYC"},{"value":"SYR"},{"value":"TCD"},{"value":"THA"},{"value":"TJK"},{"value":"TKM"},{"value":"TLS"},{"value":"TON"},{"value":"TTO"},{"value":"TUN"},{"value":"TUR"},{"value":"TWN"},{"value":"TX752"},{"value":"TZA"},{"value":"UGA"},{"value":"UKR"},{"value":"URY"},{"value":"USA"},{"value":"UZB"},{"value":"VCT"},{"value":"VEN"},{"value":"VNM"},{"value":"VUT"},{"value":"WBG"},{"value":"WSM"},{"value":"YAR"},{"value":"YEM"},{"value":"YMD"},{"value":"YUG"},{"value":"ZAF"},{"value":"ZMB"},{"value":"ZWE"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF5022","test":false,"prepared":"2025-12-16T05:17:21.650952563Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
+        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"13.0.1","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IL(13.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"COUNTRY","include":false,"removePrefix":false,"values":[{"value":"ABW"},{"value":"AFG"},{"value":"AGO"},{"value":"AIA"},{"value":"ALB"},{"value":"ANT"},{"value":"ARE"},{"value":"ARG"},{"value":"ARM"},{"value":"ATG"},{"value":"AUS"},{"value":"AUT"},{"value":"AZE"},{"value":"BCE"},{"value":"BDI"},{"value":"BEA"},{"value":"BEL"},{"value":"BGD"},{"value":"BGR"},{"value":"BHR"},{"value":"BHS"},{"value":"BIH"},{"value":"BIS"},{"value":"BLR"},{"value":"BLZ"},{"value":"BOL"},{"value":"BRA"},{"value":"BRB"},{"value":"BRN"},{"value":"BTN"},{"value":"BWA"},{"value":"CAF"},{"value":"CAN"},{"value":"CHE"},{"value":"CHL"},{"value":"CHN"},{"value":"CMR"},{"value":"COD"},{"value":"COG"},{"value":"COL"},{"value":"COM"},{"value":"CPV"},{"value":"CRI"},{"value":"CSK"},{"value":"CUB"},{"value":"CWX"},{"value":"CYM"},{"value":"CYP"},{"value":"CZE"},{"value":"DEU"},{"value":"DJI"},{"value":"DMA"},{"value":"DNK"},{"value":"DOM"},{"value":"DZA"},{"value":"ECB"},{"value":"ECU"},{"value":"EGY"},{"value":"ERI"},{"value":"ESP"},{"value":"EST"},{"value":"ETH"},{"value":"EZB"},{"value":"FIN"},{"value":"FJI"},{"value":"FRA"},{"value":"FSM"},{"value":"G001"},{"value":"G110"},{"value":"G163"},{"value":"G200"},{"value":"G205"},{"value":"G309"},{"value":"G400"},{"value":"G505"},{"value":"G603"},{"value":"G758"},{"value":"G759"},{"value":"G903"},{"value":"GAB"},{"value":"GBR"},{"value":"GEO"},{"value":"GHA"},{"value":"GIN"},{"value":"GMB"},{"value":"GNQ"},{"value":"GRC"},{"value":"GRD"},{"value":"GTM"},{"value":"GUY"},{"value":"GX010"},{"value":"HKG"},{"value":"HND"},{"value":"HRV"},{"value":"HTI"},{"value":"HUN"},{"value":"IDN"},{"value":"IMF"},{"value":"IND"},{"value":"IRL"},{"value":"IRN"},{"value":"IRQ"},{"value":"ISL"},{"value":"ISR"},{"value":"ITA"},{"value":"JAM"},{"value":"JOR"},{"value":"JPN"},{"value":"KAZ"},{"value":"KEN"},{"value":"KGZ"},{"value":"KHM"},{"value":"KNA"},{"value":"KOR"},{"value":"KOS"},{"value":"KWT"},{"value":"LAO"},{"value":"LBN"},{"value":"LBR"},{"value":"LBY"},{"value":"LCA"},{"value":"LKA"},{"value":"LSO"},{"value":"LTU"},{"value":"LUX"},{"value":"LVA"},{"value":"MAC"},{"value":"MAR"},{"value":"MDA"},{"value":"MDG"},{"value":"MDV"},{"value":"MEX"},{"value":"MKD"},{"value":"MLT"},{"value":"MNE"},{"value":"MNG"},{"value":"MOZ"},{"value":"MRT"},{"value":"MSR"},{"value":"MUS"},{"value":"MWI"},{"value":"MYS"},{"value":"NAM"},{"value":"NGA"},{"value":"NIC"},{"value":"NLD"},{"value":"NOR"},{"value":"NPL"},{"value":"NZL"},{"value":"OMN"},{"value":"PAK"},{"value":"PAN"},{"value":"PER"},{"value":"PHL"},{"value":"PNG"},{"value":"POL"},{"value":"PRT"},{"value":"PRY"},{"value":"QAT"},{"value":"ROU"},{"value":"RUS"},{"value":"RWA"},{"value":"SAU"},{"value":"SDN"},{"value":"SGP"},{"value":"SLB"},{"value":"SLE"},{"value":"SLV"},{"value":"SMR"},{"value":"SOM"},{"value":"SRB"},{"value":"SSD"},{"value":"STP"},{"value":"SUR"},{"value":"SVK"},{"value":"SVN"},{"value":"SWE"},{"value":"SWZ"},{"value":"SYC"},{"value":"SYR"},{"value":"TCD"},{"value":"THA"},{"value":"TJK"},{"value":"TKM"},{"value":"TLS"},{"value":"TON"},{"value":"TTO"},{"value":"TUN"},{"value":"TUR"},{"value":"TWN"},{"value":"TX752"},{"value":"TZA"},{"value":"UGA"},{"value":"UKR"},{"value":"URY"},{"value":"USA"},{"value":"UZB"},{"value":"VCT"},{"value":"VEN"},{"value":"VNM"},{"value":"VUT"},{"value":"WBG"},{"value":"WSM"},{"value":"YAR"},{"value":"YEM"},{"value":"YMD"},{"value":"YUG"},{"value":"ZAF"},{"value":"ZMB"},{"value":"ZWE"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF6155","test":false,"prepared":"2026-05-25T16:20:46.516379020Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
     headers:
       Connection:
       - keep-alive
       Content-Type:
       - application/json
       Date:
-      - Tue, 16 Dec 2025 05:17:21 GMT
+      - Mon, 25 May 2026 16:20:46 GMT
       Request-Context:
       - appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
       Set-Cookie:
@@ -144,8 +144,8 @@ interactions:
       - chunked
       cache-control:
       - no-cache, no-store, max-age=0, must-revalidate
-      content-encoding:
-      - gzip
+      content-length:
+      - '4515'
       expires:
       - '0'
       pragma:
@@ -159,9 +159,9 @@ interactions:
       x-content-type-options:
       - nosniff
       x-correlation-id:
-      - ac3a1a8245b4b58232acb4810ace02bb
+      - aa0b74ff38b943a303dea600f6f2cb33
       x-envoy-upstream-service-time:
-      - '61'
+      - '140'
       x-frame-options:
       - DENY
       x-xss-protection:
@@ -175,16 +175,16 @@ interactions:
       Accept:
       - application/json
       Accept-Encoding:
-      - gzip, deflate, br, zstd
+      - gzip, deflate, zstd
       Connection:
       - keep-alive
     method: GET
     uri: https://api.imf.org/external/sdmx/3.0/availability/dataflow/IMF.STA/IL/%2B/JPN.*.*.*/INDICATOR
   response:
     body:
-      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:IL(13.0.1)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"48","type":"sdmx_metrics"},{"id":"time_period_start","title":"1945-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2025-12-01","type":"sdmx_metrics"}],"id":"IL","name":"Data
+      string: '{"data":{"dataConstraints":[{"links":[{"urn":"urn:sdmx:org.sdmx.infomodel.registry.DataConstraint=IMF.STA:IL(13.0.1)","type":"dataconstraint","rel":"self"}],"annotations":[{"id":"series_count","title":"48","type":"sdmx_metrics"},{"id":"time_period_start","title":"1945-01-01","type":"sdmx_metrics"},{"id":"time_period_end","title":"2026-05-01","type":"sdmx_metrics"}],"id":"IL","name":"Data
         Constraint","names":{"en":"Data Constraint"},"description":"Data Availability
-        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"13.0.1","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IL(13.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"INDICATOR","include":false,"removePrefix":false,"values":[{"value":"GOLD35P_REVS"},{"value":"NFAOFA_ACO_NRES_S121"},{"value":"NFAOFL_LT_NRES_S121"},{"value":"RGOLDMV_REVS"},{"value":"RGOLDNV_REVS"},{"value":"RGV_REVS"},{"value":"RXDR_REVS"},{"value":"RXF11FX_REVS"},{"value":"RXF11_REVS"},{"value":"TRGMV_REVS"},{"value":"TRGNV_REVS"},{"value":"TRRPIMF_REVS"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF2438","test":false,"prepared":"2025-12-16T05:17:22.366181264Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
+        Constraint","descriptions":{"en":"Data Availability Constraint"},"version":"13.0.1","agencyID":"IMF.STA","role":"Actual","constraintAttachment":{"dataStructures":["urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IL(13.0.0)"]},"cubeRegions":[{"include":true,"components":[{"id":"INDICATOR","include":false,"removePrefix":false,"values":[{"value":"GOLD35P_REVS"},{"value":"NFAOFA_ACO_NRES_S121"},{"value":"NFAOFL_LT_NRES_S121"},{"value":"RGOLDMV_REVS"},{"value":"RGOLDNV_REVS"},{"value":"RGV_REVS"},{"value":"RXDR_REVS"},{"value":"RXF11FX_REVS"},{"value":"RXF11_REVS"},{"value":"TRGMV_REVS"},{"value":"TRGNV_REVS"},{"value":"TRRPIMF_REVS"}]}],"keyValues":[],"annotations":[]}]}]},"meta":{"schema":"https://raw.githubusercontent.com/sdmx-twg/sdmx-json/master/metadata-message/tools/schemas/2.0.0/sdmx-json-metadata-schema.json","id":"IDREF1539","test":false,"prepared":"2026-05-25T16:20:47.067923704Z","contentLanguages":["en"],"sender":{"id":"unknown"}}}'
     headers:
       Connection:
       - keep-alive
@@ -193,7 +193,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 16 Dec 2025 05:17:22 GMT
+      - Mon, 25 May 2026 16:20:47 GMT
       Request-Context:
       - appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
       Set-Cookie:
@@ -213,9 +213,9 @@ interactions:
       x-content-type-options:
       - nosniff
       x-correlation-id:
-      - 8b788ff2683903419391a8480a73df0a
+      - 581b506849bd28fb5a90edccd15604d1
       x-envoy-upstream-service-time:
-      - '61'
+      - '356'
       x-frame-options:
       - DENY
       x-xss-protection:
@@ -229,7 +229,7 @@ interactions:
       Accept:
       - application/xml
       Accept-Encoding:
-      - gzip, deflate, br, zstd
+      - gzip, deflate, zstd
       Cache-Control:
       - no-cache
       Connection:
@@ -246,7 +246,7 @@ interactions:
         xmlns:ss="http://www.sdmx.org/resources/sdmxml/schemas/v3_0/data/structurespecific"
         xmlns:ns1="urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IL(13.0.0):ObsLevelDim:TIME_PERIOD"
         xsi:schemaLocation="http://www.sdmx.org/resources/sdmxml/schemas/v3_0/message
-        ../../schemas/SDMXMessage.xsd"><message:Header><message:ID>IDREF9203</message:ID><message:Test>false</message:Test><message:Prepared>2025-12-16T05:17:22.970325555Z</message:Prepared><message:Sender
+        ../../schemas/SDMXMessage.xsd"><message:Header><message:ID>IDREF2800</message:ID><message:Test>false</message:Test><message:Prepared>2026-05-25T16:20:48.285156082Z</message:Prepared><message:Sender
         id="unknown"/><message:Structure structureID="IMF.STA.DSD_IL.13.0.0" namespace="urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IL(13.0.0)"
         dimensionAtObservation="TIME_PERIOD"><common:Structure>urn:sdmx:org.sdmx.infomodel.datastructure.DataStructure=IMF.STA:DSD_IL(13.0.0)</common:Structure></message:Structure></message:Header><message:DataSet
         ss:structureRef="IMF.STA.DSD_IL.13.0.0" action="Replace"><Series COUNTRY="JPN"
@@ -260,7 +260,7 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Tue, 16 Dec 2025 05:17:23 GMT
+      - Mon, 25 May 2026 16:20:48 GMT
       Request-Context:
       - appId=cid-v1:e4518baf-f7f4-42d7-900e-7dd820548dc8
       Set-Cookie:
@@ -271,8 +271,8 @@ interactions:
       - chunked
       cache-control:
       - no-cache, no-store, max-age=0, must-revalidate
-      content-encoding:
-      - gzip
+      content-length:
+      - '1789'
       expires:
       - '0'
       pragma:
@@ -286,9 +286,9 @@ interactions:
       x-content-type-options:
       - nosniff
       x-correlation-id:
-      - 466838ab46fd072666f957e75cd64217
+      - c6413ef0168f1ff39466bbef8523d73a
       x-envoy-upstream-service-time:
-      - '111'
+      - '548'
       x-frame-options:
       - DENY
       x-xss-protection:

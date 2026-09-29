@@ -1,0 +1,101 @@
+[
+  {
+    "name": "Richmond Fed",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Federal_Reserve_Bank_building_-01-_%289741337905%29.jpg/960px-Federal_Reserve_Bank_building_-01-_%289741337905%29.jpg",
+    "img_dark": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Federal_Reserve_Bank_building_-01-_%289741337905%29.jpg/960px-Federal_Reserve_Bank_building_-01-_%289741337905%29.jpg",
+    "img_light": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Federal_Reserve_Bank_building_-01-_%289741337905%29.jpg/960px-Federal_Reserve_Bank_building_-01-_%289741337905%29.jpg",
+    "description": "Fifth District business surveys from the Richmond Fed - the Manufacturing, Service Sector, and combined State surveys and the CFO Survey - alongside the Non-Employment Index and a recession-probability indicator.",
+    "allowCustomization": true,
+    "tabs": {
+      "business-surveys": {
+        "id": "business-surveys",
+        "name": "Business Surveys",
+        "layout": [
+          {
+            "i": "richmond_manufacturing_survey_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "richmond_service_sector_survey_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "richmond_state_survey_federal_reserve_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "richmond_cfo_survey_federal_reserve_obb",
+            "x": 0,
+            "y": 54,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "labor-recession": {
+        "id": "labor-recession",
+        "name": "Labor & Recession",
+        "layout": [
+          {
+            "i": "richmond_non_employment_index_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "richmond_recession_indicator_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "publications-reports": {
+        "id": "publications-reports",
+        "name": "Publications & Reports",
+        "layout": [
+          {
+            "i": "richmond_publications_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      }
+    },
+    "groups": []
+  }
+]

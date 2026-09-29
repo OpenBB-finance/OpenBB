@@ -1,9 +1,11 @@
 """Tests for the ExtensionLoader class."""
 
+import importlib.util
 from unittest.mock import MagicMock, patch
 
 import pytest
 from fastapi import APIRouter, FastAPI
+
 from openbb_core.app.extension_loader import EntryPoint, ExtensionLoader, OpenBBGroups
 from openbb_core.app.router import Router
 
@@ -18,8 +20,7 @@ def setup_and_teardown():
     # Code to run before each test function
     yield  # This is where the test function runs
     # Code to run after each test function
-    # pylint: disable=protected-access
-    ExtensionLoader._instances = {}  # type: ignore
+    ExtensionLoader._instances = {}
 
 
 def test_extension_loader():
@@ -70,7 +71,6 @@ def test_provider_entry_points():
 
 def test_sorted_entry_points():
     """Test the _sorted_entry_points method."""
-    # pylint: disable=protected-access
     core_entry_points = ExtensionLoader._sorted_entry_points(OpenBBGroups.core.value)
     for ep in core_entry_points:
         assert ep.group == OpenBBGroups.core.value
@@ -79,13 +79,11 @@ def test_sorted_entry_points():
 def test_get_entry_point():
     """Test the _get_entry_point method."""
     el = ExtensionLoader()
-    # pylint: disable=protected-access
     result = el._get_entry_point(el.provider_entry_points, "fmp")
     if result:
         assert result.group == OpenBBGroups.provider.value
         assert result.name == "fmp"
 
-    # pylint: disable=protected-access
     result = el._get_entry_point(el.core_entry_points, "equity")
     if result:
         assert result.group == OpenBBGroups.core.value
@@ -95,7 +93,6 @@ def test_get_entry_point():
 def test_get_entry_point_not_found():
     """Test the _get_entry_point method when the extension is not found."""
     el = ExtensionLoader()
-    # pylint: disable=protected-access
     result = el._get_entry_point(el.core_entry_points, "random_extension")
     assert result is None
 
@@ -147,7 +144,6 @@ def test_get_entry_point_provider(mock_get_entry_point):
 
 def test_obbject_objects():
     """Test the obbject objects property."""
-    # pylint: disable=import-outside-toplevel
     from openbb_core.app.model.extension import Extension
 
     el = ExtensionLoader()
@@ -160,7 +156,6 @@ def test_obbject_objects():
 
 def test_core_objects():
     """Test the core objects property."""
-    # pylint: disable=import-outside-toplevel
     from openbb_core.app.router import Router
 
     el = ExtensionLoader()
@@ -173,7 +168,6 @@ def test_core_objects():
 
 def test_provider_objects():
     """Test the provider objects property."""
-    # pylint: disable=import-outside-toplevel
     from openbb_core.provider.abstract.provider import Provider
 
     el = ExtensionLoader()
@@ -187,7 +181,6 @@ def test_provider_objects():
 @patch("openbb_core.app.extension_loader.entry_points")
 def test_core_objects_with_fastapi_instance(mock_entry_points):
     """Test the core_objects property with a FastAPI instance."""
-    # pylint: disable=import-outside-toplevel
     mock_ep = MagicMock(spec=EntryPoint)
     mock_ep.name = "fastapi_extension"
     mock_ep.load.return_value = FastAPI()
@@ -204,7 +197,6 @@ def test_core_objects_with_fastapi_instance(mock_entry_points):
 @patch("openbb_core.app.extension_loader.entry_points")
 def test_core_objects_with_apirouter_instance(mock_entry_points):
     """Test the core_objects property with an APIRouter instance."""
-    # pylint: disable=import-outside-toplevel
     mock_ep = MagicMock(spec=EntryPoint)
     mock_ep.name = "apirouter_extension"
     mock_ep.load.return_value = APIRouter()
@@ -216,3 +208,153 @@ def test_core_objects_with_apirouter_instance(mock_entry_points):
     assert "apirouter_extension" in core_objects
     assert isinstance(core_objects["apirouter_extension"], Router)
     mock_entry_points.assert_any_call(group="openbb_core_extension")
+
+
+@patch("openbb_core.app.extension_loader.entry_points")
+def test_core_objects_with_router_instance(mock_entry_points):
+    """Test core_objects when entry point loads a Router directly."""
+
+    def entry_points_side_effect(group=None):
+        if group == "openbb_core_extension":
+            mock_ep = MagicMock(spec=EntryPoint)
+            mock_ep.name = "router_extension"
+            mock_ep.load.return_value = Router(prefix="/test")
+            return [mock_ep]
+        return []
+
+    mock_entry_points.side_effect = entry_points_side_effect
+
+    el = ExtensionLoader()
+    core_objects = el.core_objects
+
+    assert "router_extension" in core_objects
+    assert isinstance(core_objects["router_extension"], Router)
+    mock_entry_points.assert_any_call(group="openbb_core_extension")
+
+
+@patch("openbb_core.app.extension_loader.entry_points")
+def test_provider_objects_with_module_not_found(mock_entry_points):
+    """Test provider_objects catches ModuleNotFoundError."""
+
+    def entry_points_side_effect(group=None):
+        if group == "openbb_provider_extension":
+            mock_ep = MagicMock(spec=EntryPoint)
+            mock_ep.name = "missing_provider"
+
+            def raise_module_not_found():
+                raise ModuleNotFoundError("Module not found")
+
+            mock_ep.load.side_effect = raise_module_not_found
+            return [mock_ep]
+        return []
+
+    mock_entry_points.side_effect = entry_points_side_effect
+
+    el = ExtensionLoader()
+    provider_objects = el.provider_objects
+
+    # The entry with ModuleNotFoundError should not be in the result
+    assert "missing_provider" not in provider_objects
+    mock_entry_points.assert_any_call(group="openbb_provider_extension")
+
+
+@patch("openbb_core.app.extension_loader.entry_points")
+def test_provider_objects_with_provider_instance(mock_entry_points):
+    """Test provider_objects adds loaded Provider instances."""
+
+    from openbb_core.provider.abstract.provider import Provider
+
+    def entry_points_side_effect(group=None):
+        if group == "openbb_provider_extension":
+            mock_ep = MagicMock(spec=EntryPoint)
+            mock_ep.name = "ok_provider"
+            mock_ep.load.return_value = Provider(
+                name="ok",
+                description="ok provider",
+            )
+            return [mock_ep]
+        return []
+
+    mock_entry_points.side_effect = entry_points_side_effect
+
+    el = ExtensionLoader()
+    provider_objects = el.provider_objects
+
+    assert "ok_provider" in provider_objects
+    mock_entry_points.assert_any_call(group="openbb_provider_extension")
+
+
+FLASK_AVAILABLE = importlib.util.find_spec("flask") is not None
+
+
+def test_is_flask_app_rejects_non_flask_objects():
+    """Non-Flask objects are never detected as Flask apps (no Flask import)."""
+    from openbb_core.app.utils.flask import is_flask_app
+
+    assert is_flask_app(object()) is False
+    assert is_flask_app(APIRouter()) is False
+
+
+@pytest.mark.skipif(not FLASK_AVAILABLE, reason="Flask is not installed")
+@patch("openbb_core.app.extension_loader.entry_points")
+def test_flask_objects_collects_flask_entry_points(mock_entry_points):
+    """A Flask app entry point is exposed via flask_objects, not core_objects."""
+    from flask import Flask
+
+    flask_app = Flask(__name__)
+
+    @flask_app.route("/ping")
+    def ping():
+        """Ping endpoint."""
+        return {"pong": True}
+
+    def entry_points_side_effect(group=None):
+        if group == "openbb_core_extension":
+            mock_ep = MagicMock(spec=EntryPoint)
+            mock_ep.name = "flask_extension"
+            mock_ep.load.return_value = flask_app
+            return [mock_ep]
+        return []
+
+    mock_entry_points.side_effect = entry_points_side_effect
+
+    el = ExtensionLoader()
+
+    assert "flask_extension" in el.flask_objects
+    assert el.flask_objects["flask_extension"] is flask_app
+    assert "flask_extension" not in el.core_objects
+
+
+@patch("openbb_core.app.extension_loader.entry_points")
+def test_flask_objects_skips_entry_points_that_fail_to_load(mock_entry_points):
+    """Entry points raising ImportError/AttributeError on load are skipped."""
+    core_group = "openbb_core_extension"
+    core_eps = [
+        EntryPoint("missing_module", "openbb_no_such_module:app", core_group),
+        EntryPoint("missing_attr", "json:no_such_attr", core_group),
+        EntryPoint("plain_object", "json:loads", core_group),
+    ]
+
+    def entry_points_side_effect(group=None):
+        return core_eps if group == core_group else []
+
+    mock_entry_points.side_effect = entry_points_side_effect
+
+    assert ExtensionLoader().flask_objects == {}
+
+
+@patch("openbb_core.app.extension_loader.entry_points")
+def test_flask_objects_when_is_flask_app_false(mock_entry_points):
+    """Entry points loaded successfully but not Flask apps are skipped."""
+    core_group = "openbb_core_extension"
+
+    mock_ep = MagicMock(spec=EntryPoint)
+    mock_ep.name = "not_flask"
+    mock_ep.load.return_value = object()
+
+    def entry_points_side_effect(group=None):
+        return [mock_ep] if group == core_group else []
+
+    mock_entry_points.side_effect = entry_points_side_effect
+
+    assert ExtensionLoader().flask_objects == {}

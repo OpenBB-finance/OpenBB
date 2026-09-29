@@ -11,7 +11,6 @@ def price_performance(
     **kwargs,
 ) -> tuple[Union["OpenBBFigure", "Figure"], dict[str, Any]]:  # noqa: PLR0912
     """Equity Price Performance Chart."""
-    # pylint: disable=import-outside-toplevel
     from pandas import DataFrame  # noqa
     from openbb_core.app.utils import basemodel_to_df  # noqa
     from openbb_charting.charts.generic_charts import bar_chart  # noqa
@@ -19,11 +18,11 @@ def price_performance(
     if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
         data = kwargs["data"]
     elif "data" in kwargs and isinstance(kwargs["data"], list):
-        data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "symbol"))  # type: ignore
+        data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "symbol"))
     else:
         data = basemodel_to_df(
             kwargs["obbject_item"],
-            index=kwargs.get("index", "symbol"),  # type: ignore
+            index=kwargs.get("index", "symbol"),
         )
 
     cols = [
@@ -66,7 +65,7 @@ def price_performance(
 
     if "limit" in kwargs and isinstance(kwargs.get("limit"), int):
         limit = kwargs.pop("limit", 10)
-        chart_df = chart_df.head(limit)  # type: ignore
+        chart_df = chart_df.head(limit)
 
     layout_kwargs: dict[str, Any] = kwargs.get("layout_kwargs", {})
 
@@ -83,8 +82,8 @@ def price_performance(
     xtitle = None
 
     if orientation == "h":
-        xtitle = ytitle  # type: ignore
-        ytitle = None  # type: ignore
+        xtitle = ytitle
+        ytitle = None
 
     fig = bar_chart(
         chart_df.reset_index(),
@@ -93,7 +92,7 @@ def price_performance(
         title=title,
         xtitle=xtitle,
         ytitle=ytitle,
-        orientation=orientation,  # type: ignore
+        orientation=orientation,
     )
     fig.update_traces(
         hovertemplate=(
@@ -104,6 +103,6 @@ def price_performance(
     )
 
     fig.update_layout(**layout_kwargs)
-    content = fig.show(external=True).to_plotly_json()  # type: ignore
+    content = fig.show(external=True).to_plotly_json()
 
     return fig, content

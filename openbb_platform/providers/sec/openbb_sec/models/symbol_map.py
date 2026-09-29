@@ -1,7 +1,5 @@
 """SEC Symbol Mapping Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -17,6 +15,11 @@ class SecSymbolMapQueryParams(SymbolMapQueryParams):
 
     Source: https://sec.gov/
     """
+
+    use_cache: bool = Field(
+        default=True,
+        description="Whether or not to use cache. If True, cache will store for seven days.",
+    )
 
 
 class SecSymbolMapData(Data):
@@ -45,7 +48,6 @@ class SecSymbolMapFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the SEC endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_sec.utils.helpers import cik_map
 
         if not query.query.isdigit():

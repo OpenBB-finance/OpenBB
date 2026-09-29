@@ -84,55 +84,55 @@ class TmxCalendarEarningsFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Return the raw data from the TMX endpoint."""
-        # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
-        import json  # noqa
-        from openbb_tmx.utils import gql  # noqa
-        from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
-        from pandas import date_range  # noqa
+        """Read the earnings reported on each business day of the window.
+
+        Raises
+        ------
+        EmptyDataError
+            If nothing is scheduled across the whole window.
+        """
+        import asyncio
+
+        from openbb_core.app.model.abstract.error import OpenBBError
+        from openbb_core.provider.utils.errors import EmptyDataError
+        from pandas import date_range
+
+        from openbb_tmx.utils import gql
+        from openbb_tmx.utils.cache import amake_gql_request
 
         results: list[dict] = []
-        user_agent = get_random_agent()
         dates = date_range(query.start_date, end=query.end_date)
 
         async def create_task(date, results):
-            """Create a task for a single date in the range."""
-            data = []
+            """Fetch the earnings reported on a single date."""
             date = date.strftime("%Y-%m-%d")
-            payload = gql.get_earnings_date_payload.copy()
-            payload["variables"]["date"] = date
-            url = "https://app-money.tmx.com/graphql"
-            r = await get_data_from_gql(
-                method="POST",
-                url=url,
-                data=json.dumps(payload),
-                headers={
-                    "Host": "app-money.tmx.com",
-                    "Referer": "https://money.tmx.com/",
-                    "locale": "en",
-                    "Content-Type": "application/json",
-                    "User-Agent": user_agent,
-                    "Accept": "*/*",
-                },
-                timeout=3,
-            )
+
             try:
-                if (
-                    "data" in r
-                    and r["data"].get("getEnhancedEarningsForDate") is not None
-                ):
-                    data = r["data"].get("getEnhancedEarningsForDate")
-                    data = [{"report_date": date, **d} for d in data]
-            except Exception as e:
-                raise RuntimeError(e) from e
-            if len(data) > 0:
-                results.extend(data)
+                response = await amake_gql_request(
+                    "getEnhancedEarningsForDate", gql.EARNINGS_FOR_DATE, {"date": date}
+                )
+            except OpenBBError as error:
+                if "Cannot read properties of undefined" not in str(error):
+                    raise
+
+                return results
+
+            data = (response or {}).get("getEnhancedEarningsForDate") or []
+
+            if data:
+                results.extend({"report_date": date, **d} for d in data)
+
             return results
 
         tasks = [create_task(date, results) for date in dates if date.weekday() < 5]
 
         await asyncio.gather(*tasks)
+
+        if not results:
+            raise EmptyDataError(
+                f"No earnings were reported between {query.start_date}"
+                f" and {query.end_date}."
+            )
 
         return sorted(results, key=lambda x: x["report_date"])
 

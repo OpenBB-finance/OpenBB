@@ -1,9 +1,8 @@
 """SEC CIK Mapping Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.standard_models.cik_map import CikMapData, CikMapQueryParams
@@ -16,7 +15,7 @@ class SecCikMapQueryParams(CikMapQueryParams):
     Source: https://sec.gov/
     """
 
-    use_cache: bool | None = Field(
+    use_cache: bool = Field(
         default=True,
         description="Whether or not to use cache for the request, default is True.",
     )
@@ -46,7 +45,6 @@ class SecCikMapFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the SEC endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_sec.utils.helpers import symbol_map
 
         cik = await symbol_map(query.symbol, query.use_cache)

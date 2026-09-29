@@ -73,7 +73,7 @@
       "label": "Net Income / (Loss) Continuing Operations",
       "description": "Amount after tax of income (loss) from continuing operations including portion attributable to the noncontrolling interest.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 1,
+      "sequence": 3,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -134,7 +134,7 @@
       "label": "Depreciation Expense",
       "description": "The current period expense charged against earnings on long-lived, physical assets not used in production, and which are not intended for resale, to allocate or recognize the cost of such assets over their useful lives; or to record the reduction in book value of an intangible asset over the benefit period of such asset; or to reflect consumption during the period of an asset that is not used in production.",
       "parent": "depreciation_and_amortization",
-      "sequence": 2,
+      "sequence": 4,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -153,20 +153,6 @@
           "last_year": 2026
         },
         {
-          "tag": "DepreciationAndAmortization",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "DepreciationAmortizationAndAccretionNet",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "DepreciationAndAmortisationExpense",
-          "namespace": "ifrs-full",
-          "first_year": 2020,
-          "last_year": 2025
-        },
-        {
           "tag": "DepreciationPropertyPlantAndEquipment",
           "namespace": "ifrs-full",
           "first_year": 2020,
@@ -183,10 +169,6 @@
         {
           "tag": "DepreciationExpense",
           "namespace": "ifrs-full"
-        },
-        {
-          "tag": "AdditionsToRightofuseAssets",
-          "namespace": "ifrs-full"
         }
       ]
     },
@@ -195,7 +177,7 @@
       "label": "Amortization Expense",
       "description": "Amount of amortization expense for finite-lived intangible asset. Excludes goodwill and capitalized cost for software to be sold, leased, or marketed.",
       "parent": "depreciation_and_amortization",
-      "sequence": 3,
+      "sequence": 5,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -230,7 +212,7 @@
       "label": "Depreciation and Amortization",
       "description": "The aggregate expense recognized in the current period that allocates the cost of tangible and intangible assets over their useful lives.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 4,
+      "sequence": 6,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -241,7 +223,11 @@
           "namespace": "us-gaap"
         },
         {
-          "tag": "OtherDepreciationAndAmortization",
+          "tag": "DepreciationAndAmortization",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "DepreciationAmortizationAndAccretionNet",
           "namespace": "us-gaap"
         },
         {
@@ -255,6 +241,12 @@
         {
           "tag": "AmortisationAssetsRecognisedFromCostsIncurredToObtainOrFulfilContractsWithCustomers",
           "namespace": "ifrs-full"
+        },
+        {
+          "tag": "DepreciationAndAmortisationExpense",
+          "namespace": "ifrs-full",
+          "first_year": 2020,
+          "last_year": 2025
         }
       ]
     },
@@ -263,7 +255,7 @@
       "label": "Stock-Based Compensation",
       "description": "Amount of noncash expense for share-based payment arrangement.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 5,
+      "sequence": 7,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -296,14 +288,6 @@
         {
           "tag": "ExpenseFromEquitysettledSharebasedPaymentTransactionsInWhichGoodsOrServicesReceivedDidNotQualifyForRecognitionAsAssets",
           "namespace": "ifrs-full"
-        },
-        {
-          "tag": "IncreaseDecreaseThroughSharebasedPaymentTransactions",
-          "namespace": "ifrs-full"
-        },
-        {
-          "tag": "StockIssuedDuringPeriodValueShareBasedCompensation",
-          "namespace": "us-gaap"
         }
       ]
     },
@@ -312,7 +296,7 @@
       "label": "Deferred Income Tax",
       "description": "Amount of deferred income tax expense (benefit) pertaining to income (loss) from continuing operations.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 6,
+      "sequence": 8,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -349,7 +333,7 @@
       "label": "Gain / (Loss) on Investments",
       "description": "Amount of realized and unrealized gain (loss) on investment.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 7,
+      "sequence": 9,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -398,7 +382,7 @@
       "label": "Gain / (Loss) on Sale of Assets",
       "description": "Amount of gain (loss) on sale or disposal of property, plant and equipment assets, including oil and gas property and timber property.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 8,
+      "sequence": 10,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -457,7 +441,7 @@
       "label": "Income / (Loss) from Equity Method Investments",
       "description": "Amount of income (loss) for proportionate share of equity method investee's income (loss).",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 9,
+      "sequence": 11,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -498,7 +482,7 @@
       "label": "Asset Impairment Charges",
       "description": "Amount of impairment loss for asset. Includes, but is not limited to, tangible and intangible assets and goodwill.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 10,
+      "sequence": 12,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -559,7 +543,7 @@
       "label": "Non-Cash Adjustments To Reconcile Net Income",
       "description": "Amount of income (expense) included in net income that results in no cash inflow (outflow), classified as other.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 11,
+      "sequence": 13,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -624,7 +608,7 @@
       "label": "Other Operating Activities",
       "description": "Amount of cash inflow (outflow) from operating activity, classified as other, in reconciling net income to reflect cash provided by (used in) operating activity when indirect cash flow method is applied.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 12,
+      "sequence": 14,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -659,7 +643,7 @@
       "label": "Change in Accounts Receivable",
       "description": "The increase (decrease) during the reporting period in amount due within one year (or one business cycle) from customers for the credit sale of goods and services.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 1,
+      "sequence": 15,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -700,7 +684,7 @@
       "label": "Change in Vendor Non-trade Receivables",
       "description": "Amount of increase (decrease) in receivables classified as other.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 2,
+      "sequence": 16,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -719,7 +703,7 @@
       "label": "Change in Inventories",
       "description": "The increase (decrease) during the reporting period in the aggregate value of all inventory held by the reporting entity, associated with underlying transactions that are classified as operating activities.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 3,
+      "sequence": 17,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -729,6 +713,18 @@
           "tag": "IncreaseDecreaseInInventories",
           "namespace": "us-gaap",
           "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "IncreaseDecreaseInRetailRelatedInventories",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "IncreaseDecreaseInFinishedGoodsAndWorkInProcessInventories",
+          "namespace": "us-gaap",
+          "first_year": 2009,
           "last_year": 2026
         },
         {
@@ -750,7 +746,7 @@
       "label": "Change in Accounts Payable",
       "description": "The increase (decrease) during the reporting period in the aggregate amount of liabilities incurred (and for which invoices have typically been received) and payable to vendors for goods and services received that are used in an entity's business.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 4,
+      "sequence": 18,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -791,7 +787,7 @@
       "label": "Change in Other Operating Assets and Liabilities, net",
       "description": "Amount of increase (decrease) in operating assets classified as other.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 5,
+      "sequence": 19,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -894,7 +890,7 @@
       "label": "Changes in Operating Assets and Liabilities, net",
       "description": "Amount of increase (decrease) in asset and (increase) decrease in liability, used in operating activity in reconciling net income to reflect cash provided by (used in) operating activity when indirect cash flow method is applied.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 13,
+      "sequence": 20,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -913,18 +909,12 @@
       "label": "Net Cash From Continuing Operating Activities",
       "description": "Amount of cash inflow (outflow) from operating activity, including, but not limited to, discontinued operation. Operating activity includes, but is not limited to, transaction, adjustment, and change in value not defined as investing or financing activity.",
       "parent": "net_cash_from_operating_activities",
-      "sequence": 1,
+      "sequence": 21,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
       "xbrl_tags": [
-        {
-          "tag": "NetCashProvidedByUsedInOperatingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
         {
           "tag": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
           "namespace": "us-gaap",
@@ -936,6 +926,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -944,7 +940,7 @@
       "label": "Net Cash From Discontinued Operating Activities",
       "description": "Amount of cash inflow (outflow) from operating activity attributable to discontinued operation. Operating activity includes, but is not limited to, transaction, adjustment, and change in value not defined as investing or financing activity.",
       "parent": "net_cash_from_operating_activities",
-      "sequence": 2,
+      "sequence": 22,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -952,12 +948,6 @@
       "xbrl_tags": [
         {
           "tag": "CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInDiscontinuedOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -973,7 +963,7 @@
       "label": "Net Cash From Operating Activities",
       "description": "Amount of cash inflow (outflow) from operating activity, including, but not limited to, discontinued operation. Operating activity includes, but is not limited to, transaction, adjustment, and change in value not defined as investing or financing activity.",
       "parent": "net_change_in_cash",
-      "sequence": 1,
+      "sequence": 23,
       "factor": "+",
       "balance": "",
       "unit": "monetary",
@@ -981,12 +971,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInOperatingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -1010,7 +994,7 @@
       "label": "Purchase of Property, Plant & Equipment",
       "description": "The cash outflow associated with the acquisition of long-lived, physical assets that are used in the normal conduct of business to produce goods and services and not intended for resale; includes cash outflows to pay for construction of self-constructed assets.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 1,
+      "sequence": 24,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1047,7 +1031,7 @@
       "label": "Acquisitions",
       "description": "The cash outflow associated with the acquisition of a business, net of the cash acquired from the purchase.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 2,
+      "sequence": 25,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1088,7 +1072,7 @@
       "label": "Purchase of Investments",
       "description": "Amount of cash outflow to acquire investment in debt security measured at fair value with change in fair value recognized in other comprehensive income (available-for-sale).",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 3,
+      "sequence": 26,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1139,7 +1123,7 @@
       "label": "Purchase of Held-to-Maturity Investments",
       "description": "Amount of cash outflow through purchase of long-term held-to-maturity securities.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 4,
+      "sequence": 27,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1162,7 +1146,7 @@
       "label": "Sale of Property, Plant & Equipment",
       "description": "The cash inflow from the sale of long-lived, physical assets that are used in the normal conduct of business to produce goods and services and not intended for resale.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 5,
+      "sequence": 28,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -1197,7 +1181,7 @@
       "label": "Sale of Productive Assets",
       "description": "The cash inflow from the sale of property, plant and equipment (capital expenditures), software, and other intangible assets.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 6,
+      "sequence": 29,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -1222,7 +1206,7 @@
       "label": "Divestitures",
       "description": "The cash inflow associated with the amount received from the sale of a portion of the company's business, for example a segment, division, branch or other business, during the period.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 7,
+      "sequence": 30,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -1251,7 +1235,7 @@
       "label": "Sale of Investments",
       "description": "Amount of cash inflow from sale of investment in debt security measured at fair value with change in fair value recognized in other comprehensive income (available-for-sale).",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 8,
+      "sequence": 31,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -1316,7 +1300,7 @@
       "label": "Maturity of Investments",
       "description": "Amount of cash inflow from maturity, prepayment and call of investment in debt security measured at fair value with change in fair value recognized in other comprehensive income (available-for-sale).",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 9,
+      "sequence": 32,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -1347,7 +1331,7 @@
       "label": "Other Investing Activities, net",
       "description": "Amount of cash (inflow) outflow from investing activity, classified as other.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 10,
+      "sequence": 33,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1390,18 +1374,12 @@
       "label": "Net Cash From Continuing Investing Activities",
       "description": "Amount of cash inflow (outflow) from investing activity, including, but not limited to, discontinued operation. Investing activity includes, but is not limited to, making and collecting loan, acquiring and disposing of debt and equity instruments, property, plant, and equipment, and other productive assets.",
       "parent": "net_cash_from_investing_activities",
-      "sequence": 1,
+      "sequence": 34,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
       "xbrl_tags": [
-        {
-          "tag": "NetCashProvidedByUsedInInvestingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
         {
           "tag": "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations",
           "namespace": "us-gaap",
@@ -1413,6 +1391,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInInvestingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -1421,7 +1405,7 @@
       "label": "Net Cash From Discontinued Investing Activities",
       "description": "Amount of cash inflow (outflow) from investing activity attributable to discontinued operation. Investing activity includes, but is not limited to, making and collecting loan, acquiring and disposing of debt and equity instruments, property, plant, and equipment, and other productive assets.",
       "parent": "net_cash_from_investing_activities",
-      "sequence": 2,
+      "sequence": 35,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -1444,7 +1428,7 @@
       "label": "Net Cash From Investing Activities",
       "description": "Amount of cash inflow (outflow) from investing activity, including, but not limited to, discontinued operation. Investing activity includes, but is not limited to, making and collecting loan, acquiring and disposing of debt and equity instruments, property, plant, and equipment, and other productive assets.",
       "parent": "net_change_in_cash",
-      "sequence": 2,
+      "sequence": 36,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -1452,12 +1436,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInInvestingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -1475,7 +1453,7 @@
       "label": "Repayment of Debt",
       "description": "The cash outflow for debt initially having maturity due after one year or beyond the normal operating cycle, if longer.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 1,
+      "sequence": 37,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1542,7 +1520,7 @@
       "label": "Repurchase of Preferred Equity",
       "description": "The cash outflow to reacquire preferred stock during the period.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 2,
+      "sequence": 38,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1567,7 +1545,7 @@
       "label": "Repurchase of Common Equity",
       "description": "The cash outflow to reacquire common stock during the period.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 3,
+      "sequence": 39,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1608,7 +1586,7 @@
       "label": "Payment of Dividends",
       "description": "Cash outflow in the form of capital distributions and dividends to common shareholders, preferred shareholders and noncontrolling interests.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 4,
+      "sequence": 40,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1671,7 +1649,7 @@
       "label": "Issuance of Debt",
       "description": "The cash inflow from a debt initially having maturity due after one year or beyond the operating cycle, if longer.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 5,
+      "sequence": 41,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -1732,7 +1710,7 @@
       "label": "Issuance of Preferred Equity",
       "description": "Proceeds from issuance of capital stock which provides for a specific dividend that is paid to the shareholders before any dividends to common stockholders and which takes precedence over common stockholders in the event of liquidation.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 6,
+      "sequence": 42,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -1755,7 +1733,7 @@
       "label": "Issuance of Common Equity",
       "description": "The cash inflow from the additional capital contribution to the entity.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 7,
+      "sequence": 43,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -1812,7 +1790,7 @@
       "label": "Short-Term Debt, net",
       "description": "The net cash inflow or outflow for borrowing having initial term of repayment within one year or the normal operating cycle, if longer.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 8,
+      "sequence": 44,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -1847,7 +1825,7 @@
       "label": "Tax Withholding for Share-Based Compensation",
       "description": "Amount of cash outflow to satisfy grantee's tax withholding obligation for award under share-based payment arrangement.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 9,
+      "sequence": 45,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1870,7 +1848,7 @@
       "label": "Other Financing Activities, net",
       "description": "Amount of cash inflow (outflow) from financing activity, classified as other.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 10,
+      "sequence": 46,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -1941,18 +1919,12 @@
       "label": "Net Cash From Continuing Financing Activities",
       "description": "Amount of cash inflow (outflow) from financing activity, including, but not limited to, discontinued operation. Financing activity includes, but is not limited to, obtaining resource from owner and providing return on, and return of, their investment; borrowing money and repaying amount borrowed, or settling obligation; and obtaining and paying for other resource obtained from creditor on long-term credit.",
       "parent": "net_cash_from_financing_activities",
-      "sequence": 1,
+      "sequence": 47,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
       "xbrl_tags": [
-        {
-          "tag": "NetCashProvidedByUsedInFinancingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
         {
           "tag": "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations",
           "namespace": "us-gaap",
@@ -1964,6 +1936,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInFinancingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -1972,7 +1950,7 @@
       "label": "Net Cash From Discontinued Financing Activities",
       "description": "Amount of cash inflow (outflow) from financing activity attributable to discontinued operation. Financing activity includes, but is not limited to, obtaining resource from owner and providing return on, and return of, their investment; borrowing money and repaying amount borrowed, or settling obligation; and obtaining and paying for other resource obtained from creditor on long-term credit.",
       "parent": "net_cash_from_financing_activities",
-      "sequence": 2,
+      "sequence": 48,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -1995,7 +1973,7 @@
       "label": "Net Cash From Financing Activities",
       "description": "Amount of cash inflow (outflow) from financing activity, including, but not limited to, discontinued operation. Financing activity includes, but is not limited to, obtaining resource from owner and providing return on, and return of, their investment; borrowing money and repaying amount borrowed, or settling obligation; and obtaining and paying for other resource obtained from creditor on long-term credit.",
       "parent": "net_change_in_cash",
-      "sequence": 3,
+      "sequence": 49,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -2003,12 +1981,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInFinancingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -2026,7 +1998,7 @@
       "label": "Effect of Exchange Rate Changes",
       "description": "The effect of exchange rate changes on cash balances held in foreign currencies.",
       "parent": "net_change_in_cash",
-      "sequence": 4,
+      "sequence": 50,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -2065,6 +2037,12 @@
         {
           "tag": "EffectOfExchangeRateOnCashAndCashEquivalentsDiscontinuedOperations",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations",
+          "namespace": "us-gaap",
+          "first_year": 2017,
+          "last_year": 2026
         }
       ]
     },
@@ -2073,7 +2051,7 @@
       "label": "Net Cash from Discontinued Operations",
       "description": "The net change in cash and cash equivalents resulting from the cash inflows and outflows of discontinued operations.",
       "parent": "net_change_in_cash",
-      "factor": "+",
+      "factor": "0",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
@@ -2091,14 +2069,14 @@
           "last_year": 2026
         }
       ],
-      "sequence": 5
+      "sequence": 51
     },
     {
       "tag": "other_net_changes_in_cash",
       "label": "Other Net Changes in Cash",
       "description": "Amount of other net changes in cash and cash equivalents not separately disclosed in the statement of cash flows.",
       "parent": "net_change_in_cash",
-      "sequence": 6,
+      "sequence": 52,
       "factor": "+",
       "balance": "",
       "unit": "monetary",
@@ -2141,7 +2119,7 @@
       "label": "Net Change in Cash & Equivalents",
       "description": "The increase (decrease) during the reporting period in cash and cash equivalents. While for technical reasons this element has no balance attribute, the default assumption is a debit balance consistent with its label.",
       "parent": null,
-      "sequence": 1,
+      "sequence": 53,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -2180,7 +2158,7 @@
       "label": "Cash at Beginning of Period",
       "description": "Cash, cash equivalents, restricted cash, and restricted cash equivalents at the beginning of the reporting period. Derived from the previous period's ending balance.",
       "parent": null,
-      "sequence": 2,
+      "sequence": 54,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -2192,7 +2170,7 @@
       "label": "Cash at End of Period",
       "description": "Cash, cash equivalents, restricted cash, and restricted cash equivalents at the end of the reporting period.",
       "parent": null,
-      "sequence": 3,
+      "sequence": 55,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -2223,7 +2201,7 @@
       "label": "Cash Interest Paid",
       "description": "Amount of cash paid for interest, excluding capitalized interest, classified as operating activity. Includes, but is not limited to, payment to settle zero-coupon bond for accreted interest of debt discount and debt instrument with insignificant coupon interest rate in relation to effective interest rate of borrowing attributable to accreted interest of debt discount.",
       "parent": null,
-      "sequence": 4,
+      "sequence": 56,
       "factor": "0",
       "balance": "credit",
       "unit": "monetary",
@@ -2258,7 +2236,7 @@
       "label": "Cash Interest Received",
       "description": "The cash inflow from interest received, classified as operating activities.",
       "parent": null,
-      "sequence": 5,
+      "sequence": 57,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -2285,7 +2263,7 @@
       "label": "Cash Income Taxes Paid",
       "description": "Amount, after refund, of cash paid to foreign, federal, state, and local jurisdictions as income tax.",
       "parent": null,
-      "sequence": 6,
+      "sequence": 58,
       "factor": "0",
       "balance": "credit",
       "unit": "monetary",
@@ -2368,7 +2346,7 @@
       "description": "Amount after tax of income (loss) from a discontinued operation including the portion attributable to the noncontrolling interest. Includes, but is not limited to, the income (loss) from operations during the phase-out period, gain (loss) on disposal, gain (loss) for reversal of write-down (write-down) to fair value, less cost to sell, and adjustments to a prior period gain (loss) on disposal.",
       "parent": "net_income_continuing",
       "sequence": 2,
-      "factor": "+",
+      "factor": "-",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",
@@ -2398,7 +2376,7 @@
       "label": "Net Income / (Loss) Continuing Operations",
       "description": "Amount after tax of income (loss) from continuing operations including portion attributable to the noncontrolling interest.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 1,
+      "sequence": 3,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2459,7 +2437,7 @@
       "label": "Provision For Loan Losses",
       "description": "Amount of expense related to estimated loss from loan and lease transactions.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 2,
+      "sequence": 4,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -2482,6 +2460,26 @@
           "last_year": 2026
         },
         {
+          "tag": "ProvisionForLoanLossesExpensed",
+          "namespace": "us-gaap",
+          "first_year": 2007,
+          "last_year": 2026
+        },
+        {
+          "tag": "FinancingReceivableExcludingAccruedInterestCreditLossExpenseReversal",
+          "namespace": "us-gaap",
+          "first_year": 2019,
+          "last_year": 2026
+        },
+        {
+          "tag": "AdjustmentsForProvisions",
+          "namespace": "ifrs-full"
+        },
+        {
+          "tag": "AdjustmentsForImpairmentLossReversalOfImpairmentLossRecognisedInProfitOrLoss",
+          "namespace": "ifrs-full"
+        },
+        {
           "tag": "IncreaseDecreaseInAllowanceAccountForCreditLossesOfFinancialAssets",
           "namespace": "ifrs-full"
         }
@@ -2492,7 +2490,7 @@
       "label": "Depreciation Expense",
       "description": "The current period expense charged against earnings on long-lived, physical assets not used in production, and which are not intended for resale, to allocate or recognize the cost of such assets over their useful lives; or to record the reduction in book value of an intangible asset over the benefit period of such asset; or to reflect consumption during the period of an asset that is not used in production.",
       "parent": "depreciation_and_amortization",
-      "sequence": 3,
+      "sequence": 5,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -2511,20 +2509,6 @@
           "last_year": 2026
         },
         {
-          "tag": "DepreciationAndAmortization",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "DepreciationAmortizationAndAccretionNet",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "DepreciationAndAmortisationExpense",
-          "namespace": "ifrs-full",
-          "first_year": 2020,
-          "last_year": 2025
-        },
-        {
           "tag": "DepreciationPropertyPlantAndEquipment",
           "namespace": "ifrs-full",
           "first_year": 2020,
@@ -2541,7 +2525,7 @@
       "label": "Amortization Expense",
       "description": "Amount of amortization expense for finite-lived intangible asset. Excludes goodwill and capitalized cost for software to be sold, leased, or marketed.",
       "parent": "depreciation_and_amortization",
-      "sequence": 4,
+      "sequence": 6,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -2572,7 +2556,7 @@
       "label": "Depreciation and Amortization",
       "description": "The aggregate expense recognized in the current period that allocates the cost of tangible and intangible assets over their useful lives.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 5,
+      "sequence": 7,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -2583,12 +2567,22 @@
           "namespace": "us-gaap"
         },
         {
-          "tag": "OtherDepreciationAndAmortization",
+          "tag": "DepreciationAndAmortization",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "DepreciationAmortizationAndAccretionNet",
           "namespace": "us-gaap"
         },
         {
           "tag": "AdjustmentsForDepreciationAndAmortisationExpense",
           "namespace": "ifrs-full"
+        },
+        {
+          "tag": "DepreciationAndAmortisationExpense",
+          "namespace": "ifrs-full",
+          "first_year": 2020,
+          "last_year": 2025
         }
       ]
     },
@@ -2597,7 +2591,7 @@
       "label": "Stock-Based Compensation",
       "description": "Amount of noncash expense for share-based payment arrangement.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 6,
+      "sequence": 8,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -2626,14 +2620,6 @@
         {
           "tag": "AdjustmentsForSharebasedPayments",
           "namespace": "ifrs-full"
-        },
-        {
-          "tag": "IncreaseDecreaseThroughSharebasedPaymentTransactions",
-          "namespace": "ifrs-full"
-        },
-        {
-          "tag": "StockIssuedDuringPeriodValueShareBasedCompensation",
-          "namespace": "us-gaap"
         }
       ]
     },
@@ -2642,7 +2628,7 @@
       "label": "Deferred Income Tax",
       "description": "Amount of deferred income tax expense (benefit) pertaining to income (loss) from continuing operations.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 7,
+      "sequence": 9,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -2675,7 +2661,7 @@
       "label": "Gain / (Loss) on Investments",
       "description": "Amount of realized and unrealized gain (loss) on investment.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 8,
+      "sequence": 10,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2716,7 +2702,7 @@
       "label": "Gain / (Loss) on Sale of Assets",
       "description": "Amount of gain (loss) on sale or disposal of property, plant and equipment assets, including oil and gas property and timber property.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 9,
+      "sequence": 11,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2767,7 +2753,7 @@
       "label": "Income / (Loss) from Equity Method Investments",
       "description": "Amount of income (loss) for proportionate share of equity method investee's income (loss).",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 10,
+      "sequence": 12,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2800,7 +2786,7 @@
       "label": "Asset Impairment Charges",
       "description": "Amount of impairment loss for asset. Includes, but is not limited to, tangible and intangible assets and goodwill.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 11,
+      "sequence": 13,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -2831,10 +2817,6 @@
           "last_year": 2026
         },
         {
-          "tag": "AdjustmentsForImpairmentLossReversalOfImpairmentLossRecognisedInProfitOrLoss",
-          "namespace": "ifrs-full"
-        },
-        {
           "tag": "ImpairmentLossRecognisedInProfitOrLossGoodwill",
           "namespace": "ifrs-full"
         }
@@ -2845,7 +2827,7 @@
       "label": "Non-Cash Adjustments to Reconcile Net Income",
       "description": "Amount of income (expense) included in net income that results in no cash inflow (outflow), classified as other.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 12,
+      "sequence": 14,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2870,10 +2852,6 @@
         {
           "tag": "OtherAdjustmentsToReconcileProfitLoss",
           "namespace": "ifrs-full"
-        },
-        {
-          "tag": "AdjustmentsForProvisions",
-          "namespace": "ifrs-full"
         }
       ]
     },
@@ -2882,7 +2860,7 @@
       "label": "Other Operating Activities",
       "description": "Amount of cash inflow (outflow) from operating activity, classified as other, in reconciling net income to reflect cash provided by (used in) operating activity when indirect cash flow method is applied.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 13,
+      "sequence": 15,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -2909,7 +2887,7 @@
       "label": "Change in Insurance Reserves",
       "description": "The increase (decrease) in health care insurance liability balances during the period.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 14,
+      "sequence": 16,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -2944,7 +2922,7 @@
       "label": "Change in Accounts Receivable",
       "description": "The increase (decrease) during the reporting period in amount due within one year (or one business cycle) from customers for the credit sale of goods and services.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 1,
+      "sequence": 17,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2981,7 +2959,7 @@
       "label": "Change in Vendor Non-trade Receivables",
       "description": "Amount of increase (decrease) in receivables classified as other.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 2,
+      "sequence": 18,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3000,7 +2978,7 @@
       "label": "Change in Inventories",
       "description": "The increase (decrease) during the reporting period in the aggregate value of all inventory held by the reporting entity, associated with underlying transactions that are classified as operating activities.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 3,
+      "sequence": 19,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3010,6 +2988,18 @@
           "tag": "IncreaseDecreaseInInventories",
           "namespace": "us-gaap",
           "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "IncreaseDecreaseInRetailRelatedInventories",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "IncreaseDecreaseInFinishedGoodsAndWorkInProcessInventories",
+          "namespace": "us-gaap",
+          "first_year": 2009,
           "last_year": 2026
         },
         {
@@ -3031,7 +3021,7 @@
       "label": "Change in Accounts Payable",
       "description": "The increase (decrease) during the reporting period in the aggregate amount of liabilities incurred (and for which invoices have typically been received) and payable to vendors for goods and services received that are used in an entity's business.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 4,
+      "sequence": 20,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3068,7 +3058,7 @@
       "label": "Change in Other Operating Assets and Liabilities, net",
       "description": "Amount of increase (decrease) in operating assets classified as other.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 5,
+      "sequence": 21,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3135,7 +3125,7 @@
       "label": "Changes in Operating Assets and Liabilities, net",
       "description": "Amount of increase (decrease) in asset and (increase) decrease in liability, used in operating activity in reconciling net income to reflect cash provided by (used in) operating activity when indirect cash flow method is applied.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 15,
+      "sequence": 22,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3154,18 +3144,12 @@
       "label": "Net Cash From Continuing Operating Activities",
       "description": "Amount of cash inflow (outflow) from operating activity, including, but not limited to, discontinued operation. Operating activity includes, but is not limited to, transaction, adjustment, and change in value not defined as investing or financing activity.",
       "parent": "net_cash_from_operating_activities",
-      "sequence": 1,
+      "sequence": 23,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
       "xbrl_tags": [
-        {
-          "tag": "NetCashProvidedByUsedInOperatingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
         {
           "tag": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
           "namespace": "us-gaap",
@@ -3177,6 +3161,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -3185,7 +3175,7 @@
       "label": "Net Cash From Discontinued Operating Activities",
       "description": "Amount of cash inflow (outflow) from operating activity attributable to discontinued operation. Operating activity includes, but is not limited to, transaction, adjustment, and change in value not defined as investing or financing activity.",
       "parent": "net_cash_from_operating_activities",
-      "sequence": 2,
+      "sequence": 24,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3193,12 +3183,6 @@
       "xbrl_tags": [
         {
           "tag": "CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInDiscontinuedOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -3210,7 +3194,7 @@
       "label": "Net Cash From Operating Activities",
       "description": "Amount of cash inflow (outflow) from operating activity, including, but not limited to, discontinued operation. Operating activity includes, but is not limited to, transaction, adjustment, and change in value not defined as investing or financing activity.",
       "parent": "net_change_in_cash",
-      "sequence": 1,
+      "sequence": 25,
       "factor": "+",
       "balance": "",
       "unit": "monetary",
@@ -3218,12 +3202,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInOperatingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -3247,7 +3225,7 @@
       "label": "Purchase of Property, Leasehold Improvements and Equipment",
       "description": "The cash outflow associated with the acquisition of long-lived, physical assets that are used in the normal conduct of business to produce goods and services and not intended for resale; includes cash outflows to pay for construction of self-constructed assets.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 1,
+      "sequence": 26,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3284,7 +3262,7 @@
       "label": "Acquisitions",
       "description": "The cash outflow associated with the acquisition of a business, net of the cash acquired from the purchase.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 2,
+      "sequence": 27,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3321,7 +3299,7 @@
       "label": "Purchase of Investment Securities",
       "description": "Amount of cash outflow to acquire investment in debt security measured at fair value with change in fair value recognized in other comprehensive income (available-for-sale).",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 3,
+      "sequence": 28,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3364,7 +3342,7 @@
       "label": "Purchase of Held-to-Maturity Investments",
       "description": "Amount of cash outflow through purchase of long-term held-to-maturity securities.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 4,
+      "sequence": 29,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3387,7 +3365,7 @@
       "label": "Sale of Property, Leasehold Improvements and Equipment",
       "description": "The cash inflow from the sale of long-lived, physical assets that are used in the normal conduct of business to produce goods and services and not intended for resale.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 5,
+      "sequence": 30,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3414,7 +3392,7 @@
       "label": "Sale of Productive Assets",
       "description": "The cash inflow from the sale of property, plant and equipment (capital expenditures), software, and other intangible assets.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 6,
+      "sequence": 31,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3439,7 +3417,7 @@
       "label": "Divestitures",
       "description": "The cash inflow associated with the amount received from the sale of a portion of the company's business, for example a segment, division, branch or other business, during the period.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 7,
+      "sequence": 32,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3464,7 +3442,7 @@
       "label": "Sale of Investments",
       "description": "Amount of cash inflow from sale of investment in debt security measured at fair value with change in fair value recognized in other comprehensive income (available-for-sale).",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 8,
+      "sequence": 33,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3505,7 +3483,7 @@
       "label": "Maturity of Investment Securities",
       "description": "Amount of cash inflow from maturity, prepayment and call of investment in debt security measured at fair value with change in fair value recognized in other comprehensive income (available-for-sale).",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 9,
+      "sequence": 34,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3536,7 +3514,7 @@
       "label": "Net Increase in Fed Funds Sold",
       "description": "The net cash inflow or outflow from the fund lent to other financial institution arising from the excess in reserve deposited at Federal Reserve Bank to meet legal requirement. This borrowing is usually contracted on an overnight basis at an agreed rate of interest.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 10,
+      "sequence": 35,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3561,7 +3539,7 @@
       "label": "Loans Held for Sale, Net",
       "description": "The net cash outflow or inflow for the increase (decrease) in the beginning and end of period of loan and lease balances which are not originated or purchased specifically for resale. Includes cash payments and proceeds associated with (a) loans held-for-investment, (b) leases held-for-investment, and (c) both.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 11,
+      "sequence": 36,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3580,7 +3558,7 @@
       "label": "Other Investing Activities, net",
       "description": "Amount of cash (inflow) outflow from investing activity, classified as other.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 12,
+      "sequence": 37,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3607,18 +3585,12 @@
       "label": "Net Cash From Continuing Investing Activities",
       "description": "Amount of cash inflow (outflow) from investing activity, including, but not limited to, discontinued operation. Investing activity includes, but is not limited to, making and collecting loan, acquiring and disposing of debt and equity instruments, property, plant, and equipment, and other productive assets.",
       "parent": "net_cash_from_investing_activities",
-      "sequence": 1,
+      "sequence": 38,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
       "xbrl_tags": [
-        {
-          "tag": "NetCashProvidedByUsedInInvestingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
         {
           "tag": "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations",
           "namespace": "us-gaap",
@@ -3630,6 +3602,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInInvestingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -3638,7 +3616,7 @@
       "label": "Net Cash From Discontinued Investing Activities",
       "description": "Amount of cash inflow (outflow) from investing activity attributable to discontinued operation. Investing activity includes, but is not limited to, making and collecting loan, acquiring and disposing of debt and equity instruments, property, plant, and equipment, and other productive assets.",
       "parent": "net_cash_from_investing_activities",
-      "sequence": 2,
+      "sequence": 39,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3657,7 +3635,7 @@
       "label": "Net Cash From Investing Activities",
       "description": "Amount of cash inflow (outflow) from investing activity, including, but not limited to, discontinued operation. Investing activity includes, but is not limited to, making and collecting loan, acquiring and disposing of debt and equity instruments, property, plant, and equipment, and other productive assets.",
       "parent": "net_change_in_cash",
-      "sequence": 2,
+      "sequence": 40,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3665,12 +3643,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInInvestingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -3688,7 +3660,7 @@
       "label": "Repayment of Debt",
       "description": "The cash outflow for debt initially having maturity due after one year or beyond the normal operating cycle, if longer.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 1,
+      "sequence": 41,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3751,7 +3723,7 @@
       "label": "Repurchase of Preferred Equity",
       "description": "The cash outflow to reacquire preferred stock during the period.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 2,
+      "sequence": 42,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3776,7 +3748,7 @@
       "label": "Repurchase of Common Equity",
       "description": "The cash outflow to reacquire common stock during the period.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 3,
+      "sequence": 43,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3809,7 +3781,7 @@
       "label": "Payment of Dividends",
       "description": "Cash outflow in the form of capital distributions and dividends to common shareholders, preferred shareholders and noncontrolling interests.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 4,
+      "sequence": 44,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3868,7 +3840,7 @@
       "label": "Issuance of Debt",
       "description": "The cash inflow from a debt initially having maturity due after one year or beyond the operating cycle, if longer.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 5,
+      "sequence": 45,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3917,7 +3889,7 @@
       "label": "Issuance of Preferred Equity",
       "description": "Proceeds from issuance of capital stock which provides for a specific dividend that is paid to the shareholders before any dividends to common stockholders and which takes precedence over common stockholders in the event of liquidation.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 6,
+      "sequence": 46,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3940,7 +3912,7 @@
       "label": "Issuance of Common Equity",
       "description": "The cash inflow from the additional capital contribution to the entity.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 7,
+      "sequence": 47,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3977,7 +3949,7 @@
       "label": "Net Change in Deposits",
       "description": "The net cash inflow or outflow for the increase (decrease) in the beginning and end of period deposits balances.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 8,
+      "sequence": 48,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3996,7 +3968,7 @@
       "label": "Short-Term Debt, net",
       "description": "The net cash inflow or outflow for borrowing having initial term of repayment within one year or the normal operating cycle, if longer.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 9,
+      "sequence": 49,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -4027,7 +3999,7 @@
       "label": "Tax Withholding for Share-Based Compensation",
       "description": "Amount of cash outflow to satisfy grantee's tax withholding obligation for award under share-based payment arrangement.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 10,
+      "sequence": 50,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4046,7 +4018,7 @@
       "label": "Other Financing Activities, Net",
       "description": "Amount of cash inflow (outflow) from financing activity, classified as other.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 11,
+      "sequence": 51,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -4073,18 +4045,12 @@
       "label": "Net Cash From Continuing Financing Activities",
       "description": "Amount of cash inflow (outflow) from financing activity, including, but not limited to, discontinued operation. Financing activity includes, but is not limited to, obtaining resource from owner and providing return on, and return of, their investment; borrowing money and repaying amount borrowed, or settling obligation; and obtaining and paying for other resource obtained from creditor on long-term credit.",
       "parent": "net_cash_from_financing_activities",
-      "sequence": 1,
+      "sequence": 52,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
       "xbrl_tags": [
-        {
-          "tag": "NetCashProvidedByUsedInFinancingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
         {
           "tag": "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations",
           "namespace": "us-gaap",
@@ -4096,6 +4062,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInFinancingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -4104,7 +4076,7 @@
       "label": "Net Cash From Discontinued Financing Activities",
       "description": "Amount of cash inflow (outflow) from financing activity attributable to discontinued operation. Financing activity includes, but is not limited to, obtaining resource from owner and providing return on, and return of, their investment; borrowing money and repaying amount borrowed, or settling obligation; and obtaining and paying for other resource obtained from creditor on long-term credit.",
       "parent": "net_cash_from_financing_activities",
-      "sequence": 2,
+      "sequence": 53,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -4123,7 +4095,7 @@
       "label": "Net Cash From Financing Activities",
       "description": "Amount of cash inflow (outflow) from financing activity, including, but not limited to, discontinued operation. Financing activity includes, but is not limited to, obtaining resource from owner and providing return on, and return of, their investment; borrowing money and repaying amount borrowed, or settling obligation; and obtaining and paying for other resource obtained from creditor on long-term credit.",
       "parent": "net_change_in_cash",
-      "sequence": 3,
+      "sequence": 54,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -4131,12 +4103,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInFinancingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -4154,7 +4120,7 @@
       "label": "Effect of Exchange Rate Changes",
       "description": "The effect of exchange rate changes on cash balances held in foreign currencies.",
       "parent": "net_change_in_cash",
-      "sequence": 4,
+      "sequence": 55,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -4193,6 +4159,12 @@
         {
           "tag": "EffectOfExchangeRateOnCashAndCashEquivalentsDiscontinuedOperations",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations",
+          "namespace": "us-gaap",
+          "first_year": 2017,
+          "last_year": 2026
         }
       ]
     },
@@ -4201,7 +4173,7 @@
       "label": "Net Cash from Discontinued Operations",
       "description": "The net change in cash and cash equivalents resulting from the cash inflows and outflows of discontinued operations.",
       "parent": "net_change_in_cash",
-      "factor": "+",
+      "factor": "0",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
@@ -4219,14 +4191,14 @@
           "last_year": 2026
         }
       ],
-      "sequence": 5
+      "sequence": 56
     },
     {
       "tag": "other_net_changes_in_cash",
       "label": "Other Net Changes in Cash",
       "description": "Amount of other net changes in cash and cash equivalents not separately disclosed in the statement of cash flows.",
       "parent": "net_change_in_cash",
-      "sequence": 6,
+      "sequence": 57,
       "factor": "+",
       "balance": "",
       "unit": "monetary",
@@ -4249,7 +4221,7 @@
       "label": "Net Change in Cash & Equivalents",
       "description": "The increase (decrease) during the reporting period in cash and cash equivalents. While for technical reasons this element has no balance attribute, the default assumption is a debit balance consistent with its label.",
       "parent": null,
-      "sequence": 1,
+      "sequence": 58,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -4288,7 +4260,7 @@
       "label": "Cash at Beginning of Period",
       "description": "Cash, cash equivalents, restricted cash, and restricted cash equivalents at the beginning of the reporting period. Derived from the previous period's ending balance.",
       "parent": null,
-      "sequence": 2,
+      "sequence": 59,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -4300,7 +4272,7 @@
       "label": "Cash at End of Period",
       "description": "Cash, cash equivalents, restricted cash, and restricted cash equivalents at the end of the reporting period.",
       "parent": null,
-      "sequence": 3,
+      "sequence": 60,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -4331,7 +4303,7 @@
       "label": "Cash Interest Paid",
       "description": "Amount of cash paid for interest, excluding capitalized interest, classified as operating activity. Includes, but is not limited to, payment to settle zero-coupon bond for accreted interest of debt discount and debt instrument with insignificant coupon interest rate in relation to effective interest rate of borrowing attributable to accreted interest of debt discount.",
       "parent": null,
-      "sequence": 4,
+      "sequence": 61,
       "factor": "0",
       "balance": "credit",
       "unit": "monetary",
@@ -4362,7 +4334,7 @@
       "label": "Cash Interest Received",
       "description": "The cash inflow from interest received, classified as operating activities.",
       "parent": null,
-      "sequence": 5,
+      "sequence": 62,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -4385,7 +4357,7 @@
       "label": "Cash Income Taxes Paid",
       "description": "Amount, after refund, of cash paid to foreign, federal, state, and local jurisdictions as income tax.",
       "parent": null,
-      "sequence": 6,
+      "sequence": 63,
       "factor": "0",
       "balance": "credit",
       "unit": "monetary",
@@ -4490,7 +4462,7 @@
       "label": "Net Income / (Loss) Continuing Operations",
       "description": "Amount after tax of income (loss) from continuing operations including portion attributable to the noncontrolling interest.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 1,
+      "sequence": 3,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4551,7 +4523,7 @@
       "label": "Depreciation Expense",
       "description": "The current period expense charged against earnings on long-lived, physical assets not used in production, and which are not intended for resale, to allocate or recognize the cost of such assets over their useful lives; or to record the reduction in book value of an intangible asset over the benefit period of such asset; or to reflect consumption during the period of an asset that is not used in production.",
       "parent": "depreciation_and_amortization",
-      "sequence": 2,
+      "sequence": 4,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -4570,20 +4542,6 @@
           "last_year": 2026
         },
         {
-          "tag": "DepreciationAndAmortization",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "DepreciationAmortizationAndAccretionNet",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "DepreciationAndAmortisationExpense",
-          "namespace": "ifrs-full",
-          "first_year": 2020,
-          "last_year": 2025
-        },
-        {
           "tag": "DepreciationPropertyPlantAndEquipment",
           "namespace": "ifrs-full",
           "first_year": 2020,
@@ -4600,10 +4558,6 @@
         {
           "tag": "DepreciationExpense",
           "namespace": "ifrs-full"
-        },
-        {
-          "tag": "AdditionsToRightofuseAssets",
-          "namespace": "ifrs-full"
         }
       ]
     },
@@ -4612,7 +4566,7 @@
       "label": "Amortization Expense",
       "description": "Amount of amortization expense for finite-lived intangible asset. Excludes goodwill and capitalized cost for software to be sold, leased, or marketed.",
       "parent": "depreciation_and_amortization",
-      "sequence": 3,
+      "sequence": 5,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -4647,7 +4601,7 @@
       "label": "Depreciation and Amortization",
       "description": "The aggregate expense recognized in the current period that allocates the cost of tangible and intangible assets over their useful lives.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 4,
+      "sequence": 6,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -4658,7 +4612,11 @@
           "namespace": "us-gaap"
         },
         {
-          "tag": "OtherDepreciationAndAmortization",
+          "tag": "DepreciationAndAmortization",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "DepreciationAmortizationAndAccretionNet",
           "namespace": "us-gaap"
         },
         {
@@ -4672,6 +4630,12 @@
         {
           "tag": "AmortisationAssetsRecognisedFromCostsIncurredToObtainOrFulfilContractsWithCustomers",
           "namespace": "ifrs-full"
+        },
+        {
+          "tag": "DepreciationAndAmortisationExpense",
+          "namespace": "ifrs-full",
+          "first_year": 2020,
+          "last_year": 2025
         }
       ]
     },
@@ -4680,7 +4644,7 @@
       "label": "Stock-Based Compensation",
       "description": "Amount of noncash expense for share-based payment arrangement.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 5,
+      "sequence": 7,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -4713,14 +4677,6 @@
         {
           "tag": "ExpenseFromEquitysettledSharebasedPaymentTransactionsInWhichGoodsOrServicesReceivedDidNotQualifyForRecognitionAsAssets",
           "namespace": "ifrs-full"
-        },
-        {
-          "tag": "IncreaseDecreaseThroughSharebasedPaymentTransactions",
-          "namespace": "ifrs-full"
-        },
-        {
-          "tag": "StockIssuedDuringPeriodValueShareBasedCompensation",
-          "namespace": "us-gaap"
         }
       ]
     },
@@ -4729,7 +4685,7 @@
       "label": "Deferred Income Tax",
       "description": "Amount of deferred income tax expense (benefit) pertaining to income (loss) from continuing operations.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 6,
+      "sequence": 8,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -4766,7 +4722,7 @@
       "label": "Gain / (Loss) on Investments",
       "description": "Amount of realized and unrealized gain (loss) on investment.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 7,
+      "sequence": 9,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4815,7 +4771,7 @@
       "label": "Gain / (Loss) on Sale of Assets",
       "description": "Amount of gain (loss) on sale or disposal of property, plant and equipment assets, including oil and gas property and timber property.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 8,
+      "sequence": 10,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4874,7 +4830,7 @@
       "label": "Income / (Loss) from Equity Method Investments",
       "description": "Amount of income (loss) for proportionate share of equity method investee's income (loss).",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 9,
+      "sequence": 11,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4915,7 +4871,7 @@
       "label": "Asset Impairment Charges",
       "description": "Amount of impairment loss for asset. Includes, but is not limited to, tangible and intangible assets and goodwill.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 10,
+      "sequence": 12,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -4976,7 +4932,7 @@
       "label": "Non-Cash Adjustments To Reconcile Net Income",
       "description": "Amount of income (expense) included in net income that results in no cash inflow (outflow), classified as other.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 11,
+      "sequence": 13,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -5041,7 +4997,7 @@
       "label": "Other Operating Activities",
       "description": "Amount of cash inflow (outflow) from operating activity, classified as other, in reconciling net income to reflect cash provided by (used in) operating activity when indirect cash flow method is applied.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 12,
+      "sequence": 14,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5076,7 +5032,7 @@
       "label": "Change in Accounts Receivable",
       "description": "The increase (decrease) during the reporting period in amount due within one year (or one business cycle) from customers for the credit sale of goods and services.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 1,
+      "sequence": 15,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -5117,7 +5073,7 @@
       "label": "Change in Vendor Non-trade Receivables",
       "description": "Amount of increase (decrease) in receivables classified as other.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 2,
+      "sequence": 16,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -5136,7 +5092,7 @@
       "label": "Change in Inventories",
       "description": "The increase (decrease) during the reporting period in the aggregate value of all inventory held by the reporting entity, associated with underlying transactions that are classified as operating activities.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 3,
+      "sequence": 17,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -5146,6 +5102,18 @@
           "tag": "IncreaseDecreaseInInventories",
           "namespace": "us-gaap",
           "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "IncreaseDecreaseInRetailRelatedInventories",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "IncreaseDecreaseInFinishedGoodsAndWorkInProcessInventories",
+          "namespace": "us-gaap",
+          "first_year": 2009,
           "last_year": 2026
         },
         {
@@ -5167,7 +5135,7 @@
       "label": "Change in Accounts Payable",
       "description": "The increase (decrease) during the reporting period in the aggregate amount of liabilities incurred (and for which invoices have typically been received) and payable to vendors for goods and services received that are used in an entity's business.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 4,
+      "sequence": 18,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5208,7 +5176,7 @@
       "label": "Change in Other Operating Assets and Liabilities, net",
       "description": "Amount of increase (decrease) in operating assets classified as other.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 5,
+      "sequence": 19,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -5311,7 +5279,7 @@
       "label": "Changes in Operating Assets and Liabilities, net",
       "description": "Amount of increase (decrease) in asset and (increase) decrease in liability, used in operating activity in reconciling net income to reflect cash provided by (used in) operating activity when indirect cash flow method is applied.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 13,
+      "sequence": 20,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -5330,18 +5298,12 @@
       "label": "Net Cash From Continuing Operating Activities",
       "description": "Amount of cash inflow (outflow) from operating activity, including, but not limited to, discontinued operation. Operating activity includes, but is not limited to, transaction, adjustment, and change in value not defined as investing or financing activity.",
       "parent": "net_cash_from_operating_activities",
-      "sequence": 1,
+      "sequence": 21,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
       "xbrl_tags": [
-        {
-          "tag": "NetCashProvidedByUsedInOperatingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
         {
           "tag": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
           "namespace": "us-gaap",
@@ -5353,6 +5315,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -5361,7 +5329,7 @@
       "label": "Net Cash From Discontinued Operating Activities",
       "description": "Amount of cash inflow (outflow) from operating activity attributable to discontinued operation. Operating activity includes, but is not limited to, transaction, adjustment, and change in value not defined as investing or financing activity.",
       "parent": "net_cash_from_operating_activities",
-      "sequence": 2,
+      "sequence": 22,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5369,12 +5337,6 @@
       "xbrl_tags": [
         {
           "tag": "CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInDiscontinuedOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -5390,7 +5352,7 @@
       "label": "Net Cash From Operating Activities",
       "description": "Amount of cash inflow (outflow) from operating activity, including, but not limited to, discontinued operation. Operating activity includes, but is not limited to, transaction, adjustment, and change in value not defined as investing or financing activity.",
       "parent": "net_change_in_cash",
-      "sequence": 1,
+      "sequence": 23,
       "factor": "+",
       "balance": "",
       "unit": "monetary",
@@ -5398,12 +5360,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInOperatingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -5427,7 +5383,7 @@
       "label": "Purchase of Property, Plant & Equipment",
       "description": "The cash outflow associated with the acquisition of long-lived, physical assets that are used in the normal conduct of business to produce goods and services and not intended for resale; includes cash outflows to pay for construction of self-constructed assets.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 1,
+      "sequence": 24,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -5464,7 +5420,7 @@
       "label": "Acquisitions",
       "description": "The cash outflow associated with the acquisition of a business, net of the cash acquired from the purchase.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 2,
+      "sequence": 25,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -5505,7 +5461,7 @@
       "label": "Purchase of Investments",
       "description": "Amount of cash outflow to acquire investment in debt security measured at fair value with change in fair value recognized in other comprehensive income (available-for-sale).",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 3,
+      "sequence": 26,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -5556,7 +5512,7 @@
       "label": "Purchase of Held-to-Maturity Investments",
       "description": "Amount of cash outflow through purchase of long-term held-to-maturity securities.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 4,
+      "sequence": 27,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -5579,7 +5535,7 @@
       "label": "Sale of Property, Plant & Equipment",
       "description": "The cash inflow from the sale of long-lived, physical assets that are used in the normal conduct of business to produce goods and services and not intended for resale.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 5,
+      "sequence": 28,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5614,7 +5570,7 @@
       "label": "Sale of Productive Assets",
       "description": "The cash inflow from the sale of property, plant and equipment (capital expenditures), software, and other intangible assets.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 6,
+      "sequence": 29,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5639,7 +5595,7 @@
       "label": "Divestitures",
       "description": "The cash inflow associated with the amount received from the sale of a portion of the company's business, for example a segment, division, branch or other business, during the period.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 7,
+      "sequence": 30,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5668,7 +5624,7 @@
       "label": "Sale of Investments",
       "description": "Amount of cash inflow from sale of investment in debt security measured at fair value with change in fair value recognized in other comprehensive income (available-for-sale).",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 8,
+      "sequence": 31,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5733,7 +5689,7 @@
       "label": "Maturity of Investments",
       "description": "Amount of cash inflow from maturity, prepayment and call of investment in debt security measured at fair value with change in fair value recognized in other comprehensive income (available-for-sale).",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 9,
+      "sequence": 32,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5764,7 +5720,7 @@
       "label": "Other Investing Activities, net",
       "description": "Amount of cash (inflow) outflow from investing activity, classified as other.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 10,
+      "sequence": 33,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -5795,18 +5751,12 @@
       "label": "Net Cash From Continuing Investing Activities",
       "description": "Amount of cash inflow (outflow) from investing activity, including, but not limited to, discontinued operation. Investing activity includes, but is not limited to, making and collecting loan, acquiring and disposing of debt and equity instruments, property, plant, and equipment, and other productive assets.",
       "parent": "net_cash_from_investing_activities",
-      "sequence": 1,
+      "sequence": 34,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
       "xbrl_tags": [
-        {
-          "tag": "NetCashProvidedByUsedInInvestingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
         {
           "tag": "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations",
           "namespace": "us-gaap",
@@ -5818,6 +5768,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInInvestingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -5826,7 +5782,7 @@
       "label": "Net Cash From Discontinued Investing Activities",
       "description": "Amount of cash inflow (outflow) from investing activity attributable to discontinued operation. Investing activity includes, but is not limited to, making and collecting loan, acquiring and disposing of debt and equity instruments, property, plant, and equipment, and other productive assets.",
       "parent": "net_cash_from_investing_activities",
-      "sequence": 2,
+      "sequence": 35,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5849,7 +5805,7 @@
       "label": "Net Cash From Investing Activities",
       "description": "Amount of cash inflow (outflow) from investing activity, including, but not limited to, discontinued operation. Investing activity includes, but is not limited to, making and collecting loan, acquiring and disposing of debt and equity instruments, property, plant, and equipment, and other productive assets.",
       "parent": "net_change_in_cash",
-      "sequence": 2,
+      "sequence": 36,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5857,12 +5813,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInInvestingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -5880,7 +5830,7 @@
       "label": "Repayment of Debt",
       "description": "The cash outflow for debt initially having maturity due after one year or beyond the normal operating cycle, if longer.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 1,
+      "sequence": 37,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -5947,7 +5897,7 @@
       "label": "Repurchase of Preferred Equity",
       "description": "The cash outflow to reacquire preferred stock during the period.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 2,
+      "sequence": 38,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -5972,7 +5922,7 @@
       "label": "Repurchase of Common Equity",
       "description": "The cash outflow to reacquire common stock during the period.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 3,
+      "sequence": 39,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6009,7 +5959,7 @@
       "label": "Payment of Dividends",
       "description": "Cash outflow in the form of capital distributions and dividends to common shareholders, preferred shareholders and noncontrolling interests.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 4,
+      "sequence": 40,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6072,7 +6022,7 @@
       "label": "Issuance of Debt",
       "description": "The cash inflow from a debt initially having maturity due after one year or beyond the operating cycle, if longer.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 5,
+      "sequence": 41,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -6129,7 +6079,7 @@
       "label": "Issuance of Preferred Equity",
       "description": "Proceeds from issuance of capital stock which provides for a specific dividend that is paid to the shareholders before any dividends to common stockholders and which takes precedence over common stockholders in the event of liquidation.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 6,
+      "sequence": 42,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -6152,7 +6102,7 @@
       "label": "Issuance of Common Equity",
       "description": "The cash inflow from the additional capital contribution to the entity.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 7,
+      "sequence": 43,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -6201,7 +6151,7 @@
       "label": "Short-Term Debt, net",
       "description": "The net cash inflow or outflow for borrowing having initial term of repayment within one year or the normal operating cycle, if longer.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 8,
+      "sequence": 44,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -6236,7 +6186,7 @@
       "label": "Tax Withholding for Share-Based Compensation",
       "description": "Amount of cash outflow to satisfy grantee's tax withholding obligation for award under share-based payment arrangement.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 9,
+      "sequence": 45,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6259,7 +6209,7 @@
       "label": "Other Financing Activities, net",
       "description": "Amount of cash inflow (outflow) from financing activity, classified as other.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 10,
+      "sequence": 46,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -6330,18 +6280,12 @@
       "label": "Net Cash From Continuing Financing Activities",
       "description": "Amount of cash inflow (outflow) from financing activity, including, but not limited to, discontinued operation. Financing activity includes, but is not limited to, obtaining resource from owner and providing return on, and return of, their investment; borrowing money and repaying amount borrowed, or settling obligation; and obtaining and paying for other resource obtained from creditor on long-term credit.",
       "parent": "net_cash_from_financing_activities",
-      "sequence": 1,
+      "sequence": 47,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
       "xbrl_tags": [
-        {
-          "tag": "NetCashProvidedByUsedInFinancingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
         {
           "tag": "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations",
           "namespace": "us-gaap",
@@ -6353,6 +6297,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInFinancingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -6361,7 +6311,7 @@
       "label": "Net Cash From Discontinued Financing Activities",
       "description": "Amount of cash inflow (outflow) from financing activity attributable to discontinued operation. Financing activity includes, but is not limited to, obtaining resource from owner and providing return on, and return of, their investment; borrowing money and repaying amount borrowed, or settling obligation; and obtaining and paying for other resource obtained from creditor on long-term credit.",
       "parent": "net_cash_from_financing_activities",
-      "sequence": 2,
+      "sequence": 48,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -6384,7 +6334,7 @@
       "label": "Net Cash From Financing Activities",
       "description": "Amount of cash inflow (outflow) from financing activity, including, but not limited to, discontinued operation. Financing activity includes, but is not limited to, obtaining resource from owner and providing return on, and return of, their investment; borrowing money and repaying amount borrowed, or settling obligation; and obtaining and paying for other resource obtained from creditor on long-term credit.",
       "parent": "net_change_in_cash",
-      "sequence": 3,
+      "sequence": 49,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -6392,12 +6342,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInFinancingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -6415,7 +6359,7 @@
       "label": "Effect of Exchange Rate Changes",
       "description": "The effect of exchange rate changes on cash balances held in foreign currencies.",
       "parent": "net_change_in_cash",
-      "sequence": 4,
+      "sequence": 50,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -6454,6 +6398,12 @@
         {
           "tag": "EffectOfExchangeRateOnCashAndCashEquivalentsDiscontinuedOperations",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations",
+          "namespace": "us-gaap",
+          "first_year": 2017,
+          "last_year": 2026
         }
       ]
     },
@@ -6462,7 +6412,7 @@
       "label": "Net Cash from Discontinued Operations",
       "description": "The net change in cash and cash equivalents resulting from the cash inflows and outflows of discontinued operations.",
       "parent": "net_change_in_cash",
-      "factor": "+",
+      "factor": "0",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
@@ -6480,14 +6430,14 @@
           "last_year": 2026
         }
       ],
-      "sequence": 5
+      "sequence": 51
     },
     {
       "tag": "other_net_changes_in_cash",
       "label": "Other Net Changes in Cash",
       "description": "Amount of other net changes in cash and cash equivalents not separately disclosed in the statement of cash flows.",
       "parent": "net_change_in_cash",
-      "sequence": 6,
+      "sequence": 52,
       "factor": "+",
       "balance": "",
       "unit": "monetary",
@@ -6530,7 +6480,7 @@
       "label": "Net Change in Cash & Equivalents",
       "description": "The increase (decrease) during the reporting period in cash and cash equivalents. While for technical reasons this element has no balance attribute, the default assumption is a debit balance consistent with its label.",
       "parent": null,
-      "sequence": 1,
+      "sequence": 53,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -6569,7 +6519,7 @@
       "label": "Cash at Beginning of Period",
       "description": "Cash, cash equivalents, restricted cash, and restricted cash equivalents at the beginning of the reporting period. Derived from the previous period's ending balance.",
       "parent": null,
-      "sequence": 2,
+      "sequence": 54,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -6581,7 +6531,7 @@
       "label": "Cash at End of Period",
       "description": "Cash, cash equivalents, restricted cash, and restricted cash equivalents at the end of the reporting period.",
       "parent": null,
-      "sequence": 3,
+      "sequence": 55,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -6612,7 +6562,7 @@
       "label": "Cash Interest Paid",
       "description": "Amount of cash paid for interest, excluding capitalized interest, classified as operating activity. Includes, but is not limited to, payment to settle zero-coupon bond for accreted interest of debt discount and debt instrument with insignificant coupon interest rate in relation to effective interest rate of borrowing attributable to accreted interest of debt discount.",
       "parent": null,
-      "sequence": 4,
+      "sequence": 56,
       "factor": "0",
       "balance": "credit",
       "unit": "monetary",
@@ -6647,7 +6597,7 @@
       "label": "Cash Interest Received",
       "description": "The cash inflow from interest received, classified as operating activities.",
       "parent": null,
-      "sequence": 5,
+      "sequence": 57,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -6674,7 +6624,7 @@
       "label": "Cash Income Taxes Paid",
       "description": "Amount, after refund, of cash paid to foreign, federal, state, and local jurisdictions as income tax.",
       "parent": null,
-      "sequence": 6,
+      "sequence": 58,
       "factor": "0",
       "balance": "credit",
       "unit": "monetary",
@@ -6757,7 +6707,7 @@
       "description": "Amount after tax of income (loss) from a discontinued operation including the portion attributable to the noncontrolling interest. Includes, but is not limited to, the income (loss) from operations during the phase-out period, gain (loss) on disposal, gain (loss) for reversal of write-down (write-down) to fair value, less cost to sell, and adjustments to a prior period gain (loss) on disposal.",
       "parent": "net_income_continuing",
       "sequence": 2,
-      "factor": "+",
+      "factor": "-",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",
@@ -6787,7 +6737,7 @@
       "label": "Net Income / (Loss) Continuing Operations",
       "description": "Amount after tax of income (loss) from continuing operations including portion attributable to the noncontrolling interest.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 1,
+      "sequence": 3,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6848,7 +6798,7 @@
       "label": "Provision For Loan Losses",
       "description": "Amount of expense related to estimated loss from loan and lease transactions.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 2,
+      "sequence": 4,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -6877,7 +6827,7 @@
       "label": "Depreciation Expense",
       "description": "The current period expense charged against earnings on long-lived, physical assets not used in production, and which are not intended for resale, to allocate or recognize the cost of such assets over their useful lives; or to record the reduction in book value of an intangible asset over the benefit period of such asset; or to reflect consumption during the period of an asset that is not used in production.",
       "parent": "depreciation_and_amortization",
-      "sequence": 3,
+      "sequence": 5,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -6896,20 +6846,6 @@
           "last_year": 2026
         },
         {
-          "tag": "DepreciationAndAmortization",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "DepreciationAmortizationAndAccretionNet",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "DepreciationAndAmortisationExpense",
-          "namespace": "ifrs-full",
-          "first_year": 2020,
-          "last_year": 2025
-        },
-        {
           "tag": "DepreciationPropertyPlantAndEquipment",
           "namespace": "ifrs-full",
           "first_year": 2020,
@@ -6926,7 +6862,7 @@
       "label": "Amortization Expense",
       "description": "Amount of amortization expense for finite-lived intangible asset. Excludes goodwill and capitalized cost for software to be sold, leased, or marketed.",
       "parent": "depreciation_and_amortization",
-      "sequence": 4,
+      "sequence": 6,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -6957,7 +6893,7 @@
       "label": "Depreciation and Amortization",
       "description": "The aggregate expense recognized in the current period that allocates the cost of tangible and intangible assets over their useful lives.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 5,
+      "sequence": 7,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -6968,12 +6904,22 @@
           "namespace": "us-gaap"
         },
         {
-          "tag": "OtherDepreciationAndAmortization",
+          "tag": "DepreciationAndAmortization",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "DepreciationAmortizationAndAccretionNet",
           "namespace": "us-gaap"
         },
         {
           "tag": "AdjustmentsForDepreciationAndAmortisationExpense",
           "namespace": "ifrs-full"
+        },
+        {
+          "tag": "DepreciationAndAmortisationExpense",
+          "namespace": "ifrs-full",
+          "first_year": 2020,
+          "last_year": 2025
         }
       ]
     },
@@ -6982,7 +6928,7 @@
       "label": "Stock-Based Compensation",
       "description": "Amount of noncash expense for share-based payment arrangement.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 6,
+      "sequence": 8,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7007,10 +6953,6 @@
         {
           "tag": "SharebasedPaymentExpense",
           "namespace": "ifrs-full"
-        },
-        {
-          "tag": "StockIssuedDuringPeriodValueShareBasedCompensation",
-          "namespace": "us-gaap"
         }
       ]
     },
@@ -7019,7 +6961,7 @@
       "label": "Deferred Income Tax",
       "description": "Amount of deferred income tax expense (benefit) pertaining to income (loss) from continuing operations.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 7,
+      "sequence": 9,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7052,7 +6994,7 @@
       "label": "Gain / (Loss) on Investments",
       "description": "Amount of realized and unrealized gain (loss) on investment.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 8,
+      "sequence": 10,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7093,7 +7035,7 @@
       "label": "Gain / (Loss) on Sale of Assets",
       "description": "Amount of gain (loss) on sale or disposal of property, plant and equipment assets, including oil and gas property and timber property.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 9,
+      "sequence": 11,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7144,7 +7086,7 @@
       "label": "Income / (Loss) from Equity Method Investments",
       "description": "Amount of income (loss) for proportionate share of equity method investee's income (loss).",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 10,
+      "sequence": 12,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7177,7 +7119,7 @@
       "label": "Asset Impairment Charges",
       "description": "Amount of impairment loss for asset. Includes, but is not limited to, tangible and intangible assets and goodwill.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 11,
+      "sequence": 13,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7222,7 +7164,7 @@
       "label": "Non-Cash Adjustments to Reconcile Net Income",
       "description": "Amount of income (expense) included in net income that results in no cash inflow (outflow), classified as other.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 12,
+      "sequence": 14,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7259,7 +7201,7 @@
       "label": "Other Operating Activities",
       "description": "Amount of cash inflow (outflow) from operating activity, classified as other, in reconciling net income to reflect cash provided by (used in) operating activity when indirect cash flow method is applied.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 13,
+      "sequence": 15,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7286,7 +7228,7 @@
       "label": "Change in Insurance Reserves",
       "description": "The increase (decrease) in health care insurance liability balances during the period.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 14,
+      "sequence": 16,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7321,7 +7263,7 @@
       "label": "Change in Accounts Receivable",
       "description": "The increase (decrease) during the reporting period in amount due within one year (or one business cycle) from customers for the credit sale of goods and services.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 1,
+      "sequence": 17,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7358,7 +7300,7 @@
       "label": "Change in Vendor Non-trade Receivables",
       "description": "Amount of increase (decrease) in receivables classified as other.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 2,
+      "sequence": 18,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7377,7 +7319,7 @@
       "label": "Change in Inventories",
       "description": "The increase (decrease) during the reporting period in the aggregate value of all inventory held by the reporting entity, associated with underlying transactions that are classified as operating activities.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 3,
+      "sequence": 19,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7387,6 +7329,18 @@
           "tag": "IncreaseDecreaseInInventories",
           "namespace": "us-gaap",
           "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "IncreaseDecreaseInRetailRelatedInventories",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "IncreaseDecreaseInFinishedGoodsAndWorkInProcessInventories",
+          "namespace": "us-gaap",
+          "first_year": 2009,
           "last_year": 2026
         },
         {
@@ -7408,7 +7362,7 @@
       "label": "Change in Accounts Payable",
       "description": "The increase (decrease) during the reporting period in the aggregate amount of liabilities incurred (and for which invoices have typically been received) and payable to vendors for goods and services received that are used in an entity's business.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 4,
+      "sequence": 20,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7445,7 +7399,7 @@
       "label": "Change in Other Operating Assets and Liabilities, net",
       "description": "Amount of increase (decrease) in operating assets classified as other.",
       "parent": "increase_decrease_in_operating_capital",
-      "sequence": 5,
+      "sequence": 21,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7512,7 +7466,7 @@
       "label": "Changes in Operating Assets and Liabilities, net",
       "description": "Amount of increase (decrease) in asset and (increase) decrease in liability, used in operating activity in reconciling net income to reflect cash provided by (used in) operating activity when indirect cash flow method is applied.",
       "parent": "net_cash_from_continuing_operating_activities",
-      "sequence": 15,
+      "sequence": 22,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7531,18 +7485,12 @@
       "label": "Net Cash From Continuing Operating Activities",
       "description": "Amount of cash inflow (outflow) from operating activity, including, but not limited to, discontinued operation. Operating activity includes, but is not limited to, transaction, adjustment, and change in value not defined as investing or financing activity.",
       "parent": "net_cash_from_operating_activities",
-      "sequence": 1,
+      "sequence": 23,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
       "xbrl_tags": [
-        {
-          "tag": "NetCashProvidedByUsedInOperatingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
         {
           "tag": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
           "namespace": "us-gaap",
@@ -7554,6 +7502,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInOperatingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -7562,7 +7516,7 @@
       "label": "Net Cash From Discontinued Operating Activities",
       "description": "Amount of cash inflow (outflow) from operating activity attributable to discontinued operation. Operating activity includes, but is not limited to, transaction, adjustment, and change in value not defined as investing or financing activity.",
       "parent": "net_cash_from_operating_activities",
-      "sequence": 2,
+      "sequence": 24,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7570,12 +7524,6 @@
       "xbrl_tags": [
         {
           "tag": "CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInDiscontinuedOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -7587,7 +7535,7 @@
       "label": "Net Cash From Operating Activities",
       "description": "Amount of cash inflow (outflow) from operating activity, including, but not limited to, discontinued operation. Operating activity includes, but is not limited to, transaction, adjustment, and change in value not defined as investing or financing activity.",
       "parent": "net_change_in_cash",
-      "sequence": 1,
+      "sequence": 25,
       "factor": "+",
       "balance": "",
       "unit": "monetary",
@@ -7595,12 +7543,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInOperatingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -7624,7 +7566,7 @@
       "label": "Purchase of Property, Leasehold Improvements and Equipment",
       "description": "The cash outflow associated with the acquisition of long-lived, physical assets that are used in the normal conduct of business to produce goods and services and not intended for resale; includes cash outflows to pay for construction of self-constructed assets.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 1,
+      "sequence": 26,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7661,7 +7603,7 @@
       "label": "Acquisitions",
       "description": "The cash outflow associated with the acquisition of a business, net of the cash acquired from the purchase.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 2,
+      "sequence": 27,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7698,7 +7640,7 @@
       "label": "Purchase of Investment Securities",
       "description": "Amount of cash outflow to acquire investment in debt security measured at fair value with change in fair value recognized in other comprehensive income (available-for-sale).",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 3,
+      "sequence": 28,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7741,7 +7683,7 @@
       "label": "Purchase of Held-to-Maturity Investments",
       "description": "Amount of cash outflow through purchase of long-term held-to-maturity securities.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 4,
+      "sequence": 29,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7764,7 +7706,7 @@
       "label": "Sale of Property, Leasehold Improvements and Equipment",
       "description": "The cash inflow from the sale of long-lived, physical assets that are used in the normal conduct of business to produce goods and services and not intended for resale.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 5,
+      "sequence": 30,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7791,7 +7733,7 @@
       "label": "Sale of Productive Assets",
       "description": "The cash inflow from the sale of property, plant and equipment (capital expenditures), software, and other intangible assets.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 6,
+      "sequence": 31,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7816,7 +7758,7 @@
       "label": "Divestitures",
       "description": "The cash inflow associated with the amount received from the sale of a portion of the company's business, for example a segment, division, branch or other business, during the period.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 7,
+      "sequence": 32,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7841,7 +7783,7 @@
       "label": "Sale of Investments",
       "description": "Amount of cash inflow from sale of investment in debt security measured at fair value with change in fair value recognized in other comprehensive income (available-for-sale).",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 8,
+      "sequence": 33,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7882,7 +7824,7 @@
       "label": "Maturity of Investment Securities",
       "description": "Amount of cash inflow from maturity, prepayment and call of investment in debt security measured at fair value with change in fair value recognized in other comprehensive income (available-for-sale).",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 9,
+      "sequence": 34,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7913,7 +7855,7 @@
       "label": "Net Increase in Fed Funds Sold",
       "description": "The net cash inflow or outflow from the fund lent to other financial institution arising from the excess in reserve deposited at Federal Reserve Bank to meet legal requirement. This borrowing is usually contracted on an overnight basis at an agreed rate of interest.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 10,
+      "sequence": 35,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7938,7 +7880,7 @@
       "label": "Loans Held for Sale, Net",
       "description": "The net cash outflow or inflow for the increase (decrease) in the beginning and end of period of loan and lease balances which are not originated or purchased specifically for resale. Includes cash payments and proceeds associated with (a) loans held-for-investment, (b) leases held-for-investment, and (c) both.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 11,
+      "sequence": 36,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7957,7 +7899,7 @@
       "label": "Other Investing Activities, net",
       "description": "Amount of cash (inflow) outflow from investing activity, classified as other.",
       "parent": "net_cash_from_continuing_investing_activities",
-      "sequence": 12,
+      "sequence": 37,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7984,18 +7926,12 @@
       "label": "Net Cash From Continuing Investing Activities",
       "description": "Amount of cash inflow (outflow) from investing activity, including, but not limited to, discontinued operation. Investing activity includes, but is not limited to, making and collecting loan, acquiring and disposing of debt and equity instruments, property, plant, and equipment, and other productive assets.",
       "parent": "net_cash_from_investing_activities",
-      "sequence": 1,
+      "sequence": 38,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
       "xbrl_tags": [
-        {
-          "tag": "NetCashProvidedByUsedInInvestingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
         {
           "tag": "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations",
           "namespace": "us-gaap",
@@ -8007,6 +7943,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInInvestingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -8015,7 +7957,7 @@
       "label": "Net Cash From Discontinued Investing Activities",
       "description": "Amount of cash inflow (outflow) from investing activity attributable to discontinued operation. Investing activity includes, but is not limited to, making and collecting loan, acquiring and disposing of debt and equity instruments, property, plant, and equipment, and other productive assets.",
       "parent": "net_cash_from_investing_activities",
-      "sequence": 2,
+      "sequence": 39,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -8034,7 +7976,7 @@
       "label": "Net Cash From Investing Activities",
       "description": "Amount of cash inflow (outflow) from investing activity, including, but not limited to, discontinued operation. Investing activity includes, but is not limited to, making and collecting loan, acquiring and disposing of debt and equity instruments, property, plant, and equipment, and other productive assets.",
       "parent": "net_change_in_cash",
-      "sequence": 2,
+      "sequence": 40,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -8042,12 +7984,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInInvestingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInInvestingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -8065,7 +8001,7 @@
       "label": "Repayment of Debt",
       "description": "The cash outflow for debt initially having maturity due after one year or beyond the normal operating cycle, if longer.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 1,
+      "sequence": 41,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8128,7 +8064,7 @@
       "label": "Repurchase of Preferred Equity",
       "description": "The cash outflow to reacquire preferred stock during the period.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 2,
+      "sequence": 42,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8153,7 +8089,7 @@
       "label": "Repurchase of Common Equity",
       "description": "The cash outflow to reacquire common stock during the period.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 3,
+      "sequence": 43,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8186,7 +8122,7 @@
       "label": "Payment of Dividends",
       "description": "Cash outflow in the form of capital distributions and dividends to common shareholders, preferred shareholders and noncontrolling interests.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 4,
+      "sequence": 44,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8241,7 +8177,7 @@
       "label": "Issuance of Debt",
       "description": "The cash inflow from a debt initially having maturity due after one year or beyond the operating cycle, if longer.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 5,
+      "sequence": 45,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -8290,7 +8226,7 @@
       "label": "Issuance of Preferred Equity",
       "description": "Proceeds from issuance of capital stock which provides for a specific dividend that is paid to the shareholders before any dividends to common stockholders and which takes precedence over common stockholders in the event of liquidation.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 6,
+      "sequence": 46,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -8313,7 +8249,7 @@
       "label": "Issuance of Common Equity",
       "description": "The cash inflow from the additional capital contribution to the entity.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 7,
+      "sequence": 47,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -8350,7 +8286,7 @@
       "label": "Net Change in Deposits",
       "description": "The net cash inflow or outflow for the increase (decrease) in the beginning and end of period deposits balances.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 8,
+      "sequence": 48,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -8369,7 +8305,7 @@
       "label": "Short-Term Debt, net",
       "description": "The net cash inflow or outflow for borrowing having initial term of repayment within one year or the normal operating cycle, if longer.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 9,
+      "sequence": 49,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -8400,7 +8336,7 @@
       "label": "Tax Withholding for Share-Based Compensation",
       "description": "Amount of cash outflow to satisfy grantee's tax withholding obligation for award under share-based payment arrangement.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 10,
+      "sequence": 50,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8419,7 +8355,7 @@
       "label": "Other Financing Activities, Net",
       "description": "Amount of cash inflow (outflow) from financing activity, classified as other.",
       "parent": "net_cash_from_continuing_financing_activities",
-      "sequence": 11,
+      "sequence": 51,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -8446,18 +8382,12 @@
       "label": "Net Cash From Continuing Financing Activities",
       "description": "Amount of cash inflow (outflow) from financing activity, including, but not limited to, discontinued operation. Financing activity includes, but is not limited to, obtaining resource from owner and providing return on, and return of, their investment; borrowing money and repaying amount borrowed, or settling obligation; and obtaining and paying for other resource obtained from creditor on long-term credit.",
       "parent": "net_cash_from_financing_activities",
-      "sequence": 1,
+      "sequence": 52,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
       "xbrl_tags": [
-        {
-          "tag": "NetCashProvidedByUsedInFinancingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
         {
           "tag": "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations",
           "namespace": "us-gaap",
@@ -8469,6 +8399,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "NetCashProvidedByUsedInFinancingActivities",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -8477,7 +8413,7 @@
       "label": "Net Cash From Discontinued Financing Activities",
       "description": "Amount of cash inflow (outflow) from financing activity attributable to discontinued operation. Financing activity includes, but is not limited to, obtaining resource from owner and providing return on, and return of, their investment; borrowing money and repaying amount borrowed, or settling obligation; and obtaining and paying for other resource obtained from creditor on long-term credit.",
       "parent": "net_cash_from_financing_activities",
-      "sequence": 2,
+      "sequence": 53,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -8496,7 +8432,7 @@
       "label": "Net Cash From Financing Activities",
       "description": "Amount of cash inflow (outflow) from financing activity, including, but not limited to, discontinued operation. Financing activity includes, but is not limited to, obtaining resource from owner and providing return on, and return of, their investment; borrowing money and repaying amount borrowed, or settling obligation; and obtaining and paying for other resource obtained from creditor on long-term credit.",
       "parent": "net_change_in_cash",
-      "sequence": 3,
+      "sequence": 54,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -8504,12 +8440,6 @@
       "xbrl_tags": [
         {
           "tag": "NetCashProvidedByUsedInFinancingActivities",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NetCashProvidedByUsedInFinancingActivitiesContinuingOperations",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -8527,7 +8457,7 @@
       "label": "Effect of Exchange Rate Changes",
       "description": "The effect of exchange rate changes on cash balances held in foreign currencies.",
       "parent": "net_change_in_cash",
-      "sequence": 4,
+      "sequence": 55,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -8566,6 +8496,12 @@
         {
           "tag": "EffectOfExchangeRateOnCashAndCashEquivalentsDiscontinuedOperations",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations",
+          "namespace": "us-gaap",
+          "first_year": 2017,
+          "last_year": 2026
         }
       ]
     },
@@ -8574,7 +8510,7 @@
       "label": "Net Cash from Discontinued Operations",
       "description": "The net change in cash and cash equivalents resulting from the cash inflows and outflows of discontinued operations.",
       "parent": "net_change_in_cash",
-      "factor": "+",
+      "factor": "0",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
@@ -8592,14 +8528,14 @@
           "last_year": 2026
         }
       ],
-      "sequence": 5
+      "sequence": 56
     },
     {
       "tag": "other_net_changes_in_cash",
       "label": "Other Net Changes in Cash",
       "description": "Amount of other net changes in cash and cash equivalents not separately disclosed in the statement of cash flows.",
       "parent": "net_change_in_cash",
-      "sequence": 6,
+      "sequence": 57,
       "factor": "+",
       "balance": "",
       "unit": "monetary",
@@ -8622,7 +8558,7 @@
       "label": "Net Change in Cash & Equivalents",
       "description": "The increase (decrease) during the reporting period in cash and cash equivalents. While for technical reasons this element has no balance attribute, the default assumption is a debit balance consistent with its label.",
       "parent": null,
-      "sequence": 1,
+      "sequence": 58,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -8661,7 +8597,7 @@
       "label": "Cash at Beginning of Period",
       "description": "Cash, cash equivalents, restricted cash, and restricted cash equivalents at the beginning of the reporting period. Derived from the previous period's ending balance.",
       "parent": null,
-      "sequence": 2,
+      "sequence": 59,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -8673,7 +8609,7 @@
       "label": "Cash at End of Period",
       "description": "Cash, cash equivalents, restricted cash, and restricted cash equivalents at the end of the reporting period.",
       "parent": null,
-      "sequence": 3,
+      "sequence": 60,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -8704,7 +8640,7 @@
       "label": "Cash Interest Paid",
       "description": "Amount of cash paid for interest, excluding capitalized interest, classified as operating activity. Includes, but is not limited to, payment to settle zero-coupon bond for accreted interest of debt discount and debt instrument with insignificant coupon interest rate in relation to effective interest rate of borrowing attributable to accreted interest of debt discount.",
       "parent": null,
-      "sequence": 4,
+      "sequence": 61,
       "factor": "0",
       "balance": "credit",
       "unit": "monetary",
@@ -8735,7 +8671,7 @@
       "label": "Cash Interest Received",
       "description": "The cash inflow from interest received, classified as operating activities.",
       "parent": null,
-      "sequence": 5,
+      "sequence": 62,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -8758,7 +8694,7 @@
       "label": "Cash Income Taxes Paid",
       "description": "Amount, after refund, of cash paid to foreign, federal, state, and local jurisdictions as income tax.",
       "parent": null,
-      "sequence": 6,
+      "sequence": 63,
       "factor": "0",
       "balance": "credit",
       "unit": "monetary",

@@ -1,43 +1,102 @@
-[tool.poetry]
+{%- set types = cookiecutter.extension_types.split(',') | map('trim') | list -%}
+{%- set is_all = 'all' in types -%}
+{%- set has_router = is_all or 'router' in types -%}
+{%- set has_provider = is_all or 'provider' in types -%}
+{%- set has_charting = is_all or 'charting' in types -%}
+{%- set has_obbject = is_all or 'obbject' in types -%}
+{%- set has_on_command_output = is_all or 'on_command_output' in types -%}
+{%- set views_class = cookiecutter.router_name.replace('_', ' ').title().replace(' ', '') -%}
+[project]
 name = "{{ cookiecutter.project_tag }}"
 version = "0.0.1"
 description = "{{ cookiecutter.project_name }}"
-authors = ["{{ cookiecutter.full_name }} <{{ cookiecutter.email }}>"]
+authors = [{ name = "{{ cookiecutter.full_name }}", email = "{{ cookiecutter.email }}" }]
+license = { text = "Apache-2.0" }
 readme = "README.md"
-license = "AGPL-3.0-only"
-packages = [{ include = "{{ cookiecutter.package_name }}" }]
-
-[tool.poetry.dependencies]
-python = ">=3.10,<4"
-openbb-core = "*"
-openbb-platform-api = "*"
-
-[tool.poetry.group.dev.dependencies]
-openbb-devtools = { version = "*" }
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-{% set types = cookiecutter.extension_types.split(',') | map('trim') | list %}
-{% if 'router' in types or 'all' in types %}
-[tool.poetry.plugins."openbb_core_extension"]
+requires-python = ">=3.10,<4"
+dependencies = ["openbb-core[pandas]>=2.0.0"]
+{% if has_charting %}
+[project.optional-dependencies]
+charting = ["openbb-charting>=3.0.0"]
+{% endif %}
+{%- if has_router %}
+[project.entry-points."openbb_core_extension"]
 {{ cookiecutter.router_name }} = "{{ cookiecutter.package_name }}.routers.{{ cookiecutter.router_name }}:router"
 {% endif %}
-{% if 'charting' in types or 'all' in types %}
-[tool.poetry.plugins."openbb_charting_extension"]
-{{ cookiecutter.router_name }} = "{{ cookiecutter.package_name }}.routers.{{ cookiecutter.router_name }}_views:{{cookiecutter.router_name.replace('_', ' ').title().replace(' ', '').replace('"', '')}}Views"
+{%- if has_charting %}
+[project.entry-points."openbb_charting_extension"]
+{{ cookiecutter.router_name }} = "{{ cookiecutter.package_name }}.routers.{{ cookiecutter.router_name }}_views:{{ views_class }}Views"
 {% endif %}
-{% if 'provider' in types or 'all' in types %}
-[tool.poetry.plugins."openbb_provider_extension"]
+{%- if has_provider %}
+[project.entry-points."openbb_provider_extension"]
 {{ cookiecutter.provider_name }} = "{{ cookiecutter.package_name }}.providers.{{ cookiecutter.provider_name }}:{{ cookiecutter.provider_name }}_provider"
 {% endif %}
-{% if 'obbject' in types or 'on_command_output' in types or 'all' in types %}
-[tool.poetry.plugins."openbb_obbject_extension"]
-{% if 'obbject' in types or 'all' in types %}
+{%- if has_obbject or has_on_command_output %}
+[project.entry-points."openbb_obbject_extension"]
+{%- if has_obbject %}
 to_string = "{{ cookiecutter.package_name }}.obbject.{{ cookiecutter.obbject_name }}:ext"
 {{ cookiecutter.obbject_name }} = "{{ cookiecutter.package_name }}.obbject.{{ cookiecutter.obbject_name }}:class_ext"
+{%- endif %}
+{%- if has_on_command_output %}
+nonblocking_plugin = "{{ cookiecutter.package_name }}.obbject.{{ cookiecutter.obbject_name }}.on_command_output:nonblocking_plugin"
+{%- endif %}
 {% endif %}
-{% if 'on_command_output' in types or 'all' in types %}
-nonblocking_plugin = "{{ cookiecutter.package_name }}.obbject.{{ cookiecutter.obbject_name }}:nonblocking_plugin"
-{% endif %}
-{% endif %}
+[dependency-groups]
+dev = [
+    "openbb-devtools>=2.0.1",
+    "openbb-platform-api>=2.0.0",
+{%- if has_charting %}
+    "openbb-charting>=3.0.0",
+{%- endif %}
+]
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["{{ cookiecutter.package_name }}"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+fix = true
+
+[tool.ruff.lint]
+select = ["D", "E", "W", "F", "S", "UP", "I", "PLC", "PLE", "PLR", "PLW", "SIM", "T20"]
+ignore = [
+    "PLR2004", "PLR0913", "PLR0915", "PLR0917", "PLC0415",
+    "E402", "E501",
+    "D202", "D203", "D205", "D206", "D210", "D212", "D213", "D214",
+    "D215", "D300", "D400", "D404", "D405", "D406", "D407", "D408",
+    "D409", "D410", "D411", "D413", "D415", "D416", "D417",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "D"]
+"**/__init__.py" = ["F401"]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+force-wrap-aliases = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ty]
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+include = ["{{ cookiecutter.package_name }}"]
+exclude = ["tests"]
+
+[tool.ty.rules]
+unresolved-import = "warn"
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedError", "@overload"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"

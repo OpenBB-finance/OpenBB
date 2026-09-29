@@ -1,0 +1,1347 @@
+{
+  "philadelphia_business_conditions_federal_reserve_obb": {
+    "name": "Philadelphia Fed ADS Business Conditions Index",
+    "description": "Daily Aruoba-Diebold-Scotti index of real U.S. business conditions, with the NBER recession indicator.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "philadelphia_business_conditions_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "philadelphia_business_conditions"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "business_conditions",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The observation date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "ads_index",
+            "formatterFn": "none",
+            "headerName": "ADS Index",
+            "headerTooltip": "The ADS Business Conditions Index value.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "recession",
+            "formatterFn": "int",
+            "headerName": "Recession",
+            "headerTooltip": "The NBER recession indicator for the date, 1 in recession.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Philadelphia"
+  },
+  "philadelphia_survey_professional_forecasters_federal_reserve_obb": {
+    "name": "Philadelphia Fed Survey of Professional Forecasters",
+    "description": "Quarterly consensus mean or median forecasts by horizon for the selected macroeconomic variable.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "philadelphia_survey_professional_forecasters_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "philadelphia_survey_professional_forecasters"
+    },
+    "params": [
+      {
+        "label": "Variable",
+        "description": "The forecast variable code, e.g. 'RGDP' for real GDP. Codes ending in '10' (e.g. 'CPI10', 'RGDP10') are long-run, ten-year-average projections published only as a level.",
+        "optional": true,
+        "type": "text",
+        "value": "RGDP",
+        "show": true,
+        "options": [
+          {
+            "label": "Baa Corporate Bond Rate",
+            "value": "BAABOND"
+          },
+          {
+            "label": "Aaa Corporate Bond Rate",
+            "value": "BOND"
+          },
+          {
+            "label": "10-Year Treasury Bond Rate (Long-Run)",
+            "value": "BOND10"
+          },
+          {
+            "label": "Core CPI Inflation",
+            "value": "CORECPI"
+          },
+          {
+            "label": "Core PCE Inflation",
+            "value": "COREPCE"
+          },
+          {
+            "label": "CPI Inflation",
+            "value": "CPI"
+          },
+          {
+            "label": "10-Year CPI Inflation",
+            "value": "CPI10"
+          },
+          {
+            "label": "Corporate Profits After Tax",
+            "value": "CPROF"
+          },
+          {
+            "label": "Nonfarm Payroll Employment",
+            "value": "EMP"
+          },
+          {
+            "label": "Housing Starts",
+            "value": "HOUSING"
+          },
+          {
+            "label": "Industrial Production",
+            "value": "INDPROD"
+          },
+          {
+            "label": "Nominal GDP",
+            "value": "NGDP"
+          },
+          {
+            "label": "PCE Inflation",
+            "value": "PCE"
+          },
+          {
+            "label": "10-Year PCE Inflation",
+            "value": "PCE10"
+          },
+          {
+            "label": "GDP Price Index",
+            "value": "PGDP"
+          },
+          {
+            "label": "10-Year Productivity Growth",
+            "value": "PROD10"
+          },
+          {
+            "label": "Real Change in Private Inventories",
+            "value": "RCBI"
+          },
+          {
+            "label": "Real Consumption",
+            "value": "RCONSUM"
+          },
+          {
+            "label": "Anxious Index (Recession Probability)",
+            "value": "RECESS"
+          },
+          {
+            "label": "Real Net Exports",
+            "value": "REXPORT"
+          },
+          {
+            "label": "Real Federal Government Spending",
+            "value": "RFEDGOV"
+          },
+          {
+            "label": "Real GDP",
+            "value": "RGDP"
+          },
+          {
+            "label": "10-Year Real GDP Growth",
+            "value": "RGDP10"
+          },
+          {
+            "label": "Real Nonresidential Fixed Investment",
+            "value": "RNRESIN"
+          },
+          {
+            "label": "Real Residential Fixed Investment",
+            "value": "RRESINV"
+          },
+          {
+            "label": "Real State & Local Government Spending",
+            "value": "RSLGOV"
+          },
+          {
+            "label": "3-Month Treasury Bill Rate",
+            "value": "TBILL"
+          },
+          {
+            "label": "10-Year Treasury Bond Rate",
+            "value": "TBOND"
+          },
+          {
+            "label": "Unemployment Rate",
+            "value": "UNEMP"
+          }
+        ],
+        "paramName": "variable"
+      },
+      {
+        "label": "Statistic",
+        "description": "The cross-forecaster summary statistic.",
+        "optional": true,
+        "type": "text",
+        "value": "median",
+        "show": true,
+        "options": [
+          {
+            "label": "Mean",
+            "value": "mean"
+          },
+          {
+            "label": "Median",
+            "value": "median"
+          }
+        ],
+        "paramName": "statistic"
+      },
+      {
+        "label": "Transform",
+        "description": "The series transform; 'growth' is only published for level-and-growth variables.",
+        "optional": true,
+        "type": "text",
+        "value": "level",
+        "show": true,
+        "options": [
+          {
+            "label": "Growth",
+            "value": "growth"
+          },
+          {
+            "label": "Level",
+            "value": "level"
+          }
+        ],
+        "paramName": "transform"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "survey_professional_forecasters",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey quarter, as a quarter-start date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "horizon_1",
+            "formatterFn": "none",
+            "headerName": "Current Quarter",
+            "headerTooltip": "The current-quarter forecast.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "horizon_2",
+            "formatterFn": "none",
+            "headerName": "1Q Ahead",
+            "headerTooltip": "The one-quarter-ahead forecast.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "horizon_3",
+            "formatterFn": "none",
+            "headerName": "2Q Ahead",
+            "headerTooltip": "The two-quarter-ahead forecast.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "horizon_4",
+            "formatterFn": "none",
+            "headerName": "3Q Ahead",
+            "headerTooltip": "The three-quarter-ahead forecast.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "horizon_5",
+            "formatterFn": "none",
+            "headerName": "4Q Ahead",
+            "headerTooltip": "The four-quarter-ahead forecast.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "horizon_6",
+            "formatterFn": "none",
+            "headerName": "5Q Ahead",
+            "headerTooltip": "The five-quarter-ahead forecast.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "annual_a",
+            "formatterFn": "none",
+            "headerName": "Current Year",
+            "headerTooltip": "The forecast for the current year.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "annual_b",
+            "formatterFn": "none",
+            "headerName": "Next Year",
+            "headerTooltip": "The forecast for the next year.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "annual_c",
+            "formatterFn": "none",
+            "headerName": "2 Years Ahead",
+            "headerTooltip": "The forecast for two years ahead.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "annual_d",
+            "formatterFn": "none",
+            "headerName": "3 Years Ahead",
+            "headerTooltip": "The forecast for three years ahead.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "long_run",
+            "formatterFn": "none",
+            "headerName": "Long Run",
+            "headerTooltip": "The ten-year-average projection, for long-run variables.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Philadelphia"
+  },
+  "philadelphia_anxious_index_federal_reserve_obb": {
+    "name": "Philadelphia Fed Anxious Index",
+    "description": "Survey-based probability of a decline in real GDP next quarter, with the NBER recession indicator.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "philadelphia_anxious_index_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "philadelphia_anxious_index"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "anxious_index",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey quarter, as a quarter-start date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "anxious_index",
+            "formatterFn": "percent",
+            "headerName": "Anxious Index",
+            "headerTooltip": "The probability of a decline in real GDP next quarter, percent.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "recession",
+            "formatterFn": "int",
+            "headerName": "Recession",
+            "headerTooltip": "The NBER recession indicator for the quarter, when present.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Philadelphia"
+  },
+  "philadelphia_gdpplus_federal_reserve_obb": {
+    "name": "Philadelphia Fed GDPplus",
+    "description": "Annualized quarterly GDPplus output growth with the underlying GDP and GDI growth rates and the NBER recession indicator.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "philadelphia_gdpplus_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "philadelphia_gdpplus"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "gdpplus",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The quarter, as a quarter-start date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "gdpplus",
+            "formatterFn": "percent",
+            "headerName": "GDPplus",
+            "headerTooltip": "The GDPplus annualized growth rate, percent.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "gdp_growth",
+            "formatterFn": "percent",
+            "headerName": "GDP Growth",
+            "headerTooltip": "The expenditure-side GDP growth rate, percent.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "gdi_growth",
+            "formatterFn": "percent",
+            "headerName": "GDI Growth",
+            "headerTooltip": "The income-side GDI growth rate, percent.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "recession",
+            "formatterFn": "int",
+            "headerName": "Recession",
+            "headerTooltip": "The NBER recession indicator for the quarter, 1 in recession.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Philadelphia"
+  },
+  "philadelphia_partisan_conflict_federal_reserve_obb": {
+    "name": "Philadelphia Fed Partisan Conflict Index",
+    "description": "Monthly index of the degree of political disagreement among U.S. federal politicians.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "philadelphia_partisan_conflict_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "philadelphia_partisan_conflict"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "partisan_conflict",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The month, as a month-start date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "partisan_conflict",
+            "formatterFn": "none",
+            "headerName": "Partisan Conflict",
+            "headerTooltip": "The Partisan Conflict Index value.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Philadelphia"
+  },
+  "philadelphia_state_coincident_index_federal_reserve_obb": {
+    "name": "Philadelphia Fed State Coincident Indexes",
+    "description": "Monthly state-level coincident indexes of current economic conditions, or the diffusion of state-index increases.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "philadelphia_state_coincident_index_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "philadelphia_state_coincident_index"
+    },
+    "params": [
+      {
+        "label": "Dataset",
+        "description": "The per-state coincident indexes, or the one- and three-month diffusion of state index increases.",
+        "optional": true,
+        "type": "text",
+        "value": "indexes",
+        "show": true,
+        "options": [
+          {
+            "label": "Diffusion",
+            "value": "diffusion"
+          },
+          {
+            "label": "Indexes",
+            "value": "indexes"
+          }
+        ],
+        "paramName": "dataset"
+      },
+      {
+        "label": "State",
+        "description": "Filter to a single series; for 'indexes' a two-letter state code (e.g. 'PA') or 'US', for 'diffusion' a code ('DI1' or 'DI3').",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "state"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "state_coincident_index",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The month, as a month-start date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "state",
+            "formatterFn": null,
+            "headerName": "State",
+            "headerTooltip": "The two-letter state code or 'US', or the diffusion-series code ('DI1' or 'DI3').",
+            "cellDataType": "text"
+          },
+          {
+            "field": "value",
+            "formatterFn": "none",
+            "headerName": "Value",
+            "headerTooltip": "The index value.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Philadelphia"
+  },
+  "philadelphia_livingston_survey_federal_reserve_obb": {
+    "name": "Philadelphia Fed Livingston Survey",
+    "description": "Semiannual consensus economist forecasts by horizon for the selected variable.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "philadelphia_livingston_survey_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "philadelphia_livingston_survey"
+    },
+    "params": [
+      {
+        "label": "Variable",
+        "description": "The forecast variable sheet code, e.g. 'RGDPX' for real GDP.",
+        "optional": true,
+        "type": "text",
+        "value": "RGDPX",
+        "show": true,
+        "options": [
+          {
+            "label": "Auto Sales",
+            "value": "AUTODF"
+          },
+          {
+            "label": "Nonresidential Fixed Investment",
+            "value": "BFIX"
+          },
+          {
+            "label": "Corporate Profits After Tax",
+            "value": "CPAT"
+          },
+          {
+            "label": "Consumer Price Index",
+            "value": "CPI"
+          },
+          {
+            "label": "Nominal GDP",
+            "value": "GDPX"
+          },
+          {
+            "label": "Industrial Production",
+            "value": "IP"
+          },
+          {
+            "label": "Producer Price Index",
+            "value": "PPI"
+          },
+          {
+            "label": "Prime Rate",
+            "value": "PRIME"
+          },
+          {
+            "label": "Real GDP",
+            "value": "RGDPX"
+          },
+          {
+            "label": "Retail Trade",
+            "value": "RTTR"
+          },
+          {
+            "label": "S&P 500 Stock Price Index",
+            "value": "SPIF"
+          },
+          {
+            "label": "3-Month Treasury Bill Rate",
+            "value": "TBILL"
+          },
+          {
+            "label": "10-Year Treasury Bond Rate",
+            "value": "TBOND"
+          },
+          {
+            "label": "Housing Starts",
+            "value": "TPHS"
+          },
+          {
+            "label": "Unemployment Rate",
+            "value": "UNPR"
+          },
+          {
+            "label": "Average Weekly Earnings, Manufacturing",
+            "value": "WMFG"
+          }
+        ],
+        "paramName": "variable"
+      },
+      {
+        "label": "Statistic",
+        "description": "The cross-forecaster summary statistic.",
+        "optional": true,
+        "type": "text",
+        "value": "mean",
+        "show": true,
+        "options": [
+          {
+            "label": "Mean",
+            "value": "mean"
+          },
+          {
+            "label": "Median",
+            "value": "median"
+          }
+        ],
+        "paramName": "statistic"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "livingston_survey",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey date, June or December.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "base_prior",
+            "formatterFn": "none",
+            "headerName": "Base Prior",
+            "headerTooltip": "The prior-period base value ('BP').",
+            "cellDataType": "number"
+          },
+          {
+            "field": "base_current",
+            "formatterFn": "none",
+            "headerName": "Base Current",
+            "headerTooltip": "The current-period base value ('ZM').",
+            "cellDataType": "number"
+          },
+          {
+            "field": "six_month",
+            "formatterFn": "none",
+            "headerName": "Six Month",
+            "headerTooltip": "The six-month-ahead forecast ('6M').",
+            "cellDataType": "number"
+          },
+          {
+            "field": "twelve_month",
+            "formatterFn": "none",
+            "headerName": "Twelve Month",
+            "headerTooltip": "The twelve-month-ahead forecast ('12M').",
+            "cellDataType": "number"
+          },
+          {
+            "field": "base_year",
+            "formatterFn": "none",
+            "headerName": "Base Year",
+            "headerTooltip": "The base-year annual value ('BY').",
+            "cellDataType": "number"
+          },
+          {
+            "field": "current_year",
+            "formatterFn": "none",
+            "headerName": "Current Year",
+            "headerTooltip": "The current-year annual value ('ZY').",
+            "cellDataType": "number"
+          },
+          {
+            "field": "one_year",
+            "formatterFn": "none",
+            "headerName": "One Year",
+            "headerTooltip": "The one-year-ahead annual forecast ('1Y').",
+            "cellDataType": "number"
+          },
+          {
+            "field": "two_year",
+            "formatterFn": "none",
+            "headerName": "Two Year",
+            "headerTooltip": "The two-year-ahead annual forecast ('2Y').",
+            "cellDataType": "number"
+          },
+          {
+            "field": "ten_year",
+            "formatterFn": "none",
+            "headerName": "Ten Year",
+            "headerTooltip": "The ten-year-ahead annual forecast ('10Y').",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Philadelphia"
+  },
+  "philadelphia_manufacturing_outlook_federal_reserve_obb": {
+    "name": "Philadelphia Fed Manufacturing Business Outlook Survey",
+    "description": "Monthly manufacturing diffusion indexes, one column per indicator code, for the Third Federal Reserve District.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "philadelphia_manufacturing_outlook_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "philadelphia_manufacturing_outlook"
+    },
+    "params": [
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "manufacturing_outlook",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month, as a month-start date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Philadelphia"
+  },
+  "philadelphia_nonmanufacturing_outlook_federal_reserve_obb": {
+    "name": "Philadelphia Fed Nonmanufacturing Business Outlook Survey",
+    "description": "Monthly service-sector diffusion indexes and response shares by indicator, adjustment, horizon, and response component.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "philadelphia_nonmanufacturing_outlook_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "philadelphia_nonmanufacturing_outlook"
+    },
+    "params": [
+      {
+        "label": "Adjustment",
+        "description": "The seasonally-adjusted or not-seasonally-adjusted series; each carries both the diffusion indexes and the increase/no-change/decrease response shares.",
+        "optional": true,
+        "type": "text",
+        "value": "sa",
+        "show": true,
+        "options": [
+          {
+            "label": "Not Seasonally Adjusted",
+            "value": "nsa"
+          },
+          {
+            "label": "Seasonally Adjusted",
+            "value": "sa"
+          }
+        ],
+        "paramName": "adjustment"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "nonmanufacturing_outlook",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The survey month, as a month-start date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Philadelphia"
+  },
+  "philadelphia_term_structure_inflation_federal_reserve_obb": {
+    "name": "Philadelphia Fed ATSIX Inflation Expectations",
+    "description": "Monthly Aruoba term structure of expected CPI inflation by horizon, the ex-ante real-rate term structure, or the Nelson-Siegel factors, one column per horizon or factor.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "philadelphia_term_structure_inflation_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "philadelphia_term_structure_inflation"
+    },
+    "params": [
+      {
+        "label": "Dataset",
+        "description": "The expected-inflation term structure, the ex-ante real-rate term structure, or the fitted Nelson-Siegel factors. Every forecast horizon, or every Nelson-Siegel factor, is returned as its own column.",
+        "optional": true,
+        "type": "text",
+        "value": "inflation",
+        "show": true,
+        "options": [
+          {
+            "label": "Factors",
+            "value": "factors"
+          },
+          {
+            "label": "Inflation",
+            "value": "inflation"
+          },
+          {
+            "label": "Real",
+            "value": "real"
+          }
+        ],
+        "paramName": "dataset"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "term_structure_inflation",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The vintage month, as a month-start date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "Philadelphia"
+  },
+  "philadelphia_publications_federal_reserve_obb": {
+    "name": "Philadelphia Fed Publications",
+    "description": "Philadelphia Fed publications indexed on Fed in Print. Select one or more documents to view.",
+    "category": "Federal Reserve",
+    "type": "multi_file_viewer",
+    "widgetId": "philadelphia_publications_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "philadelphia_publications"
+    },
+    "params": [
+      {
+        "label": "Series",
+        "description": "Filter the catalog by publication series.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "options": [
+          {
+            "label": "Working Papers",
+            "value": "working_papers"
+          },
+          {
+            "label": "Business Review",
+            "value": "business_review"
+          },
+          {
+            "label": "Speech",
+            "value": "speech"
+          },
+          {
+            "label": "Consumer Finance Institute discussion papers",
+            "value": "consumer_finance_institute_discussion_papers"
+          },
+          {
+            "label": "Economic Insights",
+            "value": "economic_insights"
+          },
+          {
+            "label": "Consumer Finance Institute Research Briefs and Special Reports",
+            "value": "consumer_finance_institute_research_briefs_and_special_reports"
+          },
+          {
+            "label": "Research Rap Special Report",
+            "value": "research_rap_special_report"
+          },
+          {
+            "label": "Community Affairs Discussion Paper",
+            "value": "community_affairs_discussion_paper"
+          },
+          {
+            "label": "Banking Trends",
+            "value": "banking_trends"
+          },
+          {
+            "label": "Regional Spotlight",
+            "value": "regional_spotlight"
+          },
+          {
+            "label": "Cascade Focus",
+            "value": "cascade_focus"
+          },
+          {
+            "label": "Research Brief",
+            "value": "research_brief"
+          },
+          {
+            "label": "Consumer Finance Institute conference summaries",
+            "value": "consumer_finance_institute_conference_summaries"
+          },
+          {
+            "label": "Monograph",
+            "value": "monograph"
+          },
+          {
+            "label": "Beyond the Numbers",
+            "value": "beyond_the_numbers"
+          },
+          {
+            "label": "Banking Policy Review",
+            "value": "banking_policy_review"
+          }
+        ],
+        "paramName": "series"
+      },
+      {
+        "label": "Start Date",
+        "description": "Start date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "start_date"
+      },
+      {
+        "label": "End Date",
+        "description": "End date of the data, in YYYY-MM-DD format.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "end_date"
+      },
+      {
+        "label": "Limit",
+        "description": "The maximum number of documents to return.",
+        "optional": true,
+        "type": "number",
+        "value": 20,
+        "show": true,
+        "paramName": "limit"
+      },
+      {
+        "label": "Offset",
+        "description": "The result offset to begin from, for pagination.",
+        "optional": true,
+        "type": "number",
+        "value": 0,
+        "show": true,
+        "paramName": "offset"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      },
+      {
+        "multiSelect": true,
+        "optionsEndpoint": "regional_publications_choices",
+        "optionsParams": {
+          "district": "philadelphia",
+          "end_date": "$end_date",
+          "limit": "$limit",
+          "offset": "$offset",
+          "series": "$series",
+          "start_date": "$start_date"
+        },
+        "paramName": "url",
+        "roles": [
+          "fileSelector"
+        ],
+        "show": false,
+        "type": "endpoint"
+      }
+    ],
+    "endpoint": "regional_publications_download",
+    "runButton": false,
+    "gridData": {
+      "w": 30,
+      "h": 27
+    },
+    "data": {},
+    "source": [
+      "Federal Reserve Bank of Philadelphia"
+    ],
+    "subCategory": "Philadelphia",
+    "refetchInterval": false
+  }
+}

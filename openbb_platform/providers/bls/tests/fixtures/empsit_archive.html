@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html><head><title>Employment Situation Archived News Releases</title></head><body>
+<h4 id="current">Current Edition of Employment Situation</h4>
+<h4 id="2026">2026 Employment Situation</h4>
+<ul>
+  <!-- BLS stale aria-labels: the three most recent entries all carry the
+       same outdated "February 2026" aria-label, while the visible list text
+       holds the correct reference month. The scraper must trust the list. -->
+  <li><a href="/news.release/archives/empsit_05082026.htm">April 2026 Employment Situation</a>
+      (<a aria-label="February 2026 Employment Situation PDF"
+          href="/news.release/archives/empsit_05082026.pdf">PDF</a>)</li>
+  <li><a href="/news.release/archives/empsit_04032026.htm">March 2026 Employment Situation</a>
+      (<a aria-label="February 2026 Employment Situation PDF"
+          href="/news.release/archives/empsit_04032026.pdf">PDF</a>)</li>
+  <li><a href="/news.release/archives/empsit_03062026.htm">February 2026 Employment Situation</a>
+      (<a aria-label="February 2026 Employment Situation PDF"
+          href="/news.release/archives/empsit_03062026.pdf">PDF</a>)</li>
+</ul>
+<h4 id="1995">1995 Employment Situation</h4>
+<ul>
+  <!-- Old entry: no aria-label, title lives only in the <li> text. -->
+  <li>January 1995 Employment Situation
+      (<a href="/news.release/archives/empsit_02031995.pdf">PDF</a>)</li>
+  <!-- Duplicate href whose <li> text is just "PDF" → aria-label fallback,
+       and the descriptive title already stored must not be clobbered. -->
+  <li><a aria-label="April 2026 Employment Situation PDF"
+         href="/news.release/archives/empsit_05082026.pdf">PDF</a></li>
+  <!-- Malformed date token → silently skipped. -->
+  <li><a href="/news.release/archives/empsit_13352026.pdf">malformed</a></li>
+</ul>
+<!-- Bare anchor: no <li>, no aria, empty text → date-based fallback title. -->
+<p>Bare anchor: <a href="/news.release/archives/empsit_01092026.pdf"></a></p>
+</body></html>

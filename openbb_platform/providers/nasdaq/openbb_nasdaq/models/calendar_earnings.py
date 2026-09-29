@@ -1,7 +1,5 @@
 """Nasdaq Earnings Calendar Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import (
     date as dateType,
     datetime,
@@ -13,8 +11,11 @@ from openbb_core.provider.standard_models.calendar_earnings import (
     CalendarEarningsData,
     CalendarEarningsQueryParams,
 )
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
+
+from openbb_nasdaq.utils.constants import CELL_CLICK_SYMBOL
 
 
 class NasdaqCalendarEarningsQueryParams(CalendarEarningsQueryParams):
@@ -40,6 +41,10 @@ class NasdaqCalendarEarningsData(CalendarEarningsData):
         "market_cap": "marketCap",
     }
 
+    symbol: str = Field(
+        description=DATA_DESCRIPTIONS.get("symbol", ""),
+        json_schema_extra={"x-widget_config": CELL_CLICK_SYMBOL},
+    )
     eps_actual: float | None = Field(
         default=None,
         description="The actual earnings per share (USD) announced.",
@@ -64,7 +69,7 @@ class NasdaqCalendarEarningsData(CalendarEarningsData):
         default=None,
         description="The reporting time - e.g. after market close.",
     )
-    market_cap: int | None = Field(
+    market_cap: float | None = Field(
         default=None,
         description="The market cap (USD) of the reporting entity.",
     )
@@ -143,7 +148,6 @@ class NasdaqCalendarEarningsFetcher(
     @staticmethod
     def transform_query(params: dict[str, Any]) -> NasdaqCalendarEarningsQueryParams:
         """Transform the query params."""
-        # pylint: disable=import-outside-toplevel
         from datetime import timedelta
 
         now = datetime.today().date()
@@ -164,12 +168,10 @@ class NasdaqCalendarEarningsFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the Nasdaq endpoint."""
-        # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
-        from openbb_nasdaq.utils.helpers import get_headers, date_range  # noqa
-        from openbb_core.provider.utils.helpers import amake_request  # noqa
+        import asyncio
 
-        IPO_HEADERS = get_headers(accept_type="json")
+        from openbb_nasdaq.utils.helpers import date_range, get_nasdaq_data
+
         data: list[dict] = []
         dates = [
             date.strftime("%Y-%m-%d")
@@ -179,13 +181,13 @@ class NasdaqCalendarEarningsFetcher(
         async def get_calendar_data(date: str) -> None:
             """Get the calendar data for the given date."""
             response: list = []
-            url = f"https://api.nasdaq.com/api/calendar/earnings?date={date}"
-            r_json = await amake_request(url=url, headers=IPO_HEADERS, timeout=5)
-            if r_json.get("data", {}).get("rows", []):  # type: ignore
-                response = r_json["data"]["rows"]  # type: ignore
+            payload = await get_nasdaq_data(f"calendar/earnings?date={date}", timeout=5)
+
+            if (payload or {}).get("rows"):
+                response = payload["rows"]
                 _as_of_date = datetime.strptime(
-                    r_json["data"]["asOf"],
-                    "%a, %b %d, %Y",  # type: ignore
+                    payload["asOf"],
+                    "%a, %b %d, %Y",
                 ).date()
                 if response:
                     data.extend([{**d, "date": _as_of_date} for d in response])

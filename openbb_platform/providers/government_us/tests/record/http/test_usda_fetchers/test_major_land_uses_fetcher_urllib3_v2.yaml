@@ -1,0 +1,621 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.ers.usda.gov/data-products/major-land-uses
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Cache-Control:
+      - must-revalidate, no-cache, private
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en
+      Content-Security-Policy:
+      - 'connect-src ''self'' https://*.google-analytics.com https://api.data.gov
+        https://dap.digitalgov.gov; frame-src ''self'' https://*.ers.usda.gov https://*.tableau.com
+        https://www.google.com; img-src ''self'' https://ers.usda.gov https://ewapsdev.ers.usda.gov
+        https://ewapsbeta.ers.usda.gov http://usda.sc.omtrdc.net https://www.googletagmanager.com
+        data: w3.org/svg/2000 https://latex.codecogs.com https://www-tx.ers.usda.gov;
+        script-src ''self'' ''unsafe-inline'' https://www.googletagmanager.com https://*.google-analytics.com
+        https://*.tableau.com https://api.data.gov https://www.gstatic.com/ https://cdnjs.cloudflare.com
+        https://dap.digitalgov.gov https://www.google.com; script-src-attr ''self''
+        ''unsafe-inline''; script-src-elem ''self'' ''unsafe-inline'' https://www.googletagmanager.com
+        https://*.google-analytics.com https://*.tableau.com https://api.data.gov
+        https://www.gstatic.com https://cdnjs.cloudflare.com https://dap.digitalgov.gov
+        https://www.google.com; style-src ''self'' ''unsafe-inline'' https://*.google-analytics.com
+        https://googletagmanager.com https://cdnjs.cloudflare.com www.ers.usda.gov;
+        style-src-attr ''self'' ''unsafe-inline''; style-src-elem ''self'' ''unsafe-inline''
+        https://*.google-analytics.com https://googletagmanager.com https://api.data.gov
+        https://cdnjs.cloudflare.com www.ers.usda.gov; frame-ancestors ''self''; upgrade-insecure-requests'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Wed, 22 Jul 2026 19:30:45 GMT
+      Expires:
+      - Sun, 19 Nov 1978 05:00:00 GMT
+      Permissions-Policy:
+      - accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(),
+        microphone=(), payment=(), usb=()
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - Apache
+      Set-Cookie:
+      - ARRAffinity=dfe4dc51965494ba4e57b2f9926883501190138659b8143057463faf55be9359;Path=/;HttpOnly;Secure;Domain=www.ers.usda.gov
+      - ARRAffinitySameSite=dfe4dc51965494ba4e57b2f9926883501190138659b8143057463faf55be9359;Path=/;HttpOnly;SameSite=None;Secure;Domain=www.ers.usda.gov
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding,Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - HIT
+      X-Drupal-Cache-Contexts:
+      - cookies:big_pipe_nojs languages layout_builder_is_active:node route session.exists
+        theme timezone url user.permissions user.roles
+      X-Drupal-Cache-Max-Age:
+      - -1 (Permanent)
+      X-Drupal-Cache-Tags:
+      - block_content:42 block_content:43 block_content:44 block_content:45 block_content:46
+        block_content:47 block_content:48 block_content:49 block_content:50 block_content:51
+        block_content:52 block_content:53 block_content:54 block_content:55 block_view
+        config:block.block.erslinks config:block.block.footersignup config:block.block.footersociallinks
+        config:block.block.navanalysiscolumn1 config:block.block.navanalysiscolumn2
+        config:block.block.navanalysiscolumn3 config:block.block.navdatacolumn1 config:block.block.navdatacolumn2
+        config:block.block.navdatacolumn3 config:block.block.navnewsroomcolumn1 config:block.block.navnewsroomcolumn2
+        config:block.block.navnewsroomcolumn3 config:block.block.navsecondarylinks
+        config:block.block.usdalinks config:block.block.uswds_ers_about config:block.block.uswds_ers_account_menu
+        config:block.block.uswds_ers_adobeanalytics config:block.block.uswds_ers_branding
+        config:block.block.uswds_ers_breadcrumbs config:block.block.uswds_ers_contactus
+        config:block.block.uswds_ers_content config:block.block.uswds_ers_covid19
+        config:block.block.uswds_ers_footer config:block.block.uswds_ers_googleanalyticsdap
+        config:block.block.uswds_ers_googleanalyticsers config:block.block.uswds_ers_googlesiteverification
+        config:block.block.uswds_ers_help config:block.block.uswds_ers_help_2 config:block.block.uswds_ers_local_actions
+        config:block.block.uswds_ers_local_tasks config:block.block.uswds_ers_loginloginlogoutmyaccount
+        config:block.block.uswds_ers_main_menu config:block.block.uswds_ers_messages
+        config:block.block.uswds_ers_newsroom config:block.block.uswds_ers_page_title
+        config:block.block.uswds_ers_pagestatusarchived config:block.block.uswds_ers_pagestatusdraft
+        config:block.block.uswds_ers_pagestatusunpublished config:block.block.uswds_ers_search
+        config:block.block.uswds_ers_sidenav_data_products config:block.block.uswds_ers_sidenav_developer
+        config:block.block.uswds_ers_sidenav_privacy config:block.block.uswds_ers_sidenav_topics
+        config:block.block.uswds_ers_sitewidealert config:block_list config:context.context.data_products_data_files
+        config:context.context.data_products_sidenav config:context.context.ers_csat_survey_invite
+        config:context.context.hero_default config:core.entity_view_display.node.data_products.default
+        config:easy_breadcrumb.settings config:filter.format.full_html config:system.site
+        config:user.role.anonymous config:workflows.workflow.cms_posting context_block_page
+        http_response local_task node:3747 node:3901 node:3956 node:7112 node:7663
+        node:7664 node_view rendered scheduled_transitions_for:node:3747 user:0
+      X-Drupal-Dynamic-Cache:
+      - MISS
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Generator:
+      - Drupal 10 (https://www.drupal.org)
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.ers.usda.gov/media/5639/all-data-in-csv-comma-separated-values-format.csv
+  response:
+    body:
+      string: 'ID,Region,Region or State,Year,Land use,Value,Units,Release date,Source
+
+        941,48 States,48 States,2012,Total land,1891100,"1,000 acres","September 13,
+        2024.","USDA, Economic Research Service, Major Land Uses."
+
+        944,U.S. total,U.S. total,2012,Total land,2260420,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        1004,48 States,48 States,2017,Total land,1891099,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        1007,U.S. total,U.S. total,2017,Total land,2260420,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        1949,48 States,48 States,2012,Total cropland,391524,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        1952,U.S. total,U.S. total,2012,Total cropland,391975,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        2012,48 States,48 States,2017,Total cropland,390084,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        2015,U.S. total,U.S. total,2017,Total cropland,390223,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        2957,48 States,48 States,2012,Cropland used for crops,339708,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        2960,U.S. total,U.S. total,2012,Cropland used for crops,339900,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        3020,48 States,48 States,2017,Cropland used for crops,338012,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        3023,U.S. total,U.S. total,2017,Cropland used for crops,338093,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        3965,48 States,48 States,2012,Cropland used for pasture,12743,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        3968,U.S. total,U.S. total,2012,Cropland used for pasture,12769,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        4028,48 States,48 States,2017,Cropland used for pasture,13420,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        4031,U.S. total,U.S. total,2017,Cropland used for pasture,13436,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        4973,48 States,48 States,2012,Cropland idled,39072,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        4976,U.S. total,U.S. total,2012,Cropland idled,39306,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        5036,48 States,48 States,2017,Cropland idled,38652,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        5039,U.S. total,U.S. total,2017,Cropland idled,38695,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        5981,48 States,48 States,2012,Grassland pasture and range,654020,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        5984,U.S. total,U.S. total,2012,Grassland pasture and range,655486,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        6044,48 States,48 States,2017,Grassland pasture and range,657816,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        6047,U.S. total,U.S. total,2017,Grassland pasture and range,659292,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        6989,48 States,48 States,2012,Forest-use land (all),538566,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        6992,U.S. total,U.S. total,2012,Forest-use land (all),631682,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        7052,48 States,48 States,2017,Forest-use land (all),528605,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        7055,U.S. total,U.S. total,2017,Forest-use land (all),621945,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        7997,48 States,48 States,2012,Grazed forest-use land grazed,129783,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        8000,U.S. total,U.S. total,2012,Grazed forest-use land grazed,129813,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        8060,48 States,48 States,2017,Grazed forest-use land grazed,131636,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        8063,U.S. total,U.S. total,2017,Grazed forest-use land grazed,131792,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        9005,48 States,48 States,2012,Ungrazed forest-use land,408783,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        9008,U.S. total,U.S. total,2012,Ungrazed forest-use land,501869,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        9068,48 States,48 States,2017,Ungrazed forest-use land,396969,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        9071,U.S. total,U.S. total,2017,Ungrazed forest-use land,490153,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        10013,48 States,48 States,2012,All special uses of land,168679,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        10016,U.S. total,U.S. total,2012,All special uses of land,315872,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        10076,48 States,48 States,2017,All special uses of land,169334,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        10079,U.S. total,U.S. total,2017,All special uses of land,317661,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        11021,48 States,48 States,2012,Land in rural transportation facilities,26409,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        11024,U.S. total,U.S. total,2012,Land in rural transportation facilities,26941,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        11084,48 States,48 States,2017,Land in rural transportation facilities,25233,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        11087,U.S. total,U.S. total,2017,Land in rural transportation facilities,25611,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        12029,48 States,48 States,2012,Land in rural parks and wildlife areas,108980,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        12032,U.S. total,U.S. total,2012,Land in rural parks and wildlife areas,253613,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        12092,48 States,48 States,2017,Land in rural parks and wildlife areas,112396,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        12095,U.S. total,U.S. total,2017,Land in rural parks and wildlife areas,258038,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        13037,48 States,48 States,2012,Land in defense and industrial areas,24988,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        13040,U.S. total,U.S. total,2012,Land in defense and industrial areas,26995,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        13100,48 States,48 States,2017,Land in defense and industrial areas,25739,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        13103,U.S. total,U.S. total,2017,Land in defense and industrial areas,28025,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        14045,48 States,48 States,2012,"Farmsteads, roads, and miscellaneous farmland",8301,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        14048,U.S. total,U.S. total,2012,"Farmsteads, roads, and miscellaneous farmland",8323,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        14108,48 States,48 States,2017,"Farmsteads, roads, and miscellaneous farmland",5967,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        14111,U.S. total,U.S. total,2017,"Farmsteads, roads, and miscellaneous farmland",5985,"1,000
+        acres","September 13, 2024.","USDA, Economic Research Service, Major Land
+        Uses."
+
+        15053,48 States,48 States,2012,Land in urban areas,69441,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        15056,U.S. total,U.S. total,2012,Land in urban areas,69864,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        15116,48 States,48 States,2017,Land in urban areas,73870,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        15119,U.S. total,U.S. total,2017,Land in urban areas,74305,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        16061,48 States,48 States,2012,Miscellaneous other land,68870,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        16064,U.S. total,U.S. total,2012,Miscellaneous other land,195542,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        16124,48 States,48 States,2017,Miscellaneous other land,71390,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        16127,U.S. total,U.S. total,2017,Miscellaneous other land,196994,"1,000 acres","September
+        13, 2024.","USDA, Economic Research Service, Major Land Uses."
+
+        '
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Cache-Control:
+      - must-revalidate, no-cache, private
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment; filename="MajorLandUse.csv"
+      Content-Language:
+      - en
+      Content-Length:
+      - '9856'
+      Content-Security-Policy:
+      - 'connect-src ''self'' https://*.google-analytics.com https://api.data.gov
+        https://dap.digitalgov.gov; frame-src ''self'' https://*.ers.usda.gov https://*.tableau.com
+        https://www.google.com; img-src ''self'' https://ers.usda.gov https://ewapsdev.ers.usda.gov
+        https://ewapsbeta.ers.usda.gov http://usda.sc.omtrdc.net https://www.googletagmanager.com
+        data: w3.org/svg/2000 https://latex.codecogs.com https://www-tx.ers.usda.gov;
+        script-src ''self'' ''unsafe-inline'' https://www.googletagmanager.com https://*.google-analytics.com
+        https://*.tableau.com https://api.data.gov https://www.gstatic.com/ https://cdnjs.cloudflare.com
+        https://dap.digitalgov.gov https://www.google.com; script-src-attr ''self''
+        ''unsafe-inline''; script-src-elem ''self'' ''unsafe-inline'' https://www.googletagmanager.com
+        https://*.google-analytics.com https://*.tableau.com https://api.data.gov
+        https://www.gstatic.com https://cdnjs.cloudflare.com https://dap.digitalgov.gov
+        https://www.google.com; style-src ''self'' ''unsafe-inline'' https://*.google-analytics.com
+        https://googletagmanager.com https://cdnjs.cloudflare.com www.ers.usda.gov;
+        style-src-attr ''self'' ''unsafe-inline''; style-src-elem ''self'' ''unsafe-inline''
+        https://*.google-analytics.com https://googletagmanager.com https://api.data.gov
+        https://cdnjs.cloudflare.com www.ers.usda.gov; frame-ancestors ''self''; upgrade-insecure-requests'
+      Content-Type:
+      - text/csv; charset=UTF-8
+      Date:
+      - Wed, 22 Jul 2026 19:30:47 GMT
+      Expires:
+      - Sun, 19 Nov 1978 05:00:00 GMT
+      Permissions-Policy:
+      - accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(),
+        microphone=(), payment=(), usb=()
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - Apache
+      Set-Cookie:
+      - ARRAffinity=3bbcd4c69a18185b84c00f0788ada2b788477618a76b785721e3fd9848e186b0;Path=/;HttpOnly;Secure;Domain=www.ers.usda.gov
+      - ARRAffinitySameSite=3bbcd4c69a18185b84c00f0788ada2b788477618a76b785721e3fd9848e186b0;Path=/;HttpOnly;SameSite=None;Secure;Domain=www.ers.usda.gov
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - UNCACHEABLE (no cacheability)
+      X-Drupal-Dynamic-Cache:
+      - UNCACHEABLE (no cacheability)
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Generator:
+      - Drupal 10 (https://www.drupal.org)
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,41 +1,64 @@
-# OpenBB ODP Extensions Cookiecutter Template
+{%- set types = cookiecutter.extension_types.split(',') | map('trim') | list -%}
+{%- set is_all = 'all' in types -%}
+{%- set has_router = is_all or 'router' in types -%}
+{%- set has_provider = is_all or 'provider' in types -%}
+{%- set has_charting = is_all or 'charting' in types -%}
+{%- set has_obbject = is_all or 'obbject' in types -%}
+{%- set has_on_command_output = is_all or 'on_command_output' in types -%}
+# {{ cookiecutter.project_name }}
 
-## Introduction
+An extension for the OpenBB Platform, generated with `openbb-cookiecutter`.
 
-This is the generated cookiecutter template for the OpenBB Python Package.
-It is used to help you create a new extension that can be integrated into the existing structure
+## Contents
+{% if has_router %}
+- `{{ cookiecutter.package_name }}/routers/{{ cookiecutter.router_name }}.py`: commands under `obb.{{ cookiecutter.router_name }}`.
+{%- endif %}
+{%- if has_provider %}
+- `{{ cookiecutter.package_name }}/providers/{{ cookiecutter.provider_name }}/`: the `{{ cookiecutter.provider_name }}` provider, with an `Example` model and an `EquityHistorical` standard-model implementation.
+{%- endif %}
+{%- if has_charting %}
+- `{{ cookiecutter.package_name }}/routers/{{ cookiecutter.router_name }}_views.py`: charts for `{{ cookiecutter.router_name }}` commands, used when `openbb-charting` is installed.
+{%- endif %}
+{%- if has_obbject %}
+- `{{ cookiecutter.package_name }}/obbject/{{ cookiecutter.obbject_name }}/__init__.py`: the `to_string` and `{{ cookiecutter.obbject_name }}` accessors on every command result.
+{%- endif %}
+{%- if has_on_command_output %}
+- `{{ cookiecutter.package_name }}/obbject/{{ cookiecutter.obbject_name }}/on_command_output.py`: a plugin that runs after `/{{ cookiecutter.router_name }}/candles`.
+{%- endif %}
+{%- if has_charting and not has_router %}
 
-With it you can:
+The views are named after `{{ cookiecutter.router_name }}` routes, so pair them with a router extension that uses that name.
+{%- endif %}
 
-- Create a new extension
-- Build custom commands
-- Interact with the standardization framework
-- Build custom services and applications on top of the framework
+## Development
 
-## Getting Started
+Create an environment with [uv](https://docs.astral.sh/uv/) and install the package in editable mode with its development dependencies:
 
-We recommend you check out the files in the following order:
-{% set types = cookiecutter.extension_types.split(',') | map('trim') | list %}
-{% if 'router' in types or 'all' in types %}
-* `{{cookiecutter.package_name}}/routers/{{cookiecutter.router_name}}.py`
-{% endif %}
-{% if 'provider' in types or 'all' in types %}
-* `{{cookiecutter.package_name}}/providers/{{cookiecutter.provider_name}}/models/example.py`
-* `{{cookiecutter.package_name}}/providers/{{cookiecutter.provider_name}}/__init__.py`
-{% endif %}
-{% if 'obbject' in types or 'on_command_output' in types or 'all' in types %}
-* `{{cookiecutter.package_name}}/obbject/{{cookiecutter.obbject_name}}/__init__.py`
-{% endif %}
-{% if 'charting' in types or 'all' in types %}
-* `{{cookiecutter.package_name}}/routers/{{cookiecutter.router_name}}_views.py`
-{% endif %}
-{% if 'charting' in types and 'router' not in types and 'all' not in types %}
+```bash
+uv sync
+```
 
-> **Note:** You selected charting without a router. The views file references `{{cookiecutter.router_name}}` naming conventions. You will need to pair this with an existing router extension that uses the same name.
-{% endif %}
+Build the `openbb` package so the new commands appear under `obb`:
 
-Check out the developer [documentation](https://docs.openbb.co/python/developer) for more information on getting started making OpenBB extensions.
+```bash
+uv run openbb-build
+```
+{%- if has_on_command_output %}
 
----
+On-command-output plugins run on every matching result, so OpenBB loads them only when explicitly allowed:
 
-🦋 Made with [openbb cookiecutter](https://github.com/openbb-finance/OpenBB/cookiecutter).
+```bash
+export OPENBB_ALLOW_ON_COMMAND_OUTPUT=true
+```
+{%- endif %}
+
+Lint, type check, and test:
+
+```bash
+uv run ruff format --check .
+uv run ruff check .
+uv run ty check {{ cookiecutter.package_name }}
+uv run pytest
+```
+
+Serve the commands over the REST API with `uv run openbb-api`.

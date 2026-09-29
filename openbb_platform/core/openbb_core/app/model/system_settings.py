@@ -5,6 +5,8 @@ import platform as pl  # I do this so that the import doesn't conflict with the 
 from pathlib import Path
 from typing import Literal
 
+from pydantic import ConfigDict, Field, field_validator, model_validator
+
 from openbb_core.app.constants import (
     HOME_DIRECTORY,
     OPENBB_DIRECTORY,
@@ -16,7 +18,6 @@ from openbb_core.app.model.api_settings import APISettings
 from openbb_core.app.model.python_settings import PythonSettings
 from openbb_core.app.version import CORE_VERSION, VERSION
 from openbb_core.env import Env
-from pydantic import ConfigDict, Field, field_validator, model_validator
 
 
 class SystemSettings(Tagged):
@@ -57,6 +58,8 @@ class SystemSettings(Tagged):
     headless: bool = False
     allow_mutable_extensions: bool = getattr(Env(), "ALLOW_MUTABLE_EXTENSIONS", False)
     allow_on_command_output: bool = getattr(Env(), "ALLOW_ON_COMMAND_OUTPUT", False)
+    charting_extension: str | None = getattr(Env(), "CHARTING_EXTENSION", None)
+    charting_backend: str | None = getattr(Env(), "CHARTING_BACKEND", None)
 
     model_config = ConfigDict(validate_assignment=True, frozen=True)
 
@@ -71,28 +74,24 @@ class SystemSettings(Tagged):
         """Create an empty JSON file."""
         path.write_text(json.dumps(obj=template or {}, indent=4), encoding="utf-8")
 
-    # TODO: Figure out why this works only opposite to what the docs say
-    # https://docs.pydantic.dev/latest/concepts/validators/#model-validators
-    # based on docs first argument should be self, but it works only with cls
-    @model_validator(mode="after")  # type: ignore
-    @classmethod
-    def create_openbb_directory(cls, values: "SystemSettings") -> "SystemSettings":
+    @model_validator(mode="after")
+    def create_openbb_directory(self) -> "SystemSettings":
         """Create the OpenBB directory if it doesn't exist."""
-        obb_dir = Path(values.openbb_directory).resolve()
-        user_settings = Path(values.user_settings_path).resolve()
-        system_settings = Path(values.system_settings_path).resolve()
+        obb_dir = Path(self.openbb_directory).resolve()
+        user_settings = Path(self.user_settings_path).resolve()
+        system_settings = Path(self.system_settings_path).resolve()
         obb_dir.mkdir(parents=True, exist_ok=True)
 
         if not user_settings.exists():
-            cls.create_json(
+            self.create_json(
                 user_settings,
                 {"credentials": {}, "preferences": {}, "defaults": {"commands": {}}},
             )
 
         if not system_settings.exists():
-            cls.create_json(system_settings, {})
+            self.create_json(system_settings, {})
 
-        return values
+        return self
 
     @field_validator("logging_handlers")
     @classmethod

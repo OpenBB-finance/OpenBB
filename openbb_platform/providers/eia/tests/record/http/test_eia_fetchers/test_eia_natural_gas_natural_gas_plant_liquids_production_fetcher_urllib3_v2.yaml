@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/natural-gas/prod/ngpl/data/?api_key=MOCK_API_KEY&data%5B0%5D=value&end=1979&facets%5Bduoarea%5D%5B%5D=NUS&facets%5Bprocess%5D%5B%5D=R55&facets%5Bproduct%5D%5B%5D=EPL0&facets%5Bseries%5D%5B%5D=RL2R55NUS_1&frequency=annual&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=1979
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY","frequency":"annual","data":[{"period":"1979","duoarea":"NUS","area-name":"U.S.","product":"EPL0","product-name":"Natural
+        Gas Liquids and Liquid Refinery Gases","process":"R55","process-name":"Gas
+        Plant Liquids, Reserves Based Production","series":"RL2R55NUS_1","series-description":"U.S.
+        Natural Gas Plant Liquids, Reserves Based Production (Million Barrels)","value":"580","units":"MMBBL"}]},"request":{"command":"\/v2\/natural-gas\/prod\/ngpl\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"annual","data":["value"],"facets":{"duoarea":["NUS"],"product":["EPL0"],"process":["R55"],"series":["RL2R55NUS_1"]},"start":"1979","end":"1979","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 02:59:47 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 02:59:47 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '848'
+    status:
+      code: 200
+      message: OK
+version: 1

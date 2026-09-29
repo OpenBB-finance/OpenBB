@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/electricity/operating-generator-capacity/data/?api_key=MOCK_API_KEY&data%5B0%5D=county&data%5B10%5D=planned-uprate-summer-cap-mw&data%5B11%5D=planned-uprate-year-month&data%5B1%5D=latitude&data%5B2%5D=longitude&data%5B3%5D=nameplate-capacity-mw&data%5B4%5D=net-summer-capacity-mw&data%5B5%5D=net-winter-capacity-mw&data%5B6%5D=operating-year-month&data%5B7%5D=planned-derate-summer-cap-mw&data%5B8%5D=planned-derate-year-month&data%5B9%5D=planned-retirement-year-month&end=2008-01&facets%5Benergy_source_code%5D%5B%5D=WAT&facets%5Bgeneratorid%5D%5B%5D=1&facets%5Bplantid%5D%5B%5D=2&facets%5Bprime_mover_code%5D%5B%5D=HY&facets%5Bsector%5D%5B%5D=electric-utility&facets%5Bstateid%5D%5B%5D=AL&facets%5Bstatus%5D%5B%5D=OP&facets%5Btechnology%5D%5B%5D=Conventional+Hydroelectric&frequency=monthly&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2008-01
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY-MM","frequency":"monthly","data":[{"period":"2008-01","stateid":"AL","stateName":"Alabama","sector":"electric-utility","sectorName":"Electric
+        Utility","entityid":"195","entityName":"Alabama Power Co","plantid":"2","plantName":"Bankhead
+        Dam","generatorid":"1","technology":"Conventional Hydroelectric","energy_source_code":"WAT","energy-source-desc":"Water","prime_mover_code":"HY","balancing_authority_code":null,"balancing-authority-name":null,"status":"OP","statusDescription":"Operating","county":"Tuscaloosa","latitude":"33.218889","longitude":"87.579722","nameplate-capacity-mw":"45","net-summer-capacity-mw":"56","net-winter-capacity-mw":"52","operating-year-month":"1963-07","planned-derate-summer-cap-mw":null,"planned-derate-year-month":null,"planned-retirement-year-month":null,"planned-uprate-summer-cap-mw":null,"planned-uprate-year-month":null,"unit":null,"nameplate-capacity-mw-units":"MW","net-summer-capacity-mw-units":"MW","net-winter-capacity-mw-units":"MW","planned-derate-summer-cap-mw-units":"MW","planned-uprate-summer-cap-mw-units":"MW"}],"description":"Inventory
+        of operable generators in the U.S.\n    Source: Forms EIA-860, EIA-860M"},"request":{"command":"\/v2\/electricity\/operating-generator-capacity\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"monthly","data":["county","latitude","longitude","nameplate-capacity-mw","net-summer-capacity-mw","net-winter-capacity-mw","operating-year-month","planned-derate-summer-cap-mw","planned-derate-year-month","planned-retirement-year-month","planned-uprate-summer-cap-mw","planned-uprate-year-month"],"facets":{"stateid":["AL"],"sector":["electric-utility"],"plantid":["2"],"generatorid":["1"],"technology":["Conventional
+        Hydroelectric"],"energy_source_code":["WAT"],"prime_mover_code":["HY"],"status":["OP"]},"start":"2008-01","end":"2008-01","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 03:20:03 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 03:20:03 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '2028'
+    status:
+      code: 200
+      message: OK
+version: 1

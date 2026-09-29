@@ -1,0 +1,81 @@
+[
+ {
+  "method": "GET",
+  "url": "https://services-dynarep.ddwa.finra.org/public/reporting/v2/data/group/FixedIncomeMarket/name/CorporateAndAgencySecurities",
+  "params": null,
+  "json": null,
+  "status": 400,
+  "headers": {},
+  "text": "{\"status\":\"failure\",\"statusMessage\":\"Bad Request.\"}"
+ },
+ {
+  "method": "POST",
+  "url": "https://services-dynarep.ddwa.finra.org/public/reporting/v2/data/group/FixedIncomeMarket/name/assetBackedSecurities",
+  "params": null,
+  "json": {
+   "fields": [
+    "finraSecurityIdentifier",
+    "cusip",
+    "issueSymbolIdentifier",
+    "issuerName",
+    "issueDescription",
+    "dealId",
+    "trancheId",
+    "productSubTypeCode",
+    "subProductType",
+    "interestType",
+    "couponRate",
+    "couponType",
+    "maturityDate",
+    "is144A",
+    "moodysRating",
+    "moodysRatingDate",
+    "lastSalePrice",
+    "lastTradeDate",
+    "priceChangeNumber",
+    "priceChangePercent"
+   ],
+   "sortFields": [
+    "finraSecurityIdentifier"
+   ],
+   "orFilters": [
+    {
+     "compareFilters": [
+      {
+       "fieldName": "maturityDate",
+       "fieldValue": "2026-09-23",
+       "compareType": "GREATER"
+      },
+      {
+       "fieldName": "maturityDate",
+       "fieldValue": null,
+       "compareType": "EQUAL"
+      }
+     ]
+    }
+   ],
+   "compareFilters": [
+    {
+     "fieldName": "couponRate",
+     "fieldValue": "3.0",
+     "compareType": "GTE"
+    },
+    {
+     "fieldName": "couponRate",
+     "fieldValue": "4.0",
+     "compareType": "LTE"
+    },
+    {
+     "fieldName": "finraSecurityIdentifier",
+     "fieldValue": null,
+     "compareType": "NOT_EQUAL"
+    }
+   ],
+   "offset": 0,
+   "limit": 5
+  },
+  "status": 200,
+  "headers": {},
+  "text": "{\"status\":\"success\",\"returnBody\":{\"statusCode\":200,\"headers\":{\"Record-Max-Limit\":[\"5000\"],\"Transfer-Encoding\":[\"chunked\"],\"Connection\":[\"keep-alive\"],\"Pragma\":[\"no-cache\"],\"Record-Limit\":[\"5\"],\"Date\":[\"Wed, 23 Sep 2026 22:52:46 GMT\"],\"Record-Total\":[\"2003\"],\"Offset\":[\"0\"],\"X-Frame-Options\":[\"DENY\"],\"FINRA-api-request-id\":[\"c14cfe68-5066-45dc-80c0-3006c3a9f8dc\"],\"Response-Payload-Max-Size\":[\"3mb\"],\"Record-Offset\":[\"0\"],\"Cache-Control\":[\"no-cache, no-store, max-age=0, must-revalidate\"],\"Limit\":[\"5\"],\"Expires\":[\"0\"],\"data-version\":[\"1\"],\"Content-Type\":[\"application/json\"]},\"data\":\"[{\\\"cusip\\\":\\\"00432CAM3\\\",\\\"is144A\\\":\\\"Y\\\",\\\"issueSymbolIdentifier\\\":\\\"AGIK3279040\\\",\\\"issuerName\\\":\\\"ACESS\\\",\\\"dealId\\\":\\\"021A3\\\",\\\"finraSecurityIdentifier\\\":3279040,\\\"interestType\\\":\\\"AUCT\\\",\\\"moodysRatingDate\\\":\\\"2025-05-12\\\",\\\"priceChangeNumber\\\":0,\\\"trancheId\\\":\\\"A3\\\",\\\"subProductType\\\":\\\"STUD\\\",\\\"couponRate\\\":3.78,\\\"couponType\\\":\\\"VAR\\\",\\\"maturityDate\\\":\\\"2037-09-01\\\",\\\"productSubTypeCode\\\":\\\"ABS\\\",\\\"lastTradeDate\\\":\\\"2017-03-31\\\",\\\"moodysRating\\\":\\\"Ba2\\\",\\\"issueDescription\\\":\\\"ACESS 021A3 A3 Sr Seq AvailFun\\\",\\\"priceChangePercent\\\":0,\\\"lastSalePrice\\\":97.875},{\\\"cusip\\\":\\\"00432CAN1\\\",\\\"is144A\\\":\\\"Y\\\",\\\"issueSymbolIdentifier\\\":\\\"AGIK3279041\\\",\\\"issuerName\\\":\\\"ACESS\\\",\\\"dealId\\\":\\\"021A3\\\",\\\"finraSecurityIdentifier\\\":3279041,\\\"interestType\\\":\\\"AUCT\\\",\\\"moodysRatingDate\\\":\\\"2025-05-12\\\",\\\"priceChangeNumber\\\":0,\\\"trancheId\\\":\\\"A4\\\",\\\"subProductType\\\":\\\"STUD\\\",\\\"couponRate\\\":3.78,\\\"couponType\\\":\\\"VAR\\\",\\\"maturityDate\\\":\\\"2037-09-01\\\",\\\"productSubTypeCode\\\":\\\"ABS\\\",\\\"lastTradeDate\\\":null,\\\"moodysRating\\\":\\\"Ba2\\\",\\\"issueDescription\\\":\\\"ACESS 021A3 A4 Sr Seq AvailFun\\\",\\\"priceChangePercent\\\":0,\\\"lastSalePrice\\\":null},{\\\"cusip\\\":\\\"00432CAP6\\\",\\\"is144A\\\":\\\"Y\\\",\\\"issueSymbolIdentifier\\\":\\\"AGIK3279042\\\",\\\"issuerName\\\":\\\"ACESS\\\",\\\"dealId\\\":\\\"021A3\\\",\\\"finraSecurityIdentifier\\\":3279042,\\\"interestType\\\":\\\"AUCT\\\",\\\"moodysRatingDate\\\":\\\"2024-08-07\\\",\\\"priceChangeNumber\\\":-47.96875,\\\"trancheId\\\":\\\"B\\\",\\\"subProductType\\\":\\\"STUD\\\",\\\"couponRate\\\":3.78,\\\"couponType\\\":\\\"VAR\\\",\\\"maturityDate\\\":\\\"2037-09-01\\\",\\\"productSubTypeCode\\\":\\\"ABS\\\",\\\"lastTradeDate\\\":\\\"2020-10-30\\\",\\\"moodysRating\\\":\\\"C\\\",\\\"issueDescription\\\":\\\"ACESS 021A3 B Sub Seq AvailFun\\\",\\\"priceChangePercent\\\":-47.96,\\\"lastSalePrice\\\":52.03125},{\\\"cusip\\\":\\\"00432CBA8\\\",\\\"is144A\\\":\\\"Y\\\",\\\"issueSymbolIdentifier\\\":\\\"AGIK3279048\\\",\\\"issuerName\\\":\\\"ACESS\\\",\\\"dealId\\\":\\\"031E\\\",\\\"finraSecurityIdentifier\\\":3279048,\\\"interestType\\\":\\\"AUCT\\\",\\\"moodysRatingDate\\\":\\\"2025-11-03\\\",\\\"priceChangeNumber\\\":0,\\\"trancheId\\\":\\\"A4\\\",\\\"subProductType\\\":\\\"STUD\\\",\\\"couponRate\\\":3.89766,\\\"couponType\\\":\\\"VAR\\\",\\\"maturityDate\\\":\\\"2035-12-26\\\",\\\"productSubTypeCode\\\":\\\"ABS\\\",\\\"lastTradeDate\\\":\\\"2018-02-13\\\",\\\"moodysRating\\\":\\\"NR\\\",\\\"issueDescription\\\":\\\"ACESS 031E A4 Sr Seq AvailFund\\\",\\\"priceChangePercent\\\":0,\\\"lastSalePrice\\\":96.5},{\\\"cusip\\\":\\\"00432CBB6\\\",\\\"is144A\\\":\\\"Y\\\",\\\"issueSymbolIdentifier\\\":\\\"AGIK3279049\\\",\\\"issuerName\\\":\\\"ACESS\\\",\\\"dealId\\\":\\\"031B\\\",\\\"finraSecurityIdentifier\\\":3279049,\\\"interestType\\\":\\\"AUCT\\\",\\\"moodysRatingDate\\\":\\\"2025-05-12\\\",\\\"priceChangeNumber\\\":0.5625,\\\"trancheId\\\":\\\"A5\\\",\\\"subProductType\\\":\\\"STUD\\\",\\\"couponRate\\\":3.78,\\\"couponType\\\":\\\"VAR\\\",\\\"maturityDate\\\":\\\"2035-12-26\\\",\\\"productSubTypeCode\\\":\\\"ABS\\\",\\\"lastTradeDate\\\":\\\"2021-08-23\\\",\\\"moodysRating\\\":\\\"Ba2\\\",\\\"issueDescription\\\":\\\"ACESS 031B A5 Sr Seq AvailFund\\\",\\\"priceChangePercent\\\":0.56,\\\"lastSalePrice\\\":99.25}]\"}}"
+ }
+]

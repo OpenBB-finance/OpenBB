@@ -1,0 +1,80 @@
+{
+ "trades": [
+  {
+   "timestamp": 1789939035856,
+   "price": 80832.5,
+   "amount": 6000.0,
+   "direction": "buy",
+   "index_price": 80815.88,
+   "instrument_name": "BTC-PERPETUAL",
+   "trade_seq": 299983429,
+   "mark_price": 80831.54,
+   "tick_direction": 1,
+   "starbase_match_id": 227538625808576513,
+   "trade_id": "445682210",
+   "contracts": 600.0,
+   "starbase_timestamp": 1789939035856973859
+  },
+  {
+   "timestamp": 1789939035856,
+   "price": 80832.5,
+   "amount": 2520.0,
+   "direction": "buy",
+   "index_price": 80815.88,
+   "instrument_name": "BTC-PERPETUAL",
+   "trade_seq": 299983428,
+   "mark_price": 80831.54,
+   "tick_direction": 0,
+   "starbase_match_id": 227538625808576512,
+   "trade_id": "445682209",
+   "contracts": 252.0,
+   "starbase_timestamp": 1789939035856973859
+  },
+  {
+   "timestamp": 1789939032782,
+   "price": 80832.0,
+   "amount": 2660.0,
+   "direction": "sell",
+   "index_price": 80815.6,
+   "instrument_name": "BTC-PERPETUAL",
+   "trade_seq": 299983427,
+   "mark_price": 80831.17,
+   "tick_direction": 0,
+   "starbase_match_id": 227538612915286016,
+   "trade_id": "445682208",
+   "contracts": 266.0,
+   "starbase_timestamp": 1789939032782921844
+  },
+  {
+   "timestamp": 1789939029560,
+   "price": 80829.0,
+   "amount": 2520.0,
+   "direction": "buy",
+   "index_price": 80813.03,
+   "instrument_name": "BTC-PERPETUAL",
+   "trade_seq": 299983426,
+   "mark_price": 80828.35,
+   "tick_direction": 0,
+   "starbase_match_id": 227538599401238528,
+   "trade_id": "445682207",
+   "contracts": 252.0,
+   "starbase_timestamp": 1789939029560823168
+  },
+  {
+   "timestamp": 1789939027344,
+   "price": 80824.5,
+   "amount": 2520.0,
+   "direction": "buy",
+   "index_price": 80815.27,
+   "instrument_name": "BTC-PERPETUAL",
+   "trade_seq": 299983425,
+   "mark_price": 80830.58,
+   "tick_direction": 1,
+   "starbase_match_id": 227538590106660864,
+   "trade_id": "445682206",
+   "contracts": 252.0,
+   "starbase_timestamp": 1789939027344529585
+  }
+ ],
+ "has_more": true
+}

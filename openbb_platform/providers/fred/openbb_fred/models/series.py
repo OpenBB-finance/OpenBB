@@ -1,7 +1,5 @@
 """FRED Series Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -14,8 +12,10 @@ from openbb_core.provider.standard_models.fred_series import (
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field
 
+from openbb_fred.utils.query import UseCacheQueryParams
 
-class FredSeriesQueryParams(SeriesQueryParams):
+
+class FredSeriesQueryParams(UseCacheQueryParams, SeriesQueryParams):
     """FRED Series Query Params."""
 
     __alias_dict__ = {
@@ -116,38 +116,32 @@ class FredSeriesFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Extract data."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import (
-            ClientResponse,
-            ClientSession,
-            amake_requests,
-            get_querystring,
-        )
+        import asyncio
+
         from pandas import DataFrame
 
+        from openbb_fred.utils.api import build_url
+        from openbb_fred.utils.rate_limiter import fred_get
+
         api_key = credentials.get("fred_api_key") if credentials else ""
-
-        base_url = "https://api.stlouisfed.org/fred/series/observations"
-        metadata_url = "https://api.stlouisfed.org/fred/series"
-
-        querystring = get_querystring(query.model_dump(), ["series_id"])
+        params = query.model_dump(exclude_none=True)
+        params.pop("series_id", None)
+        params.pop("use_cache", None)
         series_ids = query.symbol.split(",") if "," in query.symbol else [query.symbol]
 
-        urls = [
-            f"{base_url}?series_id={series_id}&{querystring}&file_type=json&api_key={api_key}"
-            for series_id in series_ids
-        ]
+        async def fetch_one(series_id: str) -> dict:
+            obs_url = build_url(
+                "series/observations", api_key, series_id=series_id, **params
+            )
+            meta_url = build_url("series", api_key, series_id=series_id)
 
-        async def callback(response: ClientResponse, session: ClientSession) -> dict:
-            observations_response = await response.json()
-            series_id = response.url.query.get("series_id")
-
-            metadata_response = await session.get_json(
-                f"{metadata_url}?series_id={series_id}&file_type=json&api_key={api_key}",
-                timeout=5,
+            observations_response = await fred_get(
+                obs_url, timeout=5, use_cache=query.use_cache, **kwargs
+            )
+            metadata_response = await fred_get(
+                meta_url, timeout=5, use_cache=query.use_cache, **kwargs
             )
 
-            # seriess is not a typo, it's the actual key in the response
             _metadata = (
                 metadata_response.get("seriess", [{}])[0]
                 if isinstance(metadata_response, dict)
@@ -158,6 +152,7 @@ class FredSeriesFetcher(
                 if isinstance(observations_response, dict)
                 else []
             ) or []
+
             try:
                 for d in observations:
                     d.pop("realtime_start")
@@ -186,19 +181,26 @@ class FredSeriesFetcher(
             }
 
         try:
-            results = await amake_requests(
-                urls, response_callback=callback, timeout=5, **kwargs
-            )
+            results: list[dict] = []
+            for result in await asyncio.gather(
+                *[fetch_one(sid) for sid in series_ids], return_exceptions=True
+            ):
+                if isinstance(result, BaseException):
+                    raise result
+                if result:
+                    results.append(result)
             return results
+        except OpenBBError:
+            raise
         except Exception as e:
-            raise OpenBBError(e) from e
+            message = str(e) or f"FRED request failed ({type(e).__name__})."
+            raise OpenBBError(message) from e
 
     @staticmethod
     def transform_data(
         query: FredSeriesQueryParams, data: list[dict], **kwargs: Any
     ) -> AnnotatedResult[list[FredSeriesData]]:
         """Transform data."""
-        # pylint: disable=import-outside-toplevel
         from pandas import DataFrame  # noqa
         from numpy import nan
 

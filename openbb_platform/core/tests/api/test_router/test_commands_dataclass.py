@@ -12,7 +12,6 @@ The fix moves the conversion of dataclass to dict outside and before the default
 in commands.py wrapper function.
 """
 
-# pylint: disable=W0612,W0613
 # flake8: noqa F401
 
 from dataclasses import dataclass
@@ -66,7 +65,7 @@ class TestAPIWrapperDataclassConversion:
         captured = {"kwargs": None}
 
         async def capturing_run(path, user_settings, *args, **kwargs):
-            captured["kwargs"] = kwargs  # type: ignore
+            captured["kwargs"] = kwargs
             return OBBject(results=[{"test": "data"}])
 
         runner.run = capturing_run
@@ -126,12 +125,15 @@ class TestAPIWrapperDataclassConversion:
         client = TestClient(app, raise_server_exceptions=True)
 
         # Mock empty defaults (the bug condition)
-        with patch(
-            "openbb_core.api.router.commands.UserService.read_from_file",
-            return_value={},
-        ), patch(
-            "openbb_core.app.model.user_settings.os.path.exists",
-            return_value=False,
+        with (
+            patch(
+                "openbb_core.api.router.commands.UserService.read_from_file",
+                return_value={},
+            ),
+            patch(
+                "openbb_core.app.model.user_settings.os.path.exists",
+                return_value=False,
+            ),
         ):
             # Call with chart=True - if bug exists, this raises TypeError
             response = client.get(
@@ -170,12 +172,15 @@ class TestAPIWrapperDataclassConversion:
             }
         }
 
-        with patch(
-            "openbb_core.api.router.commands.UserService.read_from_file",
-            return_value=mock_user_settings_dict,
-        ), patch(
-            "openbb_core.app.model.user_settings.os.path.exists",
-            return_value=False,
+        with (
+            patch(
+                "openbb_core.api.router.commands.UserService.read_from_file",
+                return_value=mock_user_settings_dict,
+            ),
+            patch(
+                "openbb_core.app.model.user_settings.os.path.exists",
+                return_value=False,
+            ),
         ):
             response = client.get(
                 "/api/v1/test/endpoint",
@@ -229,12 +234,15 @@ class TestAPIWrapperDataclassConversion:
             }
         }
 
-        with patch(
-            "openbb_core.api.router.commands.UserService.read_from_file",
-            return_value=mock_user_settings_dict,
-        ), patch(
-            "openbb_core.app.model.user_settings.os.path.exists",
-            return_value=False,
+        with (
+            patch(
+                "openbb_core.api.router.commands.UserService.read_from_file",
+                return_value=mock_user_settings_dict,
+            ),
+            patch(
+                "openbb_core.app.model.user_settings.os.path.exists",
+                return_value=False,
+            ),
         ):
             # This should NOT raise TypeError - the fix converts to dict first
             response = client.get(
@@ -268,12 +276,15 @@ class TestAPIWrapperDataclassConversion:
         app.include_router(router)
         client = TestClient(app, raise_server_exceptions=True)
 
-        with patch(
-            "openbb_core.api.router.commands.UserService.read_from_file",
-            return_value={},
-        ), patch(
-            "openbb_core.app.model.user_settings.os.path.exists",
-            return_value=False,
+        with (
+            patch(
+                "openbb_core.api.router.commands.UserService.read_from_file",
+                return_value={},
+            ),
+            patch(
+                "openbb_core.app.model.user_settings.os.path.exists",
+                return_value=False,
+            ),
         ):
             response = client.get(
                 "/api/v1/test/endpoint",
@@ -318,12 +329,15 @@ class TestAPIWrapperDataclassConversion:
         else:
             mock_settings = {}
 
-        with patch(
-            "openbb_core.api.router.commands.UserService.read_from_file",
-            return_value=mock_settings,
-        ), patch(
-            "openbb_core.app.model.user_settings.os.path.exists",
-            return_value=False,
+        with (
+            patch(
+                "openbb_core.api.router.commands.UserService.read_from_file",
+                return_value=mock_settings,
+            ),
+            patch(
+                "openbb_core.app.model.user_settings.os.path.exists",
+                return_value=False,
+            ),
         ):
             response = client.get(
                 "/api/v1/test/endpoint",
@@ -388,5 +402,5 @@ class TestDataclassItemAssignmentBehavior:
 
         converted = getattr(none_params, "__dict__", {})
 
-        assert converted == {}  # pylint: disable=C1803
+        assert converted == {}
         assert isinstance(converted, dict)

@@ -1,0 +1,139 @@
+name: 🧪 test openbb-technical
+
+# PR-test for the openbb-technical extension. Triggers when a PR touches
+# any file under ``openbb_platform/extensions/technical/`` or this
+# workflow itself.
+#
+# Build-once, test-many: a single ``build`` job produces sdist + wheel,
+# then ``lint`` and ``test`` both consume the wheel artifact. Tests
+# install from source (``-e .``) so ``[tool.uv.sources]`` resolves
+# ``openbb-core[pandas]`` against the sibling repo path — the
+# ``openbb-core>=2.0.0`` declared in the wheel is not satisfiable from
+# PyPI until that version ships.
+
+on:
+  pull_request:
+    branches: [develop, main, v5]
+    paths:
+      - "openbb_platform/extensions/technical/**"
+      - ".github/workflows/test-unit-openbb-technical.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-openbb-technical-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build sdist + wheel
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/extensions/technical
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - run: python -m pip install --upgrade pip uv
+
+      - name: Build sdist + wheel
+        run: uv build --no-sources
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openbb-technical-dist
+          path: openbb_platform/extensions/technical/dist/
+          if-no-files-found: error
+          retention-days: 7
+
+  lint:
+    name: Lint (ruff + ty)
+    # ``needs: build`` keeps lint dependent on a clean build. Lint runs
+    # on the source tree (not the wheel) and uses the editable install
+    # so ``ty`` sees real types from openbb-core / pandas-ta / scipy.
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/extensions/technical
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - run: python -m pip install --upgrade pip uv
+
+      - name: Install openbb-technical from source (+ dev group)
+        # ``-e .`` reads ``[tool.uv.sources]`` and resolves openbb-core
+        # against the sibling source tree. ``--group dev`` installs
+        # openbb-devtools (ruff, ty, pytest-asyncio, etc.).
+        run: |
+          uv pip install --system -e .
+          uv pip install --system --group dev
+
+      - name: ruff check
+        run: ruff check openbb_technical tests integration
+
+      - name: ruff format --check
+        run: ruff format --check openbb_technical tests integration
+
+      - name: ty check
+        run: ty check openbb_technical
+
+  test:
+    name: Test (${{ matrix.os }} / Python ${{ matrix.python_version }})
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, python_version: "3.10" }
+          - { os: ubuntu-latest, python_version: "3.11" }
+          - { os: ubuntu-latest, python_version: "3.12" }
+          - { os: ubuntu-latest, python_version: "3.13" }
+          - { os: ubuntu-latest, python_version: "3.14" }
+          - { os: macos-latest, python_version: "3.10" }
+          - { os: macos-latest, python_version: "3.14" }
+          - { os: windows-latest, python_version: "3.10" }
+          - { os: windows-latest, python_version: "3.14" }
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+        working-directory: openbb_platform/extensions/technical
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python_version }}
+          allow-prereleases: true
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: openbb-technical-dist
+          path: openbb_platform/extensions/technical/dist
+
+      - run: python -m pip install --upgrade pip uv
+
+      - name: Install openbb-technical from source (+ dev group)
+        # Source install via ``-e .`` reads ``[tool.uv.sources]`` and
+        # resolves openbb-core[pandas] from the sibling tree at
+        # ``../../core``. Installing the wheel directly would fail
+        # dependency resolution until openbb-core>=2.0.0 ships to PyPI.
+        run: |
+          uv pip install --system -e .
+          uv pip install --system --group dev
+
+      - name: Run unit tests
+        run: pytest tests --cov=openbb_technical --cov-report=term-missing --cov-fail-under=100

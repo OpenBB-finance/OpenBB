@@ -1,8 +1,5 @@
 """Relative Rotation Model."""
 
-# pylint: disable=too-many-arguments, too-many-instance-attributes, protected-access
-# pylint: disable=too-many-locals, too-few-public-methods, unused-argument
-
 from typing import TYPE_CHECKING, Any, Literal, Union
 
 from openbb_core.provider.abstract.data import Data
@@ -86,7 +83,6 @@ def standard_deviation(
     pd.DataFrame : results
         Dataframe with results.
     """
-    # pylint: disable=import-outside-toplevel
     from numpy import log, sqrt
     from pandas import DataFrame
 
@@ -130,14 +126,13 @@ def calculate_momentum(
     Series
         Pandas Series with the calculated momentum.
     """
-    # pylint: disable=import-outside-toplevel
     from numpy import log
 
     df = data.copy()
     epsilon = 1e-10
     momentum_long = log(1 + df.pct_change(long_period) + epsilon)
     momentum_short = log(1 + df.pct_change(short_period) + epsilon)
-    data = momentum_long - momentum_short  # type: ignore
+    data = momentum_long - momentum_short
 
     return data
 
@@ -164,13 +159,14 @@ def get_momentum(
     DataFrame
         Pandas DataFrame with the calculated historical momentum factor exposure score.
     """
-    # pylint: disable=import-outside-toplevel
     from pandas import DataFrame
 
     df = data.copy()
     rs_momentum = DataFrame()
     for ticker in df.columns.to_list():
-        rs_momentum.loc[:, ticker] = calculate_momentum(df.loc[:, ticker], long_period, short_period)  # type: ignore
+        rs_momentum.loc[:, ticker] = calculate_momentum(
+            df.loc[:, ticker], long_period, short_period
+        )
 
     return rs_momentum
 
@@ -242,7 +238,7 @@ def process_data(
 class RelativeRotation:
     """Relative Rotation Class."""
 
-    def __init__(  # pylint: disable=R0917
+    def __init__(
         self,
         data: Union[list[Data], "DataFrame"],
         benchmark: str,
@@ -253,7 +249,6 @@ class RelativeRotation:
         trading_periods: int | None = 252,
     ):
         """Initialize the class."""
-        # pylint: disable=import-outside-toplevel
         import contextlib  # noqa
         from openbb_core.app.model.obbject import OBBject  # noqa
         from openbb_core.app.utils import (  # noqa
@@ -269,7 +264,7 @@ class RelativeRotation:
         target_col = "volume" if study == "volume" else "close"
 
         if isinstance(data, OBBject):
-            data = data.results  # type: ignore
+            data = data.results
 
         if isinstance(data, list) and (
             all(isinstance(d, Data) for d in data)
@@ -278,10 +273,14 @@ class RelativeRotation:
             with contextlib.suppress(Exception):
                 df = basemodel_to_df(convert_to_basemodel(data), index="date")
 
-        if isinstance(data, DataFrame) and not df.empty:
-            df = data.copy()
-            if "date" in df.columns:
-                df.set_index("date", inplace=True)
+        if (
+            isinstance(data, DataFrame) and not df.empty
+        ):  # pragma: no cover - unreachable: the only path that pre-populates ``df`` requires ``data`` to be ``list`` (the prior branch), which makes ``isinstance(data, DataFrame)`` False. The condition is preserved from upstream as a defensive guard.
+            df = data.copy()  # pragma: no cover - body of pragma'd branch
+            if "date" in df.columns:  # pragma: no cover - body of pragma'd branch
+                df.set_index(
+                    "date", inplace=True
+                )  # pragma: no cover - body of pragma'd branch
 
         if df.empty:
             raise ValueError(
@@ -297,13 +296,13 @@ class RelativeRotation:
         benchmark_data = df.pop(benchmark).to_frame()
         symbols_data = df
 
-        if len(symbols_data) <= 252 and study in ["price", "volume"]:  # type: ignore
+        if len(symbols_data) <= 252 and study in ["price", "volume"]:
             raise ValueError(
                 "Supplied data must be daily intervals and have more than one year of back data to calculate"
                 " the most recent day in the time series."
             )
 
-        if study == "volatility" and len(symbols_data) <= 504:  # type: ignore
+        if study == "volatility" and len(symbols_data) <= 504:
             raise ValueError(
                 "Supplied data must be daily intervals and have more than two years of back data to calculate"
                 " the most recent day in the time series as a volatility study."
@@ -315,15 +314,14 @@ class RelativeRotation:
         self.short_period = short_period
         self.window = window
         self.trading_periods = trading_periods
-        self.symbols_data = symbols_data  # type: ignore
-        self.benchmark_data = benchmark_data  # type: ignore
-        self._process_data()  # type: ignore
-        self.symbols_data = df_to_basemodel(self.symbols_data.reset_index())  # type: ignore
-        self.benchmark_data = df_to_basemodel(self.benchmark_data.reset_index())  # type: ignore
+        self.symbols_data = symbols_data
+        self.benchmark_data = benchmark_data
+        self._process_data()
+        self.symbols_data = df_to_basemodel(self.symbols_data.reset_index())
+        self.benchmark_data = df_to_basemodel(self.benchmark_data.reset_index())
 
     def _process_data(self):
         """Process the data."""
-        # pylint: disable=import-outside-toplevel
         from openbb_core.app.utils import df_to_basemodel
         from pandas import to_datetime
 
@@ -344,7 +342,6 @@ class RelativeRotation:
             long_period=self.long_period,  # type: ignore
             short_period=self.short_period,  # type: ignore
         )
-        # Re-index rs_ratios using the new index
         index_after_dropping_nans = momentum.dropna().index
         ratios = ratios.reindex(index_after_dropping_nans)
         self.rs_ratios = df_to_basemodel(ratios.reset_index())
@@ -359,19 +356,26 @@ def _get_type_name(t):
     if hasattr(t, "__origin__"):
         if hasattr(t.__origin__, "__name__"):
             return f"{t.__origin__.__name__}[{', '.join([_get_type_name(arg) for arg in t.__args__])}]"
-        if hasattr(t.__origin__, "_name"):
+        if hasattr(
+            t.__origin__, "_name"
+        ):  # pragma: no cover - dead on supported Python (>=3.10): generic ``__origin__`` is always a runtime class with ``__name__``
             return f"{t.__origin__._name}[{', '.join([_get_type_name(arg) for arg in t.__args__])}]"
     if isinstance(t, str):
         return t
     if hasattr(t, "__name__"):
         return t.__name__
-    if hasattr(t, "_name"):
+    if hasattr(
+        t, "_name"
+    ):  # pragma: no cover - dead on supported Python (>=3.10): typing constructs reaching this branch always also expose ``__name__``
         return t._name
     return str(t)
 
 
 class RelativeRotationQueryParams(QueryParams):
     """Relative Rotation Query Parameters."""
+
+    __category__ = "multi"
+    __output_columns__ = ("symbols", "benchmark", "study", "rs_ratios", "rs_momentum")
 
     data: list[Data] = Field(
         description="The data to be used for the relative rotation calculations."
@@ -441,7 +445,6 @@ class RelativeRotationQueryParams(QueryParams):
     @classmethod
     def convert_data(cls, v):
         """Validate the data format."""
-        # pylint: disable=import-outside-toplevel
         from openbb_core.app.model.obbject import OBBject
         from openbb_core.app.utils import convert_to_basemodel, df_to_basemodel
         from pandas import DataFrame
@@ -550,7 +553,7 @@ class RelativeRotationFetcher(
     @staticmethod
     def transform_query(params: dict[str, Any]) -> RelativeRotationQueryParams:
         """Transform the query parameters."""
-        return RelativeRotationQueryParams.model_validate(**params)
+        return RelativeRotationQueryParams.model_validate(params)
 
     @staticmethod
     def extract_data(

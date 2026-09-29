@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>  <message:MessageGroup xmlns:message="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message"  xmlns:common="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/common"  xmlns:frb="http://www.federalreserve.gov/structure/compact/common"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:schemaLocation="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message SDMXMessage.xsd http://www.federalreserve.gov/structure/compact/common frb_common.xsd"><message:Header xmlns:message="http://www.SDMX.org/resources/SDMXML/schemas/v1_0/message">
+    <message:ID>H6</message:ID>
+    <message:Test>false</message:Test>
+    <message:Name>H.6 Statistical Release</message:Name>
+    <message:Prepared>2026-06-16T14:41:27</message:Prepared>
+    <message:Sender id="FRB">
+      <message:Name>Federal Reserve Board</message:Name>
+      <message:Contact>
+        <message:Name>Margaret DeBoer</message:Name>
+        <message:Telephone>202.452.3139</message:Telephone>
+        <message:Email>MA-H3-H6-Staff@frb.gov</message:Email>
+      </message:Contact>
+    </message:Sender>
+  </message:Header>
+<frb:DataSet id="H6_M1" xmlns:kf="http://www.federalreserve.gov/structure/compact/H6_H6_M1" xsi:schemaLocation="http://www.federalreserve.gov/structure/compact/H6_H6_M1 H6_H6_M1.xsd">
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="M1_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>M1; Not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>M1; Not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="19647.9" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="19679.8" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="MCU_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Currency; Not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Currency; Not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="2367.8" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="2374.7" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="MDD_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Demand deposits; Not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Demand deposits; Not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="6914.1" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="6976.4" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="MDL_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Other liquid deposits - Total; Not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Other liquid deposits - Total; Not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="10366.0" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="10328.8" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="SA" CURRENCY="USD" FREQ="129" SERIES_NAME="M1.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>M1; Seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>M1; Seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="19531.7" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="19750.9" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="SA" CURRENCY="USD" FREQ="129" SERIES_NAME="MCU.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Currency; Seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Currency; Seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="2363.9" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="2368.1" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="SA" CURRENCY="USD" FREQ="129" SERIES_NAME="MDD.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Demand deposits; Seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Demand deposits; Seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="6856.9" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="6976.1" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="SA" CURRENCY="USD" FREQ="129" SERIES_NAME="MDL.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Other liquid deposits - Total; Seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Other liquid deposits - Total; Seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="10311.0" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="10406.8" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="MDO_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Other checkable deposits - Total; Not seasonally adjusted;  *Discontinued after Apr 2020</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Other checkable deposits - Total; Not seasonally adjusted;  *Discontinued after Apr 2020</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="714.2" TIME_PERIOD="2020-03-31"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="1015.2" TIME_PERIOD="2020-04-30"/>
+</kf:Series>
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="MTC_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Travelers checks; Not seasonally adjusted;  *Discontinued after Dec 2018</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Travelers checks; Not seasonally adjusted;  *Discontinued after Dec 2018</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="1.7" TIME_PERIOD="2018-11-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="1.7" TIME_PERIOD="2018-12-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="SA" CURRENCY="USD" FREQ="129" SERIES_NAME="MDO.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Other checkable deposits - Total; Seasonally adjusted;  *Discontinued after Apr 2020</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Other checkable deposits - Total; Seasonally adjusted;  *Discontinued after Apr 2020</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="710.0" TIME_PERIOD="2020-03-31"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="1010.5" TIME_PERIOD="2020-04-30"/>
+</kf:Series>
+<kf:Series ADJUSTED="SA" CURRENCY="USD" FREQ="129" SERIES_NAME="MTC.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Travelers Checks; Seasonally adjusted;  *Discontinued after Dec 2018</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Travelers Checks; Seasonally adjusted;  *Discontinued after Dec 2018</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="1.7" TIME_PERIOD="2018-11-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="1.7" TIME_PERIOD="2018-12-31"/>
+</kf:Series>
+</frb:DataSet>
+<frb:DataSet id="H6_M2" xmlns:kf="http://www.federalreserve.gov/structure/compact/H6_H6_M2" xsi:schemaLocation="http://www.federalreserve.gov/structure/compact/H6_H6_M2 H6_H6_M2.xsd">
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="M2_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>M2; Not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>M2; Not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="22936.2" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="22971.7" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="MDTS_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Small-denomination time deposits - Total; Not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Small-denomination time deposits - Total; Not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="1017.4" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="1025.3" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="MMFGB_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Retail money market funds; Not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Retail money market funds; Not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="2271.0" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="2266.5" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="SA" CURRENCY="USD" FREQ="129" SERIES_NAME="M2.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>M2; Seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>M2; Seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="22804.5" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="23052.3" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="SA" CURRENCY="USD" FREQ="129" SERIES_NAME="MDTS.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Small-denomination time deposits - Total; Seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Small-denomination time deposits - Total; Seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="1021.3" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="1026.1" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="SA" CURRENCY="USD" FREQ="129" SERIES_NAME="MMFGB.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Retail money market funds; Seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Retail money market funds; Seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="2251.5" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="2275.3" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="MDU_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Savings deposits - Total; Not seasonally adjusted;  *Discontinued after Apr 2020</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Savings deposits - Total; Not seasonally adjusted;  *Discontinued after Apr 2020</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="10222.0" TIME_PERIOD="2020-03-31"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="10661.1" TIME_PERIOD="2020-04-30"/>
+</kf:Series>
+<kf:Series ADJUSTED="SA" CURRENCY="USD" FREQ="129" SERIES_NAME="MDU.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Savings deposits - Total; Seasonally adjusted;  *Discontinued after Apr 2020</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Savings deposits - Total; Seasonally adjusted;  *Discontinued after Apr 2020</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="10161.7" TIME_PERIOD="2020-03-31"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="10611.0" TIME_PERIOD="2020-04-30"/>
+</kf:Series>
+</frb:DataSet>
+<frb:DataSet id="H6_MBASE" xmlns:kf="http://www.federalreserve.gov/structure/compact/H6_H6_MBASE" xsi:schemaLocation="http://www.federalreserve.gov/structure/compact/H6_H6_MBASE H6_H6_MBASE.xsd">
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="RESMOC14A_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Monetary base; currency in circulation; not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Monetary base; currency in circulation; not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="2452.4" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="2460.1" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="RESMOB14A_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Monetary base; reserve balances; not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Monetary base; reserve balances; not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="3018.1" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="3078.4" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="RESMO14A_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Monetary base; total; not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Monetary base; total; not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="5470.4" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="5538.6" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+</frb:DataSet>
+<frb:DataSet id="H6_MEMO" xmlns:kf="http://www.federalreserve.gov/structure/compact/H6_H6_MEMO" xsi:schemaLocation="http://www.federalreserve.gov/structure/compact/H6_H6_MEMO H6_H6_MEMO.xsd">
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="MIKD_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>IRA and Keogh accounts at depository institutions; Not seasonally adjusted. Last 5 obs are estimates.</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>IRA and Keogh accounts at depository institutions; Not seasonally adjusted. Last 5 obs are estimates.</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="480.9" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="480.9" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="MIKM_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>IRA and Keogh accounts at money market funds; Not seasonally adjusted. Last 5 obs are estimates.</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>IRA and Keogh accounts at money market funds; Not seasonally adjusted. Last 5 obs are estimates.</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="748.8" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="748.8" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="MIK_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>IRA and Keogh accounts - Total; Not seasonally adjusted. Last 5 obs are estimates.</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>IRA and Keogh accounts - Total; Not seasonally adjusted. Last 5 obs are estimates.</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="1229.7" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="1229.7" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="RESTR14A_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Reserves of depository institutions, total; not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Reserves of depository institutions, total; not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="3018.1" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="3078.4" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="RESBR14A_N.M" UNIT="Currency" UNIT_MULT="1000000">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Total borrowings from the Federal Reserve; not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Total borrowings from the Federal Reserve; not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="5840.8" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="6114.3" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+<kf:Series ADJUSTED="NSA" CURRENCY="USD" FREQ="129" SERIES_NAME="RESNB14A_N.M" UNIT="Currency" UNIT_MULT="1e+09">
+<frb:Annotations>
+<common:Annotation>
+<common:AnnotationType>Short Description</common:AnnotationType>
+<common:AnnotationText>Reserves of depository institutions, nonborrowed; not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+<common:Annotation>
+<common:AnnotationType>Long Description</common:AnnotationType>
+<common:AnnotationText>Reserves of depository institutions, nonborrowed; not seasonally adjusted</common:AnnotationText>
+</common:Annotation>
+</frb:Annotations>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="3012.2" TIME_PERIOD="2026-04-30"/>
+<frb:Obs OBS_STATUS="A" OBS_VALUE="3072.3" TIME_PERIOD="2026-05-31"/>
+</kf:Series>
+</frb:DataSet>
+</message:MessageGroup>

@@ -1,0 +1,55 @@
+{
+ "continuation": "23nYDkVbSynLKHS9FLtdNzkdZehx1XPceCZ2K54nzc3PhhBDfRmKbxsg59v47UKDhQL7c",
+ "settlements": [
+  {
+   "position": 778628500,
+   "timestamp": 1789891200065,
+   "type": "settlement",
+   "index_price": 80292.87,
+   "instrument_name": "BTC-PERPETUAL",
+   "mark_price": 80317.84,
+   "profit_loss": -2.882714252999952,
+   "session_profit_loss": 366525.4973382353
+  },
+  {
+   "position": 778159550,
+   "timestamp": 1789804800083,
+   "type": "settlement",
+   "index_price": 81078.23,
+   "instrument_name": "BTC-PERPETUAL",
+   "mark_price": 81109.92,
+   "profit_loss": -15.834744451000045,
+   "session_profit_loss": 1564451.0500825022
+  },
+  {
+   "position": 778769380,
+   "timestamp": 1789718400096,
+   "type": "settlement",
+   "index_price": 77738.19,
+   "instrument_name": "BTC-PERPETUAL",
+   "mark_price": 77762.07,
+   "profit_loss": 0.33698070499993793,
+   "session_profit_loss": 660354.2430167407
+  },
+  {
+   "position": 796354170,
+   "timestamp": 1789632000061,
+   "type": "settlement",
+   "index_price": 76391.01,
+   "instrument_name": "BTC-PERPETUAL",
+   "mark_price": 76418.56,
+   "profit_loss": 1.8330351599999015,
+   "session_profit_loss": 357003.47944851726
+  },
+  {
+   "position": 794478700,
+   "timestamp": 1789545600759,
+   "type": "settlement",
+   "index_price": 75684.39,
+   "instrument_name": "BTC-PERPETUAL",
+   "mark_price": 75709.26,
+   "profit_loss": -0.049004756999928276,
+   "session_profit_loss": 676031.4583834042
+  }
+ ]
+}

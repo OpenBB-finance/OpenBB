@@ -3,6 +3,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
+
 from openbb_core.api.auth.user import authenticate_user, get_user_settings
 from openbb_core.app.model.user_settings import UserSettings
 

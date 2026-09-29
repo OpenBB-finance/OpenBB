@@ -6,8 +6,9 @@ from openbb_core.provider.abstract.query_params import QueryParams
 def test_query_params_repr():
     """Test the __repr__ method of QueryParams."""
     params = QueryParams(param1="value1", param2="value2")  # type: ignore[call-arg]
-    assert "param1='value1'" in str(params)
-    assert "param2='value2'" in str(params)
+    out = repr(params)
+    assert "param1=value1" in out
+    assert "param2=value2" in out
 
 
 def test_query_params_no_alias():

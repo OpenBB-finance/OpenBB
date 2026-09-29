@@ -1,0 +1,70 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/coal/mine-production/data/?api_key=MOCK_API_KEY&data%5B0%5D=average-employees&data%5B1%5D=labor-hours&data%5B2%5D=latitude&data%5B3%5D=longitude&data%5B4%5D=operating-company&data%5B5%5D=operating-company-address&data%5B6%5D=production&data%5B7%5D=refuse-flag&end=2001&facets%5BcensusRegionId%5D%5B%5D=ESC&facets%5BcoalRankId%5D%5B%5D=PRP&facets%5BmineCountyId%5D%5B%5D=73&facets%5BmineMSHAId%5D%5B%5D=100329&facets%5BmineStatusId%5D%5B%5D=ACT&facets%5BmineTypeId%5D%5B%5D=SUR&facets%5BmississippiRegionId%5D%5B%5D=EMR&facets%5BregionId%5D%5B%5D=STH&facets%5BstateId%5D%5B%5D=AL&facets%5BsupplyRegionId%5D%5B%5D=APS&frequency=annual&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2001
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY","frequency":"annual","data":[{"period":"2001","mineMSHAId":"100329","mineName":"Concord
+        Mine","stateId":"AL","stateDescription":"Alabama","regionId":"STH","regionDescription":"South","supplyRegionId":"APS","supplyRegionDescription":"Appalachia
+        Southern","censusRegionId":"ESC","censusRegionDescription":"East South Central","mississippiRegionId":"EMR","mississippiRegionDescription":"East
+        of Mississippi River","mineCountyId":"73","mineCountyName":"Jefferson","coalRankId":"PRP","coalRankDescription":"Preparation
+        Plant","mineTypeId":"SUR","mineTypeDescription":"Surface","mineStatusId":"ACT","mineStatusDescription":"Active","average-employees":"0","labor-hours":"0","latitude":"33.453888","longitude":"-87.037222","operating-company":"U
+        S Steel Mining Company Llc","operating-company-address":"8800 Oak Grove Mine
+        Road, Adger, AL 35006","production":"0","refuse-flag":null,"average-employees-units":"number
+        of employees","labor-hours-units":"hours","production-units":"short tons"}],"description":"Coal
+        mine-level data, including production, region, state, \r\n        county,
+        rank, status, type, name and description.  Source: EIA Form 7A and MSHA \r\n        Form
+        7000-2.  Interactive browser:  https:\/\/www.eia.gov\/coal\/data\/browser\/"},"request":{"command":"\/v2\/coal\/mine-production\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"annual","data":["average-employees","labor-hours","latitude","longitude","operating-company","operating-company-address","production","refuse-flag"],"facets":{"mineMSHAId":["100329"],"stateId":["AL"],"regionId":["STH"],"supplyRegionId":["APS"],"censusRegionId":["ESC"],"mississippiRegionId":["EMR"],"mineCountyId":["73"],"coalRankId":["PRP"],"mineTypeId":["SUR"],"mineStatusId":["ACT"]},"start":"2001","end":"2001","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 02:59:16 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 02:59:16 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '1969'
+    status:
+      code: 200
+      message: OK
+version: 1

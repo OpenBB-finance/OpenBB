@@ -1,7 +1,5 @@
 """SEC Form 13F-HR Model."""
 
-# pylint: disable =unused-argument
-
 from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -9,7 +7,7 @@ from openbb_core.provider.standard_models.form_13FHR import (
     Form13FHRData,
     Form13FHRQueryParams,
 )
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class SecForm13FHRQueryParams(Form13FHRQueryParams):
@@ -17,6 +15,27 @@ class SecForm13FHRQueryParams(Form13FHRQueryParams):
 
     Source: https://www.sec.gov/Archives/edgar/data/
     """
+
+    __json_schema_extra__ = {
+        "symbol": {
+            "x-widget_config": {
+                "label": "13F Filer",
+                "type": "endpoint",
+                "optionsEndpoint": "/api/v1/sec/13f_filers",
+                "style": {"popupWidth": 600},
+                "description": "Pick a 13F filer - an institutional investment"
+                " manager or a company - by name.",
+            }
+        },
+        "date": {
+            "x-widget_config": {
+                "label": "Filing Period",
+                "type": "endpoint",
+                "optionsEndpoint": "/api/v1/sec/13f_periods",
+                "optionsParams": {"symbol": "$symbol"},
+            }
+        },
+    }
 
 
 class SecForm13FHRData(Form13FHRData):
@@ -34,6 +53,12 @@ class SecForm13FHRData(Form13FHRData):
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
+    @field_validator("weight", mode="before")
+    @classmethod
+    def _none_weight_to_zero(cls, v):
+        """Map the weight of a zero-value filing to 0.0."""
+        return 0.0 if v is None else v
+
 
 class SecForm13FHRFetcher(Fetcher[SecForm13FHRQueryParams, list[SecForm13FHRData]]):
     """SEC Form 13F-HR Fetcher."""
@@ -50,7 +75,6 @@ class SecForm13FHRFetcher(Fetcher[SecForm13FHRQueryParams, list[SecForm13FHRData
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the SEC endpoint."""
-        # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
         from openbb_core.app.model.abstract.error import OpenBBError
         from openbb_core.provider.utils.errors import EmptyDataError
@@ -97,11 +121,8 @@ class SecForm13FHRFetcher(Fetcher[SecForm13FHRQueryParams, list[SecForm13FHRData
         **kwargs: Any,
     ) -> list[SecForm13FHRData]:
         """Transform the data."""
-        return [
-            SecForm13FHRData.model_validate(d)
-            for d in sorted(
-                data,
-                key=lambda d: [d["period_ending"], d["weight"]],
-                reverse=True,
-            )
-        ]
+        return sorted(
+            (SecForm13FHRData.model_validate(d) for d in data),
+            key=lambda d: (d.period_ending, d.weight),
+            reverse=True,
+        )

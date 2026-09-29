@@ -7,13 +7,14 @@ from datetime import (
 )
 
 from dateutil import parser
+from pydantic import Field, field_validator
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, field_validator
 
 
 class InsiderTradingQueryParams(QueryParams):
@@ -87,7 +88,7 @@ class InsiderTradingData(Data):
         "filing_date", "transaction_date", mode="before", check_fields=False
     )
     @classmethod
-    def date_validate(cls, v):  # pylint: disable=E0213
+    def date_validate(cls, v):
         """Return formatted datetime."""
         if v:
             filing_date = parser.isoparse(str(v))

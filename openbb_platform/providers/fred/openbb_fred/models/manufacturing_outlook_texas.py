@@ -1,7 +1,5 @@
 """FRED Manufacturing Outlook - Texas - Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any, Literal
 from warnings import warn
 
@@ -12,8 +10,13 @@ from openbb_core.provider.standard_models.manufacturing_outlook_texas import (
     ManufacturingOutlookTexasQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_fred.models.series import FredSeriesFetcher
 from pydantic import Field, field_validator
+
+from openbb_fred.models.series import FredSeriesFetcher
+from openbb_fred.utils.api import unwrap_series
+from openbb_fred.utils.query import UseCacheQueryParams
+
+PERCENT_COLUMN: dict[str, Any] = {"x-unit_measurement": "percent"}
 
 TEXAS_MANUFACTURING_OUTLOOK = {
     "current_business_activity": {
@@ -231,7 +234,9 @@ TexasManufacturingOutlookChoices = Literal[
 ]
 
 
-class FredManufacturingOutlookTexasQueryParams(ManufacturingOutlookTexasQueryParams):
+class FredManufacturingOutlookTexasQueryParams(
+    UseCacheQueryParams, ManufacturingOutlookTexasQueryParams
+):
     """FRED Manufacturing Outlook - Texas - Query Params."""
 
     __json_schema_extra__ = {
@@ -316,6 +321,22 @@ class FredManufacturingOutlookTexasQueryParams(ManufacturingOutlookTexasQueryPar
 class FredManufacturingOutlookTexasData(ManufacturingOutlookTexasData):
     """FRED Manufacturing Outlook - Texas - Data."""
 
+    percent_reporting_increase: float | None = Field(
+        default=None,
+        description="Percent of respondents reporting an increase over the last month.",
+        json_schema_extra=PERCENT_COLUMN,
+    )
+    percent_reporting_decrease: float | None = Field(
+        default=None,
+        description="Percent of respondents reporting a decrease over the last month.",
+        json_schema_extra=PERCENT_COLUMN,
+    )
+    percent_reporting_no_change: float | None = Field(
+        default=None,
+        description="Percent of respondents reporting no change over the last month.",
+        json_schema_extra=PERCENT_COLUMN,
+    )
+
 
 class FredManufacturingOutlookTexasFetcher(
     Fetcher[
@@ -361,15 +382,18 @@ class FredManufacturingOutlookTexasFetcher(
                     transform=query.transform,
                     frequency=frequency,
                     aggregation_method=query.aggregation_method,
+                    use_cache=query.use_cache,
                 ),
                 credentials,
             )
         except Exception as e:
             raise e from e
 
+        rows, metadata = unwrap_series(response)
+
         return {
-            "metadata": response.metadata,
-            "data": [d.model_dump() for d in response.result],
+            "metadata": metadata,
+            "data": [d.model_dump() for d in rows],
         }
 
     @staticmethod
@@ -379,7 +403,6 @@ class FredManufacturingOutlookTexasFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[list[FredManufacturingOutlookTexasData]]:
         """Transform data."""
-        # pylint: disable=import-outside-toplevel
         from pandas import Categorical, DataFrame
 
         df = DataFrame(data.get("data", []))
@@ -417,10 +440,7 @@ class FredManufacturingOutlookTexasFetcher(
                 "percent_reporting_decrease",
                 "percent_reporting_no_change",
             ]:
-                df[col] = df[col] / 100
-
-        if query.transform in ["pch", "pc1", "pca", "cch", "cca"]:
-            df["diffusion_index"] = df["diffusion_index"] / 100
+                df[col] = df[col].astype(float)
 
         records = df.to_dict(orient="records")
 

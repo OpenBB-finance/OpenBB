@@ -1,0 +1,81 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/Monthly_TradeNow/FeatureServer/0/query?where=ISO3%20%3D%20'USA'%20AND%20(date%20%3E%3D%20TIMESTAMP%20'2024-01-01%2000:00:00'%20AND%20date%20%3C%3D%20TIMESTAMP%20'2024-06-30%2023:59:59')&outFields=*&orderByFields=date&returnZ=true&resultRecordCount=1000&maxRecordCountFactor=5&outSR=&f=json&resultOffset=0
+  response:
+    body:
+      string: '{"objectIdFieldName":"ObjectId","uniqueIdField":{"name":"ObjectId","isSystemMaintained":true},"globalIdFieldName":"","fields":[{"name":"region","type":"esriFieldTypeString","alias":"region","sqlType":"sqlTypeNVarchar","length":4000,"domain":null,"defaultValue":null},{"name":"ISO3","type":"esriFieldTypeString","alias":"ISO3","sqlType":"sqlTypeNVarchar","length":4000,"domain":null,"defaultValue":null},{"name":"date","type":"esriFieldTypeDateOnly","alias":"date","sqlType":"sqlTypeDate","domain":null,"defaultValue":null},{"name":"ais_portcalls_container","type":"esriFieldTypeInteger","alias":"ais_portcalls_container","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"ais_portcalls_general_cargo","type":"esriFieldTypeInteger","alias":"ais_portcalls_general_cargo","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"ais_portcalls_dry_bulk","type":"esriFieldTypeInteger","alias":"ais_portcalls_dry_bulk","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"ais_portcalls_roro","type":"esriFieldTypeInteger","alias":"ais_portcalls_roro","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"ais_portcalls_tanker","type":"esriFieldTypeInteger","alias":"ais_portcalls_tanker","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"ais_import_tanker","type":"esriFieldTypeDouble","alias":"ais_import_tanker","sqlType":"sqlTypeFloat","domain":null,"defaultValue":null},{"name":"ais_export_tanker","type":"esriFieldTypeDouble","alias":"ais_export_tanker","sqlType":"sqlTypeFloat","domain":null,"defaultValue":null},{"name":"ais_import_dry_bulk","type":"esriFieldTypeDouble","alias":"ais_import_dry_bulk","sqlType":"sqlTypeFloat","domain":null,"defaultValue":null},{"name":"ais_export_dry_bulk","type":"esriFieldTypeDouble","alias":"ais_export_dry_bulk","sqlType":"sqlTypeFloat","domain":null,"defaultValue":null},{"name":"ais_import_container","type":"esriFieldTypeDouble","alias":"ais_import_container","sqlType":"sqlTypeFloat","domain":null,"defaultValue":null},{"name":"ais_export_container","type":"esriFieldTypeDouble","alias":"ais_export_container","sqlType":"sqlTypeFloat","domain":null,"defaultValue":null},{"name":"ais_import_general_cargo","type":"esriFieldTypeDouble","alias":"ais_import_general_cargo","sqlType":"sqlTypeFloat","domain":null,"defaultValue":null},{"name":"ais_export_general_cargo","type":"esriFieldTypeDouble","alias":"ais_export_general_cargo","sqlType":"sqlTypeFloat","domain":null,"defaultValue":null},{"name":"ais_import_roro","type":"esriFieldTypeDouble","alias":"ais_import_roro","sqlType":"sqlTypeFloat","domain":null,"defaultValue":null},{"name":"ais_export_roro","type":"esriFieldTypeDouble","alias":"ais_export_roro","sqlType":"sqlTypeFloat","domain":null,"defaultValue":null},{"name":"value_import_total","type":"esriFieldTypeDouble","alias":"value_import_total","sqlType":"sqlTypeFloat","domain":null,"defaultValue":null},{"name":"value_export_total","type":"esriFieldTypeDouble","alias":"value_export_total","sqlType":"sqlTypeFloat","domain":null,"defaultValue":null},{"name":"volume_export_total","type":"esriFieldTypeDouble","alias":"volume_export_total","sqlType":"sqlTypeFloat","domain":null,"defaultValue":null},{"name":"volume_import_total","type":"esriFieldTypeDouble","alias":"volume_import_total","sqlType":"sqlTypeFloat","domain":null,"defaultValue":null},{"name":"trade_value","type":"esriFieldTypeDouble","alias":"trade_value","sqlType":"sqlTypeFloat","domain":null,"defaultValue":null},{"name":"trade_volume","type":"esriFieldTypeDouble","alias":"trade_volume","sqlType":"sqlTypeFloat","domain":null,"defaultValue":null},{"name":"ObjectId","type":"esriFieldTypeOID","alias":"ObjectId","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null}],"features":[{"attributes":{"region":"United
+        States","ISO3":"USA","date":"2024-01-01","ais_portcalls_container":1692,"ais_portcalls_general_cargo":372,"ais_portcalls_dry_bulk":1161,"ais_portcalls_roro":441,"ais_portcalls_tanker":1980,"ais_import_tanker":21587496,"ais_export_tanker":37518844,"ais_import_dry_bulk":10336149,"ais_export_dry_bulk":23205482,"ais_import_container":24561722,"ais_export_container":10669164,"ais_import_general_cargo":713211,"ais_export_general_cargo":637491,"ais_import_roro":662351,"ais_export_roro":124943,"value_import_total":93.830264482849927,"value_export_total":95.261715664531721,"volume_export_total":95.919489120658355,"volume_import_total":93.3226639598583,"trade_value":94.2184097073779,"trade_volume":94.621076540258343,"ObjectId":16342}},{"attributes":{"region":"United
+        States","ISO3":"USA","date":"2024-02-01","ais_portcalls_container":1662,"ais_portcalls_general_cargo":359,"ais_portcalls_dry_bulk":1028,"ais_portcalls_roro":382,"ais_portcalls_tanker":1936,"ais_import_tanker":20110752,"ais_export_tanker":35819956,"ais_import_dry_bulk":9380219,"ais_export_dry_bulk":23562820,"ais_import_container":24323655,"ais_export_container":11464356,"ais_import_general_cargo":728359,"ais_export_general_cargo":625921,"ais_import_roro":568489,"ais_export_roro":120563,"value_import_total":90.379025888323781,"value_export_total":97.618441426903445,"volume_export_total":99.196803494812286,"volume_import_total":91.730168018913119,"trade_value":92.342030010037575,"trade_volume":95.4634857568627,"ObjectId":16343}},{"attributes":{"region":"United
+        States","ISO3":"USA","date":"2024-03-01","ais_portcalls_container":1722,"ais_portcalls_general_cargo":391,"ais_portcalls_dry_bulk":1165,"ais_portcalls_roro":419,"ais_portcalls_tanker":2126,"ais_import_tanker":20681994,"ais_export_tanker":39138243,"ais_import_dry_bulk":10422637,"ais_export_dry_bulk":25517001,"ais_import_container":24239675,"ais_export_container":12197305,"ais_import_general_cargo":691453,"ais_export_general_cargo":855963,"ais_import_roro":649840,"ais_export_roro":134964,"value_import_total":93.247119298272523,"value_export_total":108.01624685049364,"volume_export_total":107.43519405410736,"volume_import_total":91.957636077431474,"trade_value":97.251842898489443,"trade_volume":99.696415065769443,"ObjectId":16344}},{"attributes":{"region":"United
+        States","ISO3":"USA","date":"2024-04-01","ais_portcalls_container":1702,"ais_portcalls_general_cargo":399,"ais_portcalls_dry_bulk":1233,"ais_portcalls_roro":417,"ais_portcalls_tanker":2012,"ais_import_tanker":22317153,"ais_export_tanker":35001151,"ais_import_dry_bulk":9663089,"ais_export_dry_bulk":22182651,"ais_import_container":25225935,"ais_export_container":11571363,"ais_import_general_cargo":755737,"ais_export_general_cargo":612732,"ais_import_roro":681217,"ais_export_roro":109679,"value_import_total":96.554260044728565,"value_export_total":100.11992855992348,"volume_export_total":98.36120738735768,"volume_import_total":95.783523156223126,"trade_value":97.521109088645446,"trade_volume":97.0723652717904,"ObjectId":16345}},{"attributes":{"region":"United
+        States","ISO3":"USA","date":"2024-05-01","ais_portcalls_container":1737,"ais_portcalls_general_cargo":370,"ais_portcalls_dry_bulk":1324,"ais_portcalls_roro":424,"ais_portcalls_tanker":2246,"ais_import_tanker":24673729,"ais_export_tanker":39152695,"ais_import_dry_bulk":9790864,"ais_export_dry_bulk":23549530,"ais_import_container":26028106,"ais_export_container":11435587,"ais_import_general_cargo":646407,"ais_export_general_cargo":566319,"ais_import_roro":666030,"ais_export_roro":163589,"value_import_total":98.976590067271061,"value_export_total":102.06489096811109,"volume_export_total":101.07190436535572,"volume_import_total":98.601072608395285,"trade_value":99.813998469252482,"trade_volume":99.836488486875524,"ObjectId":16346}},{"attributes":{"region":"United
+        States","ISO3":"USA","date":"2024-06-01","ais_portcalls_container":1697,"ais_portcalls_general_cargo":431,"ais_portcalls_dry_bulk":1278,"ais_portcalls_roro":424,"ais_portcalls_tanker":2154,"ais_import_tanker":22605199,"ais_export_tanker":38698558,"ais_import_dry_bulk":10291520,"ais_export_dry_bulk":22646879,"ais_import_container":26677542,"ais_export_container":11177701,"ais_import_general_cargo":848566,"ais_export_general_cargo":775059,"ais_import_roro":591333,"ais_export_roro":116704,"value_import_total":100.18908560551552,"value_export_total":100.56094285821771,"volume_export_total":99.901138406089274,"volume_import_total":100.80335339102344,"trade_value":100.28991657948758,"trade_volume":100.35224589855636,"ObjectId":16347}}]}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Content-Type, Authorization, X-Esri-Authorization
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - Request-Context
+      Cache-Control:
+      - public, max-age=3600, s-maxage=3600
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 25 May 2026 16:21:00 GMT
+      Etag:
+      - sd2067_-1522342102
+      Last-Modified:
+      - Tue, 19 May 2026 13:29:39 GMT
+      Request-Context:
+      - appId=cid-v1:091e3ef9-df68-4d69-9df4-ab8f80183701
+      - appId=cid-v1:eccdbd2e-a85f-4676-a932-e967891b0fc6
+      Strict-Transport-Security:
+      - max-age=63072000
+      Vary:
+      - X-Esri-Authorization
+      X-ArcGIS-Correlation-Id:
+      - c265a0b32f661f12
+      X-ArcGIS-Instance:
+      - wziaf7inz00000D
+      X-ArcGIS-Trace-Id:
+      - 20260525T161654Z-165db847776fxzbthC1YVRf4ms000000065000000003vn6f
+      X-Cache:
+      - TCP_REMOTE_HIT
+      X-Cache-Info:
+      - L2_T2
+      content-length:
+      - '8417'
+      x-arcgis-upstream:
+      - us1h09c00-services
+      x-azure-ref:
+      - 20260525T162100Z-15cb7fd6cb44nppqhC1WST7hps00000009g000000000cyf9
+      x-esri-org-request-units-per-min:
+      - usage=441;max=6000
+      x-esri-query-request-units:
+      - '3'
+      x-esri-tiles-basic-query-mode:
+      - 'true'
+      x-esri-tiles-basic-query-type:
+      - Basic
+      x-fd-int-roxy-purgeid:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

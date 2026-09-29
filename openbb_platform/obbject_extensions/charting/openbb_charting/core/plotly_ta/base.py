@@ -53,6 +53,7 @@ class PluginMeta(type):
         """Create a new instance of the class."""
         name, bases, attrs = args
         indicators: dict[str, Indicator] = {}
+        static_methods: list[str] = []
         cls_attrs: dict[str, list] = {
             "__ma_mode__": [],
             "__inchart__": [],
@@ -73,25 +74,24 @@ class PluginMeta(type):
                             f"Indicator {value.name} can't be a static method"
                         )
                     indicators[value.name] = value
-                elif is_static_method and elem not in new_cls.__static_methods__:
-                    new_cls.__static_methods__.append(elem)
+                elif is_static_method and elem not in static_methods:
+                    static_methods.append(elem)
 
                 if elem in ["__ma_mode__", "__inchart__", "__subplots__"]:
                     cls_attrs[elem].extend(value)
 
         new_cls.__indicators__ = list(indicators.values())
-        new_cls.__static_methods__ = list(set(new_cls.__static_methods__))
+        new_cls.__static_methods__ = static_methods
         new_cls.__ma_mode__ = list(set(cls_attrs["__ma_mode__"]))
         new_cls.__inchart__ = list(set(cls_attrs["__inchart__"]))
         new_cls.__subplots__ = list(set(cls_attrs["__subplots__"]))
 
         return new_cls
 
-    def __iter__(cls: type["PluginMeta"]) -> Iterator[Indicator]:  # type: ignore
+    def __iter__(cls: type["PluginMeta"]) -> Iterator[Indicator]:
         """Iterate over the indicators."""
         return iter(cls.__indicators__)
 
-    # pylint: disable=unused-argument
     def __init__(cls, *args: Any, **kwargs: Any) -> None:
         """Initialize the class."""
         super().__init__(*args, **kwargs)
@@ -116,24 +116,15 @@ class PltTA(metaclass=PluginMeta):
     __inchart__: list[str] = []
     __subplots__: list[str] = []
 
-    # pylint: disable=unused-argument
     def __new__(cls, *args: Any, **kwargs: Any) -> "PltTA":
         """Create a new instance of the class."""
         if cls is PltTA:
             raise TypeError("Can't instantiate abstract class Plugin directly")
         self = super().__new__(cls)
 
-        static_methods = cls.__static_methods__
-        indicators = cls.__indicators__
-
-        for item in indicators:
-            # we make sure that the indicator is bound to the instance
+        for item in cls.__indicators__:
             if not hasattr(self, item.name):
-                setattr(self, item.name, item.func.__get__(self, cls))
-
-        for static_method in static_methods:
-            if not hasattr(self, static_method):
-                setattr(self, static_method, staticmethod(getattr(self, static_method)))
+                setattr(self, item.name, item.func.__get__(self, cls))  # ty: ignore[unresolved-attribute]
 
         for attr, value in cls.__dict__.items():
             if attr in [
@@ -158,16 +149,14 @@ class PltTA(metaclass=PluginMeta):
         """Add plugins to current instance."""
         for plugin in plugins:
             for item in plugin.__indicators__:
-                # pylint: disable=unnecessary-dunder-call
                 if not hasattr(self, item.name):
-                    setattr(self, item.name, item.func.__get__(self, type(self)))
+                    setattr(self, item.name, item.func.__get__(self, type(self)))  # ty: ignore[unresolved-attribute]
                     self.__indicators__.append(item)
 
             for static_method in plugin.__static_methods__:
                 if not hasattr(self, static_method):
-                    setattr(
-                        self, static_method, staticmethod(getattr(self, static_method))
-                    )
+                    setattr(self, static_method, getattr(plugin, static_method))
+
             for attr, value in plugin.__dict__.items():
                 if attr in [
                     "__ma_mode__",
@@ -184,7 +173,8 @@ class PltTA(metaclass=PluginMeta):
                 self.__indicators__.remove(item)
 
             for static_method in plugin.__static_methods__:
-                delattr(self, static_method)
+                if static_method in self.__dict__:
+                    delattr(self, static_method)
 
     def __iter__(self) -> Iterator[Indicator]:
         """Iterate over the indicators."""
@@ -204,13 +194,8 @@ def indicator(
     **attrs: Any,
 ) -> Callable:
     """Use this decorator for adding indicators to a plugin class."""
-    attrs["name"] = name
 
     def decorator(func: Callable) -> Indicator:
-        if not attrs.pop("name", ""):
-            name = func.__name__
-
-        # pylint: disable=possibly-used-before-assignment
-        return Indicator(func, name, **attrs)
+        return Indicator(func, name or func.__name__, **attrs)  # ty: ignore[unresolved-attribute]
 
     return decorator

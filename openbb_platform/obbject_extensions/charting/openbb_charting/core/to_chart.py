@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from pandas import DataFrame, Series  # noqa
 
 
-def to_chart(  # pylint: disable=R0917
+def to_chart(
     data: Union["DataFrame", "Series"],
     indicators: Union["ChartIndicators", dict[str, dict[str, Any]]] | None = None,
     symbol: str = "",
@@ -18,10 +18,6 @@ def to_chart(  # pylint: disable=R0917
     volume_ticks_x: int = 7,
 ) -> tuple["OpenBBFigure", dict[str, Any]]:
     """Return the plotly json representation of the chart.
-
-    This function is used so it can be called at the module level and used out of the box,
-    which allows some more flexibility, ease of use and doesn't require the user to know
-    about the PlotlyTA class.
 
     Parameters
     ----------
@@ -45,12 +41,11 @@ def to_chart(  # pylint: disable=R0917
     Tuple[OpenBBFigure, Dict[str, Any]]
         Tuple containing the OpenBBFigure and the plotly json representation of the chart.
     """
-    # pylint: disable=import-outside-toplevel
     from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
 
     try:
         ta = PlotlyTA()
-        fig = ta.plot(  # type: ignore
+        fig = ta.plot(
             df_stock=data,
             indicators=indicators,
             symbol=symbol,

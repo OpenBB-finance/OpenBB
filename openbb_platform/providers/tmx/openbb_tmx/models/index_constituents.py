@@ -13,6 +13,8 @@ from openbb_core.provider.standard_models.index_constituents import (
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
 
+PUBLISHED = ("symbol", "longName", "exchange", "quotedMarketValue", "weight")
+
 
 class TmxIndexConstituentsQueryParams(IndexConstituentsQueryParams):
     """TMX Index Constituents Query Params."""
@@ -29,12 +31,22 @@ class TmxIndexConstituentsData(IndexConstituentsData):
     """TMX Index Constituents Data."""
 
     __alias_dict__ = {
-        "market_value": "quotedmarketvalue",
+        "name": "longName",
+        "market_value": "quotedMarketValue",
     }
 
+    exchange: str | None = Field(
+        default=None,
+        description="The exchange the constituent is listed on.",
+    )
     market_value: float | None = Field(
         default=None,
         description="The quoted market value of the asset.",
+    )
+    weight: float | None = Field(
+        default=None,
+        description="The weight of the constituent in the index.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
     @field_validator("weight", mode="before", check_fields=False)
@@ -62,37 +74,47 @@ class TmxIndexConstituentsFetcher(
         query: TmxIndexConstituentsQueryParams,
         credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> dict:
-        """Return the raw data from the TMX endpoint."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_tmx.utils.helpers import get_data_from_url, get_indices_backend
+    ) -> list[dict]:
+        """Read the complete constituent list.
 
-        url = "https://tmxinfoservices.com/files/indices/sptsx-indices.json"
+        Raises
+        ------
+        OpenBBError
+            If the symbol is not one of the published indices.
+        """
+        from openbb_tmx.utils import gql
+        from openbb_tmx.utils.cache import amake_gql_request
 
-        data = await get_data_from_url(
-            url,
+        response = await amake_gql_request(
+            "getIndexConstituents",
+            gql.INDEX_CONSTITUENTS,
+            {"symbol": query.symbol},
             use_cache=query.use_cache,
-            backend=get_indices_backend(),
         )
+        constituents = (response or {}).get("constituents")
 
-        return data
+        if constituents is None:
+            raise OpenBBError(f"Index {query.symbol} was not found. Check the symbol.")
+
+        return constituents
 
     @staticmethod
     def transform_data(
-        query: TmxIndexConstituentsQueryParams, data: dict, **kwargs
+        query: TmxIndexConstituentsQueryParams, data: list[dict], **kwargs
     ) -> list[TmxIndexConstituentsData]:
-        """Return the transformed data."""
-        results = []
-        data = data.copy()
-        if data == {}:
-            raise EmptyDataError
-        if query.symbol not in data.get("indices"):  # type: ignore
-            raise OpenBBError(f"Index {query.symbol} was not found. Check the symbol.")
-        index_data = data["indices"][query.symbol]
-        if (
-            index_data.get("nb_constituents") == 0
-            or index_data.get("constituents") is None
-        ):
-            raise OpenBBError(f"No constituents found for index, {query.symbol}")
-        results = index_data["constituents"]
-        return [TmxIndexConstituentsData.model_validate(d) for d in results]
+        """Return the transformed data.
+
+        Raises
+        ------
+        EmptyDataError
+            If the index publishes no constituents.
+        """
+        if not data:
+            raise EmptyDataError(f"No constituents found for index, {query.symbol}")
+
+        return [
+            TmxIndexConstituentsData.model_validate(
+                {k: v for k, v in entry.items() if k in PUBLISHED}
+            )
+            for entry in data
+        ]

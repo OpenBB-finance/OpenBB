@@ -50,18 +50,11 @@ class TmxAvailableIndicesFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the TMX endpoint."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_tmx.utils.helpers import get_data_from_url, get_indices_backend
+        from openbb_tmx.utils.helpers import get_data_from_url
 
         url = "https://tmxinfoservices.com/files/indices/sptsx-indices.json"
 
-        data = await get_data_from_url(
-            url,
-            use_cache=query.use_cache,
-            backend=get_indices_backend(),
-        )
-
-        return data
+        return await get_data_from_url(url, use_cache=query.use_cache)
 
     @staticmethod
     def transform_data(
@@ -70,30 +63,26 @@ class TmxAvailableIndicesFetcher(
         **kwargs: Any,
     ) -> list[TmxAvailableIndicesData]:
         """Transform the data to the standard format."""
-        # pylint: disable=import-outside-toplevel
         import re
 
         data = data.copy()
         if data == {}:
             raise EmptyDataError
 
-        # Extract the category for each index.
-        symbols = {}
+        categories: dict[str, list[str]] = {}
+
         for category, symbol_list in data["groups"].items():
             for symbol in symbol_list:
-                if symbol not in symbols:
-                    symbols[symbol] = category
-                else:
-                    symbols[symbol].append(category)
-            category = {"category": symbols}  # noqa: PLW2901
-        # Extract the data for each index and combine with the category.
+                categories.setdefault(symbol, []).append(category)
+
+        symbols = {k: ", ".join(v) for k, v in categories.items()}
         new_data = []
+
         for symbol in data["indices"]:
             overview = data["indices"][symbol].get("overview_en", None)
+
             if overview:
-                # Remove HTML tags from the overview
                 overview = re.sub("<.*?>", "", overview)
-                # Remove additional artifacts from the overview
                 overview = re.sub("\r|\n|amp;", "", overview)
             new_data.append(
                 {

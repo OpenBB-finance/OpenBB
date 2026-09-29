@@ -52,7 +52,7 @@
     "category": "DeveloperTool",
     "publisher": "OpenBB, Inc.",
     "copyright": "Copyright © 2026 OpenBB, Inc.",
-    "license": "AGPLv3",
+    "license": "Apache-2.0",
     "licenseFile": "./LICENSE"
   },
   "plugins": {

@@ -52,6 +52,8 @@ cli/openbb_cli/assets/styles/user/*
 
 # Platform
 openbb_platform/core/openbb/package/*
+openbb_platform/core/openbb/.build.lock
+**/assets/*.json.xz
 
 # Dev Container env
 obb/*

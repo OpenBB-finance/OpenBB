@@ -1,1 +1,0 @@
-"""Finviz Screener Presets."""

@@ -8,16 +8,19 @@ from datetime import (
     time,
     timedelta,
 )
-from typing import TYPE_CHECKING, Any, Literal, Optional
+from typing import TYPE_CHECKING, Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
+
 from openbb_tmx.utils import gql
 
 if TYPE_CHECKING:
-    from aiohttp_client_cache import SQLiteBackend
     from pandas import DataFrame
 
-# Column map for ETFs.
+EARLIEST_SESSION = dateType(1970, 1, 1)
+
+INTRADAY_EPOCH = dateType(2022, 4, 12)
+
 COLUMNS_DICT = {
     "symbol": "symbol",
     "shortname": "short_name",
@@ -76,7 +79,6 @@ COLUMNS_DICT = {
     "altData": "additional_data",
 }
 
-# Additional Indices Supported By TMX for Snapshots Data.
 
 NASDAQ_GIDS = {
     "^ADRAI": "BLDRS Asia 50 ADR Index Fund",
@@ -226,105 +228,37 @@ NASDAQ_GIDS = {
 }
 
 
-def get_random_agent() -> str:
-    """Get a random user agent."""
-    # pylint: disable=import-outside-toplevel
-    from random_user_agent.user_agent import UserAgent
+async def get_data_from_url(url: str, use_cache: bool = True, **kwargs: Any) -> Any:
+    """Fetch a URL through the shared TMX response cache.
 
-    user_agent_rotator = UserAgent(limit=100)
-    user_agent = user_agent_rotator.get_random_user_agent()
-    return user_agent
+    Parameters
+    ----------
+    url : str
+        The URL to fetch.
+    use_cache : bool
+        Whether to read and write the on-disk cache.
 
+    Returns
+    -------
+    Any
+        The decoded response body.
+    """
+    from openbb_tmx.utils.cache import amake_request
 
-def get_companies_backend():
-    """Get the SQLiteBackend for the TMX companies."""
-    # pylint: disable=import-outside-toplevel
-    from aiohttp_client_cache import SQLiteBackend  # noqa
-    from openbb_core.app.utils import get_user_cache_directory  # noqa
+    kwargs.pop("backend", None)
+    accept_type = kwargs.pop("accept_type", None)
 
-    # Only used for obtaining the directory of all valid company tickers.
-    tmx_companies_backend = SQLiteBackend(
-        f"{get_user_cache_directory()}/http/tmx_companies",
-        expire_after=timedelta(days=2),
+    if accept_type is None:
+        accept_type = "text" if _is_markup(url) else "json"
+
+    return await amake_request(
+        url, use_cache=use_cache, accept_type=accept_type, **kwargs
     )
 
-    return tmx_companies_backend
 
-
-def get_indices_backend():
-    """Get the SQLiteBackend for the TMX indices."""
-    # pylint: disable=import-outside-toplevel
-    from aiohttp_client_cache import SQLiteBackend  # noqa
-    from openbb_core.app.utils import get_user_cache_directory  # noqa
-
-    # Only used for obtaining the directory of all valid indices.
-    tmx_indices_backend = SQLiteBackend(
-        f"{get_user_cache_directory()}/http/tmx_indices", expire_after=timedelta(days=1)
-    )
-
-    return tmx_indices_backend
-
-
-async def response_callback(response, _: Any):
-    """Use callback for HTTP Client Response."""
-    content_type = response.headers.get("Content-Type", "")
-    if "application/json" in content_type:
-        return await response.json()
-    if "text" in content_type:
-        return await response.text()
-    return await response.read()
-
-
-async def get_data_from_url(
-    url: str,
-    use_cache: bool = True,
-    backend: Optional["SQLiteBackend"] = None,
-    **kwargs: Any,
-) -> Any:
-    """Make an asynchronous HTTP request to a static file."""
-    # pylint: disable=import-outside-toplevel
-    from aiohttp_client_cache.session import CachedSession
-    from openbb_core.provider.utils.helpers import (
-        amake_request,
-        get_python_request_settings,
-    )
-
-    python_settings = get_python_request_settings()
-    if timeout := python_settings.get("timeout"):
-        kwargs.setdefault("timeout", timeout)
-    else:
-        kwargs.setdefault("timeout", 300)
-
-    data: Any = None
-    if use_cache is True and backend is not None:
-        await backend.delete_expired_responses()
-        async with CachedSession(cache=backend) as cached_session:
-            try:
-                response = await cached_session.get(url, **kwargs)
-                data = await response_callback(response, None)
-            finally:
-                await cached_session.close()
-    else:
-        data = await amake_request(url, response_callback=response_callback, **kwargs)
-
-    return data
-
-
-async def get_data_from_gql(url: str, headers, data, **kwargs: Any) -> Any:
-    """Make an asynchronous GraphQL request."""
-    # pylint: disable=import-outside-toplevel
-    from openbb_core.provider.utils.helpers import amake_request
-
-    response = await amake_request(
-        url=url,
-        method=kwargs.pop("method", "POST"),
-        response_callback=response_callback,
-        headers=headers,
-        data=data,
-        **kwargs,
-    )
-
-    return response
+def _is_markup(url: str) -> bool:
+    """Report whether a URL serves markup or a delimited download."""
+    return "m-x.ca" in url or "tsx.com/en/" in url
 
 
 def replace_values_in_list_of_dicts(data):
@@ -332,17 +266,15 @@ def replace_values_in_list_of_dicts(data):
     for d in data:
         for k, v in d.items():
             if isinstance(v, dict):
-                replace_values_in_list_of_dicts([v])  # Recurse into nested dictionary
+                replace_values_in_list_of_dicts([v])
             elif isinstance(v, list):
                 for i in range(len(v)):  # pylint: disable=C0200
                     if isinstance(v[i], dict):
-                        replace_values_in_list_of_dicts(
-                            [v[i]]
-                        )  # Recurse into nested dictionary in list
+                        replace_values_in_list_of_dicts([v[i]])
                     elif v[i] in ("NA", "-"):
-                        v[i] = None  # Replace "NA" and "-" with None
+                        v[i] = None
             elif v in ("NA", "-"):
-                d[k] = None  # Replace "NA" and "-" with None
+                d[k] = None
     return data
 
 
@@ -377,20 +309,11 @@ async def get_all_etfs(use_cache: bool = True) -> list[dict]:
         Dictionary with all TMX-listed ETFs.
     """
     # pylint: disable=import-outside-toplevel
-    from aiohttp_client_cache import SQLiteBackend  # noqa
-    from openbb_core.app.utils import get_user_cache_directory  # noqa
-    from pandas import DataFrame  # noqa
-
-    # Only used for obtaining the all ETFs JSON file.
-    tmx_etfs_backend = SQLiteBackend(
-        f"{get_user_cache_directory()}/http/tmx_etfs", expire_after=timedelta(hours=4)
-    )
+    from pandas import DataFrame
 
     url = "https://dgr53wu9i7rmp.cloudfront.net/etfs/etfs.json"
 
-    response = await get_data_from_url(
-        url, use_cache=use_cache, backend=tmx_etfs_backend
-    )
+    response = await get_data_from_url(url, use_cache=use_cache)
 
     if not response or response is None:
         raise OpenBBError("There was a problem with the request. Could not get ETFs.")
@@ -419,10 +342,14 @@ async def get_all_etfs(use_cache: bool = True) -> list[dict]:
     )
 
     for i in etfs.index:
-        etfs.loc[i, "fund_family"] = etfs.loc[i, "additional_data"].get("fundfamilyen", None)  # type: ignore
-        etfs.loc[i, "website"] = etfs.loc[i, "additional_data"].get("websitefactsheeten", None)  # type: ignore
-        etfs.loc[i, "mer"] = etfs.loc[i, "additional_data"].get("mer", None)  # type: ignore
-    etfs = etfs.fillna("N/A").replace("N/A", None)
+        extra = etfs.loc[i, "additional_data"] or {}
+        etfs.loc[i, "fund_family"] = extra.get("fundfamilyen")
+        etfs.loc[i, "website"] = extra.get("websitefactsheeten")
+        etfs.loc[i, "mer"] = extra.get("mer")
+        etfs.loc[i, "asset_class"] = extra.get("assetclassen")
+        etfs.loc[i, "region"] = extra.get("regionen")
+        etfs.loc[i, "index_fund"] = extra.get("indexfunden")
+    etfs = purge_nulls(etfs)
 
     return etfs.to_dict(orient="records")
 
@@ -436,9 +363,7 @@ async def get_tmx_tickers(
 
     tsx_json_url = "https://www.tsx.com/json/company-directory/search"
     url = f"{tsx_json_url}/{exchange}/*"
-    response = await get_data_from_url(
-        url, use_cache=use_cache, backend=get_companies_backend()
-    )
+    response = await get_data_from_url(url, use_cache=use_cache)
     data = (
         DataFrame.from_records(response["results"])[["symbol", "name"]]
         .set_index("symbol")
@@ -467,14 +392,14 @@ async def get_all_options_tickers(use_cache: bool = True) -> "DataFrame":
 
     url = "https://www.m-x.ca/en/trading/data/options-list"
 
-    r = await get_data_from_url(
-        url, use_cache=use_cache, backend=get_companies_backend()
-    )
+    r = await get_data_from_url(url, use_cache=use_cache)
 
     if r is None or r == []:
         raise OpenBBError("Error with the request")  # mypy: ignore
 
-    options_listings = read_html(StringIO(r))
+    options_listings = read_html(
+        StringIO(r), flavor="lxml", keep_default_na=False, na_values=[""]
+    )
     listings = concat(options_listings)
     listings = listings.set_index("Option Symbol").drop_duplicates().sort_index()
     symbols = listings[:-1]
@@ -501,12 +426,9 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> "DataFrame
     data = DataFrame()
     symbol = symbol.upper()
 
-    # Remove exchange  identifiers from the symbol.
     symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
-    # Underlying symbol may have a different ticker symbol than the ticker used to lookup options.
     if len(SYMBOLS[SYMBOLS["underlying_symbol"].str.contains(symbol)]) == 1:
         symbol = SYMBOLS[SYMBOLS["underlying_symbol"] == symbol].index.values[0]
-    # Check if the symbol has options trading.
     if symbol not in SYMBOLS.index and not SYMBOLS.empty:
         raise OpenBBError(
             f"The symbol, {symbol}, is not a valid listing or does not trade options."
@@ -527,7 +449,7 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> "DataFrame
     ]
 
     r = await get_data_from_url(QUOTES_URL, use_cache=False)
-    data = read_html(StringIO(r))[0]
+    data = read_html(StringIO(r), flavor="lxml")[0]
     data = data.iloc[:-1]
 
     expirations = (
@@ -537,7 +459,10 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> "DataFrame
     expirations = expirations.str.strip("(Weekly)")
 
     strikes = (
-        data["Unnamed: 7_level_0"].dropna().sort_values("Strike").rename(columns={"Strike": "strike"})  # type: ignore
+        data["Unnamed: 7_level_0"]
+        .dropna()
+        .sort_values("Strike")
+        .rename(columns={"Strike": "strike"})
     )
 
     calls = concat([expirations, strikes, data["Calls"]], axis=1)
@@ -563,10 +488,9 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> "DataFrame
     chains = chains.reset_index()
     now = datetime.now()
     temp = DatetimeIndex(chains.expiration)
-    temp_ = (temp - now).days + 1  # type: ignore
+    temp_ = (temp - now).days + 1
     chains["dte"] = temp_
 
-    # Create the standardized contract symbol.
     _strikes = chains["strike"]
     strikes = []
     for _strike in _strikes:
@@ -603,13 +527,10 @@ async def download_eod_chains(
 
     symbol = symbol.upper()
     SYMBOLS = await get_all_options_tickers(use_cache=False)
-    # Remove echange  identifiers from the symbol.
     symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
 
-    # Underlying symbol may have a different ticker symbol than the ticker used to lookup options.
     if len(SYMBOLS[SYMBOLS["underlying_symbol"].str.contains(symbol)]) == 1:
         symbol = SYMBOLS[SYMBOLS["underlying_symbol"] == symbol].index.values[0]
-    # Check if the symbol has options trading.
     if symbol not in SYMBOLS.index and not SYMBOLS.empty:
         raise OpenBBError(
             f"The symbol, {symbol}, is not a valid listing or does not trade options."
@@ -620,11 +541,7 @@ async def download_eod_chains(
     cal = xcals.get_calendar("XTSE")
 
     def _is_session(dt: str) -> bool:
-        """Check if date is a trading session.
-
-        Workaround for exchange_calendars bug with Pandas 3 where
-        is_session() fails due to ns/us unit mismatch in _date_oob.
-        """
+        """Check if date is a trading session."""
         return to_datetime(dt) in cal.sessions
 
     if date is None:
@@ -639,7 +556,7 @@ async def download_eod_chains(
 
         EOD_URL = BASE_URL + f"{symbol}&from={date}&to={date}&dnld=1#quotes"
 
-    r = await get_data_from_url(EOD_URL, use_cache=use_cache)  # type: ignore
+    r = await get_data_from_url(EOD_URL, use_cache=use_cache)
 
     if r is None:
         raise OpenBBError("Error with the request, no data was returned.")
@@ -698,8 +615,8 @@ async def download_eod_chains(
 
     date_ = data["eod_date"]
     temp = DatetimeIndex(data.expiration)
-    temp_ = temp - date_  # type: ignore
-    data["dte"] = [Timedelta(_temp_).days for _temp_ in temp_]  # type: ignore
+    temp_ = temp - date_
+    data["dte"] = [Timedelta(_temp_).days for _temp_ in temp_]
     data = data.set_index(["expiration", "strike", "optionType"]).sort_index()
     data["eod_date"] = data["eod_date"].astype(str)
     underlying_price = data.iloc[-1]["lastTradePrice"]
@@ -713,54 +630,139 @@ async def download_eod_chains(
     return data
 
 
+def _as_date(value) -> "dateType | None":
+    """Read a date out of a date, a datetime, or a 'YYYY-MM-DD' string.
+
+    Parameters
+    ----------
+    value : date or datetime or str or None
+        The value as supplied.
+
+    Returns
+    -------
+    date or None
+        The date, or None when nothing was supplied.
+    """
+    if not value:
+        return None
+
+    if isinstance(value, str):
+        return datetime.strptime(value, "%Y-%m-%d").date()
+
+    return value.date() if isinstance(value, datetime) else value
+
+
+def purge_nulls(frame):
+    """Return a frame with every absent value as None.
+
+    Parameters
+    ----------
+    frame : DataFrame
+        The frame to purge.
+
+    Returns
+    -------
+    DataFrame
+        The frame, with NaN and the source's placeholders as None.
+    """
+    purged = frame.replace(["N/A", "-", ""], None)
+
+    return purged.astype(object).where(purged.notna(), None)
+
+
+ABSENT_URLS = {"", "nan", "none", "null", "n/a", "-"}
+
+
+def normalize_url(value) -> str | None:
+    """Return a website as an absolute URL, or None when none was published.
+
+    Parameters
+    ----------
+    value : Any
+        The website as published.
+
+    Returns
+    -------
+    str or None
+        The URL, prefixed with a scheme when the source left one off.
+    """
+    text = str(value or "").strip()
+
+    if text.lower() in ABSENT_URLS:
+        return None
+
+    if "://" in text:
+        return text
+
+    return f"https://{text.lstrip('/')}"
+
+
+def normalize_symbol(symbol: str) -> str:
+    """Strip exchange identifiers from a TMX symbol.
+
+    Parameters
+    ----------
+    symbol : str
+        The symbol as supplied.
+
+    Returns
+    -------
+    str
+        The symbol in the form the TMX API expects.
+    """
+    symbol = symbol.strip().upper()
+
+    if symbol[:1] in ("^", "/", "$") or ":" in symbol:
+        return symbol
+
+    return symbol.replace("-", ".").replace(".TO", "").replace(".TSX", "")
+
+
 async def get_company_filings(
     symbol: str,
-    start_date: str | None = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d"),
-    end_date: str | None = datetime.now().date().strftime("%Y-%m-%d"),
+    start_date: str | None = None,
+    end_date: str | None = None,
     limit: int = 50,
 ) -> list[dict]:
-    """Get company filings."""
-    # pylint: disable=import-outside-toplevel
-    import json
+    """Get the filings a company has published.
 
-    user_agent = get_random_agent()
-    results: list[dict] = []
-    symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
+    Parameters
+    ----------
+    symbol : str
+        The company symbol.
+    start_date : str or None
+        The first filing date to return.
+    end_date : str or None
+        The last filing date to return.
+    limit : int
+        The maximum number of filings to return.
 
-    payload = gql.get_company_filings_payload
-    payload["variables"]["symbol"] = symbol
-    payload["variables"]["fromDate"] = start_date
-    payload["variables"]["toDate"] = end_date
-    payload["variables"]["limit"] = limit
-    url = "https://app-money.tmx.com/graphql"
-    try:
-        r = await get_data_from_gql(
-            url=url,
-            data=json.dumps(payload),
-            headers={
-                "Accept": "*/*",
-                "Accept-Encoding": "gzip, deflate, br",
-                "Accept-Language": "en-CA,en-US;q=0.7,en;q=0.3",
-                "Connection": "keep-alive",
-                "Content-Type": "application/json",
-                "Host": "app-money.tmx.com",
-                "Origin": "https://money.tmx.com",
-                "Referer": "https://money.tmx.com/",
-                "locale": "en",
-                "Sec-Fetch-Dest": "empty",
-                "Sec-Fetch-Mode": "cors",
-                "Sec-Fetch-Site": "same-site",
-                "TE": "trailers",
-                "User-Agent": user_agent,
-            },
-        )
-    except Exception as _e:
-        raise OpenBBError(_e) from _e
-    if r["data"]["filings"] is None:
-        results = []
-    results = r.get("data").get("filings")
+    Returns
+    -------
+    list[dict]
+        One entry per filing.
+    """
+    from openbb_tmx.utils.cache import amake_gql_request
 
-    return results
+    symbol = normalize_symbol(symbol)
+    start_date = start_date or (datetime.now() - timedelta(days=30)).strftime(
+        "%Y-%m-%d"
+    )
+    end_date = end_date or datetime.now().date().strftime("%Y-%m-%d")
+
+    data = await amake_gql_request(
+        "getCompanyFilings",
+        gql.COMPANY_FILINGS,
+        {
+            "symbol": symbol,
+            "fromDate": start_date,
+            "toDate": end_date,
+            "limit": limit,
+        },
+        symbol=symbol,
+    )
+
+    return (data or {}).get("filings") or []
 
 
 async def get_daily_price_history(
@@ -773,7 +775,6 @@ async def get_daily_price_history(
 ):
     """Get historical price data."""
     # pylint: disable=import-outside-toplevel
-    import json  # noqa
     import asyncio  # noqa
     from dateutil import rrule  # noqa
 
@@ -787,88 +788,53 @@ async def get_daily_price_history(
         if isinstance(end_date, str)
         else end_date
     )
-    user_agent = get_random_agent()
     results: list[dict] = []
     symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
-    start_date = (
-        (datetime.now() - timedelta(weeks=52)).date()
-        if start_date is None
-        else start_date
-    )
+    start_date = EARLIEST_SESSION if start_date is None else start_date
     end_date = datetime.now() if end_date is None else end_date
 
-    # Generate a list of dates from start_date to end_date with a frequency of 4 weeks
     dates = list(
-        rrule.rrule(rrule.WEEKLY, interval=4, dtstart=start_date, until=end_date)
+        rrule.rrule(
+            rrule.WEEKLY,
+            interval=4,
+            dtstart=start_date,
+            until=end_date,
+        )
     )
 
-    # Add end_date to the list if it's not there already
     if dates[-1] != end_date:
         dates.append(end_date)  # type: ignore
 
-    # Create a list of 4-week chunks
     chunks = [
         (dates[i], dates[i + 1] - timedelta(days=1)) for i in range(len(dates) - 1)
     ]
 
-    # Adjust the end date of the last chunk to be the final end date
     chunks[-1] = (chunks[-1][0], end_date)  # type: ignore
 
     async def create_task(start, end, results):
-        """Create a task from a start and end date chunk."""
-        payload = gql.get_company_price_history_payload.copy()
-        payload["variables"]["adjusted"] = adjustment != "unadjusted"  # noqa: SIM211
-        payload["variables"]["adjustmentType"] = (
-            "SO" if adjustment == "splits_only" else None
+        """Fetch one date chunk of daily history."""
+        from openbb_tmx.utils.cache import amake_gql_request
+
+        variables = {
+            "symbol": symbol,
+            "start": start.strftime("%Y-%m-%d"),
+            "end": end.strftime("%Y-%m-%d"),
+            "adjusted": adjustment != "unadjusted",
+            "unadjusted": adjustment == "unadjusted",
+        }
+
+        if adjustment == "splits_only":
+            variables["adjustmentType"] = "SO"
+
+        data = await amake_gql_request(
+            "getCompanyPriceHistory",
+            gql.COMPANY_PRICE_HISTORY,
+            variables,
+            symbol=symbol,
         )
-        payload["variables"]["end"] = end.strftime("%Y-%m-%d")
-        payload["variables"]["start"] = start.strftime("%Y-%m-%d")
-        payload["variables"]["symbol"] = symbol
-        payload["variables"]["unadjusted"] = adjustment == "unadjusted"  # noqa: SIM210
-        if payload["variables"]["adjustmentType"] is None:
-            payload["variables"].pop("adjustmentType")
-        url = "https://app-money.tmx.com/graphql"
 
-        async def try_again():
-            """Try again if it fails."""
-            return await get_data_from_gql(
-                method="POST",
-                url=url,
-                data=json.dumps(payload),
-                headers={
-                    "authority": "app-money.tmx.com",
-                    "referer": f"https://money.tmx.com/en/quote/{symbol}",
-                    "locale": "en",
-                    "Content-Type": "application/json",
-                    "User-Agent": user_agent,
-                    "Accept": "*/*",
-                },
-                timeout=3,
-            )
-
-        try:
-            data = await get_data_from_gql(
-                method="POST",
-                url=url,
-                data=json.dumps(payload),
-                headers={
-                    "authority": "app-money.tmx.com",
-                    "referer": f"https://money.tmx.com/en/quote/{symbol}",
-                    "locale": "en",
-                    "Content-Type": "application/json",
-                    "User-Agent": user_agent,
-                    "Accept": "*/*",
-                },
-                timeout=3,
-            )
-        except Exception:
-            data = await try_again()
-
-        if isinstance(data, str):
-            data = await try_again()
-
-        if data.get("data") and data["data"].get("getCompanyPriceHistory"):
-            results.extend(data["data"].get("getCompanyPriceHistory"))
+        if data and data.get("getCompanyPriceHistory"):
+            results.extend(data["getCompanyPriceHistory"])
 
         return results
 
@@ -889,7 +855,6 @@ async def get_weekly_or_monthly_price_history(
 ):
     """Get historical price data."""
     # pylint: disable=import-outside-toplevel
-    import json
 
     if start_date:
         start_date = (
@@ -903,72 +868,36 @@ async def get_weekly_or_monthly_price_history(
             if isinstance(end_date, str)
             else end_date
         )
-    user_agent = get_random_agent()
     results: list[dict] = []
     symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
-    start_date = (
-        (datetime.now() - timedelta(weeks=52 * 100)).date()
-        if start_date is None
-        else start_date
-    )
+    start_date = EARLIEST_SESSION if start_date is None else start_date
     end_date = datetime.now() if end_date is None else end_date
 
-    payload = gql.get_timeseries_payload.copy()
-    if "interval" in payload["variables"]:
-        payload["variables"].pop("interval")
-    if "startDateTime" in payload["variables"]:
-        payload["variables"].pop("startDateTime")
-    if "endDateTime" in payload["variables"]:
-        payload["variables"].pop("endDateTime")
-    payload["variables"]["symbol"] = symbol
-    payload["variables"]["freq"] = interval
-    payload["variables"]["end"] = (
-        end_date.strftime("%Y-%m-%d") if isinstance(end_date, dateType) else end_date
-    )
-    payload["variables"]["start"] = (
-        start_date.strftime("%Y-%m-%d")
-        if isinstance(start_date, dateType)
-        else start_date
-    )
-    url = "https://app-money.tmx.com/graphql"
-    data = await get_data_from_gql(
-        method="POST",
-        url=url,
-        data=json.dumps(payload),
-        headers={
-            "authority": "app-money.tmx.com",
-            "referer": f"https://money.tmx.com/en/quote/{symbol}",
-            "locale": "en",
-            "Content-Type": "application/json",
-            "User-Agent": user_agent,
-            "Accept": "*/*",
+    from openbb_tmx.utils.cache import amake_gql_request
+
+    data = await amake_gql_request(
+        "getTimeSeriesData",
+        gql.TIME_SERIES,
+        {
+            "symbol": symbol,
+            "freq": interval,
+            "start": (
+                start_date.strftime("%Y-%m-%d")
+                if isinstance(start_date, dateType)
+                else start_date
+            ),
+            "end": (
+                end_date.strftime("%Y-%m-%d")
+                if isinstance(end_date, dateType)
+                else end_date
+            ),
         },
-        timeout=3,
+        symbol=symbol,
     )
 
-    async def try_again():
-        """Try again if the request fails."""
-        return await get_data_from_gql(
-            method="POST",
-            url=url,
-            data=json.dumps(payload),
-            headers={
-                "authority": "app-money.tmx.com",
-                "referer": f"https://money.tmx.com/en/quote/{symbol}",
-                "locale": "en",
-                "Content-Type": "application/json",
-                "User-Agent": user_agent,
-                "Accept": "*/*",
-            },
-            timeout=3,
-        )
+    if data and data.get("getTimeSeriesData"):
+        results = sorted(data["getTimeSeriesData"], key=lambda x: x["dateTime"])
 
-    if isinstance(data, str):
-        data = await try_again()
-
-    if data.get("data") and data["data"].get("getTimeSeriesData"):
-        results = data["data"].get("getTimeSeriesData")
-        results = sorted(results, key=lambda x: x["dateTime"], reverse=False)
     return results
 
 
@@ -980,117 +909,65 @@ async def get_intraday_price_history(
 ):
     """Get historical price data."""
     # pylint: disable=import-outside-toplevel
-    import json  # noqa
     import asyncio  # noqa
-    import pytz  # noqa
+    from zoneinfo import ZoneInfo  # noqa
     from dateutil import rrule  # noqa
 
-    if start_date:
-        start_date = (
-            datetime.strptime(start_date, "%Y-%m-%d")
-            if isinstance(start_date, str)
-            else start_date
-        )
-    if end_date:
-        end_date = (
-            datetime.strptime(end_date, "%Y-%m-%d")
-            if isinstance(end_date, str)
-            else end_date
-        )
-    user_agent = get_random_agent()
     results: list[dict] = []
-    symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
-    start_date = (
-        (datetime.now() - timedelta(weeks=4)).date()
-        if start_date is None
-        else start_date
+    symbol = normalize_symbol(symbol)
+    start = max(_as_date(start_date) or INTRADAY_EPOCH, INTRADAY_EPOCH)
+    end = _as_date(end_date) or datetime.now().date()
+
+    if end < INTRADAY_EPOCH:
+        end = datetime.now().date()
+
+    start_date, end_date = start, end
+    dates = list(
+        rrule.rrule(
+            rrule.WEEKLY,
+            interval=4,
+            dtstart=start_date,
+            until=end_date,
+        )
     )
-    end_date = datetime.now().date() if end_date is None else end_date
-    # This is the first date of available intraday data.
-    date_check = datetime(2022, 4, 12).date()
-    start_date = max(start_date, date_check)
-    if end_date < date_check:  # type: ignore
-        end_date = datetime.now().date()
-    # Generate a list of dates from start_date to end_date with a frequency of 3 weeks
-    dates = list(rrule.rrule(rrule.WEEKLY, interval=4, dtstart=start_date, until=end_date))  # type: ignore
 
     if dates[-1] != end_date:
         dates.append(end_date)  # type: ignore
 
-    # Create a list of 4-week chunks
     chunks = [
         (dates[i], dates[i + 1] - timedelta(days=1)) for i in range(len(dates) - 1)
     ]
 
-    # Adjust the end date of the last chunk to be the final end date
     chunks[-1] = (chunks[-1][0], end_date)  # type: ignore
 
     async def create_task(start, end, results):
         """Create a task from a start and end date chunk."""
-        # Create a datetime object representing 9:30 AM on the date
         start_obj = datetime.combine(start, time(9, 30))
         end_obj = datetime.combine(end, time(16, 0))
 
-        # Convert the datetime object to EST
-        est = pytz.timezone("US/Eastern")
-        start_obj_est = est.localize(start_obj)
-        end_obj_est = est.localize(end_obj)
+        eastern = ZoneInfo("America/New_York")
+        start_obj_est = start_obj.replace(tzinfo=eastern)
+        end_obj_est = end_obj.replace(tzinfo=eastern)
 
-        # Convert the datetime object to a timestamp
         start_time = int(start_obj_est.timestamp())
         end_time = int(end_obj_est.timestamp())
 
-        payload = gql.get_timeseries_payload.copy()
-        payload["variables"]["interval"] = None
-        if payload["variables"].get("start"):
-            payload["variables"].pop("start")
-        payload["variables"]["startDateTime"] = int(start_time)
-        if payload["variables"].get("end"):
-            payload["variables"].pop("end")
-        payload["variables"]["endDateTime"] = int(end_time)
-        payload["variables"]["interval"] = interval
-        payload["variables"]["symbol"] = symbol
-        if payload["variables"].get("freq"):
-            payload["variables"].pop("freq")
-        url = "https://app-money.tmx.com/graphql"
-        data = await get_data_from_gql(
-            method="POST",
-            url=url,
-            data=json.dumps(payload),
-            headers={
-                "authority": "app-money.tmx.com",
-                "referer": f"https://money.tmx.com/en/quote/{symbol}",
-                "locale": "en",
-                "Content-Type": "application/json",
-                "User-Agent": user_agent,
-                "Accept": "*/*",
+        from openbb_tmx.utils.cache import amake_gql_request
+
+        data = await amake_gql_request(
+            "getTimeSeriesData",
+            gql.TIME_SERIES,
+            {
+                "symbol": symbol,
+                "interval": interval,
+                "startDateTime": int(start_time),
+                "endDateTime": int(end_time),
             },
-            timeout=3,
+            symbol=symbol,
         )
 
-        async def try_again():
-            """Try again if the request fails."""
-            return await get_data_from_gql(
-                method="POST",
-                url=url,
-                data=json.dumps(payload),
-                headers={
-                    "authority": "app-money.tmx.com",
-                    "referer": f"https://money.tmx.com/en/quote/{symbol}",
-                    "locale": "en",
-                    "Content-Type": "application/json",
-                    "User-Agent": user_agent,
-                    "Accept": "*/*",
-                },
-                timeout=3,
-            )
-
-        if isinstance(data, str):
-            data = await try_again()
-
-        if data.get("data") and data["data"].get("getTimeSeriesData"):
-            result = data["data"].get("getTimeSeriesData")
-            results.extend(result)
+        if data and data.get("getTimeSeriesData"):
+            results.extend(data["getTimeSeriesData"])
 
         return results
 
@@ -1104,49 +981,129 @@ async def get_intraday_price_history(
     return results
 
 
-async def get_all_bonds(use_cache: bool = True) -> "DataFrame":
-    """Get all bonds reference data published by CIRO.
+CIRO_BONDS_URL = "https://bondtradedata.ciro.ca/debtip/designatedbonds/list"
 
-    The complete list is approximately 70-100K securities.
-    """
-    # pylint: disable=import-outside-toplevel
-    from aiohttp_client_cache import SQLiteBackend  # noqa
-    from openbb_core.app.utils import get_user_cache_directory  # noqa
-    from pandas import DataFrame  # noqa
 
-    tmx_bonds_backend = SQLiteBackend(
-        f"{get_user_cache_directory()}/http/tmx_bonds", expire_after=timedelta(days=1)
-    )
-    _ = await tmx_bonds_backend.delete_expired_responses()
-    url = "https://bondtradedata.iiroc.ca/debtip/designatedbonds/list"
-    response = await get_data_from_url(
-        url, use_cache=use_cache, backend=tmx_bonds_backend
-    )
+def _bonds_cache_path():
+    """Return today's parquet path for the CIRO bond master."""
+    from pathlib import Path
 
-    # Convert the response to a DataFrame and set the types for proper filtering in-fetcher.
-    # This is done here because multiple functions might share this response object.
-    bonds_data = (
-        DataFrame.from_records(response)
+    from openbb_core.app.utils import get_user_cache_directory
+
+    directory = Path(get_user_cache_directory()) / "tmx"
+    directory.mkdir(parents=True, exist_ok=True)
+
+    return directory / f"ciro_bonds_{datetime.now().date().isoformat()}.parquet"
+
+
+def _normalize_bonds(records: list[dict]) -> "DataFrame":
+    """Type and sort the CIRO bond master."""
+    from pandas import DataFrame, to_numeric
+
+    bonds = (
+        DataFrame.from_records(records)
         .replace("N/A", None)
         .sort_values(by=["lastTradedDate", "totalTrades"], ascending=False)
     )
+    bonds["issuer"] = bonds["issuer"].fillna("-").replace("-", None).astype(str)
 
-    bonds_data["issuer"] = (
-        bonds_data["issuer"].fillna("-").replace("-", None).astype(str)
-    )
+    for column in ("totalTrades", "secKey"):
+        bonds[column] = to_numeric(bonds[column], errors="coerce").astype("Int64")
 
-    int_columns = ["totalTrades", "secKey"]
-    for column in int_columns:
-        bonds_data[column] = bonds_data[column].astype(int)
-
-    float_columns = [
+    for column in (
         "lastPrice",
         "lowestPrice",
         "highestPrice",
         "lastYield",
         "couponRate",
-    ]
-    for column in float_columns:
-        bonds_data[column] = bonds_data[column].astype(float)
+    ):
+        bonds[column] = to_numeric(bonds[column], errors="coerce")
 
-    return bonds_data
+    return bonds
+
+
+async def get_all_bonds(use_cache: bool = True) -> "DataFrame":
+    """Get the complete bond reference master published by CIRO.
+
+    Parameters
+    ----------
+    use_cache : bool
+        Whether to read and write the on-disk parquet copy.
+
+    Returns
+    -------
+    DataFrame
+        Every designated bond, typed and sorted by last traded date.
+    """
+    from pandas import read_parquet
+
+    from openbb_tmx.utils.curl_session import get_json
+
+    path = _bonds_cache_path()
+
+    if use_cache and path.exists():
+        return read_parquet(path)
+
+    bonds = _normalize_bonds(await get_json("ciro", CIRO_BONDS_URL))
+
+    if use_cache:
+        for stale in path.parent.glob("ciro_bonds_*.parquet"):
+            if stale != path:
+                stale.unlink(missing_ok=True)
+
+        bonds.to_parquet(path, index=False)
+
+    return bonds
+
+
+async def get_timeseries_history(
+    symbol: str,
+    start_date=None,
+    end_date=None,
+    interval: str = "day",
+) -> list[dict]:
+    """Get daily, weekly, or monthly bars for any quotable instrument.
+
+    Parameters
+    ----------
+    symbol : str
+        The instrument symbol, including any market prefix or suffix.
+    start_date : date or str or None
+        The first date to return.
+    end_date : date or str or None
+        The last date to return.
+    interval : str
+        One of 'day', 'week', or 'month'.
+
+    Returns
+    -------
+    list[dict]
+        The bars, oldest first.
+    """
+    from openbb_tmx.utils.cache import amake_gql_request
+
+    symbol = normalize_symbol(symbol)
+    start_date = start_date or EARLIEST_SESSION
+    end_date = end_date or datetime.now().date()
+    data = await amake_gql_request(
+        "getTimeSeriesData",
+        gql.TIME_SERIES,
+        {
+            "symbol": symbol,
+            "freq": interval,
+            "start": (
+                start_date.strftime("%Y-%m-%d")
+                if isinstance(start_date, dateType)
+                else str(start_date)
+            ),
+            "end": (
+                end_date.strftime("%Y-%m-%d")
+                if isinstance(end_date, dateType)
+                else str(end_date)
+            ),
+        },
+        symbol=symbol,
+    )
+    results = (data or {}).get("getTimeSeriesData") or []
+
+    return sorted(results, key=lambda x: x["dateTime"])
