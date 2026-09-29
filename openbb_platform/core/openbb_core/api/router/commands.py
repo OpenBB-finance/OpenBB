@@ -1,6 +1,7 @@
 """Commands: generates the command map."""
 
 import inspect
+import json
 from collections.abc import Callable
 from functools import partial, wraps
 from inspect import Parameter, Signature, signature
@@ -11,26 +12,33 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.params import Depends as DependsParam
 from fastapi.responses import JSONResponse
 from fastapi.routing import APIRoute
+from pydantic import BaseModel
+from starlette.responses import (
+    Response as StarletteResponse,
+    StreamingResponse,
+)
+from typing_extensions import ParamSpec
+
+from openbb_core.app.charting import ChartingManager
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model.stream import OBBStream
 from openbb_core.app.model.user_settings import UserSettings
+from openbb_core.app.route_iter import iter_api_routes
 from openbb_core.app.router import RouterLoader
 from openbb_core.app.service.auth_service import AuthService
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import to_snake_case
-from pydantic import BaseModel
-from typing_extensions import ParamSpec
 
-try:
-    from openbb_charting import Charting
-
-    CHARTING_INSTALLED = True
-except ImportError:
-    CHARTING_INSTALLED = False
+# Resolved through the charting manager so a drop-in engine override is honored
+# instead of importing ``openbb_charting`` by name. ``Charting`` is the resolved
+# engine accessor class (or ``None`` when no engine is installed).
+Charting = ChartingManager.get_charting_class()
+CHARTING_INSTALLED = Charting is not None
 
 T = TypeVar("T")
 P = ParamSpec("P")
@@ -104,7 +112,11 @@ def build_new_signature(path: str, func: Callable) -> Signature:
             )
         )
 
-    if CHARTING_INSTALLED and path.replace("/", "_")[1:] in Charting.functions():
+    if (
+        CHARTING_INSTALLED
+        and Charting is not None
+        and path.replace("/", "_")[1:] in Charting.functions()
+    ):
         new_parameter_list.insert(
             var_kw_pos,
             Parameter(
@@ -214,8 +226,8 @@ def build_api_wrapper(
     route: APIRoute,
 ) -> Callable:
     """Build API wrapper for a command."""
-    func: Callable = route.endpoint  # type: ignore
-    path: str = route.path  # type: ignore
+    func: Callable = route.endpoint
+    path: str = route.path
     original_signature = signature(func)
     has_var_kwargs = any(
         param.kind == Parameter.VAR_KEYWORD
@@ -235,9 +247,9 @@ def build_api_wrapper(
         route.response_model = None
 
     @wraps(wrapped=func)
-    async def wrapper(  # pylint: disable=R0914,R0912  # noqa: PLR0912
+    async def wrapper(  # noqa: PLR0912
         *args: tuple[Any], **kwargs: dict[str, Any]
-    ) -> OBBject | JSONResponse:
+    ) -> OBBject | JSONResponse | StarletteResponse:
         user_settings: UserSettings = UserSettings.model_validate(
             kwargs.pop(
                 "__authenticated_user_settings",
@@ -305,6 +317,24 @@ def build_api_wrapper(
 
         output = await execute(*args, **kwargs)
 
+        if isinstance(output, StarletteResponse):
+            return output
+        if isinstance(output, OBBStream):
+            # The body is reserved for SSE chunks, so the response-level fields
+            # (id, provider, warnings) are broadcast out-of-band as headers.
+            stream_headers: dict[str, str] = {"X-OpenBB-Stream-Id": output.id}
+            if output.provider:
+                stream_headers["X-OpenBB-Provider"] = output.provider
+            if output.warnings:
+                stream_headers["X-OpenBB-Warning"] = json.dumps(
+                    jsonable_encoder(output.warnings)
+                )
+            return StreamingResponse(
+                output.aiter_bytes(),
+                media_type=output.media_type or "text/event-stream",
+                headers=stream_headers,
+            )
+
         if isinstance(output, OBBject):
             # This is where we check for `on_command_output` extensions
             mutated_output = getattr(output, "_extension_modified", False)
@@ -329,7 +359,7 @@ def build_api_wrapper(
                     return JSONResponse(
                         content=jsonable_encoder(output), status_code=200
                     )
-            except Exception as exc:  # pylint: disable=W0703
+            except Exception as exc:
                 raise OpenBBError(
                     f"Error serializing output for an extension-modified endpoint {path}: {exc}",
                 ) from exc
@@ -345,9 +375,16 @@ def build_api_wrapper(
 def add_command_map(command_runner: CommandRunner, api_router: APIRouter) -> None:
     """Add command map to the API router."""
     plugins_router = RouterLoader.from_extensions()
-
-    for route in plugins_router.api_router.routes:
-        route.endpoint = build_api_wrapper(command_runner=command_runner, route=route)  # type: ignore # noqa
+    for effective in iter_api_routes(plugins_router.api_router):
+        leaf = getattr(effective, "original_route", effective)
+        if not isinstance(leaf, APIRoute):
+            continue
+        original_leaf_path = leaf.path
+        leaf.path = effective.path
+        try:
+            leaf.endpoint = build_api_wrapper(command_runner=command_runner, route=leaf)
+        finally:
+            leaf.path = original_leaf_path
     api_router.include_router(router=plugins_router.api_router)
 
 

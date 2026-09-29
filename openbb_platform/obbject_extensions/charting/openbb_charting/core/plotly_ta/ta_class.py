@@ -1,7 +1,5 @@
 """Technical Analysis class for Plotly."""
 
-# pylint: disable=R0902,R0916,R0912,R0917  # type: ignore[index, assignment]
-
 import importlib
 import inspect
 import sys
@@ -28,11 +26,6 @@ if TYPE_CHECKING:
 class PlotlyTA(PltTA):
     """Plotly Technical Analysis class.
 
-    This class is a singleton. It is created and then reused, to assure
-    the plugins are only loaded once. This is done by overriding the __new__
-    method. The __init__ method is overridden to do nothing, except to clear
-    the internal data structures.
-
     Attributes
     ----------
     inchart_colors (List[str]):
@@ -45,44 +38,6 @@ class PlotlyTA(PltTA):
         List of available inchart indicators
     subplots (List[str]):
         List of available subplots
-
-    StaticMethods
-    -------------
-    plot(
-        df: pd.DataFrame,
-        indicators: ChartIndicators,
-        fig: Optional[OpenBBFigure] = None,
-        symbol: Optional[str] = "",
-        candles: bool = True,
-        volume: bool = True,
-    ) -> OpenBBFigure:
-        Plots the chart with the given indicators
-
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> from charting.core.plotly_ta.ta_class import PlotlyTA
-
-    >>> df = obb.equity.price.historical("SPY")
-    >>> indicators = dict(
-    >>>     sma=dict(length=[20, 50, 100]),
-    >>>     adx=dict(length=14),
-    >>>     macd=dict(fast=12, slow=26, signal=9),
-    >>>     rsi=dict(length=14),
-    >>> )
-    >>> fig = PlotlyTA.plot(df, indicators=indicators)
-    >>> fig.show()
-
-    If you want to plot the chart with the same indicators, you can
-    reuse the same instance of the class as follows:
-
-    >>> ta = PlotlyTA()
-    >>> fig = ta.plot(df, indicators=indicators)
-    >>> df2 = obb.equity.price.historical("AAPL")
-    >>> fig2 = ta.plot(df2)
-    >>> fig.show()
-    >>> fig2.show()
     """
 
     inchart_colors: list[str] = []
@@ -96,10 +51,7 @@ class PlotlyTA(PltTA):
     theme: ChartStyle | None = None
 
     def __new__(cls, *args, **kwargs):
-        """Create a new instance of the class.
-
-        Method is overridden to create a singleton instance of the class.
-        """
+        """Create a new instance of the class."""
         cls.charting_settings = kwargs.pop("charting_settings", cls.charting_settings)
         cls.theme = cls.setup_theme(
             chart_style=getattr(cls.charting_settings, "chart_style", ""),
@@ -109,26 +61,22 @@ class PlotlyTA(PltTA):
         )
         cls.inchart_colors = cls.theme.get_colors()
 
-        global PLOTLY_TA  # pylint: disable=global-statement # noqa
+        global PLOTLY_TA  # noqa
         if PLOTLY_TA is None:
-            # Creates the instance of the class and loads the plugins
-            # We set the global variable to the instance of the class so that
-            # the plugins are only loaded once
-            PLOTLY_TA = super().__new__(cls)  # type: ignore[attr-defined, assignment]
-            PLOTLY_TA._locate_plugins(getattr(cls.charting_settings, "debug_mode", False))  # type: ignore[attr-defined]
-            PLOTLY_TA.add_plugins(PLOTLY_TA.plugins)  # type: ignore[attr-defined, assignment]
+            PLOTLY_TA = super().__new__(cls)  # ty: ignore[invalid-assignment]
+            PLOTLY_TA._locate_plugins(  # ty: ignore[unresolved-attribute]
+                getattr(cls.charting_settings, "debug_mode", False)
+            )
+            PLOTLY_TA.add_plugins(PLOTLY_TA.plugins)  # ty: ignore[invalid-argument-type, unresolved-attribute]
 
         return PLOTLY_TA
 
     def __init__(self, *args, **kwargs):
-        """Initialize the class.
-
-        Method is overridden to do nothing, except to clear the internal data structures.
-        """
+        """Initialize the class."""
         if not args and not kwargs:
             self._clear_data()
         else:
-            self.df_fib = None  # type: ignore
+            self.df_fib = None  # ty: ignore[invalid-assignment]
             super().__init__(*args, **kwargs)
 
     @staticmethod
@@ -166,7 +114,6 @@ class PlotlyTA(PltTA):
         """Set list of available subplots."""
         self.__subplots__ = value
 
-    # pylint: disable=R0913
     def __plot__(
         self,
         df_stock: Union["pd.DataFrame", "pd.Series"],
@@ -178,11 +125,7 @@ class PlotlyTA(PltTA):
         fig: OpenBBFigure | None = None,
         volume_ticks_x: int = 7,
     ) -> OpenBBFigure:
-        """Do not call this directly.
-
-        Use the PlotlyTA.plot() static method instead.
-        """
-        # pylint: disable=import-outside-toplevel
+        """Do not call this directly."""
         import pandas as pd
 
         if isinstance(df_stock, pd.Series):
@@ -191,10 +134,9 @@ class PlotlyTA(PltTA):
         if not isinstance(indicators, ChartIndicators):
             indicators = ChartIndicators.from_dict(indicators or {})
 
-        # Apply to_datetime to the index in a way that handles daylight savings.
-        df_stock["date"] = df_stock.index  # type: ignore
+        df_stock["date"] = df_stock.index
         df_stock["date"] = df_stock["date"].apply(pd.to_datetime)
-        df_stock.index = df_stock["date"]  # type: ignore
+        df_stock.index = df_stock["date"]
         df_stock.drop(columns=["date"], inplace=True)
 
         self.indicators = indicators
@@ -256,7 +198,7 @@ class PlotlyTA(PltTA):
         if indicators is None and PLOTLY_TA is not None:
             indicators = PLOTLY_TA.indicators
 
-        return PlotlyTA().__plot__(  # type: ignore
+        return PlotlyTA().__plot__(
             df_stock, indicators, symbol, candles, volume, prepost, fig, volume_ticks_x
         )
 
@@ -297,7 +239,7 @@ class PlotlyTA(PltTA):
 
     def _clear_data(self):
         """Clear and reset all data to default values."""
-        self.df_stock = None  # type: ignore
+        self.df_stock = None  # ty: ignore[invalid-assignment]
         self.indicators = ChartIndicators.from_dict({})
         self.params = None
         self.intraday = False
@@ -305,7 +247,7 @@ class PlotlyTA(PltTA):
 
     def calculate_indicators(self):
         """Return dataframe with all indicators."""
-        return self.indicators.to_dataframe(self.df_stock.copy(), self.ma_mode)  # type: ignore
+        return self.indicators.to_dataframe(self.df_stock.copy(), self.ma_mode)  # ty: ignore[invalid-argument-type]
 
     def get_subplot(self, subplot: str) -> bool:
         """Return True if subplots will be able to be plotted with current data."""
@@ -329,15 +271,15 @@ class PlotlyTA(PltTA):
                 return False
 
             output = self.indicators.get_indicator_data(
-                self.df_stock.copy(),  # type: ignore
+                self.df_stock.copy(),  # ty: ignore[invalid-argument-type]
                 indicator,
                 **self.indicators.get_options_dict(indicator.name) or {},
             )
             if not isinstance(output, bool):
-                output = output.dropna()  # type: ignore
+                output = output.dropna()
 
                 if output is None or output.empty:
-                    output = False
+                    output = False  # pragma: no cover  # get_indicator_data already drops NaNs and returns None when empty
 
             return True
 
@@ -374,7 +316,7 @@ class PlotlyTA(PltTA):
         specs = [[{"secondary_y": True}]] + [[{"secondary_y": False}]] * check_rows
 
         output = row_params.get(str(check_rows), dict(rows=1, row_width=[1]))
-        output.update(dict(cols=1, vertical_spacing=0.04, specs=specs))
+        output.update(dict(cols=1, vertical_spacing=0.04, specs=specs))  # ty: ignore[no-matching-overload]
 
         return output
 
@@ -425,7 +367,7 @@ class PlotlyTA(PltTA):
         else:
             fig.add_scatter(
                 x=self.df_stock.index,
-                y=self.df_stock[self.close_column],  # type: ignore
+                y=self.df_stock[self.close_column],
                 name=f"{symbol}",
                 connectgaps=True,
                 row=1,
@@ -466,7 +408,11 @@ class PlotlyTA(PltTA):
         """
         self.df_ta = self.calculate_indicators()
 
-        symbol = self.df_stock.name if hasattr(self.df_stock, "name") and not symbol else symbol  # type: ignore
+        symbol = (  # ty: ignore[invalid-assignment]
+            self.df_stock.name
+            if hasattr(self.df_stock, "name") and not symbol
+            else symbol
+        )
 
         figure = self.init_plot(symbol, candles) if fig is None else fig
         subplot_row, fig_new = 2, {}
@@ -474,14 +420,16 @@ class PlotlyTA(PltTA):
 
         figure = self.process_fig(figure, volume_ticks_x)
 
-        # Aroon indicator is always plotted first since it has 2 subplot rows.
-        # ATR messes up the volume layout so we plot it last.
         plot_indicators = sorted(
             self.indicators.get_active_ids(),
             key=lambda x: (
                 50
                 if x == "aroon"
-                else 1000 if x == "atr" else 999 if x in self.subplots else 1
+                else 1000
+                if x == "atr"
+                else 999
+                if x in self.subplots
+                else 1
             ),
         )
 
@@ -537,13 +485,13 @@ class PlotlyTA(PltTA):
             selector=dict(type="scatter", mode="lines"), connectgaps=True
         )
         if hasattr(figure, "hide_holidays"):
-            figure.hide_holidays(self.prepost)  # type: ignore
+            figure.hide_holidays(  # ty: ignore[call-non-callable]
+                self.prepost
+            )  # pragma: no cover  # OpenBBFigure has no hide_holidays method in this codebase
 
         if not self.show_volume:
             figure.update_layout(margin=dict(l=20))
 
-        # We remove xaxis labels from all but bottom subplot,
-        # and we make sure they all match the bottom one
         xbottom = f"y{subplot_row + 1}"
         xaxes = list(figure.select_xaxes())
         for xa in xaxes:
@@ -601,7 +549,7 @@ class PlotlyTA(PltTA):
                     sr_legend_shown = True
 
         if "annotations" in figure.layout:
-            for item in figure.layout.annotations:  # type: ignore
+            for item in figure.layout.annotations:  # ty: ignore[not-iterable]
                 item["font"]["size"] = 14
         figure.update_layout(margin=dict(l=50, r=10, b=10, t=20))
         return figure
@@ -626,11 +574,11 @@ class PlotlyTA(PltTA):
             shared_xaxes=True, **self.get_fig_settings_dict()
         )
         subplots: dict[str, dict[str, list[Any]]] = {}
-        grid_ref = fig._validate_get_grid_ref()  # pylint: disable=protected-access
+        grid_ref = fig._validate_get_grid_ref()
         for r, plot_row in enumerate(grid_ref):
             for c, plot_refs in enumerate(plot_row):
                 if not plot_refs:
-                    continue
+                    continue  # pragma: no cover  # init_plot always yields a single populated grid cell
                 for subplot_ref in plot_refs:
                     if subplot_ref.subplot_type == "xy":
                         xaxis, yaxis = subplot_ref.layout_keys
@@ -658,14 +606,14 @@ class PlotlyTA(PltTA):
                     layout
                 ]["domain"]
 
-            fig.layout.update({layout: fig_json[layout]})  # type: ignore
-            new_subplot.layout.update({layout: fig.layout[layout]})  # type: ignore
+            fig.layout.update({layout: fig_json[layout]})
+            new_subplot.layout.update({layout: fig.layout[layout]})
 
         if self.show_volume:
             new_subplot.add_inchart_volume(
-                self.df_stock,
+                self.df_stock,  # ty: ignore[invalid-argument-type]
                 self.close_column,
-                volume_ticks_x=volume_ticks_x,  # type: ignore
+                volume_ticks_x=volume_ticks_x,
             )
 
         return new_subplot

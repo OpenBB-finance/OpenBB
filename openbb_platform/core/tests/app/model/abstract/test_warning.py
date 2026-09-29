@@ -3,6 +3,7 @@
 from unittest.mock import Mock
 
 import pytest
+
 from openbb_core.app.model.abstract.warning import Warning_, cast_warning
 
 

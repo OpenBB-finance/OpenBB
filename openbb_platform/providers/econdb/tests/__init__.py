@@ -1,1 +1,0 @@
-"""Test the EconDB Provider."""

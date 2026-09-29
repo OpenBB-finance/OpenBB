@@ -1,8 +1,9 @@
 """Maritime chokepoint information and metadata."""
 
+from pydantic import Field
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
-from pydantic import Field
 
 
 class MaritimeChokePointInfoQueryParams(QueryParams):

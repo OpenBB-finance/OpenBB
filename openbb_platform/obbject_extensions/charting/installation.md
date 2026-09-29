@@ -46,6 +46,7 @@ After installation, the Python interface will automatically rebuild on initializ
 
 ```python
 import openbb
+
 openbb.build()
 ```
 

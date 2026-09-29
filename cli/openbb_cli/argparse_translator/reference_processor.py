@@ -27,26 +27,21 @@ class ReferenceToArgumentsProcessor:
     @staticmethod
     def _parse_type(type_string: str) -> type:
         """Parse the type from the string representation."""
-        # Handle Optional[T] or T | None
         if "Optional" in type_string or "|" in type_string:
-            # Extract the inner type, defaulting to str if parsing fails
             match = re.search(r"Optional\[(\w+)]|(\w+)\s*\|\s*None", type_string)
             if match:
                 type_string = next(
                     (group for group in match.groups() if group is not None), "str"
                 )
 
-        # Handle Literal types
         if "Literal" in type_string:
-            return str  # Treat all Literal types as strings for simplicity
+            return str
 
-        # Handle Annotated types by extracting the base type
         if "Annotated" in type_string:
             match = re.search(r"Annotated\[(\w+),", type_string)
             if match:
                 type_string = match.group(1)
 
-        # Map common string representations to actual types
         type_map = {
             "str": str,
             "int": int,
@@ -69,14 +64,12 @@ class ReferenceToArgumentsProcessor:
         if custom_choices:
             return tuple(custom_choices)
 
-        # Find all occurrences of Literal[...]
         literal_matches = re.findall(r"Literal\[(.*?)\]", type_string)
         if not literal_matches:
             return None
 
         all_choices: list = []
         for match in literal_matches:
-            # Split by comma and strip quotes and whitespace
             choices = [c.strip().strip("'\"") for c in match.split(",") if c.strip()]
             all_choices.extend(choices)
 

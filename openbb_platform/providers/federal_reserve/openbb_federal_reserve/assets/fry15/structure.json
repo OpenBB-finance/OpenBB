@@ -1,0 +1,2400 @@
+{
+  "source": "https://www.frbservices.org/binaries/content/assets/crsocms/central-bank/reporting-central/fry15-transfer-user-guide.pdf",
+  "form_source": "https://www.federalreserve.gov/apps/reportingforms/Download/DownloadAttachment?guid=3395b1c6-6204-4954-813e-1f52136bf572",
+  "caption_source": "https://www.ffiec.gov/npw/FinancialReport/ReturnFinancialReportCSV?rpt=FRY15&id=1039502&dt=20260331",
+  "schedule_count": 9,
+  "item_count": 194,
+  "validation": {
+    "csv_mdrm_count": 184,
+    "covered_count": 184,
+    "missing": [],
+    "permanent_empty": [],
+    "coverage": 100.0
+  },
+  "schedules": [
+    {
+      "schedule": "A",
+      "name": "Size Indicator"
+    },
+    {
+      "schedule": "B",
+      "name": "Interconnectedness Indicators"
+    },
+    {
+      "schedule": "C",
+      "name": "Substitutability Indicators"
+    },
+    {
+      "schedule": "D",
+      "name": "Complexity Indicators"
+    },
+    {
+      "schedule": "E",
+      "name": "Cross-Jurisdictional Activity Indicators"
+    },
+    {
+      "schedule": "F",
+      "name": "Ancillary Indicators"
+    },
+    {
+      "schedule": "G",
+      "name": "Short-Term Wholesale Funding Indicator"
+    },
+    {
+      "schedule": "COVER",
+      "name": "Cover Page"
+    },
+    {
+      "schedule": "CALCULATED",
+      "name": "Calculated and Auto-Populated Items"
+    }
+  ],
+  "items": [
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": null,
+      "caption": "Derivative exposures",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "1.a",
+      "caption": "Current exposure of derivative contracts",
+      "mdrm": "RISKM337",
+      "columns": [
+        "RISKM337"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "1.b",
+      "caption": "Current exposure of derivative contracts",
+      "mdrm": "RISKM339",
+      "columns": [
+        "RISKM339"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "1.c",
+      "caption": "Gross-up for derivatives collateral",
+      "mdrm": "RISKY822",
+      "columns": [
+        "RISKY822"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "1.d",
+      "caption": "Effective notional amount of written credit derivatives",
+      "mdrm": "RISKM340",
+      "columns": [
+        "RISKM340"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "1.e",
+      "caption": "Cash variation margin included as an on-balance sheet recievable",
+      "mdrm": "RISKY823",
+      "columns": [
+        "RISKY823"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "1.f",
+      "caption": "Exempted central counterparty legs of client-cleared transactions included in item 3(a)",
+      "mdrm": "RISKY824",
+      "columns": [
+        "RISKY824"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "1.g",
+      "caption": "Effective notional amount offsets and PFE adjustments for sold credit protection",
+      "mdrm": "RISKY825",
+      "columns": [
+        "RISKY825"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": null,
+      "caption": "Securities financing transaction (SFT) exposures",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "2.a",
+      "caption": "Gross SFT assets",
+      "mdrm": "RISKM334",
+      "columns": [
+        "RISKM334"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "2.b",
+      "caption": "DERIVATIVES AND OFF-BALANCE-SHEET ITEMS: COUNTERPARTY RISK EXPOSURES: COUNTERPARTY EXPOSURE TO SFTS",
+      "mdrm": "RISKN507",
+      "columns": [
+        "RISKN507"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "2.c",
+      "caption": "SFT indemnification and other agent-related exposures",
+      "mdrm": "RISKY827",
+      "columns": [
+        "RISKY827"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "2.d",
+      "caption": "Gross value of offsetting cash payables",
+      "mdrm": "RISKY828",
+      "columns": [
+        "RISKY828"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": null,
+      "caption": "Other on-balance sheet exposures",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "3.a",
+      "caption": "Other on-balance sheet assets",
+      "mdrm": "RISKY830",
+      "columns": [
+        "RISKY830"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "3.b",
+      "caption": "REGULATORY ADJUSTMENTS",
+      "mdrm": "RISKM349",
+      "columns": [
+        "RISKM349"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": null,
+      "caption": "Other off-balance sheet exposures",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "4.a",
+      "caption": "Gross notional amount of items subject to a 0% credit conversion factor (CCF)",
+      "mdrm": "RISKM342",
+      "columns": [
+        "RISKM342"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "4.b",
+      "caption": "Gross notional amount of items subject to a 20% CCF",
+      "mdrm": "RISKM718",
+      "columns": [
+        "RISKM718"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "4.c",
+      "caption": "Gross notional amount of items subject to a 50% CCF",
+      "mdrm": "RISKM346",
+      "columns": [
+        "RISKM346"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "4.d",
+      "caption": "Gross notional amount of items subject to a 100% CCF",
+      "mdrm": "RISKM347",
+      "columns": [
+        "RISKM347"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "6",
+      "caption": "DOES ITEM 5 (TOTAL EXPOSURE) REPRESENT AN AVERAGE VALUE OVER THE REPORTING PERIOD",
+      "mdrm": "RISKFC52",
+      "columns": [
+        "RISKFC52"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "M.1",
+      "caption": "Securities received as collateral in securities lending",
+      "mdrm": "RISKM335",
+      "columns": [
+        "RISKM335"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "M.2",
+      "caption": "Cash collateral received in conduit securities lending transactions",
+      "mdrm": "RISKM336",
+      "columns": [
+        "RISKM336"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "M.3",
+      "caption": "Credit derivatives sold net of related credit protection bought",
+      "mdrm": "RISKM341",
+      "columns": [
+        "RISKM341"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "A",
+      "schedule_name": "Size Indicator",
+      "line": "M.6",
+      "caption": "Total nonbank assets",
+      "mdrm": "RISKKY47",
+      "columns": [
+        "RISKKY47"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "1",
+      "caption": "FUNDS DEPOSITED WITH OR LENT TO UNAFFILIATED FINANCIAL INSTITUTIONS",
+      "mdrm": "RISKM351",
+      "columns": [
+        "RISKM351"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "1.a",
+      "caption": "FUNDS DEPOSITED WITH OR LENT TO UNAFFILIATED FINANCIAL INSTITUTIONS: CERTIFICATES OF DEPOSIT",
+      "mdrm": "RISKM355",
+      "columns": [
+        "RISKM355"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "2",
+      "caption": "Unused portion of committed lines extended to other financial institutions",
+      "mdrm": "RISKJ458",
+      "columns": [
+        "RISKJ458"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "3.a",
+      "caption": "HOLDINGS OF SECURITIES ISSUED BY UNAFFILIATED FINANCIAL INSTITUTIONS: SECURED DEBT SECURITIES",
+      "mdrm": "RISKM352",
+      "columns": [
+        "RISKM352"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "3.b",
+      "caption": "HOLDINGS OF SECURITIES ISSUED BY UNAFFILIATED FINANCIAL INSTITUTIONS: SENIOR UNSECURED DEBT SECURITIES",
+      "mdrm": "RISKM353",
+      "columns": [
+        "RISKM353"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "3.c",
+      "caption": "HOLDINGS OF SECURITIES ISSUED BY UNAFFILIATED FINANCIAL INSTITUTIONS: SUBORDINATED DEBT SECURITIES",
+      "mdrm": "RISKM354",
+      "columns": [
+        "RISKM354"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "3.d",
+      "caption": "HOLDINGS OF SECURITIES ISSUED BY UNAFFILIATED FINANCIAL INSTITUTIONS: COMMERCIAL PAPER",
+      "mdrm": "RISKM345",
+      "columns": [
+        "RISKM345"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "3.e",
+      "caption": "HOLDINGS OF SECURITIES ISSUED BY UNAFFILIATED FINANCIAL INSTITUTIONS: STOCK (INCLUDING PAR AND SURPLUS OF COMMON AND PREFERRED SHARES)",
+      "mdrm": "RISKM356",
+      "columns": [
+        "RISKM356"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "3.f",
+      "caption": "HOLDINGS OF SECURITIES ISSUED BY UNAFFILIATED FINANCIAL INSTITUTIONS: OFFSETTING SHORT POSITIONS IN RELATION TO THE SPECIFIC STOCK HOLDINGS INCLUDED IN ITEM 3.E",
+      "mdrm": "RISKM357",
+      "columns": [
+        "RISKM357"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "4",
+      "caption": "NET POSITIVE CURRENT EXPOSURE OF SECURITIES FINANCING TRANSACTIONS WITH UNAFFILIATED FINANCIAL INSTITUTIONS",
+      "mdrm": "RISKM358",
+      "columns": [
+        "RISKM358"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "5.a",
+      "caption": "OVER-THE-COUNTER (OTC) DERIVATIVES WITH UNAFFILIATED FINANCIAL INSTITUTIONS THAT HAVE A NET POSITIVE FAIR VALUE: NET POSITIVE FAIR VALUE",
+      "mdrm": "RISKM359",
+      "columns": [
+        "RISKM359"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "5.b",
+      "caption": "OVER-THE-COUNTER (OTC) DERIVATIVES WITH UNAFFILIATED FINANCIAL INSTITUTIONS THAT HAVE A NET POSITIVE FAIR VALUE: POTENTIAL FUTURE EXPOSURE",
+      "mdrm": "RISKM360",
+      "columns": [
+        "RISKM360"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": null,
+      "caption": "Deposits due to other financial institutions",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "7.a",
+      "caption": "Deposits due to depository institutions",
+      "mdrm": "RISKM363",
+      "columns": [
+        "RISKM363"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "7.b",
+      "caption": "Deposits due to depository institutions",
+      "mdrm": "RISKM364",
+      "columns": [
+        "RISKM364"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "8",
+      "caption": "Borrowings obtained from other financial institutions",
+      "mdrm": "RISKY833",
+      "columns": [
+        "RISKY833"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "9",
+      "caption": "Unused portion of committed lines obtained from other financial institutions",
+      "mdrm": "RISKM365",
+      "columns": [
+        "RISKM365"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "10",
+      "caption": "Net negative current exposure of SFTs with other financial institutions",
+      "mdrm": "RISKM366",
+      "columns": [
+        "RISKM366"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": null,
+      "caption": "OTC derivative contracts with other financial institutions that have a net negative fair value",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "11.a",
+      "caption": "Net negative fair value",
+      "mdrm": "RISKM367",
+      "columns": [
+        "RISKM367"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "11.b",
+      "caption": "Potential future exposure",
+      "mdrm": "RISKM368",
+      "columns": [
+        "RISKM368"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "13",
+      "caption": "SECURED DEBT SECURITIES",
+      "mdrm": "RISKM371",
+      "columns": [
+        "RISKM371"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "14",
+      "caption": "SENIOR UNSECURED DEBT SECURITIES",
+      "mdrm": "RISKM372",
+      "columns": [
+        "RISKM372"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "15",
+      "caption": "SUBORDINATED DEBT SECURITIES",
+      "mdrm": "RISKM373",
+      "columns": [
+        "RISKM373"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "16",
+      "caption": "COMMERCIAL PAPER",
+      "mdrm": "RISK2309",
+      "columns": [
+        "RISK2309"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "17",
+      "caption": "CERTIFICATES OF DEPOSIT",
+      "mdrm": "RISKM374",
+      "columns": [
+        "RISKM374"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "18",
+      "caption": "COMMON EQUITY",
+      "mdrm": "RISKM375",
+      "columns": [
+        "RISKM375"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "19",
+      "caption": "PREFERRED SHARES AND OTHER FORMS OF SUBORDINATED FUNDING NOT CAPTURED IN ITEM 13",
+      "mdrm": "RISKN509",
+      "columns": [
+        "RISKN509"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "B",
+      "schedule_name": "Interconnectedness Indicators",
+      "line": "M.1",
+      "caption": "Standby letters of credit extended to other financial institutions",
+      "mdrm": "RISKY834",
+      "columns": [
+        "RISKY834"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": null,
+      "caption": "Payments made in the last four quarters",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "1.a",
+      "caption": "Australian dollars (AUD)",
+      "mdrm": "RISKM377",
+      "columns": [
+        "RISKM377"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "1.b",
+      "caption": "Brazilian real (BRL)",
+      "mdrm": "RISKM378",
+      "columns": [
+        "RISKM378"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "1.c",
+      "caption": "Canadian dollars (CAD)",
+      "mdrm": "RISKM379",
+      "columns": [
+        "RISKM379"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "1.d",
+      "caption": "Swiss francs (CHF)",
+      "mdrm": "RISKM380",
+      "columns": [
+        "RISKM380"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "1.e",
+      "caption": "Chinese yuan (CNY)",
+      "mdrm": "RISKM381",
+      "columns": [
+        "RISKM381"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "1.f",
+      "caption": "Euros (EUR)",
+      "mdrm": "RISKM382",
+      "columns": [
+        "RISKM382"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "1.g",
+      "caption": "British pounds (GBP)",
+      "mdrm": "RISKM383",
+      "columns": [
+        "RISKM383"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "1.h",
+      "caption": "Hong Kong dollars (HKD)",
+      "mdrm": "RISKM384",
+      "columns": [
+        "RISKM384"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "1.i",
+      "caption": "Indian rupee (INR)",
+      "mdrm": "RISKM385",
+      "columns": [
+        "RISKM385"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "1.j",
+      "caption": "Japanese yen (JPY)",
+      "mdrm": "RISKM386",
+      "columns": [
+        "RISKM386"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "1.k",
+      "caption": "Mexican pesos (MXN)",
+      "mdrm": "RISKY835",
+      "columns": [
+        "RISKY835"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "1.l",
+      "caption": "Swedish krona (SEK)",
+      "mdrm": "RISKM387",
+      "columns": [
+        "RISKM387"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "1.m",
+      "caption": "United States dollars (USD)",
+      "mdrm": "RISKM388",
+      "columns": [
+        "RISKM388"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "3",
+      "caption": "Assets held as a custodian on behalf of customers",
+      "mdrm": "RISKM405",
+      "columns": [
+        "RISKM405"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "4",
+      "caption": "EQUITY UNDERWRITING ACTIVITY",
+      "mdrm": "RISKM406",
+      "columns": [
+        "RISKM406"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "5",
+      "caption": "DEBT UNDERWRITING ACTIVITY",
+      "mdrm": "RISKM407",
+      "columns": [
+        "RISKM407"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "M.1",
+      "caption": "New Zealand dollars (NZD)",
+      "mdrm": "RISKY836",
+      "columns": [
+        "RISKY836"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "M.2",
+      "caption": "Russian rubles (RUB)",
+      "mdrm": "RISKY837",
+      "columns": [
+        "RISKY837"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "M.3",
+      "caption": "Payments made in the last four quarters in all other currencies",
+      "mdrm": "RISKM389",
+      "columns": [
+        "RISKM389"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "M.4",
+      "caption": "UNSECURED SETTLEMENT/CLEARING LINES PROVIDED",
+      "mdrm": "RISKM436",
+      "columns": [
+        "RISKM436"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "M.5.a",
+      "caption": "Securities issued by public sector entities",
+      "mdrm": "RISKKW46",
+      "columns": [
+        "RISKKW46"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "M.5.b",
+      "caption": "Other fixed income securities",
+      "mdrm": "RISKKW48",
+      "columns": [
+        "RISKKW48"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "M.5.c",
+      "caption": "Listed equities",
+      "mdrm": "RISKKW50",
+      "columns": [
+        "RISKKW50"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "C",
+      "schedule_name": "Substitutability Indicators",
+      "line": "M.5.d",
+      "caption": "Other securities",
+      "mdrm": "RISKKW52",
+      "columns": [
+        "RISKKW52"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "D",
+      "schedule_name": "Complexity Indicators",
+      "line": "1",
+      "caption": "OVER-THE-COUNTER (OTC) DERIVATIVES CONTRACTS CLEARED THROUGH A CENTRAL COUNTERPARTY",
+      "mdrm": "RISKM409",
+      "columns": [
+        "RISKM409"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "D",
+      "schedule_name": "Complexity Indicators",
+      "line": "2",
+      "caption": "OTC DERIVATIVES CONTRACTS SETTLED BILATERALLY",
+      "mdrm": "RISKM410",
+      "columns": [
+        "RISKM410"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "D",
+      "schedule_name": "Complexity Indicators",
+      "line": "4",
+      "caption": "TRADING SECURITIES",
+      "mdrm": "RISKM412",
+      "columns": [
+        "RISKM412"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "D",
+      "schedule_name": "Complexity Indicators",
+      "line": "5",
+      "caption": "AVAILABLE-FOR-SALE SECURITIES, TOTAL",
+      "mdrm": "RISK1773",
+      "columns": [
+        "RISK1773"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "D",
+      "schedule_name": "Complexity Indicators",
+      "line": "6",
+      "caption": "Equity securities with readily determinable fair values not held for trading",
+      "mdrm": "RISKJA22",
+      "columns": [
+        "RISKJA22"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "D",
+      "schedule_name": "Complexity Indicators",
+      "line": "8",
+      "caption": "TRADING AND AFS SECURITIES THAT MEET THE DEFINITION OF LEVEL 1 ASSETS",
+      "mdrm": "RISKN510",
+      "columns": [
+        "RISKN510"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "D",
+      "schedule_name": "Complexity Indicators",
+      "line": "9",
+      "caption": "TRADING AND AFS SECURITIES THAT MEET THE DEFINITION OF LEVEL 2 ASSETS, WITH HAIRCUTS",
+      "mdrm": "RISKN511",
+      "columns": [
+        "RISKN511"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "D",
+      "schedule_name": "Complexity Indicators",
+      "line": "11",
+      "caption": "TOTAL ASSETS MEASURED AT FAIR VALUE ON A RECURRING BASIS - LEVEL 3 FAIR VALUE MEASUREMENTS",
+      "mdrm": "RISKG506",
+      "columns": [
+        "RISKG506"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "D",
+      "schedule_name": "Complexity Indicators",
+      "line": "M.1",
+      "caption": "HELD-TO-MATURITY SECURITIES, TOTAL",
+      "mdrm": "RISK1754",
+      "columns": [
+        "RISK1754"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Cross-Jurisdictional Activity Indicators",
+      "line": "2",
+      "caption": "FOREIGN LIABILITIES (EXCLUDING LOCAL LIABILITIES IN LOCAL CURRENCY)",
+      "mdrm": "RISKM423",
+      "columns": [
+        "RISKM423"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Cross-Jurisdictional Activity Indicators",
+      "line": "2.a",
+      "caption": "FOREIGN LIABILITIES (EXCLUDING LOCAL LIABILITIES IN LOCAL CURRENCY): ANY FOREIGN LIABILITIES TO RELATED OFFICES INCLUDED IN ITEM 2",
+      "mdrm": "RISKM424",
+      "columns": [
+        "RISKM424"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Cross-Jurisdictional Activity Indicators",
+      "line": "3",
+      "caption": "LOCAL LIABILITIES IN LOCAL CURRENCY",
+      "mdrm": "RISKM425",
+      "columns": [
+        "RISKM425"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Cross-Jurisdictional Activity Indicators",
+      "line": "M.1",
+      "caption": "Foreign derivative claims on an ultimate-risk basis",
+      "mdrm": "RISKKW54",
+      "columns": [
+        "RISKKW54"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Cross-Jurisdictional Activity Indicators",
+      "line": "M.3",
+      "caption": "Foreign derivative liabilities on an immediate-counterparty basis",
+      "mdrm": "RISKKW56",
+      "columns": [
+        "RISKKW56"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "E",
+      "schedule_name": "Cross-Jurisdictional Activity Indicators",
+      "line": "M.4",
+      "caption": "Foreign liabilities on an immediate-counterparty basis",
+      "mdrm": "RISKKW57",
+      "columns": [
+        "RISKKW57"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "F",
+      "schedule_name": "Ancillary Indicators",
+      "line": "1",
+      "caption": "TOTAL LIABILITIES",
+      "mdrm": "RISK2948",
+      "columns": [
+        "RISK2948"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "F",
+      "schedule_name": "Ancillary Indicators",
+      "line": "2",
+      "caption": "RETAIL FUNDING",
+      "mdrm": "RISKM427",
+      "columns": [
+        "RISKM427"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "F",
+      "schedule_name": "Ancillary Indicators",
+      "line": "3",
+      "caption": "TOTAL GROSS REVENUE",
+      "mdrm": "RISKM430",
+      "columns": [
+        "RISKM430"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "F",
+      "schedule_name": "Ancillary Indicators",
+      "line": "4",
+      "caption": "TOTAL NET REVENUE",
+      "mdrm": "RISKM428",
+      "columns": [
+        "RISKM428"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "F",
+      "schedule_name": "Ancillary Indicators",
+      "line": "5",
+      "caption": "FOREIGN NET REVENUE",
+      "mdrm": "RISKM429",
+      "columns": [
+        "RISKM429"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "F",
+      "schedule_name": "Ancillary Indicators",
+      "line": "6",
+      "caption": "Gross value of cash provided and gross fair value of securities provided in securities financing transactions (SFTs)",
+      "mdrm": "RISKM432",
+      "columns": [
+        "RISKM432"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "F",
+      "schedule_name": "Ancillary Indicators",
+      "line": "7",
+      "caption": "Gross value of cash received and gross fair value of securities received in SFTs",
+      "mdrm": "RISKM433",
+      "columns": [
+        "RISKM433"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "F",
+      "schedule_name": "Ancillary Indicators",
+      "line": "8",
+      "caption": "GROSS POSITIVE FAIR VALUE OF OVER-THE-COUNTER (OTC) DERIVATIVES CONTRACTS",
+      "mdrm": "RISKM434",
+      "columns": [
+        "RISKM434"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "F",
+      "schedule_name": "Ancillary Indicators",
+      "line": "9",
+      "caption": "GROSS NEGATIVE FAIR VALUE OF OTC DERIVATIVES CONTRACTS",
+      "mdrm": "RISKM435",
+      "columns": [
+        "RISKM435"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "F",
+      "schedule_name": "Ancillary Indicators",
+      "line": "10",
+      "caption": "NUMBER OF JURISDICTIONS",
+      "mdrm": "RISKM437",
+      "columns": [
+        "RISKM437"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": null,
+      "caption": "First tier",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "1.a",
+      "caption": "Funding secured by level 1 liquid assets: Remaining Maturity of 30 Days or Less",
+      "mdrm": "RISKY838",
+      "columns": [
+        "RISKY838"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "1.a",
+      "caption": "Funding secured by level 1 liquid assets: Remaining Maturity of 31 to 90 Days",
+      "mdrm": "RISKY839",
+      "columns": [
+        "RISKY839"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "1.a",
+      "caption": "Funding secured by level 1 liquid assets: Remaining Maturity of 91 to 180 Days",
+      "mdrm": "RISKY840",
+      "columns": [
+        "RISKY840"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "1.a",
+      "caption": "Funding secured by level 1 liquid assets: Remaining Maturity of 181 to 365 Days",
+      "mdrm": "RISKY841",
+      "columns": [
+        "RISKY841"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "1.b",
+      "caption": "Retail brokered deposits and sweeps: Remaining Maturity of 30 Days or Less",
+      "mdrm": "RISKY842",
+      "columns": [
+        "RISKY842"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "1.b",
+      "caption": "Retail brokered deposits and sweeps: Remaining Maturity of 31 to 90 Days",
+      "mdrm": "RISKY843",
+      "columns": [
+        "RISKY843"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "1.b",
+      "caption": "Retail brokered deposits and sweeps: Remaining Maturity of 91 to 180 Days",
+      "mdrm": "RISKY844",
+      "columns": [
+        "RISKY844"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "1.b",
+      "caption": "Retail brokered deposits and sweeps: Remaining Maturity of 181 to 365 Days",
+      "mdrm": "RISKY845",
+      "columns": [
+        "RISKY845"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "1.c",
+      "caption": "Unsecured wholesale funding obtained outside of the financial sector: Remaining Maturity of 30 Days or Less",
+      "mdrm": "RISKY846",
+      "columns": [
+        "RISKY846"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "1.c",
+      "caption": "Unsecured wholesale funding obtained outside of the financial sector: Remaining Maturity of 31 to 90 Days",
+      "mdrm": "RISKY847",
+      "columns": [
+        "RISKY847"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "1.c",
+      "caption": "Unsecured wholesale funding obtained outside of the financial sector: Remaining Maturity of 91 to 180 Days",
+      "mdrm": "RISKY848",
+      "columns": [
+        "RISKY848"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "1.c",
+      "caption": "Unsecured wholesale funding obtained outside of the financial sector: Remaining Maturity of 181 to 365 Days",
+      "mdrm": "RISKY849",
+      "columns": [
+        "RISKY849"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "1.d",
+      "caption": "Firm short positions involving level 2B liquid assets or non-HQLA: Remaining Maturity of 30 Days or Less",
+      "mdrm": "RISKY850",
+      "columns": [
+        "RISKY850"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "1.d",
+      "caption": "Firm short positions involving level 2B liquid assets or non-HQLA: Remaining Maturity of 31 to 90 Days",
+      "mdrm": "RISKY851",
+      "columns": [
+        "RISKY851"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "1.d",
+      "caption": "Firm short positions involving level 2B liquid assets or non-HQLA: Remaining Maturity of 91 to 180 Days",
+      "mdrm": "RISKY852",
+      "columns": [
+        "RISKY852"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "1.d",
+      "caption": "Firm short positions involving level 2B liquid assets or non-HQLA: Remaining Maturity of 181 to 365 Days",
+      "mdrm": "RISKY853",
+      "columns": [
+        "RISKY853"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": null,
+      "caption": "Second tier",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "2.a",
+      "caption": "Funding secured by level 2A liquid assets",
+      "mdrm": "RISKY858",
+      "columns": [
+        "RISKY858"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "2.a",
+      "caption": "Funding secured by level 2A liquid assets",
+      "mdrm": "RISKY859",
+      "columns": [
+        "RISKY859"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "2.a",
+      "caption": "Funding secured by level 2A liquid assets",
+      "mdrm": "RISKY860",
+      "columns": [
+        "RISKY860"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "2.a",
+      "caption": "Funding secured by level 2A liquid assets",
+      "mdrm": "RISKY861",
+      "columns": [
+        "RISKY861"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "2.b",
+      "caption": "Covered asset exchanges (level 1 to level 2A): Remaining Maturity of 30 Days or Less",
+      "mdrm": "RISKY862",
+      "columns": [
+        "RISKY862"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "2.b",
+      "caption": "Covered asset exchanges (level 1 to level 2A): Remaining Maturity of 31 to 90 Days",
+      "mdrm": "RISKY863",
+      "columns": [
+        "RISKY863"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "2.b",
+      "caption": "Covered asset exchanges (level 1 to level 2A): Remaining Maturity of 91 to 180 Days",
+      "mdrm": "RISKY864",
+      "columns": [
+        "RISKY864"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "2.b",
+      "caption": "Covered asset exchanges (level 1 to level 2A): Remaining Maturity of 181 to 365 Days",
+      "mdrm": "RISKY865",
+      "columns": [
+        "RISKY865"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": null,
+      "caption": "Third tier",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "3.a",
+      "caption": "Funding secured by level 2B liquid assets: Remaining Maturity of 30 Days or Less",
+      "mdrm": "RISKY870",
+      "columns": [
+        "RISKY870"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "3.a",
+      "caption": "Funding secured by level 2B liquid assets: Remaining Maturity of 31 to 90 Days",
+      "mdrm": "RISKY871",
+      "columns": [
+        "RISKY871"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "3.a",
+      "caption": "Funding secured by level 2B liquid assets: Remaining Maturity of 91 to 180 Days",
+      "mdrm": "RISKY872",
+      "columns": [
+        "RISKY872"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "3.a",
+      "caption": "Funding secured by level 2B liquid assets: Remaining Maturity of 181 to 365 Days",
+      "mdrm": "RISKY873",
+      "columns": [
+        "RISKY873"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "3.b",
+      "caption": "Other covered asset exchanges: Remaining Maturity of 30 Days or Less",
+      "mdrm": "RISKY874",
+      "columns": [
+        "RISKY874"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "3.b",
+      "caption": "Other covered asset exchanges: Remaining Maturity of 31 to 90 Days",
+      "mdrm": "RISKY875",
+      "columns": [
+        "RISKY875"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "3.b",
+      "caption": "Other covered asset exchanges: Remaining Maturity of 91 to 180 Days",
+      "mdrm": "RISKY876",
+      "columns": [
+        "RISKY876"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "3.b",
+      "caption": "Other covered asset exchanges: Remaining Maturity of 181 to 365 Days",
+      "mdrm": "RISKY877",
+      "columns": [
+        "RISKY877"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "3.c",
+      "caption": "Unsecured wholesale funding obtained within the financial sector: Remaining Maturity of 30 Days or Less",
+      "mdrm": "RISKY878",
+      "columns": [
+        "RISKY878"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "3.c",
+      "caption": "Unsecured wholesale funding obtained within the financial sector: Remaining Maturity of 31 to 90 Days",
+      "mdrm": "RISKY879",
+      "columns": [
+        "RISKY879"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "3.c",
+      "caption": "Unsecured wholesale funding obtained within the financial sector: Remaining Maturity of 91 to 180 Days",
+      "mdrm": "RISKY880",
+      "columns": [
+        "RISKY880"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "3.c",
+      "caption": "Unsecured wholesale funding obtained within the financial sector: Remaining Maturity of 181 to 365 Days",
+      "mdrm": "RISKY881",
+      "columns": [
+        "RISKY881"
+      ],
+      "level": 3,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "4",
+      "caption": "All other components of short-term wholesale funding: Remaining Maturity of 30 Days or Less",
+      "mdrm": "RISKY886",
+      "columns": [
+        "RISKY886"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "4",
+      "caption": "All other components of short-term wholesale funding: Remaining Maturity of 31 to 90 Days",
+      "mdrm": "RISKY887",
+      "columns": [
+        "RISKY887"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "4",
+      "caption": "All other components of short-term wholesale funding: Remaining Maturity of 91 to 180 Days",
+      "mdrm": "RISKY888",
+      "columns": [
+        "RISKY888"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "4",
+      "caption": "All other components of short-term wholesale funding: Remaining Maturity of 181 to 365 Days",
+      "mdrm": "RISKY889",
+      "columns": [
+        "RISKY889"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "G",
+      "schedule_name": "Short-Term Wholesale Funding Indicator",
+      "line": "7",
+      "caption": "Average risk-weighted assets",
+      "mdrm": "RISKY895",
+      "columns": [
+        "RISKY895"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": "Name of CFO",
+      "caption": "NAME OF AUTHORIZED OFFICER",
+      "mdrm": "RISKC490",
+      "columns": [
+        "RISKC490"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": "Date of signature",
+      "caption": "DATE OF SIGNATURE",
+      "mdrm": "RISKJ196",
+      "columns": [
+        "RISKJ196"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": "Name/Title",
+      "caption": "NAME/TITLE OF PERSON QUESTIONS ARE DIRECTED",
+      "mdrm": "RISK8901",
+      "columns": [
+        "RISK8901"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": "Area code/Phone number",
+      "caption": "AREA CODE/PHONE NUMBER OF PERSON WHOM QUESTIONS ABOUT THIS REPORT SHOULD BE DIRECTED",
+      "mdrm": "RISK8902",
+      "columns": [
+        "RISK8902"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": "Area code/Fax number",
+      "caption": "FAX NUMBER",
+      "mdrm": "RISK9116",
+      "columns": [
+        "RISK9116"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": "Email address",
+      "caption": "INTERNET E-MAIL ADDRESS",
+      "mdrm": "RISK4086",
+      "columns": [
+        "RISK4086"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "FOREIGN CLAIMS ON AN ULTIMATE RISK BASIS",
+      "mdrm": "RISKM422",
+      "columns": [
+        "RISKM422"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FFIEC 009"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Gross notional amount of items subject to a 0% credit conversion factor (CCF)",
+      "mdrm": "RISKY831",
+      "columns": [
+        "RISKY831"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total exposures prior to regulatory deductions (sum of items 1.h, 2.e, 3.a, and 4.e)",
+      "mdrm": "RISKY832",
+      "columns": [
+        "RISKY832"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "TOTAL INTRA-FINANCIAL SYSTEM ASSETS (SUM OF ITEMS 1, 2 THROUGH 3.E, 4, 5.A AND 5.B MINUS ITEM 3.F)",
+      "mdrm": "RISKM362",
+      "columns": [
+        "RISKM362"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total intra-financial system liabilities",
+      "mdrm": "RISKM370",
+      "columns": [
+        "RISKM370"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "TOTAL PAYMENTS ACTIVITY",
+      "mdrm": "RISKM390",
+      "columns": [
+        "RISKM390"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "TOTAL UNDERWRITING ACTIVITY (SUM OF ITEMS 4 AND 5)",
+      "mdrm": "RISKM408",
+      "columns": [
+        "RISKM408"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "TRADING VOLUME - FIXED INCOME",
+      "mdrm": "RISKMV93",
+      "columns": [
+        "RISKMV93"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "TOTAL ADJUSTED TRADING AND AFS SECURITIES (ITEM 6 MINUS ITEMS 7 AND 8)",
+      "mdrm": "RISKN255",
+      "columns": [
+        "RISKN255"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "TOTAL NOTIONAL AMOUNT OF OTC DERIVATIVES CONTRACTS",
+      "mdrm": "RISKM411",
+      "columns": [
+        "RISKM411"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "TOTAL CROSS-JURISDICTIONAL LIABILITIES (SUM OF ITEMS 2 AND 3, MINUS ITEM 2.A)",
+      "mdrm": "RISKM426",
+      "columns": [
+        "RISKM426"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "CROSS-JURISDICTIONAL ACTIVITY (SUM OF ITEMS 1(a) and 4)",
+      "mdrm": "RISKKY49",
+      "columns": [
+        "RISKKY49"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total cross-jurisdicational liabilities, including derivatives (sum of items EM3 and EM4)",
+      "mdrm": "RISKKY50",
+      "columns": [
+        "RISKKY50"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total first tier short-term wholesale funding (sum of items 1.a through 1.d): Remaining Maturity of 30 Days or Less",
+      "mdrm": "RISKY854",
+      "columns": [
+        "RISKY854"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total first tier short-term wholesale funding (sum of items 1.a through 1.d): Remaining Maturity of 31 to 90 Days",
+      "mdrm": "RISKY855",
+      "columns": [
+        "RISKY855"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total first tier short-term wholesale funding (sum of items 1.a through 1.d): Remaining Maturity of 91 to 180 Days",
+      "mdrm": "RISKY856",
+      "columns": [
+        "RISKY856"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total first tier short-term wholesale funding (sum of items 1.a through 1.d): Remaining Maturity of 181 to 365 Days",
+      "mdrm": "RISKY857",
+      "columns": [
+        "RISKY857"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total second tier short-term wholesale funding (sum of items 2.a. and 2.b)",
+      "mdrm": "RISKY866",
+      "columns": [
+        "RISKY866"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total second tier short-term wholesale funding (sum of items 2.a. and 2.b)",
+      "mdrm": "RISKY867",
+      "columns": [
+        "RISKY867"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total second tier short-term wholesale funding (sum of items 2.a. and 2.b)",
+      "mdrm": "RISKY868",
+      "columns": [
+        "RISKY868"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total second tier short-term wholesale funding (sum of items 2.a. and 2.b)",
+      "mdrm": "RISKY869",
+      "columns": [
+        "RISKY869"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total third tier short-term wholesale funding (sum of items 3.a through 3.c): Remaining Maturity of 30 Days or Less",
+      "mdrm": "RISKY882",
+      "columns": [
+        "RISKY882"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total third tier short-term wholesale funding (sum of items 3.a through 3.c) - Remaining maturity of 31 to 90 days",
+      "mdrm": "RISKY883",
+      "columns": [
+        "RISKY883"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total third tier short-term wholesale funding (sum of items 3.a through 3.c): Remaining Maturity of 31 to 90 Days",
+      "mdrm": "RISKY884",
+      "columns": [
+        "RISKY884"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total third tier short-term wholesale funding (sum of items 3.a through 3.c): Remaining Maturity of 181 to 365 Days",
+      "mdrm": "RISKY885",
+      "columns": [
+        "RISKY885"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total short-term wholesale funding, by maturity (weighted sum of items 1.e, 2.c, 3.d, and 4)",
+      "mdrm": "RISKY890",
+      "columns": [
+        "RISKY890"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total short-term wholesale funding, by maturity (weighted sum of items 1.e, 2.c, 3.d, and 4)",
+      "mdrm": "RISKY891",
+      "columns": [
+        "RISKY891"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total short-term wholesale funding, by maturity (weighted sum of items 1.e, 2.c, 3.d, and 4)",
+      "mdrm": "RISKY892",
+      "columns": [
+        "RISKY892"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total short-term wholesale funding, by maturity (weighted sum of items 1.e, 2.c, 3.d, and 4)",
+      "mdrm": "RISKY893",
+      "columns": [
+        "RISKY893"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total short-term wholesale funding (sum of item 5, Columns A through D)",
+      "mdrm": "RISKY894",
+      "columns": [
+        "RISKY894"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Short-term wholesale funding metric (item 6 divided by item 7)",
+      "mdrm": "RISKY896",
+      "columns": [
+        "RISKY896"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "TRADING VOLUME - EQUITIES AND OTHER SECURITIES",
+      "mdrm": "RISKMV95",
+      "columns": [
+        "RISKMV95"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total derivative exposures (sum of items 1.a. through 1.d, minus the sum of items 1.e through 1.g)",
+      "mdrm": "RISKY826",
+      "columns": [
+        "RISKY826"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total SFT exposures (sum of items 2.a through 2.c, minus item 2.d)",
+      "mdrm": "RISKY829",
+      "columns": [
+        "RISKY829"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total off-balance sheet exposures (item 5 minus M.4.)",
+      "mdrm": "RISKKW01",
+      "columns": [
+        "RISKKW01"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "TOTAL SECURITIES OUTSTANDING",
+      "mdrm": "RISKM376",
+      "columns": [
+        "RISKM376"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "TOTAL TRADING AND AFS SECURITIES (SUM OF ITEMS 4 AND 5)",
+      "mdrm": "RISKM414",
+      "columns": [
+        "RISKM414"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "CALCULATED",
+      "schedule_name": "Calculated and Auto-Populated Items",
+      "line": null,
+      "caption": "Total cross-jurisdictional claims (sum of items E1 and EM1)",
+      "mdrm": "RISKKW55",
+      "columns": [
+        "RISKKW55"
+      ],
+      "level": 1,
+      "is_header": false,
+      "source": "FR Y-15"
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Is confidential treatment requested for any portion of this report submission? (0=No, 1=Yes)",
+      "mdrm": "RISKC447",
+      "columns": [
+        "RISKC447"
+      ],
+      "level": 1,
+      "is_header": false
+    }
+  ]
+}

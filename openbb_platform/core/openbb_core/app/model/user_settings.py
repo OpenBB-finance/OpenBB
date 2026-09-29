@@ -4,12 +4,13 @@ import json
 import os
 import warnings
 
+from pydantic import Field
+
 from openbb_core.app.constants import USER_SETTINGS_PATH
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.credentials import Credentials
 from openbb_core.app.model.defaults import Defaults
 from openbb_core.app.model.preferences import Preferences
-from pydantic import Field
 
 
 class UserSettings(Tagged):

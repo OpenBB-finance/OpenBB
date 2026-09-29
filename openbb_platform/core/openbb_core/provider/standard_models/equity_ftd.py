@@ -5,13 +5,14 @@ from datetime import (
     datetime,
 )
 
+from pydantic import Field, field_validator
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, field_validator
 
 
 class EquityFtdQueryParams(QueryParams):
@@ -54,6 +55,6 @@ class EquityFtdData(Data):
     )
 
     @field_validator("settlement_date", mode="before")
-    def date_validate(cls, v):  # pylint: disable=E0213
+    def date_validate(cls, v):
         """Return the date as a datetime object."""
         return datetime.strftime(v, "%Y-%m-%d")

@@ -12,6 +12,8 @@ from openbb_core.provider.standard_models.equity_performance import (
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator, model_validator
 
+from openbb_tmx.utils.choices import literal_choices
+
 STOCK_LISTS_DICT = {
     "dividend": "TOP_DIVIDEND",
     "energy": "TOP_ENERGY",
@@ -24,6 +26,7 @@ STOCK_LISTS_DICT = {
     "utilities": "TOP_UTILITIES",
     "52w_high": "TOP_WEEK_52_HIGH",
     "volume": "TOP_VOLUME",
+    "cdr": "CIBC_CDR_SL",
 }
 
 STOCK_LISTS = Literal[
@@ -38,6 +41,7 @@ STOCK_LISTS = Literal[
     "utilities",
     "52w_high",
     "volume",
+    "cdr",
 ]
 
 
@@ -48,6 +52,12 @@ class TmxGainersQueryParams(EquityPerformanceQueryParams):
         "category": {
             "multiple_items_allowed": False,
             "choices": list(STOCK_LISTS_DICT),
+            "x-widget_config": {
+                "options": literal_choices(
+                    tuple(STOCK_LISTS_DICT),
+                    **{"cdr": "CDR", "52w_high": "52-Week High"},
+                )
+            },
         },
     }
 
@@ -129,34 +139,24 @@ class TmxGainersFetcher(
         **kwargs: Any,
     ) -> list[TmxGainersData]:
         """Return the raw data from the TMX endpoint."""
-        # pylint: disable=import-outside-toplevel
-        import json  # noqa
-        from openbb_tmx.utils import gql  # noqa
-        from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
+        from openbb_tmx.utils import gql
+        from openbb_tmx.utils.cache import amake_gql_request
 
-        user_agent = get_random_agent()
-        payload = gql.get_stock_list_payload.copy()
-        payload["variables"]["stockListId"] = STOCK_LISTS_DICT[query.category]
-
-        url = "https://app-money.tmx.com/graphql"
-        response = await get_data_from_gql(
-            method="POST",
-            url=url,
-            data=json.dumps(payload),
-            headers={
-                "authority": "app-money.tmx.com",
-                "referer": "https://money.tmx.com",
+        response = await amake_gql_request(
+            "getStockListSymbolsWithQuote",
+            gql.STOCK_LIST,
+            {
+                "stockListId": STOCK_LISTS_DICT[query.category],
                 "locale": "en",
-                "Content-Type": "application/json",
-                "User-Agent": user_agent,
-                "Accept": "*/*",
             },
-            timeout=5,
         )
-        if "errors" in response:
+        stock_list = (response or {}).get("stockList")
+
+        if not stock_list:
             raise EmptyDataError()
-        results = response["data"]["stockList"].get("listItems")
-        metric = response["data"]["stockList"].get("metricTitle")
+
+        results = stock_list.get("listItems")
+        metric = stock_list.get("metricTitle")
         for i in range(len(results)):  # pylint: disable=C0200
             if "metric" in results[i]:
                 results[i][metric] = results[i]["metric"]

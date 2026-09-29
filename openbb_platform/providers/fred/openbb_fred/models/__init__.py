@@ -1,0 +1,1 @@
+"""FRED provider models."""

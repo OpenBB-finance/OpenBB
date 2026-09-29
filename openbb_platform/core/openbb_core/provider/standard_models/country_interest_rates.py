@@ -2,13 +2,14 @@
 
 from datetime import date as dateType
 
+from pydantic import Field
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field
 
 
 class CountryInterestRatesQueryParams(QueryParams):
@@ -29,8 +30,10 @@ class CountryInterestRatesQueryParams(QueryParams):
 class CountryInterestRatesData(Data):
     """Country Interest Rates Data."""
 
-    date: dateType = Field(default=None, description=DATA_DESCRIPTIONS.get("date"))
-    value: float = Field(
+    date: dateType | None = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("date")
+    )
+    value: float | None = Field(
         default=None,
         description="The interest rate value.",
         json_schema_extra={"x-unit_measurment": "percent", "x-frontend_multiply": 100},

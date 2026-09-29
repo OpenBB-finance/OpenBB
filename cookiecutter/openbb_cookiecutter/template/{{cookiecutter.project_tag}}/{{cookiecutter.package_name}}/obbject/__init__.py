@@ -1,1 +1,1 @@
-"""OBBject Extensions module."""
+"""OBBject extensions."""

@@ -34,7 +34,7 @@ class APISettings(BaseModel):
     contact_name: str = "OpenBB Team"
     contact_url: str = "https://openbb.co"
     contact_email: str = "hello@openbb.co"
-    license_name: str = "AGPLv3"
+    license_name: str = "Apache-2.0"
     license_url: str = "https://github.com/OpenBB-finance/OpenBB/blob/develop/LICENSE"
     servers: list[Servers] = Field(default_factory=lambda: [Servers()])
     cors: Cors = Field(default_factory=Cors)

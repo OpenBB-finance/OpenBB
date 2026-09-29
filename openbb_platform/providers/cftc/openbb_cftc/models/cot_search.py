@@ -1,24 +1,18 @@
 """CFTC Commitment of Traders Reports Search Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.cot_search import (
-    CotSearchData,
-    CotSearchQueryParams,
-)
+from openbb_core.provider.abstract.query_params import QueryParams
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 
 
-class CftcCotSearchQueryParams(CotSearchQueryParams):
-    """CFTC Commitment of Traders Reports Search Query.
-
-    Source: https://publicreporting.cftc.gov/stories/s/r4w3-av2u
-    """
+class CftcCotSearchQueryParams(QueryParams):
+    """CFTC Commitment of Traders Reports Search Query."""
 
     __json_schema_extra__ = {
         "report_type": {
@@ -27,46 +21,61 @@ class CftcCotSearchQueryParams(CotSearchQueryParams):
         },
         "category": {
             "multiple_items_allowed": False,
-            "choices": [
-                "agriculture",
-                "financial_instruments",
-                "natural_resources",
-            ],
+            "x-widget_config": {
+                "options": [
+                    {"label": value.replace("_", " ").title(), "value": value}
+                    for value in (
+                        "agriculture",
+                        "financial_instruments",
+                        "natural_resources",
+                    )
+                ]
+            },
         },
         "subcategory": {
             "multiple_items_allowed": False,
-            "choices": [
-                "base_metals",
-                "chemicals",
-                "currency",
-                "currency_non_major",
-                "dairy_products",
-                "digital_asset",
-                "digital_asset_non_major",
-                "electricity_and_sources",
-                "emissions",
-                "fertilizer",
-                "fiber",
-                "foodstuffs_softs",
-                "grains",
-                "interest_rate_swaps",
-                "interest_rates_non_us_treasury",
-                "interest_rates_us_treasury",
-                "livestock_meat_products",
-                "natural_gas_and_products",
-                "oilseed_and_products",
-                "other_agricultural",
-                "other_financial_instruments",
-                "petroleum_and_products",
-                "precious_metals",
-                "stock_indices",
-                "weather",
-                "wood_products",
-                "yield_insurance",
-            ],
+            "x-widget_config": {
+                "options": [
+                    {"label": value.replace("_", " ").title(), "value": value}
+                    for value in (
+                        "base_metals",
+                        "chemicals",
+                        "currency",
+                        "currency_non_major",
+                        "dairy_products",
+                        "digital_asset",
+                        "digital_asset_non_major",
+                        "electricity_and_sources",
+                        "emissions",
+                        "fertilizer",
+                        "fiber",
+                        "foodstuffs_softs",
+                        "grains",
+                        "interest_rate_swaps",
+                        "interest_rates_non_us_treasury",
+                        "interest_rates_us_treasury",
+                        "livestock_meat_products",
+                        "natural_gas_and_products",
+                        "oilseed_and_products",
+                        "other_agricultural",
+                        "other_financial_instruments",
+                        "petroleum_and_products",
+                        "precious_metals",
+                        "stock_indices",
+                        "weather",
+                        "wood_products",
+                        "yield_insurance",
+                    )
+                ]
+            },
         },
     }
 
+    code: str | None = Field(
+        default=None,
+        description="A string with the market contract code (can be partial).",
+    )
+    query: str | None = Field(default=None, description="Search query.")
     report_type: Literal["legacy", "disaggregated", "financial", "supplemental"] = (
         Field(
             default="legacy",
@@ -89,7 +98,7 @@ class CftcCotSearchQueryParams(CotSearchQueryParams):
     )
 
 
-class CftcCotSearchData(CotSearchData):
+class CftcCotSearchData(Data):
     """CFTC Commitment of Traders Reports Search Data."""
 
     __alias_dict__ = {
@@ -99,6 +108,29 @@ class CftcCotSearchData(CotSearchData):
         "subcategory": "commodity_subgroup_name",
     }
 
+    code: str = Field(
+        description="CFTC market contract code of the report.",
+        json_schema_extra={
+            "x-widget_config": {
+                "renderFn": "cellOnClick",
+                "renderFnParams": {
+                    "actionType": "groupBy",
+                    "groupByParamName": "code",
+                },
+            },
+        },
+    )
+    name: str = Field(description="Name of the underlying asset.")
+    category: str | None = Field(
+        default=None, description="Category of the underlying asset."
+    )
+    subcategory: str | None = Field(
+        default=None, description="Subcategory of the underlying asset."
+    )
+    units: str | None = Field(default=None, description="The units for one contract.")
+    symbol: str | None = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
+    )
     commodity: str | None = Field(default=None, description="Name of the commodity.")
 
 
@@ -119,11 +151,12 @@ class CftcCotSearchFetcher(Fetcher[CftcCotSearchQueryParams, list[CftcCotSearchD
         **kwargs: Any,
     ) -> list[dict]:
         """Search CFTC Commitment of Traders Reports via the live API."""
-        # pylint: disable=import-outside-toplevel
         from urllib.parse import quote
 
-        from openbb_cftc.utils import reports_dict
         from openbb_core.provider.utils.helpers import amake_request
+
+        from openbb_cftc.utils.constants import reports_dict
+        from openbb_cftc.utils.helpers import socrata_json
 
         app_token = credentials.get("cftc_app_token") if credentials else ""
 
@@ -191,21 +224,32 @@ class CftcCotSearchFetcher(Fetcher[CftcCotSearchQueryParams, list[CftcCotSearchD
         if where_parts:
             base_url += "&$where=" + quote(" AND ".join(where_parts))
 
+        from openbb_cftc.utils import store
+
+        cached = store.get_response(base_url)
+
+        if cached is not None:
+            return cached
+
         url = f"{base_url}&$$app_token={app_token}" if app_token else base_url
 
         try:
-            response = await amake_request(url, **kwargs)
+            response = await amake_request(
+                url, response_callback=socrata_json, **kwargs
+            )
         except OpenBBError as error:
             raise error from error
 
-        if not response:
+        if not response or not isinstance(response, list):
             raise EmptyDataError(
                 f"No results found for '{search_term}'."
                 if search_term
                 else "No results returned from the CFTC API."
             )
 
-        return response  # type: ignore
+        store.put_response(base_url, response)
+
+        return response
 
     @staticmethod
     def transform_data(

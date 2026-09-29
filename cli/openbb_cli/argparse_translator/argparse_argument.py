@@ -23,7 +23,7 @@ class ArgparseArgumentModel(BaseModel):
     nargs: Literal["+"] | None
     choices: tuple | None
 
-    @model_validator(mode="after")  # type: ignore
+    @model_validator(mode="after")  # ty: ignore[invalid-argument-type]
     @classmethod
     def validate_action(cls, values: "ArgparseArgumentModel"):
         """Validate the action based on the type."""
@@ -31,7 +31,7 @@ class ArgparseArgumentModel(BaseModel):
             raise ValueError('If type is bool, action must be "store_true"')
         return values
 
-    @model_validator(mode="after")  # type: ignore
+    @model_validator(mode="after")  # ty: ignore[invalid-argument-type]
     @classmethod
     def remove_props_on_store_true(cls, values: "ArgparseArgumentModel"):
         """Remove type, nargs, and choices if action is store_true."""
@@ -41,12 +41,10 @@ class ArgparseArgumentModel(BaseModel):
             values.choices = None
         return values
 
-    # override
     def model_dump(self, **kwargs):
         """Override the model_dump method to remove empty choices."""
         res = super().model_dump(**kwargs)
 
-        # Check if choices is present and if it's an empty tuple remove it
         if "choices" in res and not res["choices"]:
             del res["choices"]
 

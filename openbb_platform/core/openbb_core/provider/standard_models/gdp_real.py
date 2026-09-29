@@ -2,13 +2,14 @@
 
 from datetime import date as dateType
 
+from pydantic import Field
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field
 
 
 class GdpRealQueryParams(QueryParams):
@@ -26,7 +27,7 @@ class GdpRealData(Data):
     """Real GDP Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
-    country: str = Field(
+    country: str | None = Field(
         default=None, description="The country represented by the Real GDP value."
     )
     value: int | float = Field(

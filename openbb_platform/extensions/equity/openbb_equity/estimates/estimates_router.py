@@ -13,25 +13,9 @@ from openbb_core.app.router import Router
 
 router = Router(prefix="/estimates")
 
-# pylint: disable=unused-argument
-
 
 @router.command(
     model="PriceTarget",
-    examples=[
-        APIEx(parameters={"provider": "benzinga"}),
-        APIEx(
-            description="Get price targets for Microsoft using 'benzinga' as provider.",
-            parameters={
-                "start_date": "2020-01-01",
-                "end_date": "2024-02-16",
-                "limit": 10,
-                "symbol": "msft",
-                "provider": "benzinga",
-                "action": "downgrades",
-            },
-        ),
-    ],
 )
 async def price_target(
     cc: CommandContext,
@@ -78,10 +62,6 @@ async def consensus(
 
 @router.command(
     model="AnalystSearch",
-    examples=[
-        APIEx(parameters={"provider": "benzinga"}),
-        APIEx(parameters={"firm_name": "Wedbush", "provider": "benzinga"}),
-    ],
 )
 async def analyst_search(
     cc: CommandContext,

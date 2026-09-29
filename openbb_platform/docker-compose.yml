@@ -1,0 +1,31 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: openbb_platform/Dockerfile
+    command: ["openbb-api", "--reload"]
+    ports:
+      - "6900:6900"
+    volumes:
+      - ..:/app
+      - openbb_home:/home/openbb
+    env_file:
+      - path: ../.env
+        required: false
+
+  mcp:
+    build:
+      context: ..
+      dockerfile: openbb_platform/Dockerfile
+    command: ["openbb-mcp"]
+    ports:
+      - "8001:8001"
+    volumes:
+      - ..:/app
+      - openbb_home:/home/openbb
+    env_file:
+      - path: ../.env
+        required: false
+
+volumes:
+  openbb_home:

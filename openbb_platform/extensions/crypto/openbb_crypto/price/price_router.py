@@ -1,4 +1,3 @@
-# pylint: disable=W0613:unused-argument
 """Crypto Price Router."""
 
 from openbb_core.app.model.command_context import CommandContext
@@ -15,7 +14,6 @@ from openbb_core.app.router import Router
 router = Router(prefix="/price")
 
 
-# pylint: disable=unused-argument,line-too-long
 @router.command(
     model="CryptoHistorical",
     examples=[

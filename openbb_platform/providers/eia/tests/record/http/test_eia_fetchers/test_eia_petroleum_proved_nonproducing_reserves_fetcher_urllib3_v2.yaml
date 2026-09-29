@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/petroleum/crd/nprod/data/?api_key=MOCK_API_KEY&data%5B0%5D=value&end=1996&facets%5Bduoarea%5D%5B%5D=R1901F&facets%5Bduoarea%5D%5B%5D=R44F&facets%5Bduoarea%5D%5B%5D=R48&facets%5Bduoarea%5D%5B%5D=R5F&facets%5Bduoarea%5D%5B%5D=RCAC&facets%5Bduoarea%5D%5B%5D=RCAJ&facets%5Bduoarea%5D%5B%5D=RCAL&facets%5Bduoarea%5D%5B%5D=RCASF&facets%5Bduoarea%5D%5B%5D=RLAN&facets%5Bduoarea%5D%5B%5D=RLASF&facets%5Bduoarea%5D%5B%5D=RLASO&facets%5Bduoarea%5D%5B%5D=RNMEAST&facets%5Bduoarea%5D%5B%5D=RNMWEST&facets%5Bduoarea%5D%5B%5D=RTX01&facets%5Bduoarea%5D%5B%5D=RTX02&facets%5Bduoarea%5D%5B%5D=RTX03&facets%5Bduoarea%5D%5B%5D=RTX04&facets%5Bduoarea%5D%5B%5D=RTX05&facets%5Bduoarea%5D%5B%5D=RTX06&facets%5Bduoarea%5D%5B%5D=RTX07B&facets%5Bduoarea%5D%5B%5D=RTX07C&facets%5Bduoarea%5D%5B%5D=RTX08&facets%5Bduoarea%5D%5B%5D=RTX08A&facets%5Bduoarea%5D%5B%5D=RTX09&facets%5Bduoarea%5D%5B%5D=RTX10&facets%5Bduoarea%5D%5B%5D=RTXSF&facets%5Bduoarea%5D%5B%5D=RUSF&facets%5Bprocess%5D%5B%5D=R9910&facets%5Bproduct%5D%5B%5D=EPG0&facets%5Bseries%5D%5B%5D=RES_EPG0_R9910_R44F_BCF&frequency=annual&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=1996
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY","frequency":"annual","data":[{"period":"1996","duoarea":"R44F","area-name":"NA","product":"EPG0","product-name":"Natural
+        Gas","process":"R9910","process-name":"Associated-Dissolved, Reserves in Nonproducing
+        Reservoirs","series":"RES_EPG0_R9910_R44F_BCF","series-description":"Gulf
+        of America Federal Offshore  (Western) Associated-Dissolved Natural Gas, Reserves
+        in Nonproducing Reservoirs, Wet (Bcf)","value":"384","units":"BCF"}]},"request":{"command":"\/v2\/petroleum\/crd\/nprod\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"annual","data":["value"],"facets":{"duoarea":["RTX01","R44F","RTX07B","RNMWEST","RTX03","RTX05","RTXSF","RTX08A","RTX08","RCAC","RLASO","RTX07C","RCAL","RCASF","RLASF","RTX09","RUSF","R1901F","R5F","RNMEAST","RTX06","R48","RCAJ","RLAN","RTX02","RTX04","RTX10"],"product":["EPG0"],"process":["R9910"],"series":["RES_EPG0_R9910_R44F_BCF"]},"start":"1996","end":"1996","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '1'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 03:03:19 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 03:03:19 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '1107'
+    status:
+      code: 200
+      message: OK
+version: 1

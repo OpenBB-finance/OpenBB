@@ -1,7 +1,6 @@
 """FRED Mortgage Indices Model."""
 
-# pylint: disable=unused-argument
-
+from datetime import date as dateType
 from typing import Any, Literal
 from warnings import warn
 
@@ -12,9 +11,14 @@ from openbb_core.provider.standard_models.mortgage_indices import (
     MortgageIndicesData,
     MortgageIndicesQueryParams,
 )
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
+from pydantic import Field, create_model, field_validator
+
 from openbb_fred.models.series import FredSeriesFetcher
-from pydantic import Field, field_validator
+from openbb_fred.utils.api import unwrap_series
+from openbb_fred.utils.columns import TIME_COLUMN, series_field
+from openbb_fred.utils.query import UseCacheQueryParams
 
 MORTGAGE_ID_TO_TITLE = {
     "OBMMIC30YF": "30-Year Fixed Rate Conforming",
@@ -109,7 +113,7 @@ MortgageChoices = Literal[
 ]
 
 
-class FredMortgageIndicesQueryParams(MortgageIndicesQueryParams):
+class FredMortgageIndicesQueryParams(UseCacheQueryParams, MortgageIndicesQueryParams):
     """FRED Mortgage Indices Query."""
 
     __json_schema_extra__ = {
@@ -230,14 +234,38 @@ class FredMortgageIndicesQueryParams(MortgageIndicesQueryParams):
         return ",".join(new_indices)
 
 
-class FredMortgageIndicesData(MortgageIndicesData):
-    """FRED Mortgage Indices Data."""
+MORTGAGE_ID_TO_COLUMN = {
+    ids: choice for choice, ids in MORTGAGE_CHOICES_TO_ID.items() if "," not in ids
+}
+
+
+def _mortgage_fields() -> dict:
+    """Declare one column for every index the provider publishes."""
+    return {
+        MORTGAGE_ID_TO_COLUMN[series_id]: series_field(title)
+        for series_id, title in MORTGAGE_ID_TO_TITLE.items()
+    }
+
+
+FredMortgageIndicesData = create_model(
+    "FredMortgageIndicesData",
+    __base__=MortgageIndicesData,
+    __doc__="FRED Mortgage Indices Data.",
+    date=(
+        dateType,
+        Field(
+            description=DATA_DESCRIPTIONS.get("date", ""),
+            json_schema_extra=TIME_COLUMN,
+        ),
+    ),
+    **_mortgage_fields(),
+)
 
 
 class FredMortgageIndicesFetcher(
     Fetcher[
         FredMortgageIndicesQueryParams,
-        list[FredMortgageIndicesData],
+        list[FredMortgageIndicesData],  # ty: ignore[invalid-type-form]
     ]
 ):
     """FRED Mortgage Indices Fetcher."""
@@ -265,15 +293,18 @@ class FredMortgageIndicesFetcher(
                     transform=query.transform,
                     frequency=query.frequency,
                     aggregation_method=query.aggregation_method,
+                    use_cache=query.use_cache,
                 ),
                 credentials,
             )
         except Exception as e:
             raise e from e
 
+        rows, metadata = unwrap_series(response)
+
         return {
-            "metadata": response.metadata,
-            "data": [d.model_dump() for d in response.result],
+            "metadata": metadata,
+            "data": [d.model_dump() for d in rows],
         }
 
     @staticmethod
@@ -281,35 +312,18 @@ class FredMortgageIndicesFetcher(
         query: FredMortgageIndicesQueryParams,
         data: dict,
         **kwargs: Any,
-    ) -> AnnotatedResult[list[FredMortgageIndicesData]]:
+    ) -> AnnotatedResult[list[FredMortgageIndicesData]]:  # ty: ignore[invalid-type-form]
         """Transform data."""
-        # pylint: disable=import-outside-toplevel
-        from pandas import Categorical, DataFrame
+        from numpy import nan
+        from pandas import DataFrame
 
         if not data.get("data"):
             raise EmptyDataError("The request was returned empty.")
         df = DataFrame.from_records(data["data"])
         metadata = data.get("metadata", {})
-        # Flatten the data.
-        df = (
-            df.melt(id_vars="date", var_name="symbol", value_name="value")
-            .query("value.notnull()")
-            .rename(columns={"value": "rate"})
-        )
-        df["name"] = df.symbol.map(MORTGAGE_ID_TO_TITLE)
-        # Normalize the percent values.
-        df["rate"] = df["rate"] / 100
-        df = df.fillna("N/A").replace("N/A", None)
-        df["name"] = Categorical(
-            df["name"],
-            categories=[
-                d
-                for d in list(MORTGAGE_ID_TO_TITLE.values())
-                if d in df["name"].unique()
-            ],
-            ordered=True,
-        )
-        df.sort_values(["date", "name"], inplace=True)
+        published = [c for c in MORTGAGE_ID_TO_COLUMN if c in df.columns]
+        df = df[["date", *published]].rename(columns=MORTGAGE_ID_TO_COLUMN)
+        df = df.replace({nan: None}).sort_values("date")
         records = df.to_dict(orient="records")
 
         return AnnotatedResult(

@@ -1,6 +1,6 @@
 """IMF Available Indicators."""
 
-# pylint: disable=unused-argument
+from __future__ import annotations
 
 from typing import Any
 
@@ -22,7 +22,7 @@ class ImfAvailableIndicatorsQueryParams(AvailableIndicesQueryParams):
             "multiple_items_allowed": True,
             "x-widget_config": {
                 "type": "endpoint",
-                "optionsEndpoint": "/api/v1/imf_utils/list_dataflow_choices",
+                "optionsEndpoint": "/api/v1/imf/list_dataflow_choices",
                 "multiSelect": False,
                 "style": {"popupWidth": 950},
             },
@@ -109,6 +109,12 @@ class ImfAvailableIndicatorsData(AvailableIndicatorsData):
         default_factory=list,
         description="List of table symbols (dataflow_id::table_id) this indicator belongs to.",
     )
+    extra_dimensions: list[str] = Field(
+        default_factory=list,
+        description="Non-standard dimensions the dataflow exposes beyond country / "
+        "frequency / indicator / transform. Pass each as ``DIM_ID:DIM_VALUE`` in the "
+        "``dimension_values`` parameter when calling ``obb.economy.indicators``.",
+    )
 
 
 class ImfAvailableIndicatorsFetcher(
@@ -122,14 +128,14 @@ class ImfAvailableIndicatorsFetcher(
         return ImfAvailableIndicatorsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: ImfAvailableIndicatorsQueryParams,
         credentials: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> list[dict]:
         """Fetch the data."""
-        # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.errors import EmptyDataError
+
         from openbb_imf.utils.metadata import ImfMetadata
 
         metadata = ImfMetadata()
@@ -154,7 +160,7 @@ class ImfAvailableIndicatorsFetcher(
                 dataflows=dataflows,
                 keywords=keywords,
             )
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             raise OpenBBError(e) from e
 
         if not results:
@@ -171,7 +177,6 @@ class ImfAvailableIndicatorsFetcher(
         """Transform the data."""
         results = []
         for d in data:
-            # Build the ready-to-use symbol: dataflow_id::indicator_code
             dataflow_id = d.get("dataflow_id", "")
             indicator_code = d.get("indicator", "")
             d["symbol"] = f"{dataflow_id}::{indicator_code}"

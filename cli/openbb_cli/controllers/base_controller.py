@@ -11,6 +11,9 @@ from pathlib import Path
 from typing import Any, Literal
 
 import pandas as pd
+from prompt_toolkit.formatted_text import HTML
+from prompt_toolkit.styles import Style
+
 from openbb_cli.config.completer import NestedCompleter
 from openbb_cli.config.constants import SCRIPT_TAGS
 from openbb_cli.controllers.choices import build_controller_choice_map
@@ -20,28 +23,20 @@ from openbb_cli.controllers.utils import (
     get_flair_and_username,
     handle_obbject_display,
     parse_unknown_args_to_dict,
-    print_rich_table,
     system_clear,
     validate_register_key,
 )
 from openbb_cli.session import Session
-from prompt_toolkit.formatted_text import HTML
-from prompt_toolkit.styles import Style
-
-# pylint: disable=C0301,C0302,R0902,global-statement,too-many-boolean-expressions
-# pylint: disable=R0912
 
 controllers: dict[str, Any] = {}
 session = Session()
 
 
-# TODO: We should try to avoid these global variables
 RECORD_SESSION = False
 SESSION_RECORDED = list()
 SESSION_RECORDED_NAME = ""
 SESSION_RECORDED_DESCRIPTION = ""
 SESSION_RECORDED_TAGS = ""
-SESSION_RECORDED_PUBLIC = False
 
 
 class BaseController(metaclass=ABCMeta):
@@ -62,6 +57,7 @@ class BaseController(metaclass=ABCMeta):
         "reset",
         "stop",
         "results",
+        "load",
     ]
 
     CHOICES_COMMANDS: list[str] = []
@@ -87,11 +83,10 @@ class BaseController(metaclass=ABCMeta):
     def __init__(self, queue: list[str] | None = None) -> None:
         """Create the base class for any controller in the codebase.
 
-        Used to simplify the creation of menus.
-
-        queue: List[str]
-            The current queue of jobs to process separated by "/"
-            E.g. /stocks/load gme/dps/sidtc/../exit
+        Parameters
+        ----------
+        queue : list[str] | None
+            The current queue of jobs to process separated by "/".
         """
         self.check_path()
         self.path = [x for x in self.PATH.split("/") if x != ""]
@@ -113,12 +108,61 @@ class BaseController(metaclass=ABCMeta):
             add_help=False,
             prog=self.path[-1] if self.PATH != "/" else "cli",
         )
-        self.parser.exit_on_error = False  # type: ignore
+        self.parser.exit_on_error = False
         self.parser.add_argument("cmd", choices=self.controller_choices)
 
     def update_completer(self, choices) -> None:
         """Update the completer with new choices."""
         if session.prompt_session and session.settings.USE_PROMPT_TOOLKIT:
+            from openbb_cli.controllers.utils import get_data_files_for_completion
+
+            if "load" not in choices:
+                choices["load"] = {}
+
+            data_files = get_data_files_for_completion()
+            if data_files:
+                file_completions = {file: None for file in data_files}
+                choices["load"]["--file"] = file_completions
+                choices["load"]["-f"] = file_completions
+            choices["load"]["--sheet-name"] = None
+            choices["load"]["--register_key"] = None
+            choices["load"]["--help"] = None
+            choices["load"]["-h"] = "--help"
+
+            if "results" not in choices:
+                choices["results"] = {}
+
+            registry_all = session.obbject_registry.all
+            index_completions = {str(idx): None for idx in registry_all}
+            key_completions = {
+                (data.get("extra") or {}).get("register_key"): None
+                for data in registry_all.values()
+                if (data.get("extra") or {}).get("register_key")
+            }
+
+            choices["results"]["--index"] = (
+                index_completions if index_completions else None
+            )
+            choices["results"]["-i"] = "--index"
+            choices["results"]["--key"] = key_completions if key_completions else None
+            choices["results"]["-k"] = "--key"
+            choices["results"]["--chart"] = None
+            choices["results"]["-c"] = "--chart"
+            choices["results"]["--export"] = {
+                "csv": None,
+                "json": None,
+                "xlsx": None,
+                "png": None,
+                "jpg": None,
+                "db": None,
+                "sqlite": None,
+                "sqlite3": None,
+            }
+            choices["results"]["-e"] = "--export"
+            choices["results"]["--sheet-name"] = None
+            choices["results"]["--help"] = None
+            choices["results"]["-h"] = "--help"
+
             self.completer = NestedCompleter.from_nested_dict(choices)
 
     def check_path(self) -> None:
@@ -128,9 +172,10 @@ class BaseController(metaclass=ABCMeta):
             raise ValueError("Path must begin with a '/' character.")
         if path[-1] != "/":
             raise ValueError("Path must end with a '/' character.")
-        if not re.match("^[a-z/]*$", path):
+        if not re.match(r"^[a-z0-9_\-/]*$", path):
             raise ValueError(
-                "Path must only contain lowercase letters and '/' characters."
+                "Path must only contain lowercase letters, digits, '_', '-', "
+                "and '/' characters."
             )
 
     def load_class(self, class_ins, *args, **kwargs):
@@ -141,6 +186,7 @@ class BaseController(metaclass=ABCMeta):
         if class_ins.PATH in controllers and arguments == 1:
             old_class = controllers[class_ins.PATH]
             old_class.queue = self.queue
+            old_class.update_completer(old_class.choices_default)
             return old_class.menu()
         return class_ins(*args, **kwargs).menu()
 
@@ -149,10 +195,7 @@ class BaseController(metaclass=ABCMeta):
         controllers[self.PATH] = self
 
     def custom_reset(self) -> list[str]:
-        """Implement custom reset.
-
-        This will be replaced by any children with custom_reset functions.
-        """
+        """Implement custom reset."""
         return []
 
     @abstractmethod
@@ -162,43 +205,68 @@ class BaseController(metaclass=ABCMeta):
 
     def parse_input(self, an_input: str) -> list:
         """Parse controller input."""
-        # The original regex has been improved to handle quoted strings.
-        # It now splits by '/' only when it's not enclosed in single or double quotes.
-        # This allows commands like: exe --file "folder with spaces/file.openbb"
-        # or exe --file 'folder with spaces/file.openbb'
+        file_flag = r"(\ -f |\ --file )"
+        up_to = r".*?"
+        known_extensions = (
+            r"(\.(xlsx|csv|xls|tsv|json|yaml|ini|openbb|ipynb|db|sqlite|sqlite3))"
+        )
+        optional_args = r"(?:\ [^/]+)*?"
+        file_path_pattern = f"({file_flag}{up_to}{known_extensions}{optional_args})"
+
+        placeholders: dict[str, str] = {}
+        placeholder_count = 0
+
+        while True:
+            match = re.search(pattern=file_path_pattern, string=an_input)
+            if match is None:
+                break
+
+            placeholder = f"{{placeholder{placeholder_count}}}"
+            placeholders[placeholder] = an_input[match.span()[0] : match.span()[1]]
+            an_input = (
+                an_input[: match.span()[0]] + placeholder + an_input[match.span()[1] :]
+            )
+            placeholder_count += 1
+
         commands = re.split(r"/(?=(?:[^\"']*[\"'][^\"']*[\"'])*[^\"']*$)", an_input)
-        # Remove empty strings from the list of commands
-        return [cmd.strip() for cmd in commands if cmd.strip()]
+
+        result = []
+        for cmd in commands:
+            cleaned = cmd.strip()
+            if cleaned:
+                for placeholder, original in placeholders.items():
+                    cleaned = cleaned.replace(placeholder, original)
+                result.append(cleaned)
+
+        if an_input.startswith("/") and (not result or result[0] != "home"):
+            result.insert(0, "home")
+
+        return result
 
     def switch(self, an_input: str) -> list[str]:
         """Process and dispatch input.
 
         Returns
-        ----------
-        List[str]
-            list of commands in the queue to execute
+        -------
+        list[str]
+            List of commands in the queue to execute.
         """
         actions = self.parse_input(an_input)
 
         if an_input and an_input != "reset":
             session.console.print()
 
-        # Empty command
         if len(actions) == 0:
             pass
 
-        # Navigation slash is being used first split commands
         elif len(actions) > 1:
-            # Absolute path is specified
-            if not actions[0]:
+            if not actions[0]:  # pragma: no cover
                 actions[0] = "home"
 
-            # Add all instructions to the queue
             for cmd in actions[::-1]:
                 if cmd:
                     self.queue.insert(0, cmd)
 
-        # Single command fed, process
         else:
             try:
                 known_args, other_args = self.parser.parse_known_args(
@@ -210,7 +278,6 @@ class BaseController(metaclass=ABCMeta):
             if RECORD_SESSION:
                 SESSION_RECORDED.append(an_input)
 
-            # Redirect commands to their correct functions
             if known_args.cmd:
                 if known_args.cmd in ("..", "q"):
                     known_args.cmd = "quit"
@@ -260,18 +327,13 @@ class BaseController(metaclass=ABCMeta):
         self.queue.insert(0, "quit")
 
     def call_exit(self, _) -> None:
-        # Not sure how to handle controller loading here
         """Process exit cli command."""
         self.save_class()
         for _ in range(self.PATH.count("/")):
             self.queue.insert(0, "quit")
 
     def call_reset(self, _) -> None:
-        """Process reset command.
-
-        If you would like to have customization in the reset process define a method
-        `custom_reset` in the child class.
-        """
+        """Process reset command."""
         self.save_class()
         if self.PATH != "/":
             if self.custom_reset():
@@ -334,15 +396,6 @@ class BaseController(metaclass=ABCMeta):
             default="",
             nargs="+",
         )
-        parser.add_argument(
-            "-p",
-            "--public",
-            dest="public",
-            action="store_true",
-            help="Whether the routine should be public or not",
-            default=False,
-        )
-
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
 
@@ -388,7 +441,6 @@ class BaseController(metaclass=ABCMeta):
                 )
                 return
 
-            # Check if title has a valid format
             title = " ".join(ns_parser.name) if ns_parser.name else ""
             pattern = re.compile(r"^[a-zA-Z0-9\s]+$")
             if not pattern.match(title):
@@ -401,7 +453,6 @@ class BaseController(metaclass=ABCMeta):
             global SESSION_RECORDED_NAME  # noqa: PLW0603
             global SESSION_RECORDED_DESCRIPTION  # noqa: PLW0603
             global SESSION_RECORDED_TAGS  # noqa: PLW0603
-            global SESSION_RECORDED_PUBLIC  # noqa: PLW0603
 
             RECORD_SESSION = True
             SESSION_RECORDED_NAME = title
@@ -413,8 +464,6 @@ class BaseController(metaclass=ABCMeta):
             SESSION_RECORDED_TAGS = tag1 if tag1 else ""
             SESSION_RECORDED_TAGS += "," + tag2 if tag2 else ""
             SESSION_RECORDED_TAGS += "," + tag3 if tag3 else ""
-
-            SESSION_RECORDED_PUBLIC = ns_parser.public
 
             session.console.print(
                 f"[green]The routine '{title}' is successfully being recorded.[/green]"
@@ -431,7 +480,6 @@ class BaseController(metaclass=ABCMeta):
             prog="stop",
             description="Stop recording session into .openbb routine file",
         )
-        # This is only for auto-completion purposes
         _, _ = self.parse_simple_args(parser, other_args)
 
         if "-h" not in other_args and "--help" not in other_args:
@@ -457,7 +505,6 @@ class BaseController(metaclass=ABCMeta):
                     title_for_local_storage,
                 )
 
-                # If file already exists, add a timestamp to the name
                 if os.path.isfile(routine_file):
                     i = session.console.input(
                         "A local routine with the same name already exists, do you want to override it? (y/n): "
@@ -481,7 +528,6 @@ class BaseController(metaclass=ABCMeta):
                             f"[yellow]The routine name has been updated to '{new_name}'[/yellow]\n"
                         )
 
-                # Writing to file
                 Path(os.path.dirname(routine_file)).mkdir(parents=True, exist_ok=True)
 
                 with open(routine_file, "w") as file1:
@@ -495,14 +541,12 @@ class BaseController(metaclass=ABCMeta):
                         "\n\n",
                     ]
                     lines += [c + "\n" for c in SESSION_RECORDED[:-1]]
-                    # Writing data to a file
                     file1.writelines(lines)
 
                 session.console.print(
                     f"[green]Your routine has been recorded and saved here: {routine_file}[/green]\n"
                 )
 
-                # Clear session to be recorded again
                 RECORD_SESSION = False
                 SESSION_RECORDED = list()
 
@@ -516,17 +560,19 @@ class BaseController(metaclass=ABCMeta):
             "'OBBjects' where all execution results are stored. "
             "It is organized as a stack, with the most recent result at index 0.",
         )
-        parser.add_argument("--index", dest="index", help="Index of the result.")
-        parser.add_argument("--key", dest="key", help="Key of the result.")
+        parser.add_argument("-i", "--index", dest="index", help="Index of the result.")
+        parser.add_argument("-k", "--key", dest="key", help="Key of the result.")
         parser.add_argument(
             "--chart", action="store_true", dest="chart", help="Display chart."
         )
         parser.add_argument(
             "--export",
             default="",
-            type=check_file_type_saved(["csv", "json", "xlsx", "png", "jpg"]),
+            type=check_file_type_saved(
+                ["csv", "json", "xlsx", "png", "jpg", "db", "sqlite", "sqlite3"]
+            ),
             dest="export",
-            help="Export raw data into csv, json, xlsx and figure into png or jpg.",
+            help="Export raw data into csv, json, xlsx, db/sqlite and figure into png or jpg.",
             nargs="+",
         )
         parser.add_argument(
@@ -547,33 +593,34 @@ class BaseController(metaclass=ABCMeta):
                 results = session.obbject_registry.all
                 if results:
                     df = pd.DataFrame.from_dict(results, orient="index")
-                    print_rich_table(
-                        df,
-                        show_index=True,
-                        index_name="stack index",
+                    session.output_adapter.display(
+                        data=df,
                         title="OBBject Results",
+                        export=False,
+                        chart=False,
                     )
                 else:
                     session.console.print("[info]No results found.[/info]")
             elif ns_parser.index:
                 try:
                     index = int(ns_parser.index)
-                    obbject = session.obbject_registry.get(index)
-                    if obbject:
-                        handle_obbject_display(
-                            obbject=obbject,
-                            chart=ns_parser.chart,
-                            export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
-                            **kwargs,
-                        )
-                    else:
-                        session.console.print(
-                            f"[info]No result found at index {index}.[/info]"
-                        )
                 except ValueError:
                     session.console.print(
                         f"[red]Index must be an integer, not '{ns_parser.index}'.[/red]"
+                    )
+                    return
+                obbject = session.obbject_registry.get(index)
+                if obbject:
+                    handle_obbject_display(
+                        obbject=obbject,
+                        chart=ns_parser.chart,
+                        export=ns_parser.export,
+                        sheet_name=ns_parser.sheet_name,
+                        **kwargs,
+                    )
+                else:
+                    session.console.print(
+                        f"[info]No result found at index {index}.[/info]"
                     )
             elif ns_parser.key:
                 obbject = session.obbject_registry.get(ns_parser.key)
@@ -590,6 +637,295 @@ class BaseController(metaclass=ABCMeta):
                         f"[info]No result found with key '{ns_parser.key}'.[/info]"
                     )
 
+    def call_load(self, other_args: list[str]):  # noqa: PLR0912
+        """Load data from CSV, JSON, or Excel file."""
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+            prog="load",
+            description="Load data from a CSV, JSON, or Excel file in OpenBBUserData folder. "
+            "The loaded data will be added to the results cache.",
+        )
+        parser.add_argument(
+            "-f",
+            "--file",
+            dest="file",
+            type=str,
+            required=True,
+            help="Path to file relative to OpenBBUserData folder.",
+        )
+        parser.add_argument(
+            "--sheet-name",
+            dest="sheet_name",
+            type=str,
+            default=None,
+            help="Name of excel sheet to load. Only for .xlsx files. If not provided, loads first sheet.",
+        )
+        parser.add_argument(
+            "--register_key",
+            dest="register_key",
+            default="",
+            help="Key to reference data in the OBBject registry.",
+            type=validate_register_key,
+        )
+
+        ns_parser = self.parse_simple_args(parser, other_args)[0]
+
+        if ns_parser and ns_parser.file:
+            from openbb_core.app.model.obbject import OBBject
+
+            file_path_str = ns_parser.file
+
+            user_data_dir = Path(session.user.preferences.data_directory)
+            file_path = user_data_dir / file_path_str
+
+            if not file_path.exists():
+                session.console.print(f"[red]File not found: {file_path}[/red]")
+                return
+
+            try:
+                file_ext = file_path.suffix.lower()
+
+                if file_ext == ".csv":
+                    df = pd.read_csv(file_path, index_col=None)
+                    df = df.loc[:, ~df.columns.str.startswith("Unnamed:")]
+
+                    obbject = OBBject(results=df)
+
+                    command = f"/load -f {file_path_str}"
+                    obbject.extra["command"] = command
+
+                    if ns_parser.register_key:
+                        if (
+                            ns_parser.register_key
+                            not in session.obbject_registry.obbject_keys
+                        ):
+                            obbject.extra["register_key"] = ns_parser.register_key
+                        else:
+                            session.console.print(
+                                f"[yellow]Key `{ns_parser.register_key}` already exists in the registry. "
+                                "The `OBBject` was kept without the key.[/yellow]"
+                            )
+
+                    if session.max_obbjects_exceeded():
+                        session.obbject_registry.remove()
+                        session.console.print(
+                            "[yellow]Maximum number of OBBjects reached. The oldest entry was removed.[/yellow]"
+                        )
+
+                    if session.obbject_registry.register(obbject):
+                        session.console.print(
+                            f"[green]Successfully loaded {len(df)} rows from {file_path.name}[/green]"
+                        )
+
+                        if hasattr(self, "_link_obbject_to_data_processing_commands"):
+                            self._link_obbject_to_data_processing_commands()  # ty: ignore[call-non-callable]
+                            self.update_completer(self.choices_default)
+
+                        session.output_adapter.display(
+                            data=obbject,
+                            title=f"Loaded: {file_path_str}",
+                            export=False,
+                            chart=False,
+                        )
+                    else:
+                        session.console.print(
+                            "[yellow]Failed to register OBBject in registry.[/yellow]"
+                        )
+
+                elif file_ext == ".json":
+                    df = pd.read_json(file_path)
+
+                    obbject = OBBject(results=df)
+                    command = f"/load -f {file_path_str}"
+                    obbject.extra["command"] = command
+
+                    if ns_parser.register_key:
+                        if (
+                            ns_parser.register_key
+                            not in session.obbject_registry.obbject_keys
+                        ):
+                            obbject.extra["register_key"] = ns_parser.register_key
+                        else:
+                            session.console.print(
+                                f"[yellow]Key `{ns_parser.register_key}` already exists in the registry. "
+                                "The `OBBject` was kept without the key.[/yellow]"
+                            )
+
+                    if session.max_obbjects_exceeded():
+                        session.obbject_registry.remove()
+                        session.console.print(
+                            "[yellow]Maximum number of OBBjects reached. The oldest entry was removed.[/yellow]"
+                        )
+
+                    if session.obbject_registry.register(obbject):
+                        session.console.print(
+                            f"[green]Successfully loaded {len(df)} rows from {file_path.name}[/green]"
+                        )
+
+                        if hasattr(self, "_link_obbject_to_data_processing_commands"):
+                            self._link_obbject_to_data_processing_commands()  # ty: ignore[call-non-callable]
+                            self.update_completer(self.choices_default)
+
+                        session.output_adapter.display(
+                            data=obbject,
+                            title=f"Loaded: {file_path_str}",
+                            export=False,
+                            chart=False,
+                        )
+                    else:
+                        session.console.print(
+                            "[yellow]Failed to register OBBject in registry.[/yellow]"
+                        )
+
+                elif file_ext in [".xlsx", ".xls"]:
+                    sheet_name = ns_parser.sheet_name if ns_parser.sheet_name else 0
+                    df = pd.read_excel(file_path, sheet_name=sheet_name, index_col=None)
+                    df = df.loc[:, ~df.columns.str.startswith("Unnamed:")]
+
+                    obbject = OBBject(results=df)
+                    command = f"/load -f {file_path_str}"
+                    if ns_parser.sheet_name:
+                        command += f" --sheet-name {ns_parser.sheet_name}"
+                    obbject.extra["command"] = command
+
+                    if ns_parser.register_key:
+                        if (
+                            ns_parser.register_key
+                            not in session.obbject_registry.obbject_keys
+                        ):
+                            obbject.extra["register_key"] = ns_parser.register_key
+                        else:
+                            session.console.print(
+                                f"[yellow]Key `{ns_parser.register_key}` already exists in the registry. "
+                                "The `OBBject` was kept without the key.[/yellow]"
+                            )
+
+                    if session.max_obbjects_exceeded():
+                        session.obbject_registry.remove()
+                        session.console.print(
+                            "[yellow]Maximum number of OBBjects reached. The oldest entry was removed.[/yellow]"
+                        )
+
+                    if session.obbject_registry.register(obbject):
+                        session.console.print(
+                            f"[green]Successfully loaded {len(df)} rows from {file_path.name}[/green]"
+                        )
+
+                        if hasattr(self, "_link_obbject_to_data_processing_commands"):
+                            self._link_obbject_to_data_processing_commands()  # ty: ignore[call-non-callable]
+                            self.update_completer(self.choices_default)
+
+                        session.output_adapter.display(
+                            data=obbject,
+                            title=f"Loaded: {file_path_str}",
+                            export=False,
+                            chart=False,
+                        )
+                    else:
+                        session.console.print(
+                            "[yellow]Failed to register OBBject in registry.[/yellow]"
+                        )
+
+                elif file_ext in [".db", ".sqlite", ".sqlite3"]:
+                    import sqlite3
+
+                    from openbb_cli.controllers.utils import SQLiteTable
+
+                    conn = sqlite3.connect(file_path)
+                    try:
+                        cursor = conn.cursor()
+                        cursor.execute(
+                            "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
+                        )
+                        tables = [row[0] for row in cursor.fetchall()]
+
+                        if not tables:
+                            session.console.print(
+                                f"[yellow]No tables found in database: {file_path.name}[/yellow]"
+                            )
+                            return
+
+                        loaded_count = 0
+                        for table_name in tables:
+                            quoted = '"' + table_name.replace('"', '""') + '"'
+                            cursor.execute(f"SELECT COUNT(*) FROM {quoted}")  # noqa: S608
+                            row_count = cursor.fetchone()[0]
+
+                            sqlite_table = SQLiteTable(
+                                db_path=str(file_path),
+                                table_name=table_name,
+                                row_count=row_count,
+                            )
+
+                            obbject = OBBject(results=sqlite_table)
+                            command = f"/load -f {file_path_str} --table {table_name}"
+                            obbject.extra["command"] = command
+
+                            base_name = file_path.stem
+                            auto_key = f"{base_name}_{table_name}"
+
+                            if ns_parser.register_key and len(tables) == 1:
+                                if (
+                                    ns_parser.register_key
+                                    not in session.obbject_registry.obbject_keys
+                                ):
+                                    obbject.extra["register_key"] = (
+                                        ns_parser.register_key
+                                    )
+                                else:
+                                    session.console.print(
+                                        f"[yellow]Key `{ns_parser.register_key}` already exists. "
+                                        f"Using auto-generated key: {auto_key}[/yellow]"
+                                    )
+                                    obbject.extra["register_key"] = auto_key
+                            elif auto_key not in session.obbject_registry.obbject_keys:
+                                obbject.extra["register_key"] = auto_key
+                            else:
+                                session.console.print(
+                                    f"[yellow]Key `{auto_key}` already exists in the registry. "
+                                    "The `OBBject` was kept without the key.[/yellow]"
+                                )
+
+                            if session.max_obbjects_exceeded():
+                                session.obbject_registry.remove()
+                                session.console.print(
+                                    "[yellow]Maximum number of OBBjects reached. The oldest entry was removed.[/yellow]"
+                                )
+
+                            if session.obbject_registry.register(obbject):
+                                loaded_count += 1
+                                cursor.execute(f"PRAGMA table_info({table_name})")
+                                columns = [col[1] for col in cursor.fetchall()]
+
+                                session.console.print(
+                                    f"[green]Loaded table '{table_name}': {row_count} rows, "
+                                    f"{len(columns)} columns (lazy)[/green]"
+                                )
+
+                        if loaded_count > 0:
+                            session.console.print(
+                                f"[green]Successfully loaded {loaded_count} table(s) from {file_path.name}[/green]"
+                            )
+
+                            if hasattr(
+                                self, "_link_obbject_to_data_processing_commands"
+                            ):
+                                self._link_obbject_to_data_processing_commands()  # ty: ignore[call-non-callable]
+                                self.update_completer(self.choices_default)
+                    finally:
+                        conn.close()
+
+                else:
+                    session.console.print(
+                        f"[red]Unsupported file type: {file_ext}. "
+                        "Supported: .csv, .json, .xlsx, .xls, .db, .sqlite, .sqlite3[/red]"
+                    )
+                    return
+
+            except Exception as e:
+                session.console.print(f"[red]Error loading file: {e}[/red]")
+
     @staticmethod
     def parse_simple_args(
         parser: argparse.ArgumentParser,
@@ -600,19 +936,19 @@ class BaseController(metaclass=ABCMeta):
 
         Parameters
         ----------
-        parser: argparse.ArgumentParser
-            Parser with predefined arguments
-        other_args: List[str]
-            List of arguments to parse
-        unknown_args: bool
-            Flag to indicate if unknown arguments should be returned
+        parser : argparse.ArgumentParser
+            Parser with predefined arguments.
+        other_args : list[str]
+            List of arguments to parse.
+        unknown_args : bool
+            Flag to indicate if unknown arguments should be returned.
 
         Returns
         -------
-        ns_parser: argparse.Namespace
-            Namespace with parsed arguments
-        l_unknown_args: List[str]
-            List of unknown arguments
+        ns_parser : argparse.Namespace
+            Namespace with parsed arguments.
+        l_unknown_args : list[str]
+            List of unknown arguments.
         """
         parser.add_argument(
             "-h", "--help", action="store_true", help="show this help message"
@@ -624,7 +960,6 @@ class BaseController(metaclass=ABCMeta):
         try:
             ns_parser, l_unknown_args = parser.parse_known_args(other_args)
         except SystemExit:
-            # In case the command has required argument that isn't specified
             session.console.print("\n")
             return None, None
 
@@ -640,7 +975,7 @@ class BaseController(metaclass=ABCMeta):
         return ns_parser, l_unknown_args
 
     @classmethod
-    def parse_known_args_and_warn(  # pylint: disable=R0917
+    def parse_known_args_and_warn(
         cls,
         parser: argparse.ArgumentParser,
         other_args: list[str],
@@ -654,21 +989,21 @@ class BaseController(metaclass=ABCMeta):
 
         Parameters
         ----------
-        parser: argparse.ArgumentParser
-            Parser with predefined arguments
-        other_args: List[str]
-            list of arguments to parse
-        export_allowed: Literal["no_export", "raw_data_only", "figures_only", "raw_data_and_figures"]
-            Export options
-        raw: bool
-            Add the --raw flag
-        limit: int
-            Add a --limit flag with this number default
+        parser : argparse.ArgumentParser
+            Parser with predefined arguments.
+        other_args : list[str]
+            List of arguments to parse.
+        export_allowed : Literal["no_export", "raw_data_only", "figures_only", "raw_data_and_figures"]
+            Export options.
+        raw : bool
+            Add the --raw flag.
+        limit : int
+            Add a --limit flag with this number default.
 
         Returns
-        ----------
-        ns_parser:
-            Namespace with parsed arguments
+        -------
+        ns_parser
+            Namespace with parsed arguments.
         """
         parser.add_argument(
             "-h", "--help", action="store_true", help="show this help message"
@@ -685,10 +1020,17 @@ class BaseController(metaclass=ABCMeta):
                 choices_export = ["png", "jpg"]
                 help_export = "Export figure into png or jpg."
             else:
-                choices_export = ["csv", "json", "xlsx", "png", "jpg"]
-                help_export = (
-                    "Export raw data into csv, json, xlsx and figure into png or jpg."
-                )
+                choices_export = [
+                    "csv",
+                    "json",
+                    "xlsx",
+                    "png",
+                    "jpg",
+                    "db",
+                    "sqlite",
+                    "sqlite3",
+                ]
+                help_export = "Export raw data into csv, json, xlsx, db/sqlite and figure into png or jpg."
 
             parser.add_argument(
                 "--export",
@@ -699,7 +1041,6 @@ class BaseController(metaclass=ABCMeta):
                 nargs="+",
             )
 
-            # If excel is an option, add the sheet name
             if export_allowed in [
                 "raw_data_only",
                 "raw_data_and_figures",
@@ -754,24 +1095,15 @@ class BaseController(metaclass=ABCMeta):
             return None
 
         try:
-            # Determine the index of the routine arguments
             routine_args_index = next(
                 (
                     i + 1
                     for i, arg in enumerate(other_args)
                     if arg in ("-i", "--input")
-                    and "routine_args"
-                    in [
-                        action.dest
-                        for action in parser._actions  # pylint: disable=protected-access
-                    ]
+                    and "routine_args" in [action.dest for action in parser._actions]
                 ),
                 -1,
             )
-            # Collect indices whose values should NOT be comma-split because
-            # the provider may accept a comma-separated string (e.g. --symbol
-            # AAPL,MSFT).  Handles --flag value, --flag=value, -f value, and
-            # multi-value flags (nargs="+" / nargs="*" / nargs=N).
             no_split_indices: set[int] = set()
             if 0 <= routine_args_index < len(other_args):
                 no_split_indices.add(routine_args_index)
@@ -779,38 +1111,31 @@ class BaseController(metaclass=ABCMeta):
             for i, arg in enumerate(other_args):
                 if not arg.startswith("-"):
                     continue
-                # Handle --flag=value by extracting the flag portion.
                 flag_part = arg.split("=", 1)[0] if "=" in arg else arg
-                for action in parser._actions:  # pylint: disable=protected-access
+                for action in parser._actions:
                     if flag_part in action.option_strings and action.nargs != 0:
                         if "=" in arg:
-                            # Value is embedded in the same token.
                             no_split_indices.add(i)
                         elif action.nargs in ("+", "*") or (
                             isinstance(action.nargs, int) and action.nargs > 1
                         ):
-                            # Multi-value flag: protect all consecutive
-                            # non-flag tokens after the flag.
                             j = i + 1
                             while j < len(other_args) and not other_args[j].startswith(
                                 "-"
                             ):
                                 no_split_indices.add(j)
                                 j += 1
-                        # Single-value flag: protect the next token.
                         elif i + 1 < len(other_args):
                             no_split_indices.add(i + 1)
                         break
 
-            # Split comma-separated arguments only for positional / unflagged values.
             other_args = [
                 part
                 for index, arg in enumerate(other_args)
                 for part in ([arg] if index in no_split_indices else arg.split(","))
             ]
 
-            # Check if the action has optional choices, if yes, remove them
-            for action in parser._actions:  # pylint: disable=protected-access
+            for action in parser._actions:
                 if getattr(action, "optional_choices", None):
                     action.choices = None
 
@@ -825,8 +1150,6 @@ class BaseController(metaclass=ABCMeta):
                 )
 
         except SystemExit:
-            # In case the command has required argument that isn't specified
-
             return None
 
         if l_unknown_args:
@@ -841,12 +1164,9 @@ class BaseController(metaclass=ABCMeta):
         an_input = "HELP_ME"
 
         while True:
-            # There is a command in the queue
             if self.queue and len(self.queue) > 0:
                 if self.queue[0] in ("q", "..", "quit"):
                     self.save_class()
-                    # Go back to the root in order to go to the right directory because
-                    # there was a jump between indirect menus
                     if custom_path_menu_above:
                         self.queue.insert(1, custom_path_menu_above)
 
@@ -857,11 +1177,9 @@ class BaseController(metaclass=ABCMeta):
                         return ["help"]
                     return []
 
-                # Consume 1 element from the queue
                 an_input = self.queue[0]
                 self.queue = self.queue[1:]
 
-                # Print location because this was an instruction and we want user to know the action
                 if (
                     an_input
                     and an_input not in ("home", "help")
@@ -871,16 +1189,13 @@ class BaseController(metaclass=ABCMeta):
                         f"{get_flair_and_username()} {self.PATH} $ {an_input}"
                     )
 
-            # Get input command from user
             else:
-                # Display help menu when entering on this menu from a level above
                 if an_input == "HELP_ME":
                     self.print_help()
 
                 try:
                     prompt_session = session.prompt_session
                     if prompt_session and settings.USE_PROMPT_TOOLKIT:
-                        # Check if toolbar hint was enabled
                         if settings.TOOLBAR_HINT:
                             an_input = prompt_session.prompt(
                                 f"{get_flair_and_username()} {self.PATH} $ ",
@@ -904,19 +1219,15 @@ class BaseController(metaclass=ABCMeta):
                                 completer=self.completer,
                                 search_ignore_case=True,
                             )
-                    # Get input from user without auto-completion
                     else:
                         an_input = input(f"{get_flair_and_username()} {self.PATH} $ ")
 
                 except (KeyboardInterrupt, EOFError):
-                    # Exit in case of keyboard interrupt
                     an_input = "exit"
 
             try:
-                # Allow user to go back to root
                 an_input = "home" if an_input == "/" else an_input
 
-                # Process the input command
                 self.queue = self.switch(an_input)
 
             except SystemExit:
@@ -934,7 +1245,7 @@ class BaseController(metaclass=ABCMeta):
                         candidate_input = (
                             f"{similar_cmd[0]} {' '.join(an_input.split(' ')[1:])}"
                         )
-                        if candidate_input == an_input:
+                        if candidate_input == an_input:  # pragma: no cover
                             an_input = ""
                             self.queue = []
                             session.console.print("\n")

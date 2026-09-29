@@ -1,7 +1,5 @@
 """Federal Reserve Federal Funds Rate Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import datetime
 from typing import Any
 
@@ -90,7 +88,6 @@ class FederalReserveOvernightBankFundingRateFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the raw data."""
-        # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import amake_request
 
         url = (
@@ -99,8 +96,8 @@ class FederalReserveOvernightBankFundingRateFetcher(
         )
         results: list[dict] = []
         response = await amake_request(url, **kwargs)
-        if response.get("refRates", []):  # type: ignore
-            results = response["refRates"]  # type: ignore
+        if response.get("refRates", []):  # ty: ignore[unresolved-attribute]
+            results = response["refRates"]  # ty: ignore[invalid-argument-type]
         if not results:
             raise EmptyDataError()
         return results

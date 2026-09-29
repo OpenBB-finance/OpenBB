@@ -1,0 +1,144 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+    method: GET
+    uri: https://api.adviserinfo.sec.gov/search/firm?nrows=100&query=citadel
+  response:
+    body:
+      string: !!binary |
+        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
+        AAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token
+      Access-Control-Allow-Methods:
+      - DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT
+      Access-Control-Allow-Origin:
+      - '*'
+      CF-RAY:
+      - a1e85e99fe4943b8-EWR
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Jul 2026 07:07:35 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - __cf_bm=WSiJGeAPciXb6KoAfUNqMwBgz_EjRTfuIrF1OciXQ2o-1784617655.3576267-1.0.1.1-2SOipoGHsuen6wgkQUX5RzwdSJ.ua7bsU9H81HA66zJ9a6tia6REfu3wG2ju1GFTUtyjnjr9qhndtGILdly7vhdt_hr1UzpmOeg7xnQWebSmSolUmdAjJNQ8xzWZLw6f;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.adviserinfo.sec.gov; Expires=Tue,
+        21 Jul 2026 07:37:35 GMT
+      - _cfuvid=6WdtZcABZoBiu8ZeeMo2rkZNnLXbUNwPVhQ3u4ID1SE-1784617655.3576267-1.0.1.1-TtK2IYvnUFzOhw0ElutWQ1qk25bOxiN03GSZQMdxMes;
+        HttpOnly; SameSite=None; Secure; Path=/; Domain=api.adviserinfo.sec.gov
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 30d6ec9a76e41b667261074d21c30aac.cloudfront.net (CloudFront)
+      X-Content-Type-Options:
+      - nosniff
+      cf-cache-status:
+      - DYNAMIC
+      strict-transport-security:
+      - max-age=31536000
+      x-amz-apigw-id:
+      - A2EcuGKroAMEjMw=
+      x-amz-cf-id:
+      - QbO_4gPUEo_NhGmunOaPgBSVhyUsiDrFBYANnwGxuyLppwivg_F9dw==
+      x-amz-cf-pop:
+      - JFK50-P13
+      x-amzn-requestid:
+      - c8fdd53f-0023-400e-b5a8-8927618a6995
+      x-amzn-trace-id:
+      - Root=1-6a5f1ab7-68f325602d46798f03c6a9c2;Parent=404a8ff5acb4d01a;Sampled=0;Lineage=1:75aa8d91:0
+      x-cache:
+      - Miss from cloudfront
+      x-frame-options:
+      - SAMEORIGIN
+      x-xss-protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

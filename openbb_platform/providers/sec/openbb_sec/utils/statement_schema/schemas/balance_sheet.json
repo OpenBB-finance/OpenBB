@@ -150,48 +150,11 @@
       ]
     },
     {
-      "tag": "note_receivable",
-      "label": "Note & Lease Receivable",
-      "description": "Amortized cost, after allowance for credit loss, of financing receivable classified as current. Excludes net investment in lease.",
-      "parent": "total_current_assets",
-      "sequence": 4,
-      "factor": "+",
-      "balance": "debit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "NotesAndLoansReceivableNetCurrent",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NotesReceivableNet",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "AccountsNotesAndLoansReceivableNetCurrent",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NoncurrentReceivables",
-          "namespace": "ifrs-full",
-          "first_year": 2020,
-          "last_year": 2025
-        }
-      ]
-    },
-    {
       "tag": "accounts_receivable",
       "label": "Accounts Receivable",
       "description": "Amount, after allowance for credit loss, of right to consideration from customer for product sold and service rendered in normal course of business, classified as current.",
       "parent": "total_current_assets",
-      "sequence": 5,
+      "sequence": 4,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -254,6 +217,43 @@
         {
           "tag": "UtilisationAllowanceAccountForCreditLossesOfFinancialAssets",
           "namespace": "ifrs-full"
+        }
+      ]
+    },
+    {
+      "tag": "note_receivable",
+      "label": "Note & Lease Receivable",
+      "description": "Amortized cost, after allowance for credit loss, of financing receivable classified as current. Excludes net investment in lease.",
+      "parent": "total_current_assets",
+      "sequence": 5,
+      "factor": "+",
+      "balance": "debit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "NotesAndLoansReceivableNetCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "NotesReceivableNet",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "AccountsNotesAndLoansReceivableNetCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "NoncurrentReceivables",
+          "namespace": "ifrs-full",
+          "first_year": 2020,
+          "last_year": 2025
         }
       ]
     },
@@ -498,7 +498,7 @@
       "label": "Total Current Assets",
       "description": "Amount of asset recognized for present right to economic benefit, classified as current.",
       "parent": "total_assets",
-      "sequence": 1,
+      "sequence": 12,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -523,7 +523,7 @@
       "label": "Plant, Property & Equipment, gross",
       "description": "Amount, before accumulated depreciation, depletion, and amortization, of property, plant, and equipment. Includes, but is not limited to, land and land improvement; building; machinery and equipment; furniture and fixture; and work of art, historical treasure, or similar asset classified as collection.",
       "parent": "net_ppe",
-      "sequence": 1,
+      "sequence": 13,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -534,10 +534,6 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
-        },
-        {
-          "tag": "Land",
-          "namespace": "us-gaap"
         }
       ]
     },
@@ -546,7 +542,7 @@
       "label": "Accumulated Depreciation",
       "description": "Amount of accumulated depreciation, depletion, and amortization of property, plant, and equipment. Includes, but is not limited to, land and land improvement; building; machinery and equipment; furniture and fixture; and work of art, historical treasure, or similar asset classified as collection.",
       "parent": "net_ppe",
-      "sequence": 2,
+      "sequence": 14,
       "factor": "-",
       "balance": "credit",
       "unit": "monetary",
@@ -565,7 +561,7 @@
       "label": "Plant, Property, & Equipment, net",
       "description": "Amount, after accumulated depreciation, depletion, and amortization, of property, plant, and equipment. Includes, but is not limited to, land and land improvement; building; machinery and equipment; furniture and fixture; and work of art, historical treasure, or similar asset classified as collection.",
       "parent": "total_noncurrent_assets",
-      "sequence": 1,
+      "sequence": 15,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -614,7 +610,7 @@
         }
       ],
       "parent": "total_noncurrent_assets",
-      "sequence": 11
+      "sequence": 16
     },
     {
       "tag": "finance_lease_right_of_use_asset",
@@ -633,14 +629,14 @@
         }
       ],
       "parent": "total_noncurrent_assets",
-      "sequence": 12
+      "sequence": 17
     },
     {
       "tag": "long_term_investments",
       "label": "Long-Term Investments",
       "description": "Amount of investment in marketable security, classified as noncurrent.",
       "parent": "total_noncurrent_assets",
-      "sequence": 2,
+      "sequence": 18,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -669,6 +665,12 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
+        },
+        {
+          "tag": "EquityMethodInvestments",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2027
         },
         {
           "tag": "InvestmentAccountedForUsingEquityMethod",
@@ -721,7 +723,7 @@
       "label": "Noncurrent Note & Lease Receivables",
       "description": "Amount, after allowance for credit loss, of financing receivable, classified as noncurrent.",
       "parent": "total_noncurrent_assets",
-      "sequence": 3,
+      "sequence": 19,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -746,7 +748,7 @@
       "label": "Goodwill",
       "description": "Amount, after accumulated impairment loss, of asset representing future economic benefit arising from other asset acquired in business combination or from joint venture formation or both, that is not individually identified and separately recognized.",
       "parent": "total_noncurrent_assets",
-      "sequence": 4,
+      "sequence": 20,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -779,7 +781,7 @@
       "label": "Intangible Assets",
       "description": "Amount, after accumulated amortization, of finite- and indefinite-lived intangible assets and capitalized cost for software to be sold, leased, or marketed. Excludes goodwill.",
       "parent": "total_noncurrent_assets",
-      "sequence": 5,
+      "sequence": 21,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -822,7 +824,7 @@
       "label": "Noncurrent Deferred & Refundable Income Taxes",
       "description": "The noncurrent portion as of the balance sheet date of the aggregate carrying amount of all future tax deductions arising from temporary differences between tax basis and generally accepted accounting principles basis recognition of assets, liabilities, revenues and expenses, which can only be deducted for tax purposes when permitted under enacted tax laws; after the valuation allowance, if any, to reduce such amount to net realizable value. Deferred tax liabilities and assets are classified as current or noncurrent based on the classification of the related asset or liability for financial reporting. A deferred tax liability or asset that is not related to an asset or liability for financial reporting, including deferred tax assets related to carryforwards, is classified according to the expected reversal date of the temporary difference.",
       "parent": "total_noncurrent_assets",
-      "sequence": 6,
+      "sequence": 22,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -865,7 +867,7 @@
       "label": "Employee Benefit Assets",
       "description": "This represents the entire assets recognized in the balance sheet that are associated with the defined benefit plans.",
       "parent": "total_noncurrent_assets",
-      "sequence": 7,
+      "sequence": 23,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -906,7 +908,7 @@
       "label": "Other Noncurrent Operating Assets",
       "description": "Amount of noncurrent assets classified as other.",
       "parent": "total_noncurrent_assets",
-      "sequence": 8,
+      "sequence": 24,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -973,7 +975,7 @@
       "label": "Other Noncurrent Nonoperating Assets",
       "description": "Amount of investments, and noncurrent assets classified as other.",
       "parent": "total_noncurrent_assets",
-      "sequence": 9,
+      "sequence": 25,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -992,7 +994,7 @@
       "label": "Other Than Fixed Noncurrent Assets",
       "description": "Noncurrent assets other than investments and PP&E.",
       "parent": "total_noncurrent_assets",
-      "sequence": 10,
+      "sequence": 26,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -1009,7 +1011,7 @@
       "label": "Total Noncurrent Assets",
       "description": "Sum of the carrying amounts as of the balance sheet date of all assets that are expected to be realized in cash, sold or consumed after one year or beyond the normal operating cycle, if longer.",
       "parent": "total_assets",
-      "sequence": 2,
+      "sequence": 27,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -1034,7 +1036,7 @@
       "label": "Total Assets",
       "description": "Amount of asset recognized for present right to economic benefit.",
       "parent": null,
-      "sequence": 1,
+      "sequence": 28,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -1059,7 +1061,7 @@
       "label": "Short-Term Debt",
       "description": "Reflects the total carrying amount as of the balance sheet date of debt having initial terms less than one year or the normal operating cycle, if longer.",
       "parent": "total_current_liabilities",
-      "sequence": 1,
+      "sequence": 29,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1108,7 +1110,7 @@
       "label": "Current Portion of Long-Term Debt",
       "description": "Amount of long-term debt due within one year or within the normal operating cycle, if longer.",
       "parent": "total_current_liabilities",
-      "sequence": 2,
+      "sequence": 30,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1118,6 +1120,12 @@
           "tag": "LongTermDebtCurrent",
           "namespace": "us-gaap",
           "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "LongTermDebtAndCapitalLeaseObligationsCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2009,
           "last_year": 2026
         },
         {
@@ -1139,53 +1147,11 @@
       ]
     },
     {
-      "tag": "operating_lease_liability_current",
-      "label": "Operating Lease, Liability, Current",
-      "description": "Present value of lessee's discounted obligation for lease payments from operating lease, classified as current.",
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "OperatingLeaseLiabilityCurrent",
-          "namespace": "us-gaap",
-          "first_year": 2019,
-          "last_year": 2026
-        },
-        {
-          "tag": "CurrentLeaseLiabilities",
-          "namespace": "ifrs-full"
-        }
-      ],
-      "parent": "total_current_liabilities",
-      "sequence": 12
-    },
-    {
-      "tag": "finance_lease_liability_current",
-      "label": "Finance Lease, Liability, Current",
-      "description": "Present value of lessee's discounted obligation for lease payments from finance lease, classified as current.",
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "FinanceLeaseLiabilityCurrent",
-          "namespace": "us-gaap",
-          "first_year": 2019,
-          "last_year": 2026
-        }
-      ],
-      "parent": "total_current_liabilities",
-      "sequence": 13
-    },
-    {
       "tag": "accounts_payable",
       "label": "Accounts Payable",
       "description": "Carrying value as of the balance sheet date of liabilities incurred (and for which invoices have typically been received) and payable to vendors for goods and services received that are used in an entity's business. Used to reflect the current portion of the liabilities (due within one year or within the normal operating cycle if longer).",
       "parent": "total_current_liabilities",
-      "sequence": 3,
+      "sequence": 31,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1246,7 +1212,7 @@
       "label": "Accrued Expenses",
       "description": "Carrying value as of the balance sheet date of obligations incurred and payable, pertaining to costs that are statutory in nature, are incurred on contractual obligations, or accumulate over time and for which invoices have not yet been received or will not be rendered. Examples include taxes, interest, rent and utilities. Used to reflect the current portion of the liabilities (due within one year or within the normal operating cycle if longer).",
       "parent": "total_current_liabilities",
-      "sequence": 4,
+      "sequence": 32,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1289,7 +1255,7 @@
       "label": "Customer Deposits",
       "description": "Carrying amount of liabilities for customer deposits received and held, classified as current. Includes cash received in advance for undelivered goods or services and refundable security deposits.",
       "parent": "total_current_liabilities",
-      "sequence": 5,
+      "sequence": 33,
       "factor": "+",
       "balance": "",
       "unit": "monetary",
@@ -1322,7 +1288,7 @@
       "label": "Dividends Payable",
       "description": "Carrying value as of the balance sheet date of dividends declared but unpaid on equity securities issued by the entity and outstanding.",
       "parent": "total_current_liabilities",
-      "sequence": 6,
+      "sequence": 34,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1361,7 +1327,7 @@
       "label": "Current Deferred Revenue",
       "description": "Amount of deferred income and obligation to transfer product and service to customer for which consideration has been received or is receivable, classified as current.",
       "parent": "total_current_liabilities",
-      "sequence": 7,
+      "sequence": 35,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1408,7 +1374,7 @@
       "label": "Current Deferred & Payable Income Tax Liabilities",
       "description": "Represents the current portion of deferred tax liabilities, which result from applying the applicable tax rate to net taxable temporary differences pertaining to each jurisdiction to which the entity is obligated to pay income tax. A current taxable temporary difference is a difference between the tax basis and the carrying amount of a current asset or liability in the financial statements prepared in accordance with generally accepted accounting principles. In a classified statement of financial position, an enterprise separates deferred tax liabilities and assets into a current amount and a noncurrent amount. Deferred tax liabilities and assets are classified as current or noncurrent based on the classification of the related asset or liability for financial reporting. A deferred tax liability or asset that is not related to an asset or liability for financial reporting, including deferred tax assets related to carryforwards, is classified according to the expected reversal date of the temporary difference.",
       "parent": "total_current_liabilities",
-      "sequence": 8,
+      "sequence": 36,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1427,7 +1393,7 @@
       "label": "Current Employee Benefit Liabilities",
       "description": "Total of the carrying values as of the balance sheet date of obligations incurred through that date and payable for obligations related to services received from employees, such as accrued salaries and bonuses, payroll taxes and fringe benefits. Used to reflect the current portion of the liabilities (due within one year or within the normal operating cycle if longer).",
       "parent": "total_current_liabilities",
-      "sequence": 9,
+      "sequence": 37,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1457,8 +1423,8 @@
       "tag": "other_taxes_payable",
       "label": "Other Taxes Payable",
       "description": "Carrying value as of the balance sheet date of obligations incurred and payable for statutory income, sales, use, payroll, excise, real, property and other taxes. Used to reflect the current portion of the liabilities (due within one year or within the normal operating cycle if longer).",
-      "parent": "other_current_liabilities",
-      "sequence": 1,
+      "parent": "total_current_liabilities",
+      "sequence": 38,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1497,7 +1463,7 @@
       "label": "Other Current Liabilities",
       "description": "Amount of liabilities classified as other, due within one year or the normal operating cycle, if longer.",
       "parent": "total_current_liabilities",
-      "sequence": 10,
+      "sequence": 39,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1584,7 +1550,7 @@
       "label": "Other Current Nonoperating Liabilities",
       "description": "Amount of current liabilities from nonoperating activities, classified as other. Includes accrued liabilities and other liabilities not separately disclosed.",
       "parent": "total_current_liabilities",
-      "sequence": 11,
+      "sequence": 40,
       "factor": "+",
       "balance": "",
       "unit": "monetary",
@@ -1597,11 +1563,53 @@
       ]
     },
     {
+      "tag": "operating_lease_liability_current",
+      "label": "Operating Lease, Liability, Current",
+      "description": "Present value of lessee's discounted obligation for lease payments from operating lease, classified as current.",
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "OperatingLeaseLiabilityCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2019,
+          "last_year": 2026
+        },
+        {
+          "tag": "CurrentLeaseLiabilities",
+          "namespace": "ifrs-full"
+        }
+      ],
+      "parent": "total_current_liabilities",
+      "sequence": 41
+    },
+    {
+      "tag": "finance_lease_liability_current",
+      "label": "Finance Lease, Liability, Current",
+      "description": "Present value of lessee's discounted obligation for lease payments from finance lease, classified as current.",
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "FinanceLeaseLiabilityCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2019,
+          "last_year": 2026
+        }
+      ],
+      "parent": "total_current_liabilities",
+      "sequence": 42
+    },
+    {
       "tag": "total_current_liabilities",
       "label": "Total Current Liabilities",
       "description": "Total obligations incurred as part of normal operations that are expected to be paid during the following twelve months or within one business cycle, if longer.",
       "parent": "total_liabilities",
-      "sequence": 1,
+      "sequence": 43,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1626,7 +1634,7 @@
       "label": "Long-Term Debt",
       "description": "Amount, after deduction of unamortized premium (discount) and debt issuance cost, of long-term debt classified as noncurrent. Excludes lease obligation.",
       "parent": "total_noncurrent_liabilities",
-      "sequence": 1,
+      "sequence": 44,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1689,7 +1697,7 @@
       "label": "Capital Lease Obligations",
       "description": "Present value of lessee's discounted obligation for lease payments from finance lease.",
       "parent": "total_noncurrent_liabilities",
-      "sequence": 2,
+      "sequence": 45,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1736,14 +1744,14 @@
         }
       ],
       "parent": "total_noncurrent_liabilities",
-      "sequence": 9
+      "sequence": 46
     },
     {
       "tag": "asset_retirement_and_litigation_obligation",
       "label": "Asset Retirement Reserve & Litigation Obligation",
       "description": "Noncurrent portion of the carrying amount of a liability for an asset retirement obligation. An asset retirement obligation is a legal obligation associated with the disposal or retirement of a tangible long-lived asset that results from the acquisition, construction or development, or the normal operations of a long-lived asset, except for certain obligations of lessees.",
       "parent": "total_noncurrent_liabilities",
-      "sequence": 3,
+      "sequence": 47,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1774,7 +1782,7 @@
       "label": "Noncurrent Deferred Revenue",
       "description": "Amount of deferred income and obligation to transfer product and service to customer for which consideration has been received or is receivable, classified as noncurrent.",
       "parent": "total_noncurrent_liabilities",
-      "sequence": 4,
+      "sequence": 48,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1811,7 +1819,7 @@
       "label": "Noncurrent Deferred & Payable Income Tax Liabilities",
       "description": "Amount, after deferred tax asset, of deferred tax liability attributable to taxable differences with jurisdictional netting.",
       "parent": "total_noncurrent_liabilities",
-      "sequence": 5,
+      "sequence": 49,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1882,7 +1890,7 @@
       "label": "Noncurrent Employee Benefit Liabilities",
       "description": "Amount of liability, recognized in statement of financial position, for defined benefit pension and other postretirement plans, classified as noncurrent.",
       "parent": "total_noncurrent_liabilities",
-      "sequence": 6,
+      "sequence": 50,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -1941,7 +1949,7 @@
       "label": "Other Noncurrent Operating Liabilities",
       "description": "Amount of liabilities classified as other, due after one year or the normal operating cycle, if longer.",
       "parent": "total_noncurrent_liabilities",
-      "sequence": 7,
+      "sequence": 51,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2036,7 +2044,7 @@
       "label": "Other Noncurrent Nonoperating Liabilities",
       "description": "Amount of noncurrent liabilities from nonoperating activities, classified as other. Includes deferred income taxes and other liabilities not separately disclosed.",
       "parent": "total_noncurrent_liabilities",
-      "sequence": 8,
+      "sequence": 52,
       "factor": "+",
       "balance": "",
       "unit": "monetary",
@@ -2053,7 +2061,7 @@
       "label": "Total Noncurrent Liabilities",
       "description": "Amount of obligation due after one year or beyond the normal operating cycle, if longer.",
       "parent": "total_liabilities",
-      "sequence": 2,
+      "sequence": 53,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2078,7 +2086,7 @@
       "label": "Total Liabilities",
       "description": "Amount of liability recognized for present obligation requiring transfer or otherwise providing economic benefit to others.",
       "parent": "total_liabilities_and_equity",
-      "sequence": 1,
+      "sequence": 54,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2103,7 +2111,7 @@
       "label": "Commitments & Contingencies",
       "description": "Represents the caption on the face of the balance sheet to indicate that the entity has entered into (1) purchase or supply arrangements that will require expending a portion of its resources to meet the terms thereof, and (2) is exposed to potential losses or, less frequently, gains, arising from (a) possible claims against a company's resources due to future performance under contract terms, and (b) possible losses or likely gains from uncertainties that will ultimately be resolved when one or more future events that are deemed likely to occur do occur or fail to occur.",
       "parent": "total_liabilities_and_equity",
-      "sequence": 2,
+      "sequence": 55,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2118,53 +2126,52 @@
       ]
     },
     {
-      "tag": "redeemable_nci_common",
-      "label": "Redeemable NCI - Common",
-      "description": "Equity carrying amount of the common stock component of redeemable NCI.",
-      "parent": "redeemable_noncontrolling_interest",
-      "sequence": 1,
+      "tag": "temporary_equity",
+      "label": "Temporary Equity",
+      "description": "Carrying amount of the equity component of securities that are redeemable.",
+      "parent": "total_liabilities_and_equity",
+      "sequence": 56,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "instant",
       "xbrl_tags": [
         {
-          "tag": "RedeemableNoncontrollingInterestEquityCommonCarryingAmount",
+          "tag": "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "TemporaryEquityCarryingAmount",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2012
         }
       ]
     },
     {
-      "tag": "redeemable_nci_preferred",
-      "label": "Redeemable NCI - Preferred",
-      "description": "Equity carrying amount of the preferred stock component of redeemable NCI.",
-      "parent": "redeemable_noncontrolling_interest",
-      "sequence": 2,
+      "tag": "temporary_equity_parent",
+      "label": "Temporary Equity Attributable to Parent",
+      "description": "Carrying amount of temporary equity attributable to parent.",
+      "parent": "temporary_equity",
+      "sequence": 57,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "instant",
       "xbrl_tags": [
         {
-          "tag": "RedeemableNoncontrollingInterestEquityPreferredCarryingAmount",
+          "tag": "TemporaryEquityCarryingAmountAttributableToParent",
           "namespace": "us-gaap"
-        }
-      ]
-    },
-    {
-      "tag": "redeemable_nci_other",
-      "label": "Redeemable NCI - Other",
-      "description": "Equity carrying amount of the other component of redeemable NCI.",
-      "parent": "redeemable_noncontrolling_interest",
-      "sequence": 3,
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
+        },
         {
-          "tag": "RedeemableNoncontrollingInterestEquityOtherCarryingAmount",
+          "tag": "RedeemablePreferredStockCarryingAmount",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "RedeemablePreferredStockCarryingAmountOrRedemptionValue",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -2172,8 +2179,8 @@
       "tag": "redeemable_noncontrolling_interest",
       "label": "Redeemable Noncontrolling Interest",
       "description": "As of the reporting date, the aggregate carrying amount of all noncontrolling interests which are redeemable by the (parent) entity (1) at a fixed or determinable price on a fixed or determinable date, (2) at the option of the holder of the noncontrolling interest, or (3) upon occurrence of an event that is not solely within the control of the (parent) entity. This item includes noncontrolling interest holder's ownership (or holders' ownership) regardless of the type of equity interest (common, preferred, other) including all potential organizational (legal) forms of the investee entity.",
-      "parent": "total_liabilities_and_equity",
-      "sequence": 3,
+      "parent": "temporary_equity",
+      "sequence": 58,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2210,34 +2217,61 @@
           "last_year": 2026
         },
         {
-          "tag": "RedeemablePreferredStockCarryingAmountOrRedemptionValue",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests",
+          "tag": "TemporaryEquityCarryingAmountAttributableToNoncontrollingInterest",
           "namespace": "us-gaap",
           "first_year": 2012,
-          "last_year": 2026
-        },
+          "last_year": 2014
+        }
+      ]
+    },
+    {
+      "tag": "redeemable_nci_common",
+      "label": "Redeemable NCI - Common",
+      "description": "Equity carrying amount of the common stock component of redeemable NCI.",
+      "parent": "redeemable_noncontrolling_interest",
+      "sequence": 59,
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
         {
-          "tag": "TemporaryEquityRedemptionValue",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
+          "tag": "RedeemableNoncontrollingInterestEquityCommonCarryingAmount",
+          "namespace": "us-gaap"
+        }
+      ]
+    },
+    {
+      "tag": "redeemable_nci_preferred",
+      "label": "Redeemable NCI - Preferred",
+      "description": "Equity carrying amount of the preferred stock component of redeemable NCI.",
+      "parent": "redeemable_noncontrolling_interest",
+      "sequence": 60,
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
         {
-          "tag": "TemporaryEquityValueExcludingAdditionalPaidInCapital",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
+          "tag": "RedeemableNoncontrollingInterestEquityPreferredCarryingAmount",
+          "namespace": "us-gaap"
+        }
+      ]
+    },
+    {
+      "tag": "redeemable_nci_other",
+      "label": "Redeemable NCI - Other",
+      "description": "Equity carrying amount of the other component of redeemable NCI.",
+      "parent": "redeemable_noncontrolling_interest",
+      "sequence": 61,
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
         {
-          "tag": "TemporaryEquityCarryingAmountAttributableToParent",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
+          "tag": "RedeemableNoncontrollingInterestEquityOtherCarryingAmount",
+          "namespace": "us-gaap"
         }
       ]
     },
@@ -2246,7 +2280,7 @@
       "label": "Preferred Stock",
       "description": "Aggregate par or stated value of issued nonredeemable preferred stock (or preferred stock redeemable solely at the option of the issuer). This item includes treasury stock repurchased by the entity. Note: elements for number of nonredeemable preferred shares, par value and other disclosure concepts are in another section within stockholders' equity.",
       "parent": "total_equity",
-      "sequence": 1,
+      "sequence": 62,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2257,6 +2291,24 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockValueOutstanding",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockIncludingAdditionalPaidInCapital",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockIncludingAdditionalPaidInCapitalNetOfDiscount",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2025
         }
       ]
     },
@@ -2265,7 +2317,7 @@
       "label": "Common Stock",
       "description": "Aggregate par or stated value of issued nonredeemable common stock (or common stock redeemable solely at the option of the issuer). This item includes treasury stock repurchased by the entity. Note: elements for number of nonredeemable common shares, par value and other disclosure concepts are in another section within stockholders' equity.",
       "parent": "total_common_equity",
-      "sequence": 1,
+      "sequence": 63,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2316,7 +2368,7 @@
       "label": "Additional Paid-In Capital",
       "description": "Value received from shareholders in common stock-related transactions that are in excess of par value or stated value and amounts received from other stock-related transactions. Includes only common stock transactions (excludes preferred stock transactions). May be called contributed capital, capital in excess of par, capital surplus, or paid-in capital.",
       "parent": "total_common_equity",
-      "sequence": 2,
+      "sequence": 64,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2349,7 +2401,7 @@
       "label": "Retained Earnings",
       "description": "Amount of accumulated undistributed earnings (deficit).",
       "parent": "total_common_equity",
-      "sequence": 3,
+      "sequence": 65,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2380,7 +2432,7 @@
       "label": "Treasury Stock",
       "description": "The amount allocated to treasury stock. Treasury stock is common and preferred shares of an entity that were issued, repurchased by the entity, and are held in its treasury.",
       "parent": "total_common_equity",
-      "sequence": 4,
+      "sequence": 66,
       "factor": "-",
       "balance": "debit",
       "unit": "monetary",
@@ -2390,6 +2442,12 @@
           "tag": "TreasuryStockValue",
           "namespace": "us-gaap",
           "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "TreasuryStockCommonValue",
+          "namespace": "us-gaap",
+          "first_year": 2016,
           "last_year": 2026
         },
         {
@@ -2409,7 +2467,7 @@
       "label": "Accumulated Other Comprehensive Income / (Loss)",
       "description": "Amount, after tax, of accumulated increase (decrease) in equity from transaction and other event and circumstance from nonowner source.",
       "parent": "total_common_equity",
-      "sequence": 5,
+      "sequence": 67,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2440,11 +2498,11 @@
       "label": "Other Equity Adjustments",
       "description": "This element represents movements included in the statement of changes in stockholders' equity which are not separately disclosed or provided for elsewhere in the taxonomy.",
       "parent": "total_common_equity",
-      "sequence": 6,
+      "sequence": 68,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
-      "period_type": "duration",
+      "period_type": "instant",
       "xbrl_tags": [
         {
           "tag": "StockholdersEquityOther",
@@ -2525,7 +2583,7 @@
       "label": "Total Common Equity",
       "description": "Amount of equity (deficit) attributable to parent. Excludes temporary equity and equity attributable to noncontrolling interest.",
       "parent": "total_equity",
-      "sequence": 2,
+      "sequence": 69,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2544,7 +2602,7 @@
       "label": "Total Preferred & Common Equity",
       "description": "Amount of equity (deficit) attributable to parent. Excludes temporary equity and equity attributable to noncontrolling interest.",
       "parent": "total_equity_and_noncontrolling_interests",
-      "sequence": 1,
+      "sequence": 70,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2569,7 +2627,7 @@
       "label": "Noncontrolling Interest",
       "description": "Amount of equity (deficit) attributable to noncontrolling interest. Excludes temporary equity.",
       "parent": "total_equity_and_noncontrolling_interests",
-      "sequence": 2,
+      "sequence": 71,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2598,7 +2656,7 @@
       "label": "Total Equity & Noncontrolling Interests",
       "description": "Amount of equity (deficit) attributable to parent and noncontrolling interest. Excludes temporary equity.",
       "parent": "total_liabilities_and_equity",
-      "sequence": 4,
+      "sequence": 72,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -2619,53 +2677,11 @@
       ]
     },
     {
-      "tag": "temporary_equity_parent",
-      "label": "Temporary Equity Attributable to Parent",
-      "description": "Carrying amount of temporary equity attributable to parent.",
-      "parent": "temporary_equity",
-      "sequence": 1,
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "TemporaryEquityCarryingAmountAttributableToParent",
-          "namespace": "us-gaap"
-        }
-      ]
-    },
-    {
-      "tag": "temporary_equity",
-      "label": "Temporary Equity",
-      "description": "Carrying amount of the equity component of securities that are redeemable.",
-      "parent": "total_liabilities_and_equity",
-      "sequence": 5,
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "RedeemablePreferredStockCarryingAmount",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "TemporaryEquityValueExcludingAdditionalPaidInCapital",
-          "namespace": "us-gaap"
-        }
-      ]
-    },
-    {
       "tag": "total_liabilities_and_equity",
       "label": "Total Liabilities & Shareholders' Equity",
       "description": "Amount of liabilities and equity items, including the portion of equity attributable to noncontrolling interests, if any.",
       "parent": null,
-      "sequence": 2,
+      "sequence": 73,
       "factor": "0",
       "balance": "credit",
       "unit": "monetary",
@@ -2859,16 +2875,7 @@
       "unit": "monetary",
       "period_type": "instant",
       "xbrl_tags": [
-        {
-          "tag": "TimeDepositsAtCarryingValue",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "TimeDeposits",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        }
+
       ]
     },
     {
@@ -2915,7 +2922,7 @@
       "label": "Loans and Leases",
       "description": "Amortized cost excluding accrued interest, before allowance for credit loss, of financing receivable. Excludes net investment in lease.",
       "parent": "net_loans_and_leases",
-      "sequence": 1,
+      "sequence": 8,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -2929,6 +2936,12 @@
         },
         {
           "tag": "LoansAndLeasesReceivableGrossCarryingAmount",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2021
+        },
+        {
+          "tag": "LoansAndLeasesReceivableNetOfDeferredIncome",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2021
@@ -2956,7 +2969,7 @@
       "label": "Allowance for Loan and Lease Losses",
       "description": "Amount of allowance for credit loss on financing receivable. Excludes allowance for financing receivable covered under loss sharing agreement.",
       "parent": "net_loans_and_leases",
-      "sequence": 2,
+      "sequence": 9,
       "factor": "-",
       "balance": "credit",
       "unit": "monetary",
@@ -2977,6 +2990,10 @@
         {
           "tag": "AllowanceAccountForCreditLossesOfFinancialAssets",
           "namespace": "ifrs-full"
+        },
+        {
+          "tag": "LoansAndAdvancesAtAmortisedCostAllowanceForExpectedCreditLosses",
+          "namespace": "ifrs-full"
         }
       ]
     },
@@ -2985,7 +3002,7 @@
       "label": "Loans and Leases, Net of Allowance",
       "description": "Amortized cost excluding accrued interest, after allowance for credit loss, of financing receivable. Excludes net investment in lease.",
       "parent": "total_assets",
-      "sequence": 8,
+      "sequence": 10,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3016,17 +3033,17 @@
       "label": "Loans Held for Sale",
       "description": "Amount before allowance and after deduction of deferred interest and fees, unamortized costs and premiums and discounts from face amounts, of loans and leases held in portfolio, including but not limited to, commercial and consumer loans. Excludes loans and leases covered under loss sharing agreements.",
       "parent": "total_assets",
-      "sequence": 9,
+      "sequence": 11,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "instant",
       "xbrl_tags": [
         {
-          "tag": "LoansAndLeasesReceivableNetOfDeferredIncome",
+          "tag": "LoansReceivableHeldForSaleNetNotPartOfDisposalGroup",
           "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2021
+          "first_year": 2015,
+          "last_year": 2026
         }
       ]
     },
@@ -3035,7 +3052,7 @@
       "label": "Accrued Investment Income",
       "description": "Interest, dividends, rents, ancillary and other revenues earned but not yet received by the entity on its investments.",
       "parent": "total_assets",
-      "sequence": 10,
+      "sequence": 12,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3058,7 +3075,7 @@
       "label": "Accounts Receivable",
       "description": "Amount due from customers for goods/services in the normal course of business.",
       "parent": "total_assets",
-      "sequence": 11,
+      "sequence": 13,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3091,7 +3108,7 @@
       "label": "Customer and Other Receivables",
       "description": "Amount, after allowance for credit loss, of right to consideration from customer for product sold and service rendered in normal course of business.",
       "parent": "total_assets",
-      "sequence": 12,
+      "sequence": 14,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3122,38 +3139,11 @@
       ]
     },
     {
-      "tag": "net_premises_and_equipment",
-      "label": "Premises and Equipment, Net",
-      "description": "Amount, after accumulated depreciation, depletion, and amortization, of property, plant, and equipment. Includes, but is not limited to, land and land improvement; building; machinery and equipment; furniture and fixture; and work of art, historical treasure, or similar asset classified as collection.",
-      "parent": "total_assets",
-      "sequence": 13,
-      "factor": "+",
-      "balance": "debit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "PropertyPlantAndEquipmentNet",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "PropertyPlantAndEquipment",
-          "namespace": "ifrs-full"
-        },
-        {
-          "tag": "PropertyPlantAndEquipmentIncludingRightofuseAssets",
-          "namespace": "ifrs-full"
-        }
-      ]
-    },
-    {
       "tag": "net_ppe",
       "label": "Property, Plant and Equipment, Net",
       "description": "Amount after accumulated depreciation, depletion and amortization of physical assets.",
       "parent": "total_assets",
-      "sequence": 14,
+      "sequence": 15,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3170,6 +3160,33 @@
         {
           "tag": "PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "PropertyPlantAndEquipment",
+          "namespace": "ifrs-full"
+        },
+        {
+          "tag": "PropertyPlantAndEquipmentIncludingRightofuseAssets",
+          "namespace": "ifrs-full"
+        }
+      ]
+    },
+    {
+      "tag": "net_premises_and_equipment",
+      "label": "Premises and Equipment, Net",
+      "description": "Amount, after accumulated depreciation, depletion, and amortization, of property, plant, and equipment. Includes, but is not limited to, land and land improvement; building; machinery and equipment; furniture and fixture; and work of art, historical treasure, or similar asset classified as collection.",
+      "parent": "total_assets",
+      "sequence": 16,
+      "factor": "+",
+      "balance": "debit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "PropertyPlantAndEquipmentNet",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         },
         {
           "tag": "PropertyPlantAndEquipment",
@@ -3202,7 +3219,7 @@
         }
       ],
       "parent": "total_assets",
-      "sequence": 23
+      "sequence": 17
     },
     {
       "tag": "finance_lease_right_of_use_asset",
@@ -3221,45 +3238,14 @@
         }
       ],
       "parent": "total_assets",
-      "sequence": 24
-    },
-    {
-      "tag": "mortgage_servicing_rights",
-      "label": "Mortgage Servicing Rights",
-      "description": "Fair value of an asset representing net future revenue from contractually specified servicing fees, late charges, and other ancillary revenues, in excess of future costs related to servicing arrangements.",
-      "parent": "total_assets",
-      "sequence": 15,
-      "factor": "+",
-      "balance": "debit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "ServicingAssetAtFairValueAmount",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "ServicingAssetAtAmortizedValue",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "ServicingAsset",
-          "namespace": "us-gaap",
-          "first_year": 2012,
-          "last_year": 2026
-        }
-      ]
+      "sequence": 18
     },
     {
       "tag": "long_term_investments",
       "label": "Long-term Investments",
       "description": "Amount of long-term investments including equity method investees and available for sale securities.",
       "parent": "total_assets",
-      "sequence": 16,
+      "sequence": 19,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3280,6 +3266,12 @@
         {
           "tag": "HeldToMaturitySecuritiesNoncurrent",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "EquityMethodInvestments",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2027
         },
         {
           "tag": "FinancialAssetsAtFairValueThroughOtherComprehensiveIncome",
@@ -3308,11 +3300,42 @@
       ]
     },
     {
+      "tag": "mortgage_servicing_rights",
+      "label": "Mortgage Servicing Rights",
+      "description": "Fair value of an asset representing net future revenue from contractually specified servicing fees, late charges, and other ancillary revenues, in excess of future costs related to servicing arrangements.",
+      "parent": "total_assets",
+      "sequence": 20,
+      "factor": "+",
+      "balance": "debit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "ServicingAssetAtFairValueAmount",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "ServicingAssetAtAmortizedValue",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "ServicingAsset",
+          "namespace": "us-gaap",
+          "first_year": 2012,
+          "last_year": 2026
+        }
+      ]
+    },
+    {
       "tag": "deferred_acquisition_cost",
       "label": "Deferred Acquisition Cost",
       "description": "Amount of deferred policy acquisition cost capitalized on contract remaining in force.",
       "parent": "total_assets",
-      "sequence": 17,
+      "sequence": 21,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3341,7 +3364,7 @@
       "label": "Separate Account Business Assets",
       "description": "Amount of asset at fair value held for benefit of separate account policyholder.",
       "parent": "total_assets",
-      "sequence": 18,
+      "sequence": 22,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3360,7 +3383,7 @@
       "label": "Goodwill",
       "description": "Amount, after accumulated impairment loss, of asset representing future economic benefit arising from other asset acquired in business combination or from joint venture formation or both, that is not individually identified and separately recognized.",
       "parent": "total_assets",
-      "sequence": 19,
+      "sequence": 23,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3389,7 +3412,7 @@
       "label": "Intangible Assets",
       "description": "Amount, after accumulated amortization, of finite- and indefinite-lived intangible assets and capitalized cost for software to be sold, leased, or marketed. Excludes goodwill.",
       "parent": "total_assets",
-      "sequence": 20,
+      "sequence": 24,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3416,11 +3439,28 @@
       ]
     },
     {
+      "tag": "other_noncurrent_assets_excl_ppe",
+      "label": "Other Than Fixed Noncurrent Assets",
+      "description": "Noncurrent assets other than investments and PP&E.",
+      "parent": "total_assets",
+      "sequence": 25,
+      "factor": "+",
+      "balance": "debit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "AssetsNoncurrentOtherThanNoncurrentInvestmentsAndPropertyPlantAndEquipment",
+          "namespace": "us-gaap"
+        }
+      ]
+    },
+    {
       "tag": "other_assets",
       "label": "Other Assets",
       "description": "Amount of assets classified as other.",
       "parent": "total_assets",
-      "sequence": 21,
+      "sequence": 26,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -3467,28 +3507,11 @@
       ]
     },
     {
-      "tag": "other_noncurrent_assets_excl_ppe",
-      "label": "Other Than Fixed Noncurrent Assets",
-      "description": "Noncurrent assets other than investments and PP&E.",
-      "parent": "total_assets",
-      "sequence": 22,
-      "factor": "+",
-      "balance": "debit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "AssetsNoncurrentOtherThanNoncurrentInvestmentsAndPropertyPlantAndEquipment",
-          "namespace": "us-gaap"
-        }
-      ]
-    },
-    {
       "tag": "total_assets",
       "label": "Total Assets",
       "description": "Amount of asset recognized for present right to economic benefit.",
       "parent": null,
-      "sequence": 1,
+      "sequence": 27,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -3513,7 +3536,7 @@
       "label": "Non-Interest Bearing Deposits",
       "description": "The aggregate amount of all domestic and foreign noninterest-bearing deposits liabilities held by the entity.",
       "parent": "total_liabilities",
-      "sequence": 1,
+      "sequence": 28,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3544,7 +3567,7 @@
       "label": "Interest Bearing Deposits",
       "description": "The aggregate of all domestic and foreign interest-bearing deposit liabilities.",
       "parent": "total_liabilities",
-      "sequence": 2,
+      "sequence": 29,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3583,7 +3606,7 @@
       "label": "Federal Funds Purchased and Securities Sold",
       "description": "Amount after offset of short term borrowing where a bank borrows, at the federal funds rate, from another bank and securities that an entity sells and agrees to repurchase at a specified date for a specified price.",
       "parent": "total_liabilities",
-      "sequence": 3,
+      "sequence": 30,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3602,7 +3625,7 @@
       "label": "Short-Term Debt",
       "description": "Reflects the total carrying amount as of the balance sheet date of debt having initial terms less than one year or the normal operating cycle, if longer.",
       "parent": "total_liabilities",
-      "sequence": 4,
+      "sequence": 31,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3631,7 +3654,7 @@
       "label": "Current Portion of Long-Term Debt",
       "description": "Amount of long-term debt due within one year or within the normal operating cycle, if longer.",
       "parent": "total_liabilities",
-      "sequence": 5,
+      "sequence": 32,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3644,59 +3667,23 @@
           "last_year": 2026
         },
         {
+          "tag": "LongTermDebtAndCapitalLeaseObligationsCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
           "tag": "CurrentPortionOfLongTermDebt",
           "namespace": "us-gaap"
         }
       ]
     },
     {
-      "tag": "operating_lease_liability_current",
-      "label": "Operating Lease, Liability, Current",
-      "description": "Present value of lessee's discounted obligation for lease payments from operating lease, classified as current.",
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "OperatingLeaseLiabilityCurrent",
-          "namespace": "us-gaap",
-          "first_year": 2019,
-          "last_year": 2026
-        },
-        {
-          "tag": "CurrentLeaseLiabilities",
-          "namespace": "ifrs-full"
-        }
-      ],
-      "parent": "total_liabilities",
-      "sequence": 19
-    },
-    {
-      "tag": "finance_lease_liability_current",
-      "label": "Finance Lease, Liability, Current",
-      "description": "Present value of lessee's discounted obligation for lease payments from finance lease, classified as current.",
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "FinanceLeaseLiabilityCurrent",
-          "namespace": "us-gaap",
-          "first_year": 2019,
-          "last_year": 2026
-        }
-      ],
-      "parent": "total_liabilities",
-      "sequence": 20
-    },
-    {
       "tag": "bankers_acceptances",
       "label": "Bankers Acceptance Outstanding",
       "description": "Amount of short-term, negotiable time drafts drawn on and accepted by a financial institution. Bankers acceptances are a bank's promise to pay to the holder of the draft a stated amount on a specified date.",
       "parent": "total_liabilities",
-      "sequence": 6,
+      "sequence": 33,
       "factor": "+",
       "balance": "",
       "unit": "monetary",
@@ -3721,7 +3708,7 @@
       "label": "Accounts Payable",
       "description": "Amount of obligations incurred and payable for goods and services received.",
       "parent": "total_liabilities",
-      "sequence": 7,
+      "sequence": 34,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3758,7 +3745,7 @@
       "label": "Accrued Interest Payable",
       "description": "Carrying value as of the balance sheet date of [accrued] interest payable on all forms of debt, including trade payables, that has been incurred and is unpaid. Used to reflect the current portion of the liabilities (due within one year or within the normal operating cycle if longer).",
       "parent": "total_liabilities",
-      "sequence": 8,
+      "sequence": 35,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3789,7 +3776,7 @@
       "label": "Other Short-Term Payables",
       "description": "Amount of borrowings classified as other, maturing within one year or the normal operating cycle, if longer.",
       "parent": "total_liabilities",
-      "sequence": 9,
+      "sequence": 36,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3826,11 +3813,53 @@
       ]
     },
     {
+      "tag": "operating_lease_liability_current",
+      "label": "Operating Lease, Liability, Current",
+      "description": "Present value of lessee's discounted obligation for lease payments from operating lease, classified as current.",
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "OperatingLeaseLiabilityCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2019,
+          "last_year": 2026
+        },
+        {
+          "tag": "CurrentLeaseLiabilities",
+          "namespace": "ifrs-full"
+        }
+      ],
+      "parent": "total_liabilities",
+      "sequence": 37
+    },
+    {
+      "tag": "finance_lease_liability_current",
+      "label": "Finance Lease, Liability, Current",
+      "description": "Present value of lessee's discounted obligation for lease payments from finance lease, classified as current.",
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "FinanceLeaseLiabilityCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2019,
+          "last_year": 2026
+        }
+      ],
+      "parent": "total_liabilities",
+      "sequence": 38
+    },
+    {
       "tag": "long_term_debt",
       "label": "Long-Term Debt",
       "description": "Amount, after deduction of unamortized premium (discount) and debt issuance cost, of long-term debt classified as noncurrent. Excludes lease obligation.",
       "parent": "total_liabilities",
-      "sequence": 10,
+      "sequence": 39,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3881,7 +3910,7 @@
       "label": "Capital Lease Obligations",
       "description": "Present value of lessee's discounted obligation for lease payments from finance lease.",
       "parent": "total_liabilities",
-      "sequence": 11,
+      "sequence": 40,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3928,14 +3957,14 @@
         }
       ],
       "parent": "total_liabilities",
-      "sequence": 21
+      "sequence": 41
     },
     {
       "tag": "claims_and_claim_expenses",
       "label": "Claims and Claim Expense",
       "description": "The amount needed to reflect the estimated ultimate cost of settling claims relating to insured events that have occurred on or before the balance sheet date, whether or not reported to the insurer at that date.",
       "parent": "total_liabilities",
-      "sequence": 12,
+      "sequence": 42,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3964,7 +3993,7 @@
       "label": "Future Policy Benefits",
       "description": "Amount, before effect of reinsurance, of present value of future benefit to be paid to or on behalf of policyholder and related expense less present value of future net premium receivable under insurance contract.",
       "parent": "total_liabilities",
-      "sequence": 13,
+      "sequence": 43,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -3987,7 +4016,7 @@
       "label": "Unearned Premiums Liability",
       "description": "Carrying amount of premiums written on insurance contracts that have not been earned as of the balance sheet date.",
       "parent": "total_liabilities",
-      "sequence": 14,
+      "sequence": 44,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4012,7 +4041,7 @@
       "label": "Policy Holder Funds",
       "description": "Amount due to policyholders for funds held that are returnable under the terms of insurance contracts, classified as other.",
       "parent": "total_liabilities",
-      "sequence": 15,
+      "sequence": 45,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4037,7 +4066,7 @@
       "label": "Participating Policy Holder Equity",
       "description": "Amount due to policyholders for funds held that are returnable under the terms of insurance contracts, classified as other.",
       "parent": "total_liabilities",
-      "sequence": 16,
+      "sequence": 46,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4070,7 +4099,7 @@
       "label": "Separate Account Business Liabilities",
       "description": "Amount of liability for variable contract in which all or portion of contract holder's funds is allocated to specific separate account and supported by assets held in separate account.",
       "parent": "total_liabilities",
-      "sequence": 17,
+      "sequence": 47,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4093,7 +4122,7 @@
       "label": "Other Long-Term Liabilities",
       "description": "Amount of liabilities classified as other, due after one year or the normal operating cycle, if longer.",
       "parent": "total_liabilities",
-      "sequence": 18,
+      "sequence": 48,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4184,7 +4213,7 @@
       "label": "Total Liabilities",
       "description": "Amount of liability recognized for present obligation requiring transfer or otherwise providing economic benefit to others.",
       "parent": "total_liabilities_and_equity",
-      "sequence": 1,
+      "sequence": 49,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4213,7 +4242,7 @@
       "label": "Commitments & Contingencies",
       "description": "Represents the caption on the face of the balance sheet to indicate that the entity has entered into (1) purchase or supply arrangements that will require expending a portion of its resources to meet the terms thereof, and (2) is exposed to potential losses or, less frequently, gains, arising from (a) possible claims against a company's resources due to future performance under contract terms, and (b) possible losses or likely gains from uncertainties that will ultimately be resolved when one or more future events that are deemed likely to occur do occur or fail to occur.",
       "parent": "total_liabilities_and_equity",
-      "sequence": 2,
+      "sequence": 50,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4228,53 +4257,52 @@
       ]
     },
     {
-      "tag": "redeemable_nci_common",
-      "label": "Redeemable NCI - Common",
-      "description": "Equity carrying amount of the common stock component of redeemable NCI.",
-      "parent": "redeemable_noncontrolling_interest",
-      "sequence": 1,
+      "tag": "temporary_equity",
+      "label": "Temporary Equity",
+      "description": "Carrying amount of the equity component of securities that are redeemable.",
+      "parent": "total_liabilities_and_equity",
+      "sequence": 51,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "instant",
       "xbrl_tags": [
         {
-          "tag": "RedeemableNoncontrollingInterestEquityCommonCarryingAmount",
+          "tag": "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "TemporaryEquityCarryingAmount",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2012
         }
       ]
     },
     {
-      "tag": "redeemable_nci_preferred",
-      "label": "Redeemable NCI - Preferred",
-      "description": "Equity carrying amount of the preferred stock component of redeemable NCI.",
-      "parent": "redeemable_noncontrolling_interest",
-      "sequence": 2,
+      "tag": "temporary_equity_parent",
+      "label": "Temporary Equity Attributable to Parent",
+      "description": "Carrying amount of temporary equity attributable to parent.",
+      "parent": "temporary_equity",
+      "sequence": 52,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "instant",
       "xbrl_tags": [
         {
-          "tag": "RedeemableNoncontrollingInterestEquityPreferredCarryingAmount",
+          "tag": "TemporaryEquityCarryingAmountAttributableToParent",
           "namespace": "us-gaap"
-        }
-      ]
-    },
-    {
-      "tag": "redeemable_nci_other",
-      "label": "Redeemable NCI - Other",
-      "description": "Equity carrying amount of the other component of redeemable NCI.",
-      "parent": "redeemable_noncontrolling_interest",
-      "sequence": 3,
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
+        },
         {
-          "tag": "RedeemableNoncontrollingInterestEquityOtherCarryingAmount",
+          "tag": "RedeemablePreferredStockCarryingAmount",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "RedeemablePreferredStockCarryingAmountOrRedemptionValue",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -4282,8 +4310,8 @@
       "tag": "redeemable_noncontrolling_interest",
       "label": "Redeemable Noncontrolling Interest",
       "description": "As of the reporting date, the aggregate carrying amount of all noncontrolling interests which are redeemable by the (parent) entity (1) at a fixed or determinable price on a fixed or determinable date, (2) at the option of the holder of the noncontrolling interest, or (3) upon occurrence of an event that is not solely within the control of the (parent) entity. This item includes noncontrolling interest holder's ownership (or holders' ownership) regardless of the type of equity interest (common, preferred, other) including all potential organizational (legal) forms of the investee entity.",
-      "parent": "total_liabilities_and_equity",
-      "sequence": 3,
+      "parent": "temporary_equity",
+      "sequence": 53,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4320,34 +4348,61 @@
           "last_year": 2026
         },
         {
-          "tag": "RedeemablePreferredStockCarryingAmountOrRedemptionValue",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests",
+          "tag": "TemporaryEquityCarryingAmountAttributableToNoncontrollingInterest",
           "namespace": "us-gaap",
           "first_year": 2012,
-          "last_year": 2026
-        },
+          "last_year": 2014
+        }
+      ]
+    },
+    {
+      "tag": "redeemable_nci_common",
+      "label": "Redeemable NCI - Common",
+      "description": "Equity carrying amount of the common stock component of redeemable NCI.",
+      "parent": "redeemable_noncontrolling_interest",
+      "sequence": 54,
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
         {
-          "tag": "TemporaryEquityRedemptionValue",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
+          "tag": "RedeemableNoncontrollingInterestEquityCommonCarryingAmount",
+          "namespace": "us-gaap"
+        }
+      ]
+    },
+    {
+      "tag": "redeemable_nci_preferred",
+      "label": "Redeemable NCI - Preferred",
+      "description": "Equity carrying amount of the preferred stock component of redeemable NCI.",
+      "parent": "redeemable_noncontrolling_interest",
+      "sequence": 55,
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
         {
-          "tag": "TemporaryEquityValueExcludingAdditionalPaidInCapital",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
+          "tag": "RedeemableNoncontrollingInterestEquityPreferredCarryingAmount",
+          "namespace": "us-gaap"
+        }
+      ]
+    },
+    {
+      "tag": "redeemable_nci_other",
+      "label": "Redeemable NCI - Other",
+      "description": "Equity carrying amount of the other component of redeemable NCI.",
+      "parent": "redeemable_noncontrolling_interest",
+      "sequence": 56,
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
         {
-          "tag": "TemporaryEquityCarryingAmountAttributableToParent",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
+          "tag": "RedeemableNoncontrollingInterestEquityOtherCarryingAmount",
+          "namespace": "us-gaap"
         }
       ]
     },
@@ -4356,7 +4411,7 @@
       "label": "Preferred Stock",
       "description": "Aggregate par or stated value of issued nonredeemable preferred stock (or preferred stock redeemable solely at the option of the issuer). This item includes treasury stock repurchased by the entity. Note: elements for number of nonredeemable preferred shares, par value and other disclosure concepts are in another section within stockholders' equity.",
       "parent": "total_equity",
-      "sequence": 1,
+      "sequence": 57,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4367,6 +4422,24 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockValueOutstanding",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockIncludingAdditionalPaidInCapital",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockIncludingAdditionalPaidInCapitalNetOfDiscount",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2025
         }
       ]
     },
@@ -4375,7 +4448,7 @@
       "label": "Common Stock",
       "description": "Aggregate par or stated value of issued nonredeemable common stock (or common stock redeemable solely at the option of the issuer). This item includes treasury stock repurchased by the entity. Note: elements for number of nonredeemable common shares, par value and other disclosure concepts are in another section within stockholders' equity.",
       "parent": "total_common_equity",
-      "sequence": 1,
+      "sequence": 58,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4426,7 +4499,7 @@
       "label": "Additional Paid-In Capital",
       "description": "Value received from shareholders in common stock-related transactions that are in excess of par value or stated value and amounts received from other stock-related transactions. Includes only common stock transactions (excludes preferred stock transactions). May be called contributed capital, capital in excess of par, capital surplus, or paid-in capital.",
       "parent": "total_common_equity",
-      "sequence": 2,
+      "sequence": 59,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4459,7 +4532,7 @@
       "label": "Retained Earnings",
       "description": "Amount of accumulated undistributed earnings (deficit).",
       "parent": "total_common_equity",
-      "sequence": 3,
+      "sequence": 60,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4490,7 +4563,7 @@
       "label": "Treasury Stock",
       "description": "The amount allocated to treasury stock. Treasury stock is common and preferred shares of an entity that were issued, repurchased by the entity, and are held in its treasury.",
       "parent": "total_common_equity",
-      "sequence": 4,
+      "sequence": 61,
       "factor": "-",
       "balance": "debit",
       "unit": "monetary",
@@ -4500,6 +4573,12 @@
           "tag": "TreasuryStockValue",
           "namespace": "us-gaap",
           "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "TreasuryStockCommonValue",
+          "namespace": "us-gaap",
+          "first_year": 2016,
           "last_year": 2026
         },
         {
@@ -4515,7 +4594,7 @@
       "label": "Accumulated Other Comprehensive Income / (Loss)",
       "description": "Amount, after tax, of accumulated increase (decrease) in equity from transaction and other event and circumstance from nonowner source.",
       "parent": "total_common_equity",
-      "sequence": 5,
+      "sequence": 62,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4546,11 +4625,11 @@
       "label": "Other Equity Adjustments",
       "description": "This element represents movements included in the statement of changes in stockholders' equity which are not separately disclosed or provided for elsewhere in the taxonomy.",
       "parent": "total_common_equity",
-      "sequence": 6,
+      "sequence": 63,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
-      "period_type": "duration",
+      "period_type": "instant",
       "xbrl_tags": [
         {
           "tag": "StockholdersEquityOther",
@@ -4615,7 +4694,7 @@
       "label": "Total Common Equity",
       "description": "Amount of equity (deficit) attributable to parent. Excludes temporary equity and equity attributable to noncontrolling interest.",
       "parent": "total_equity",
-      "sequence": 2,
+      "sequence": 64,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4634,7 +4713,7 @@
       "label": "Total Preferred & Common Equity",
       "description": "Amount of equity (deficit) attributable to parent. Excludes temporary equity and equity attributable to noncontrolling interest.",
       "parent": "total_equity_and_noncontrolling_interests",
-      "sequence": 1,
+      "sequence": 65,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4659,7 +4738,7 @@
       "label": "Noncontrolling Interest",
       "description": "Amount of equity (deficit) attributable to noncontrolling interest. Excludes temporary equity.",
       "parent": "total_equity_and_noncontrolling_interests",
-      "sequence": 2,
+      "sequence": 66,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4688,7 +4767,7 @@
       "label": "Total Equity & Noncontrolling Interests",
       "description": "Amount of equity (deficit) attributable to parent and noncontrolling interest. Excludes temporary equity.",
       "parent": "total_liabilities_and_equity",
-      "sequence": 4,
+      "sequence": 67,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -4709,53 +4788,11 @@
       ]
     },
     {
-      "tag": "temporary_equity_parent",
-      "label": "Temporary Equity Attributable to Parent",
-      "description": "Carrying amount of temporary equity attributable to parent.",
-      "parent": "temporary_equity",
-      "sequence": 1,
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "TemporaryEquityCarryingAmountAttributableToParent",
-          "namespace": "us-gaap"
-        }
-      ]
-    },
-    {
-      "tag": "temporary_equity",
-      "label": "Temporary Equity",
-      "description": "Carrying amount of the equity component of securities that are redeemable.",
-      "parent": "total_liabilities_and_equity",
-      "sequence": 5,
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "RedeemablePreferredStockCarryingAmount",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "TemporaryEquityValueExcludingAdditionalPaidInCapital",
-          "namespace": "us-gaap"
-        }
-      ]
-    },
-    {
       "tag": "total_liabilities_and_equity",
       "label": "Total Liabilities & Shareholders' Equity",
       "description": "Amount of liabilities and equity items, including the portion of equity attributable to noncontrolling interests, if any.",
       "parent": null,
-      "sequence": 2,
+      "sequence": 68,
       "factor": "0",
       "balance": "credit",
       "unit": "monetary",
@@ -4781,73 +4818,6 @@
     }
   ],
   "diversified": [
-    {
-      "tag": "total_current_assets",
-      "label": "Total Current Assets",
-      "description": "Amount of asset recognized for present right to economic benefit, classified as current.",
-      "parent": null,
-      "sequence": 1,
-      "factor": "+",
-      "balance": "debit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "AssetsCurrent",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "CurrentAssets",
-          "namespace": "ifrs-full",
-          "first_year": 2020,
-          "last_year": 2025
-        }
-      ]
-    },
-    {
-      "tag": "other_noncurrent_assets_excl_ppe",
-      "label": "Other Than Fixed Noncurrent Assets",
-      "description": "Noncurrent assets other than investments and PP&E.",
-      "parent": "total_noncurrent_assets",
-      "sequence": 1,
-      "factor": "+",
-      "balance": "debit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "AssetsNoncurrentOtherThanNoncurrentInvestmentsAndPropertyPlantAndEquipment",
-          "namespace": "us-gaap"
-        }
-      ]
-    },
-    {
-      "tag": "total_noncurrent_assets",
-      "label": "Total Noncurrent Assets",
-      "description": "Sum of the carrying amounts as of the balance sheet date of all assets that are expected to be realized in cash, sold or consumed after one year or beyond the normal operating cycle, if longer.",
-      "parent": null,
-      "sequence": 2,
-      "factor": "+",
-      "balance": "debit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "AssetsNoncurrent",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NoncurrentAssets",
-          "namespace": "ifrs-full",
-          "first_year": 2020,
-          "last_year": 2025
-        }
-      ]
-    },
     {
       "tag": "cash_and_equivalents",
       "label": "Cash & Equivalents",
@@ -4998,48 +4968,11 @@
       ]
     },
     {
-      "tag": "note_receivable",
-      "label": "Note & Lease Receivable",
-      "description": "Amortized cost, after allowance for credit loss, of financing receivable classified as current. Excludes net investment in lease.",
-      "parent": "total_assets",
-      "sequence": 4,
-      "factor": "+",
-      "balance": "debit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "NotesAndLoansReceivableNetCurrent",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NotesReceivableNet",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "AccountsNotesAndLoansReceivableNetCurrent",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NoncurrentReceivables",
-          "namespace": "ifrs-full",
-          "first_year": 2020,
-          "last_year": 2025
-        }
-      ]
-    },
-    {
       "tag": "accounts_receivable",
       "label": "Accounts Receivable",
       "description": "Amount, after allowance for credit loss, of right to consideration from customer for product sold and service rendered in normal course of business, classified as current.",
       "parent": "total_assets",
-      "sequence": 5,
+      "sequence": 4,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5102,6 +5035,43 @@
         {
           "tag": "UtilisationAllowanceAccountForCreditLossesOfFinancialAssets",
           "namespace": "ifrs-full"
+        }
+      ]
+    },
+    {
+      "tag": "note_receivable",
+      "label": "Note & Lease Receivable",
+      "description": "Amortized cost, after allowance for credit loss, of financing receivable classified as current. Excludes net investment in lease.",
+      "parent": "total_assets",
+      "sequence": 5,
+      "factor": "+",
+      "balance": "debit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "NotesAndLoansReceivableNetCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "NotesReceivableNet",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "AccountsNotesAndLoansReceivableNetCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "NoncurrentReceivables",
+          "namespace": "ifrs-full",
+          "first_year": 2020,
+          "last_year": 2025
         }
       ]
     },
@@ -5342,11 +5312,36 @@
       ]
     },
     {
+      "tag": "total_current_assets",
+      "label": "Total Current Assets",
+      "description": "Amount of asset recognized for present right to economic benefit, classified as current.",
+      "parent": null,
+      "sequence": 12,
+      "factor": "+",
+      "balance": "debit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "AssetsCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "CurrentAssets",
+          "namespace": "ifrs-full",
+          "first_year": 2020,
+          "last_year": 2025
+        }
+      ]
+    },
+    {
       "tag": "gross_ppe",
       "label": "Plant, Property & Equipment, gross",
       "description": "Amount, before accumulated depreciation, depletion, and amortization, of property, plant, and equipment. Includes, but is not limited to, land and land improvement; building; machinery and equipment; furniture and fixture; and work of art, historical treasure, or similar asset classified as collection.",
       "parent": "net_ppe",
-      "sequence": 1,
+      "sequence": 13,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5357,10 +5352,6 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
-        },
-        {
-          "tag": "Land",
-          "namespace": "us-gaap"
         }
       ]
     },
@@ -5369,7 +5360,7 @@
       "label": "Accumulated Depreciation",
       "description": "Amount of accumulated depreciation, depletion, and amortization of property, plant, and equipment. Includes, but is not limited to, land and land improvement; building; machinery and equipment; furniture and fixture; and work of art, historical treasure, or similar asset classified as collection.",
       "parent": "net_ppe",
-      "sequence": 2,
+      "sequence": 14,
       "factor": "-",
       "balance": "credit",
       "unit": "monetary",
@@ -5388,7 +5379,7 @@
       "label": "Plant, Property, & Equipment, net",
       "description": "Amount, after accumulated depreciation, depletion, and amortization, of property, plant, and equipment. Includes, but is not limited to, land and land improvement; building; machinery and equipment; furniture and fixture; and work of art, historical treasure, or similar asset classified as collection.",
       "parent": "total_assets",
-      "sequence": 12,
+      "sequence": 15,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5437,7 +5428,7 @@
         }
       ],
       "parent": "total_assets",
-      "sequence": 21
+      "sequence": 16
     },
     {
       "tag": "finance_lease_right_of_use_asset",
@@ -5456,14 +5447,14 @@
         }
       ],
       "parent": "total_assets",
-      "sequence": 22
+      "sequence": 17
     },
     {
       "tag": "long_term_investments",
       "label": "Long-Term Investments",
       "description": "Amount of investment in marketable security, classified as noncurrent.",
       "parent": "total_assets",
-      "sequence": 13,
+      "sequence": 18,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5492,6 +5483,12 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
+        },
+        {
+          "tag": "EquityMethodInvestments",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2027
         },
         {
           "tag": "InvestmentAccountedForUsingEquityMethod",
@@ -5544,7 +5541,7 @@
       "label": "Noncurrent Note & Lease Receivables",
       "description": "Amount, after allowance for credit loss, of financing receivable, classified as noncurrent.",
       "parent": "total_assets",
-      "sequence": 14,
+      "sequence": 19,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5569,7 +5566,7 @@
       "label": "Goodwill",
       "description": "Amount, after accumulated impairment loss, of asset representing future economic benefit arising from other asset acquired in business combination or from joint venture formation or both, that is not individually identified and separately recognized.",
       "parent": "total_assets",
-      "sequence": 15,
+      "sequence": 20,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5602,7 +5599,7 @@
       "label": "Intangible Assets",
       "description": "Amount, after accumulated amortization, of finite- and indefinite-lived intangible assets and capitalized cost for software to be sold, leased, or marketed. Excludes goodwill.",
       "parent": "total_assets",
-      "sequence": 16,
+      "sequence": 21,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5645,7 +5642,7 @@
       "label": "Noncurrent Deferred & Refundable Income Taxes",
       "description": "The noncurrent portion as of the balance sheet date of the aggregate carrying amount of all future tax deductions arising from temporary differences between tax basis and generally accepted accounting principles basis recognition of assets, liabilities, revenues and expenses, which can only be deducted for tax purposes when permitted under enacted tax laws; after the valuation allowance, if any, to reduce such amount to net realizable value. Deferred tax liabilities and assets are classified as current or noncurrent based on the classification of the related asset or liability for financial reporting. A deferred tax liability or asset that is not related to an asset or liability for financial reporting, including deferred tax assets related to carryforwards, is classified according to the expected reversal date of the temporary difference.",
       "parent": "total_assets",
-      "sequence": 17,
+      "sequence": 22,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5688,7 +5685,7 @@
       "label": "Employee Benefit Assets",
       "description": "This represents the entire assets recognized in the balance sheet that are associated with the defined benefit plans.",
       "parent": "total_assets",
-      "sequence": 18,
+      "sequence": 23,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5729,7 +5726,7 @@
       "label": "Other Noncurrent Operating Assets",
       "description": "Amount of noncurrent assets classified as other.",
       "parent": "total_assets",
-      "sequence": 19,
+      "sequence": 24,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5800,7 +5797,7 @@
       "label": "Other Noncurrent Nonoperating Assets",
       "description": "Amount of investments, and noncurrent assets classified as other.",
       "parent": "total_assets",
-      "sequence": 20,
+      "sequence": 25,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -5815,11 +5812,53 @@
       ]
     },
     {
+      "tag": "other_noncurrent_assets_excl_ppe",
+      "label": "Other Than Fixed Noncurrent Assets",
+      "description": "Noncurrent assets other than investments and PP&E.",
+      "parent": "total_noncurrent_assets",
+      "sequence": 26,
+      "factor": "+",
+      "balance": "debit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "AssetsNoncurrentOtherThanNoncurrentInvestmentsAndPropertyPlantAndEquipment",
+          "namespace": "us-gaap"
+        }
+      ]
+    },
+    {
+      "tag": "total_noncurrent_assets",
+      "label": "Total Noncurrent Assets",
+      "description": "Sum of the carrying amounts as of the balance sheet date of all assets that are expected to be realized in cash, sold or consumed after one year or beyond the normal operating cycle, if longer.",
+      "parent": null,
+      "sequence": 27,
+      "factor": "+",
+      "balance": "debit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "AssetsNoncurrent",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "NoncurrentAssets",
+          "namespace": "ifrs-full",
+          "first_year": 2020,
+          "last_year": 2025
+        }
+      ]
+    },
+    {
       "tag": "total_assets",
       "label": "Total Assets",
       "description": "Amount of asset recognized for present right to economic benefit.",
       "parent": null,
-      "sequence": 3,
+      "sequence": 28,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -5840,61 +5879,11 @@
       ]
     },
     {
-      "tag": "total_current_liabilities",
-      "label": "Total Current Liabilities",
-      "description": "Total obligations incurred as part of normal operations that are expected to be paid during the following twelve months or within one business cycle, if longer.",
-      "parent": null,
-      "sequence": 4,
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "LiabilitiesCurrent",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "CurrentLiabilities",
-          "namespace": "ifrs-full",
-          "first_year": 2020,
-          "last_year": 2025
-        }
-      ]
-    },
-    {
-      "tag": "total_noncurrent_liabilities",
-      "label": "Total Noncurrent Liabilities",
-      "description": "Amount of obligation due after one year or beyond the normal operating cycle, if longer.",
-      "parent": null,
-      "sequence": 5,
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "LiabilitiesNoncurrent",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "NoncurrentLiabilities",
-          "namespace": "ifrs-full",
-          "first_year": 2020,
-          "last_year": 2025
-        }
-      ]
-    },
-    {
       "tag": "short_term_debt",
       "label": "Short-Term Debt",
       "description": "Reflects the total carrying amount as of the balance sheet date of debt having initial terms less than one year or the normal operating cycle, if longer.",
       "parent": "total_liabilities",
-      "sequence": 1,
+      "sequence": 29,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -5943,7 +5932,7 @@
       "label": "Current Portion of Long-Term Debt",
       "description": "Amount of long-term debt due within one year or within the normal operating cycle, if longer.",
       "parent": "total_liabilities",
-      "sequence": 2,
+      "sequence": 30,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -5953,6 +5942,12 @@
           "tag": "LongTermDebtCurrent",
           "namespace": "us-gaap",
           "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "LongTermDebtAndCapitalLeaseObligationsCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2009,
           "last_year": 2026
         },
         {
@@ -5974,53 +5969,11 @@
       ]
     },
     {
-      "tag": "operating_lease_liability_current",
-      "label": "Operating Lease, Liability, Current",
-      "description": "Present value of lessee's discounted obligation for lease payments from operating lease, classified as current.",
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "OperatingLeaseLiabilityCurrent",
-          "namespace": "us-gaap",
-          "first_year": 2019,
-          "last_year": 2026
-        },
-        {
-          "tag": "CurrentLeaseLiabilities",
-          "namespace": "ifrs-full"
-        }
-      ],
-      "parent": "total_liabilities",
-      "sequence": 20
-    },
-    {
-      "tag": "finance_lease_liability_current",
-      "label": "Finance Lease, Liability, Current",
-      "description": "Present value of lessee's discounted obligation for lease payments from finance lease, classified as current.",
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "FinanceLeaseLiabilityCurrent",
-          "namespace": "us-gaap",
-          "first_year": 2019,
-          "last_year": 2026
-        }
-      ],
-      "parent": "total_liabilities",
-      "sequence": 21
-    },
-    {
       "tag": "accounts_payable",
       "label": "Accounts Payable",
       "description": "Carrying value as of the balance sheet date of liabilities incurred (and for which invoices have typically been received) and payable to vendors for goods and services received that are used in an entity's business. Used to reflect the current portion of the liabilities (due within one year or within the normal operating cycle if longer).",
       "parent": "total_liabilities",
-      "sequence": 3,
+      "sequence": 31,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6081,7 +6034,7 @@
       "label": "Accrued Expenses",
       "description": "Carrying value as of the balance sheet date of obligations incurred and payable, pertaining to costs that are statutory in nature, are incurred on contractual obligations, or accumulate over time and for which invoices have not yet been received or will not be rendered. Examples include taxes, interest, rent and utilities. Used to reflect the current portion of the liabilities (due within one year or within the normal operating cycle if longer).",
       "parent": "total_liabilities",
-      "sequence": 4,
+      "sequence": 32,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6124,7 +6077,7 @@
       "label": "Customer Deposits",
       "description": "Carrying amount of liabilities for customer deposits received and held, classified as current. Includes cash received in advance for undelivered goods or services and refundable security deposits.",
       "parent": "total_liabilities",
-      "sequence": 5,
+      "sequence": 33,
       "factor": "+",
       "balance": "",
       "unit": "monetary",
@@ -6157,7 +6110,7 @@
       "label": "Dividends Payable",
       "description": "Carrying value as of the balance sheet date of dividends declared but unpaid on equity securities issued by the entity and outstanding.",
       "parent": "total_liabilities",
-      "sequence": 6,
+      "sequence": 34,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6196,7 +6149,7 @@
       "label": "Current Deferred Revenue",
       "description": "Amount of deferred income and obligation to transfer product and service to customer for which consideration has been received or is receivable, classified as current.",
       "parent": "total_liabilities",
-      "sequence": 7,
+      "sequence": 35,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6243,7 +6196,7 @@
       "label": "Current Deferred & Payable Income Tax Liabilities",
       "description": "Represents the current portion of deferred tax liabilities, which result from applying the applicable tax rate to net taxable temporary differences pertaining to each jurisdiction to which the entity is obligated to pay income tax. A current taxable temporary difference is a difference between the tax basis and the carrying amount of a current asset or liability in the financial statements prepared in accordance with generally accepted accounting principles. In a classified statement of financial position, an enterprise separates deferred tax liabilities and assets into a current amount and a noncurrent amount. Deferred tax liabilities and assets are classified as current or noncurrent based on the classification of the related asset or liability for financial reporting. A deferred tax liability or asset that is not related to an asset or liability for financial reporting, including deferred tax assets related to carryforwards, is classified according to the expected reversal date of the temporary difference.",
       "parent": "total_liabilities",
-      "sequence": 8,
+      "sequence": 36,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6262,7 +6215,7 @@
       "label": "Current Employee Benefit Liabilities",
       "description": "Total of the carrying values as of the balance sheet date of obligations incurred through that date and payable for obligations related to services received from employees, such as accrued salaries and bonuses, payroll taxes and fringe benefits. Used to reflect the current portion of the liabilities (due within one year or within the normal operating cycle if longer).",
       "parent": "total_liabilities",
-      "sequence": 9,
+      "sequence": 37,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6292,8 +6245,8 @@
       "tag": "other_taxes_payable",
       "label": "Other Taxes Payable",
       "description": "Carrying value as of the balance sheet date of obligations incurred and payable for statutory income, sales, use, payroll, excise, real, property and other taxes. Used to reflect the current portion of the liabilities (due within one year or within the normal operating cycle if longer).",
-      "parent": "other_current_liabilities",
-      "sequence": 1,
+      "parent": "total_liabilities",
+      "sequence": 38,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6332,7 +6285,7 @@
       "label": "Other Current Liabilities",
       "description": "Amount of liabilities classified as other, due within one year or the normal operating cycle, if longer.",
       "parent": "total_liabilities",
-      "sequence": 10,
+      "sequence": 39,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6419,7 +6372,7 @@
       "label": "Other Current Nonoperating Liabilities",
       "description": "Amount of current liabilities from nonoperating activities, classified as other. Includes accrued liabilities and other liabilities not separately disclosed.",
       "parent": "total_liabilities",
-      "sequence": 11,
+      "sequence": 40,
       "factor": "+",
       "balance": "",
       "unit": "monetary",
@@ -6432,11 +6385,78 @@
       ]
     },
     {
+      "tag": "operating_lease_liability_current",
+      "label": "Operating Lease, Liability, Current",
+      "description": "Present value of lessee's discounted obligation for lease payments from operating lease, classified as current.",
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "OperatingLeaseLiabilityCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2019,
+          "last_year": 2026
+        },
+        {
+          "tag": "CurrentLeaseLiabilities",
+          "namespace": "ifrs-full"
+        }
+      ],
+      "parent": "total_liabilities",
+      "sequence": 41
+    },
+    {
+      "tag": "finance_lease_liability_current",
+      "label": "Finance Lease, Liability, Current",
+      "description": "Present value of lessee's discounted obligation for lease payments from finance lease, classified as current.",
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "FinanceLeaseLiabilityCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2019,
+          "last_year": 2026
+        }
+      ],
+      "parent": "total_liabilities",
+      "sequence": 42
+    },
+    {
+      "tag": "total_current_liabilities",
+      "label": "Total Current Liabilities",
+      "description": "Total obligations incurred as part of normal operations that are expected to be paid during the following twelve months or within one business cycle, if longer.",
+      "parent": null,
+      "sequence": 43,
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "LiabilitiesCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "CurrentLiabilities",
+          "namespace": "ifrs-full",
+          "first_year": 2020,
+          "last_year": 2025
+        }
+      ]
+    },
+    {
       "tag": "long_term_debt",
       "label": "Long-Term Debt",
       "description": "Amount, after deduction of unamortized premium (discount) and debt issuance cost, of long-term debt classified as noncurrent. Excludes lease obligation.",
       "parent": "total_liabilities",
-      "sequence": 12,
+      "sequence": 44,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6499,7 +6519,7 @@
       "label": "Capital Lease Obligations",
       "description": "Present value of lessee's discounted obligation for lease payments from finance lease.",
       "parent": "total_liabilities",
-      "sequence": 13,
+      "sequence": 45,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6546,14 +6566,14 @@
         }
       ],
       "parent": "total_liabilities",
-      "sequence": 22
+      "sequence": 46
     },
     {
       "tag": "asset_retirement_and_litigation_obligation",
       "label": "Asset Retirement Reserve & Litigation Obligation",
       "description": "Noncurrent portion of the carrying amount of a liability for an asset retirement obligation. An asset retirement obligation is a legal obligation associated with the disposal or retirement of a tangible long-lived asset that results from the acquisition, construction or development, or the normal operations of a long-lived asset, except for certain obligations of lessees.",
       "parent": "total_liabilities",
-      "sequence": 14,
+      "sequence": 47,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6584,7 +6604,7 @@
       "label": "Noncurrent Deferred Revenue",
       "description": "Amount of deferred income and obligation to transfer product and service to customer for which consideration has been received or is receivable, classified as noncurrent.",
       "parent": "total_liabilities",
-      "sequence": 15,
+      "sequence": 48,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6621,7 +6641,7 @@
       "label": "Noncurrent Deferred & Payable Income Tax Liabilities",
       "description": "Amount, after deferred tax asset, of deferred tax liability attributable to taxable differences with jurisdictional netting.",
       "parent": "total_liabilities",
-      "sequence": 16,
+      "sequence": 49,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6692,7 +6712,7 @@
       "label": "Noncurrent Employee Benefit Liabilities",
       "description": "Amount of liability, recognized in statement of financial position, for defined benefit pension and other postretirement plans, classified as noncurrent.",
       "parent": "total_liabilities",
-      "sequence": 17,
+      "sequence": 50,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6751,7 +6771,7 @@
       "label": "Other Noncurrent Operating Liabilities",
       "description": "Amount of liabilities classified as other, due after one year or the normal operating cycle, if longer.",
       "parent": "total_liabilities",
-      "sequence": 18,
+      "sequence": 51,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6846,7 +6866,7 @@
       "label": "Other Noncurrent Nonoperating Liabilities",
       "description": "Amount of noncurrent liabilities from nonoperating activities, classified as other. Includes deferred income taxes and other liabilities not separately disclosed.",
       "parent": "total_liabilities",
-      "sequence": 19,
+      "sequence": 52,
       "factor": "+",
       "balance": "",
       "unit": "monetary",
@@ -6859,11 +6879,36 @@
       ]
     },
     {
+      "tag": "total_noncurrent_liabilities",
+      "label": "Total Noncurrent Liabilities",
+      "description": "Amount of obligation due after one year or beyond the normal operating cycle, if longer.",
+      "parent": null,
+      "sequence": 53,
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "LiabilitiesNoncurrent",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "NoncurrentLiabilities",
+          "namespace": "ifrs-full",
+          "first_year": 2020,
+          "last_year": 2025
+        }
+      ]
+    },
+    {
       "tag": "total_liabilities",
       "label": "Total Liabilities",
       "description": "Amount of liability recognized for present obligation requiring transfer or otherwise providing economic benefit to others.",
       "parent": "total_liabilities_and_equity",
-      "sequence": 1,
+      "sequence": 54,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6888,7 +6933,7 @@
       "label": "Commitments & Contingencies",
       "description": "Represents the caption on the face of the balance sheet to indicate that the entity has entered into (1) purchase or supply arrangements that will require expending a portion of its resources to meet the terms thereof, and (2) is exposed to potential losses or, less frequently, gains, arising from (a) possible claims against a company's resources due to future performance under contract terms, and (b) possible losses or likely gains from uncertainties that will ultimately be resolved when one or more future events that are deemed likely to occur do occur or fail to occur.",
       "parent": "total_liabilities_and_equity",
-      "sequence": 2,
+      "sequence": 55,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6903,53 +6948,52 @@
       ]
     },
     {
-      "tag": "redeemable_nci_common",
-      "label": "Redeemable NCI - Common",
-      "description": "Equity carrying amount of the common stock component of redeemable NCI.",
-      "parent": "redeemable_noncontrolling_interest",
-      "sequence": 1,
+      "tag": "temporary_equity",
+      "label": "Temporary Equity",
+      "description": "Carrying amount of the equity component of securities that are redeemable.",
+      "parent": "total_liabilities_and_equity",
+      "sequence": 56,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "instant",
       "xbrl_tags": [
         {
-          "tag": "RedeemableNoncontrollingInterestEquityCommonCarryingAmount",
+          "tag": "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "TemporaryEquityCarryingAmount",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2012
         }
       ]
     },
     {
-      "tag": "redeemable_nci_preferred",
-      "label": "Redeemable NCI - Preferred",
-      "description": "Equity carrying amount of the preferred stock component of redeemable NCI.",
-      "parent": "redeemable_noncontrolling_interest",
-      "sequence": 2,
+      "tag": "temporary_equity_parent",
+      "label": "Temporary Equity Attributable to Parent",
+      "description": "Carrying amount of temporary equity attributable to parent.",
+      "parent": "temporary_equity",
+      "sequence": 57,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "instant",
       "xbrl_tags": [
         {
-          "tag": "RedeemableNoncontrollingInterestEquityPreferredCarryingAmount",
+          "tag": "TemporaryEquityCarryingAmountAttributableToParent",
           "namespace": "us-gaap"
-        }
-      ]
-    },
-    {
-      "tag": "redeemable_nci_other",
-      "label": "Redeemable NCI - Other",
-      "description": "Equity carrying amount of the other component of redeemable NCI.",
-      "parent": "redeemable_noncontrolling_interest",
-      "sequence": 3,
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
+        },
         {
-          "tag": "RedeemableNoncontrollingInterestEquityOtherCarryingAmount",
+          "tag": "RedeemablePreferredStockCarryingAmount",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "RedeemablePreferredStockCarryingAmountOrRedemptionValue",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -6957,8 +7001,8 @@
       "tag": "redeemable_noncontrolling_interest",
       "label": "Redeemable Noncontrolling Interest",
       "description": "As of the reporting date, the aggregate carrying amount of all noncontrolling interests which are redeemable by the (parent) entity (1) at a fixed or determinable price on a fixed or determinable date, (2) at the option of the holder of the noncontrolling interest, or (3) upon occurrence of an event that is not solely within the control of the (parent) entity. This item includes noncontrolling interest holder's ownership (or holders' ownership) regardless of the type of equity interest (common, preferred, other) including all potential organizational (legal) forms of the investee entity.",
-      "parent": "total_liabilities_and_equity",
-      "sequence": 3,
+      "parent": "temporary_equity",
+      "sequence": 58,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -6995,34 +7039,61 @@
           "last_year": 2026
         },
         {
-          "tag": "RedeemablePreferredStockCarryingAmountOrRedemptionValue",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests",
+          "tag": "TemporaryEquityCarryingAmountAttributableToNoncontrollingInterest",
           "namespace": "us-gaap",
           "first_year": 2012,
-          "last_year": 2026
-        },
+          "last_year": 2014
+        }
+      ]
+    },
+    {
+      "tag": "redeemable_nci_common",
+      "label": "Redeemable NCI - Common",
+      "description": "Equity carrying amount of the common stock component of redeemable NCI.",
+      "parent": "redeemable_noncontrolling_interest",
+      "sequence": 59,
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
         {
-          "tag": "TemporaryEquityRedemptionValue",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
+          "tag": "RedeemableNoncontrollingInterestEquityCommonCarryingAmount",
+          "namespace": "us-gaap"
+        }
+      ]
+    },
+    {
+      "tag": "redeemable_nci_preferred",
+      "label": "Redeemable NCI - Preferred",
+      "description": "Equity carrying amount of the preferred stock component of redeemable NCI.",
+      "parent": "redeemable_noncontrolling_interest",
+      "sequence": 60,
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
         {
-          "tag": "TemporaryEquityValueExcludingAdditionalPaidInCapital",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
+          "tag": "RedeemableNoncontrollingInterestEquityPreferredCarryingAmount",
+          "namespace": "us-gaap"
+        }
+      ]
+    },
+    {
+      "tag": "redeemable_nci_other",
+      "label": "Redeemable NCI - Other",
+      "description": "Equity carrying amount of the other component of redeemable NCI.",
+      "parent": "redeemable_noncontrolling_interest",
+      "sequence": 61,
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
         {
-          "tag": "TemporaryEquityCarryingAmountAttributableToParent",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
+          "tag": "RedeemableNoncontrollingInterestEquityOtherCarryingAmount",
+          "namespace": "us-gaap"
         }
       ]
     },
@@ -7031,7 +7102,7 @@
       "label": "Preferred Stock",
       "description": "Aggregate par or stated value of issued nonredeemable preferred stock (or preferred stock redeemable solely at the option of the issuer). This item includes treasury stock repurchased by the entity. Note: elements for number of nonredeemable preferred shares, par value and other disclosure concepts are in another section within stockholders' equity.",
       "parent": "total_equity",
-      "sequence": 1,
+      "sequence": 62,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7042,6 +7113,24 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockValueOutstanding",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockIncludingAdditionalPaidInCapital",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockIncludingAdditionalPaidInCapitalNetOfDiscount",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2025
         }
       ]
     },
@@ -7050,7 +7139,7 @@
       "label": "Common Stock",
       "description": "Aggregate par or stated value of issued nonredeemable common stock (or common stock redeemable solely at the option of the issuer). This item includes treasury stock repurchased by the entity. Note: elements for number of nonredeemable common shares, par value and other disclosure concepts are in another section within stockholders' equity.",
       "parent": "total_common_equity",
-      "sequence": 1,
+      "sequence": 63,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7101,7 +7190,7 @@
       "label": "Additional Paid-In Capital",
       "description": "Value received from shareholders in common stock-related transactions that are in excess of par value or stated value and amounts received from other stock-related transactions. Includes only common stock transactions (excludes preferred stock transactions). May be called contributed capital, capital in excess of par, capital surplus, or paid-in capital.",
       "parent": "total_common_equity",
-      "sequence": 2,
+      "sequence": 64,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7134,7 +7223,7 @@
       "label": "Retained Earnings",
       "description": "Amount of accumulated undistributed earnings (deficit).",
       "parent": "total_common_equity",
-      "sequence": 3,
+      "sequence": 65,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7165,7 +7254,7 @@
       "label": "Treasury Stock",
       "description": "The amount allocated to treasury stock. Treasury stock is common and preferred shares of an entity that were issued, repurchased by the entity, and are held in its treasury.",
       "parent": "total_common_equity",
-      "sequence": 4,
+      "sequence": 66,
       "factor": "-",
       "balance": "debit",
       "unit": "monetary",
@@ -7175,6 +7264,12 @@
           "tag": "TreasuryStockValue",
           "namespace": "us-gaap",
           "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "TreasuryStockCommonValue",
+          "namespace": "us-gaap",
+          "first_year": 2016,
           "last_year": 2026
         },
         {
@@ -7194,7 +7289,7 @@
       "label": "Accumulated Other Comprehensive Income / (Loss)",
       "description": "Amount, after tax, of accumulated increase (decrease) in equity from transaction and other event and circumstance from nonowner source.",
       "parent": "total_common_equity",
-      "sequence": 5,
+      "sequence": 67,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7225,11 +7320,11 @@
       "label": "Other Equity Adjustments",
       "description": "This element represents movements included in the statement of changes in stockholders' equity which are not separately disclosed or provided for elsewhere in the taxonomy.",
       "parent": "total_common_equity",
-      "sequence": 6,
+      "sequence": 68,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
-      "period_type": "duration",
+      "period_type": "instant",
       "xbrl_tags": [
         {
           "tag": "StockholdersEquityOther",
@@ -7310,7 +7405,7 @@
       "label": "Total Common Equity",
       "description": "Amount of equity (deficit) attributable to parent. Excludes temporary equity and equity attributable to noncontrolling interest.",
       "parent": "total_equity",
-      "sequence": 2,
+      "sequence": 69,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7329,7 +7424,7 @@
       "label": "Total Preferred & Common Equity",
       "description": "Amount of equity (deficit) attributable to parent. Excludes temporary equity and equity attributable to noncontrolling interest.",
       "parent": "total_equity_and_noncontrolling_interests",
-      "sequence": 1,
+      "sequence": 70,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7354,7 +7449,7 @@
       "label": "Noncontrolling Interest",
       "description": "Amount of equity (deficit) attributable to noncontrolling interest. Excludes temporary equity.",
       "parent": "total_equity_and_noncontrolling_interests",
-      "sequence": 2,
+      "sequence": 71,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7383,7 +7478,7 @@
       "label": "Total Equity & Noncontrolling Interests",
       "description": "Amount of equity (deficit) attributable to parent and noncontrolling interest. Excludes temporary equity.",
       "parent": "total_liabilities_and_equity",
-      "sequence": 4,
+      "sequence": 72,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -7404,53 +7499,11 @@
       ]
     },
     {
-      "tag": "temporary_equity_parent",
-      "label": "Temporary Equity Attributable to Parent",
-      "description": "Carrying amount of temporary equity attributable to parent.",
-      "parent": "temporary_equity",
-      "sequence": 1,
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "TemporaryEquityCarryingAmountAttributableToParent",
-          "namespace": "us-gaap"
-        }
-      ]
-    },
-    {
-      "tag": "temporary_equity",
-      "label": "Temporary Equity",
-      "description": "Carrying amount of the equity component of securities that are redeemable.",
-      "parent": "total_liabilities_and_equity",
-      "sequence": 5,
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "RedeemablePreferredStockCarryingAmount",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "TemporaryEquityValueExcludingAdditionalPaidInCapital",
-          "namespace": "us-gaap"
-        }
-      ]
-    },
-    {
       "tag": "total_liabilities_and_equity",
       "label": "Total Liabilities & Shareholders' Equity",
       "description": "Amount of liabilities and equity items, including the portion of equity attributable to noncontrolling interests, if any.",
       "parent": null,
-      "sequence": 6,
+      "sequence": 73,
       "factor": "0",
       "balance": "credit",
       "unit": "monetary",
@@ -7632,16 +7685,7 @@
       "unit": "monetary",
       "period_type": "instant",
       "xbrl_tags": [
-        {
-          "tag": "TimeDepositsAtCarryingValue",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "TimeDeposits",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        }
+
       ]
     },
     {
@@ -7680,7 +7724,7 @@
       "label": "Loans and Leases",
       "description": "Amortized cost excluding accrued interest, before allowance for credit loss, of financing receivable. Excludes net investment in lease.",
       "parent": "net_loans_and_leases",
-      "sequence": 1,
+      "sequence": 8,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7697,6 +7741,12 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2021
+        },
+        {
+          "tag": "LoansAndLeasesReceivableNetOfDeferredIncome",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2021
         }
       ]
     },
@@ -7705,7 +7755,7 @@
       "label": "Allowance for Loan and Lease Losses",
       "description": "Amount of allowance for credit loss on financing receivable. Excludes allowance for financing receivable covered under loss sharing agreement.",
       "parent": "net_loans_and_leases",
-      "sequence": 2,
+      "sequence": 9,
       "factor": "-",
       "balance": "credit",
       "unit": "monetary",
@@ -7730,7 +7780,7 @@
       "label": "Loans and Leases, Net of Allowance",
       "description": "Amortized cost excluding accrued interest, after allowance for credit loss, of financing receivable. Excludes net investment in lease.",
       "parent": "total_assets",
-      "sequence": 8,
+      "sequence": 10,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7761,17 +7811,17 @@
       "label": "Loans Held for Sale",
       "description": "Amount before allowance and after deduction of deferred interest and fees, unamortized costs and premiums and discounts from face amounts, of loans and leases held in portfolio, including but not limited to, commercial and consumer loans. Excludes loans and leases covered under loss sharing agreements.",
       "parent": "total_assets",
-      "sequence": 9,
+      "sequence": 11,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "instant",
       "xbrl_tags": [
         {
-          "tag": "LoansAndLeasesReceivableNetOfDeferredIncome",
+          "tag": "LoansReceivableHeldForSaleNetNotPartOfDisposalGroup",
           "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2021
+          "first_year": 2015,
+          "last_year": 2026
         }
       ]
     },
@@ -7780,7 +7830,7 @@
       "label": "Accrued Investment Income",
       "description": "Interest, dividends, rents, ancillary and other revenues earned but not yet received by the entity on its investments.",
       "parent": "total_assets",
-      "sequence": 10,
+      "sequence": 12,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7799,7 +7849,7 @@
       "label": "Accounts Receivable",
       "description": "Amount due from customers for goods/services in the normal course of business.",
       "parent": "total_assets",
-      "sequence": 11,
+      "sequence": 13,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7848,7 +7898,7 @@
       "label": "Customer and Other Receivables",
       "description": "Amount, after allowance for credit loss, of right to consideration from customer for product sold and service rendered in normal course of business.",
       "parent": "total_assets",
-      "sequence": 12,
+      "sequence": 14,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7875,30 +7925,11 @@
       ]
     },
     {
-      "tag": "net_premises_and_equipment",
-      "label": "Premises and Equipment, Net",
-      "description": "Amount, after accumulated depreciation, depletion, and amortization, of property, plant, and equipment. Includes, but is not limited to, land and land improvement; building; machinery and equipment; furniture and fixture; and work of art, historical treasure, or similar asset classified as collection.",
-      "parent": "total_assets",
-      "sequence": 13,
-      "factor": "+",
-      "balance": "debit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "PropertyPlantAndEquipmentNet",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        }
-      ]
-    },
-    {
       "tag": "net_ppe",
       "label": "Property, Plant and Equipment, Net",
       "description": "Amount after accumulated depreciation, depletion and amortization of physical assets.",
       "parent": "total_assets",
-      "sequence": 14,
+      "sequence": 15,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -7927,6 +7958,25 @@
       ]
     },
     {
+      "tag": "net_premises_and_equipment",
+      "label": "Premises and Equipment, Net",
+      "description": "Amount, after accumulated depreciation, depletion, and amortization, of property, plant, and equipment. Includes, but is not limited to, land and land improvement; building; machinery and equipment; furniture and fixture; and work of art, historical treasure, or similar asset classified as collection.",
+      "parent": "total_assets",
+      "sequence": 16,
+      "factor": "+",
+      "balance": "debit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "PropertyPlantAndEquipmentNet",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        }
+      ]
+    },
+    {
       "tag": "operating_lease_right_of_use_asset",
       "label": "Operating Lease, Right-of-Use Asset",
       "description": "Amount of lessee's right to use underlying asset under operating lease.",
@@ -7947,7 +7997,7 @@
         }
       ],
       "parent": "total_assets",
-      "sequence": 23
+      "sequence": 17
     },
     {
       "tag": "finance_lease_right_of_use_asset",
@@ -7966,14 +8016,65 @@
         }
       ],
       "parent": "total_assets",
-      "sequence": 24
+      "sequence": 18
+    },
+    {
+      "tag": "long_term_investments",
+      "label": "Long-term Investments",
+      "description": "Amount of long-term investments including equity method investees and available for sale securities.",
+      "parent": "total_assets",
+      "sequence": 19,
+      "factor": "+",
+      "balance": "debit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "LongTermInvestments",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "InvestmentsAndOtherNoncurrentAssets",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "AvailableForSaleSecuritiesDebtSecuritiesNoncurrent",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "HeldToMaturitySecuritiesNoncurrent",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "EquityMethodInvestments",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2027
+        },
+        {
+          "tag": "InvestmentAccountedForUsingEquityMethod",
+          "namespace": "ifrs-full"
+        },
+        {
+          "tag": "InvestmentsInSubsidiariesJointVenturesAndAssociates",
+          "namespace": "ifrs-full"
+        },
+        {
+          "tag": "NoncurrentFinancialAssets",
+          "namespace": "ifrs-full"
+        },
+        {
+          "tag": "FinancialAssetsAtFairValueThroughOtherComprehensiveIncome",
+          "namespace": "ifrs-full"
+        }
+      ]
     },
     {
       "tag": "mortgage_servicing_rights",
       "label": "Mortgage Servicing Rights",
       "description": "Fair value of an asset representing net future revenue from contractually specified servicing fees, late charges, and other ancillary revenues, in excess of future costs related to servicing arrangements.",
       "parent": "total_assets",
-      "sequence": 15,
+      "sequence": 20,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -8000,56 +8101,11 @@
       ]
     },
     {
-      "tag": "long_term_investments",
-      "label": "Long-term Investments",
-      "description": "Amount of long-term investments including equity method investees and available for sale securities.",
-      "parent": "total_assets",
-      "sequence": 16,
-      "factor": "+",
-      "balance": "debit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "LongTermInvestments",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "InvestmentsAndOtherNoncurrentAssets",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "AvailableForSaleSecuritiesDebtSecuritiesNoncurrent",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "HeldToMaturitySecuritiesNoncurrent",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "InvestmentAccountedForUsingEquityMethod",
-          "namespace": "ifrs-full"
-        },
-        {
-          "tag": "InvestmentsInSubsidiariesJointVenturesAndAssociates",
-          "namespace": "ifrs-full"
-        },
-        {
-          "tag": "NoncurrentFinancialAssets",
-          "namespace": "ifrs-full"
-        },
-        {
-          "tag": "FinancialAssetsAtFairValueThroughOtherComprehensiveIncome",
-          "namespace": "ifrs-full"
-        }
-      ]
-    },
-    {
       "tag": "deferred_acquisition_cost",
       "label": "Deferred Acquisition Cost",
       "description": "Amount of deferred policy acquisition cost capitalized on contract remaining in force.",
       "parent": "total_assets",
-      "sequence": 17,
+      "sequence": 21,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -8078,7 +8134,7 @@
       "label": "Separate Account Business Assets",
       "description": "Amount of asset at fair value held for benefit of separate account policyholder.",
       "parent": "total_assets",
-      "sequence": 18,
+      "sequence": 22,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -8097,7 +8153,7 @@
       "label": "Goodwill",
       "description": "Amount, after accumulated impairment loss, of asset representing future economic benefit arising from other asset acquired in business combination or from joint venture formation or both, that is not individually identified and separately recognized.",
       "parent": "total_assets",
-      "sequence": 19,
+      "sequence": 23,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -8126,7 +8182,7 @@
       "label": "Intangible Assets",
       "description": "Amount, after accumulated amortization, of finite- and indefinite-lived intangible assets and capitalized cost for software to be sold, leased, or marketed. Excludes goodwill.",
       "parent": "total_assets",
-      "sequence": 20,
+      "sequence": 24,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -8153,11 +8209,28 @@
       ]
     },
     {
+      "tag": "other_noncurrent_assets_excl_ppe",
+      "label": "Other Than Fixed Noncurrent Assets",
+      "description": "Noncurrent assets other than investments and PP&E.",
+      "parent": "total_assets",
+      "sequence": 25,
+      "factor": "+",
+      "balance": "debit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "AssetsNoncurrentOtherThanNoncurrentInvestmentsAndPropertyPlantAndEquipment",
+          "namespace": "us-gaap"
+        }
+      ]
+    },
+    {
       "tag": "other_assets",
       "label": "Other Assets",
       "description": "Amount of assets classified as other.",
       "parent": "total_assets",
-      "sequence": 21,
+      "sequence": 26,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
@@ -8184,28 +8257,11 @@
       ]
     },
     {
-      "tag": "other_noncurrent_assets_excl_ppe",
-      "label": "Other Than Fixed Noncurrent Assets",
-      "description": "Noncurrent assets other than investments and PP&E.",
-      "parent": "total_assets",
-      "sequence": 22,
-      "factor": "+",
-      "balance": "debit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "AssetsNoncurrentOtherThanNoncurrentInvestmentsAndPropertyPlantAndEquipment",
-          "namespace": "us-gaap"
-        }
-      ]
-    },
-    {
       "tag": "total_assets",
       "label": "Total Assets",
       "description": "Amount of asset recognized for present right to economic benefit.",
       "parent": null,
-      "sequence": 1,
+      "sequence": 27,
       "factor": "0",
       "balance": "debit",
       "unit": "monetary",
@@ -8230,7 +8286,7 @@
       "label": "Non-Interest Bearing Deposits",
       "description": "The aggregate amount of all domestic and foreign noninterest-bearing deposits liabilities held by the entity.",
       "parent": "total_liabilities",
-      "sequence": 1,
+      "sequence": 28,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8261,7 +8317,7 @@
       "label": "Interest Bearing Deposits",
       "description": "The aggregate of all domestic and foreign interest-bearing deposit liabilities.",
       "parent": "total_liabilities",
-      "sequence": 2,
+      "sequence": 29,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8296,7 +8352,7 @@
       "label": "Federal Funds Purchased and Securities Sold",
       "description": "Amount after offset of short term borrowing where a bank borrows, at the federal funds rate, from another bank and securities that an entity sells and agrees to repurchase at a specified date for a specified price.",
       "parent": "total_liabilities",
-      "sequence": 3,
+      "sequence": 30,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8315,7 +8371,7 @@
       "label": "Short-Term Debt",
       "description": "Reflects the total carrying amount as of the balance sheet date of debt having initial terms less than one year or the normal operating cycle, if longer.",
       "parent": "total_liabilities",
-      "sequence": 4,
+      "sequence": 31,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8352,7 +8408,7 @@
       "label": "Current Portion of Long-Term Debt",
       "description": "Amount of long-term debt due within one year or within the normal operating cycle, if longer.",
       "parent": "total_liabilities",
-      "sequence": 5,
+      "sequence": 32,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8365,59 +8421,23 @@
           "last_year": 2026
         },
         {
+          "tag": "LongTermDebtAndCapitalLeaseObligationsCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
           "tag": "CurrentPortionOfLongTermDebt",
           "namespace": "us-gaap"
         }
       ]
     },
     {
-      "tag": "operating_lease_liability_current",
-      "label": "Operating Lease, Liability, Current",
-      "description": "Present value of lessee's discounted obligation for lease payments from operating lease, classified as current.",
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "OperatingLeaseLiabilityCurrent",
-          "namespace": "us-gaap",
-          "first_year": 2019,
-          "last_year": 2026
-        },
-        {
-          "tag": "CurrentLeaseLiabilities",
-          "namespace": "ifrs-full"
-        }
-      ],
-      "parent": "total_liabilities",
-      "sequence": 19
-    },
-    {
-      "tag": "finance_lease_liability_current",
-      "label": "Finance Lease, Liability, Current",
-      "description": "Present value of lessee's discounted obligation for lease payments from finance lease, classified as current.",
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "FinanceLeaseLiabilityCurrent",
-          "namespace": "us-gaap",
-          "first_year": 2019,
-          "last_year": 2026
-        }
-      ],
-      "parent": "total_liabilities",
-      "sequence": 20
-    },
-    {
       "tag": "bankers_acceptances",
       "label": "Bankers Acceptance Outstanding",
       "description": "Amount of short-term, negotiable time drafts drawn on and accepted by a financial institution. Bankers acceptances are a bank's promise to pay to the holder of the draft a stated amount on a specified date.",
       "parent": "total_liabilities",
-      "sequence": 6,
+      "sequence": 33,
       "factor": "+",
       "balance": "",
       "unit": "monetary",
@@ -8438,7 +8458,7 @@
       "label": "Accounts Payable",
       "description": "Amount of obligations incurred and payable for goods and services received.",
       "parent": "total_liabilities",
-      "sequence": 7,
+      "sequence": 34,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8487,7 +8507,7 @@
       "label": "Accrued Interest Payable",
       "description": "Carrying value as of the balance sheet date of [accrued] interest payable on all forms of debt, including trade payables, that has been incurred and is unpaid. Used to reflect the current portion of the liabilities (due within one year or within the normal operating cycle if longer).",
       "parent": "total_liabilities",
-      "sequence": 8,
+      "sequence": 35,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8518,7 +8538,7 @@
       "label": "Other Short-Term Payables",
       "description": "Amount of borrowings classified as other, maturing within one year or the normal operating cycle, if longer.",
       "parent": "total_liabilities",
-      "sequence": 9,
+      "sequence": 36,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8551,11 +8571,53 @@
       ]
     },
     {
+      "tag": "operating_lease_liability_current",
+      "label": "Operating Lease, Liability, Current",
+      "description": "Present value of lessee's discounted obligation for lease payments from operating lease, classified as current.",
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "OperatingLeaseLiabilityCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2019,
+          "last_year": 2026
+        },
+        {
+          "tag": "CurrentLeaseLiabilities",
+          "namespace": "ifrs-full"
+        }
+      ],
+      "parent": "total_liabilities",
+      "sequence": 37
+    },
+    {
+      "tag": "finance_lease_liability_current",
+      "label": "Finance Lease, Liability, Current",
+      "description": "Present value of lessee's discounted obligation for lease payments from finance lease, classified as current.",
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
+        {
+          "tag": "FinanceLeaseLiabilityCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2019,
+          "last_year": 2026
+        }
+      ],
+      "parent": "total_liabilities",
+      "sequence": 38
+    },
+    {
       "tag": "long_term_debt",
       "label": "Long-Term Debt",
       "description": "Amount, after deduction of unamortized premium (discount) and debt issuance cost, of long-term debt classified as noncurrent. Excludes lease obligation.",
       "parent": "total_liabilities",
-      "sequence": 10,
+      "sequence": 39,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8610,7 +8672,7 @@
       "label": "Capital Lease Obligations",
       "description": "Present value of lessee's discounted obligation for lease payments from finance lease.",
       "parent": "total_liabilities",
-      "sequence": 11,
+      "sequence": 40,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8657,14 +8719,14 @@
         }
       ],
       "parent": "total_liabilities",
-      "sequence": 21
+      "sequence": 41
     },
     {
       "tag": "claims_and_claim_expenses",
       "label": "Claims and Claim Expense",
       "description": "The amount needed to reflect the estimated ultimate cost of settling claims relating to insured events that have occurred on or before the balance sheet date, whether or not reported to the insurer at that date.",
       "parent": "total_liabilities",
-      "sequence": 12,
+      "sequence": 42,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8689,7 +8751,7 @@
       "label": "Future Policy Benefits",
       "description": "Amount, before effect of reinsurance, of present value of future benefit to be paid to or on behalf of policyholder and related expense less present value of future net premium receivable under insurance contract.",
       "parent": "total_liabilities",
-      "sequence": 13,
+      "sequence": 43,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8708,7 +8770,7 @@
       "label": "Unearned Premiums Liability",
       "description": "Carrying amount of premiums written on insurance contracts that have not been earned as of the balance sheet date.",
       "parent": "total_liabilities",
-      "sequence": 14,
+      "sequence": 44,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8733,7 +8795,7 @@
       "label": "Policy Holder Funds",
       "description": "Amount due to policyholders for funds held that are returnable under the terms of insurance contracts, classified as other.",
       "parent": "total_liabilities",
-      "sequence": 15,
+      "sequence": 45,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8758,7 +8820,7 @@
       "label": "Participating Policy Holder Equity",
       "description": "Amount due to policyholders for funds held that are returnable under the terms of insurance contracts, classified as other.",
       "parent": "total_liabilities",
-      "sequence": 16,
+      "sequence": 46,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8791,7 +8853,7 @@
       "label": "Separate Account Business Liabilities",
       "description": "Amount of liability for variable contract in which all or portion of contract holder's funds is allocated to specific separate account and supported by assets held in separate account.",
       "parent": "total_liabilities",
-      "sequence": 17,
+      "sequence": 47,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8810,7 +8872,7 @@
       "label": "Other Long-Term Liabilities",
       "description": "Amount of liabilities classified as other, due after one year or the normal operating cycle, if longer.",
       "parent": "total_liabilities",
-      "sequence": 18,
+      "sequence": 48,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8857,7 +8919,7 @@
       "label": "Total Liabilities",
       "description": "Amount of liability recognized for present obligation requiring transfer or otherwise providing economic benefit to others.",
       "parent": "total_liabilities_and_equity",
-      "sequence": 1,
+      "sequence": 49,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8882,7 +8944,7 @@
       "label": "Commitments & Contingencies",
       "description": "Represents the caption on the face of the balance sheet to indicate that the entity has entered into (1) purchase or supply arrangements that will require expending a portion of its resources to meet the terms thereof, and (2) is exposed to potential losses or, less frequently, gains, arising from (a) possible claims against a company's resources due to future performance under contract terms, and (b) possible losses or likely gains from uncertainties that will ultimately be resolved when one or more future events that are deemed likely to occur do occur or fail to occur.",
       "parent": "total_liabilities_and_equity",
-      "sequence": 2,
+      "sequence": 50,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8897,53 +8959,52 @@
       ]
     },
     {
-      "tag": "redeemable_nci_common",
-      "label": "Redeemable NCI - Common",
-      "description": "Equity carrying amount of the common stock component of redeemable NCI.",
-      "parent": "redeemable_noncontrolling_interest",
-      "sequence": 1,
+      "tag": "temporary_equity",
+      "label": "Temporary Equity",
+      "description": "Carrying amount of the equity component of securities that are redeemable.",
+      "parent": "total_liabilities_and_equity",
+      "sequence": 51,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "instant",
       "xbrl_tags": [
         {
-          "tag": "RedeemableNoncontrollingInterestEquityCommonCarryingAmount",
+          "tag": "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "TemporaryEquityCarryingAmount",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2012
         }
       ]
     },
     {
-      "tag": "redeemable_nci_preferred",
-      "label": "Redeemable NCI - Preferred",
-      "description": "Equity carrying amount of the preferred stock component of redeemable NCI.",
-      "parent": "redeemable_noncontrolling_interest",
-      "sequence": 2,
+      "tag": "temporary_equity_parent",
+      "label": "Temporary Equity Attributable to Parent",
+      "description": "Carrying amount of temporary equity attributable to parent.",
+      "parent": "temporary_equity",
+      "sequence": 52,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "instant",
       "xbrl_tags": [
         {
-          "tag": "RedeemableNoncontrollingInterestEquityPreferredCarryingAmount",
+          "tag": "TemporaryEquityCarryingAmountAttributableToParent",
           "namespace": "us-gaap"
-        }
-      ]
-    },
-    {
-      "tag": "redeemable_nci_other",
-      "label": "Redeemable NCI - Other",
-      "description": "Equity carrying amount of the other component of redeemable NCI.",
-      "parent": "redeemable_noncontrolling_interest",
-      "sequence": 3,
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
+        },
         {
-          "tag": "RedeemableNoncontrollingInterestEquityOtherCarryingAmount",
+          "tag": "RedeemablePreferredStockCarryingAmount",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "RedeemablePreferredStockCarryingAmountOrRedemptionValue",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -8951,8 +9012,8 @@
       "tag": "redeemable_noncontrolling_interest",
       "label": "Redeemable Noncontrolling Interest",
       "description": "As of the reporting date, the aggregate carrying amount of all noncontrolling interests which are redeemable by the (parent) entity (1) at a fixed or determinable price on a fixed or determinable date, (2) at the option of the holder of the noncontrolling interest, or (3) upon occurrence of an event that is not solely within the control of the (parent) entity. This item includes noncontrolling interest holder's ownership (or holders' ownership) regardless of the type of equity interest (common, preferred, other) including all potential organizational (legal) forms of the investee entity.",
-      "parent": "total_liabilities_and_equity",
-      "sequence": 3,
+      "parent": "temporary_equity",
+      "sequence": 53,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -8989,34 +9050,61 @@
           "last_year": 2026
         },
         {
-          "tag": "RedeemablePreferredStockCarryingAmountOrRedemptionValue",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests",
+          "tag": "TemporaryEquityCarryingAmountAttributableToNoncontrollingInterest",
           "namespace": "us-gaap",
           "first_year": 2012,
-          "last_year": 2026
-        },
+          "last_year": 2014
+        }
+      ]
+    },
+    {
+      "tag": "redeemable_nci_common",
+      "label": "Redeemable NCI - Common",
+      "description": "Equity carrying amount of the common stock component of redeemable NCI.",
+      "parent": "redeemable_noncontrolling_interest",
+      "sequence": 54,
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
         {
-          "tag": "TemporaryEquityRedemptionValue",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
+          "tag": "RedeemableNoncontrollingInterestEquityCommonCarryingAmount",
+          "namespace": "us-gaap"
+        }
+      ]
+    },
+    {
+      "tag": "redeemable_nci_preferred",
+      "label": "Redeemable NCI - Preferred",
+      "description": "Equity carrying amount of the preferred stock component of redeemable NCI.",
+      "parent": "redeemable_noncontrolling_interest",
+      "sequence": 55,
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
         {
-          "tag": "TemporaryEquityValueExcludingAdditionalPaidInCapital",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
+          "tag": "RedeemableNoncontrollingInterestEquityPreferredCarryingAmount",
+          "namespace": "us-gaap"
+        }
+      ]
+    },
+    {
+      "tag": "redeemable_nci_other",
+      "label": "Redeemable NCI - Other",
+      "description": "Equity carrying amount of the other component of redeemable NCI.",
+      "parent": "redeemable_noncontrolling_interest",
+      "sequence": 56,
+      "factor": "+",
+      "balance": "credit",
+      "unit": "monetary",
+      "period_type": "instant",
+      "xbrl_tags": [
         {
-          "tag": "TemporaryEquityCarryingAmountAttributableToParent",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
+          "tag": "RedeemableNoncontrollingInterestEquityOtherCarryingAmount",
+          "namespace": "us-gaap"
         }
       ]
     },
@@ -9025,7 +9113,7 @@
       "label": "Preferred Stock",
       "description": "Aggregate par or stated value of issued nonredeemable preferred stock (or preferred stock redeemable solely at the option of the issuer). This item includes treasury stock repurchased by the entity. Note: elements for number of nonredeemable preferred shares, par value and other disclosure concepts are in another section within stockholders' equity.",
       "parent": "total_equity",
-      "sequence": 1,
+      "sequence": 57,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -9036,6 +9124,24 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockValueOutstanding",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockIncludingAdditionalPaidInCapital",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockIncludingAdditionalPaidInCapitalNetOfDiscount",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2025
         }
       ]
     },
@@ -9044,7 +9150,7 @@
       "label": "Common Stock",
       "description": "Aggregate par or stated value of issued nonredeemable common stock (or common stock redeemable solely at the option of the issuer). This item includes treasury stock repurchased by the entity. Note: elements for number of nonredeemable common shares, par value and other disclosure concepts are in another section within stockholders' equity.",
       "parent": "total_common_equity",
-      "sequence": 1,
+      "sequence": 58,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -9091,7 +9197,7 @@
       "label": "Additional Paid-In Capital",
       "description": "Value received from shareholders in common stock-related transactions that are in excess of par value or stated value and amounts received from other stock-related transactions. Includes only common stock transactions (excludes preferred stock transactions). May be called contributed capital, capital in excess of par, capital surplus, or paid-in capital.",
       "parent": "total_common_equity",
-      "sequence": 2,
+      "sequence": 59,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -9124,7 +9230,7 @@
       "label": "Retained Earnings",
       "description": "Amount of accumulated undistributed earnings (deficit).",
       "parent": "total_common_equity",
-      "sequence": 3,
+      "sequence": 60,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -9155,7 +9261,7 @@
       "label": "Treasury Stock",
       "description": "The amount allocated to treasury stock. Treasury stock is common and preferred shares of an entity that were issued, repurchased by the entity, and are held in its treasury.",
       "parent": "total_common_equity",
-      "sequence": 4,
+      "sequence": 61,
       "factor": "-",
       "balance": "debit",
       "unit": "monetary",
@@ -9165,6 +9271,12 @@
           "tag": "TreasuryStockValue",
           "namespace": "us-gaap",
           "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "TreasuryStockCommonValue",
+          "namespace": "us-gaap",
+          "first_year": 2016,
           "last_year": 2026
         },
         {
@@ -9180,7 +9292,7 @@
       "label": "Accumulated Other Comprehensive Income / (Loss)",
       "description": "Amount, after tax, of accumulated increase (decrease) in equity from transaction and other event and circumstance from nonowner source.",
       "parent": "total_common_equity",
-      "sequence": 5,
+      "sequence": 62,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -9211,11 +9323,11 @@
       "label": "Other Equity Adjustments",
       "description": "This element represents movements included in the statement of changes in stockholders' equity which are not separately disclosed or provided for elsewhere in the taxonomy.",
       "parent": "total_common_equity",
-      "sequence": 6,
+      "sequence": 63,
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
-      "period_type": "duration",
+      "period_type": "instant",
       "xbrl_tags": [
         {
           "tag": "StockholdersEquityOther",
@@ -9244,7 +9356,7 @@
       "label": "Total Common Equity",
       "description": "Amount of equity (deficit) attributable to parent. Excludes temporary equity and equity attributable to noncontrolling interest.",
       "parent": "total_equity",
-      "sequence": 2,
+      "sequence": 64,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -9263,7 +9375,7 @@
       "label": "Total Preferred & Common Equity",
       "description": "Amount of equity (deficit) attributable to parent. Excludes temporary equity and equity attributable to noncontrolling interest.",
       "parent": "total_equity_and_noncontrolling_interests",
-      "sequence": 1,
+      "sequence": 65,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -9288,7 +9400,7 @@
       "label": "Noncontrolling Interest",
       "description": "Amount of equity (deficit) attributable to noncontrolling interest. Excludes temporary equity.",
       "parent": "total_equity_and_noncontrolling_interests",
-      "sequence": 2,
+      "sequence": 66,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -9317,7 +9429,7 @@
       "label": "Total Equity & Noncontrolling Interests",
       "description": "Amount of equity (deficit) attributable to parent and noncontrolling interest. Excludes temporary equity.",
       "parent": "total_liabilities_and_equity",
-      "sequence": 4,
+      "sequence": 67,
       "factor": "+",
       "balance": "credit",
       "unit": "monetary",
@@ -9338,53 +9450,11 @@
       ]
     },
     {
-      "tag": "temporary_equity_parent",
-      "label": "Temporary Equity Attributable to Parent",
-      "description": "Carrying amount of temporary equity attributable to parent.",
-      "parent": "temporary_equity",
-      "sequence": 1,
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "TemporaryEquityCarryingAmountAttributableToParent",
-          "namespace": "us-gaap"
-        }
-      ]
-    },
-    {
-      "tag": "temporary_equity",
-      "label": "Temporary Equity",
-      "description": "Carrying amount of the equity component of securities that are redeemable.",
-      "parent": "total_liabilities_and_equity",
-      "sequence": 5,
-      "factor": "+",
-      "balance": "credit",
-      "unit": "monetary",
-      "period_type": "instant",
-      "xbrl_tags": [
-        {
-          "tag": "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "RedeemablePreferredStockCarryingAmount",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "TemporaryEquityValueExcludingAdditionalPaidInCapital",
-          "namespace": "us-gaap"
-        }
-      ]
-    },
-    {
       "tag": "total_liabilities_and_equity",
       "label": "Total Liabilities & Shareholders' Equity",
       "description": "Amount of liabilities and equity items, including the portion of equity attributable to noncontrolling interests, if any.",
       "parent": null,
-      "sequence": 2,
+      "sequence": 68,
       "factor": "0",
       "balance": "credit",
       "unit": "monetary",

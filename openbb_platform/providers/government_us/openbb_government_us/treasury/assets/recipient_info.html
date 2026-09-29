@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>__TITLE__</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #11151c;
+    --muted: #5b6673;
+    --line: #e2e6eb;
+    --panel: #f7f8fa;
+    --accent: #0072e5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f0f0f;
+      --fg: #e8eaed;
+      --muted: #9aa4b0;
+      --line: #2a2d31;
+      --panel: #17181a;
+      --accent: #4da3ff;
+    }
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  .wrap {
+    padding: 16px 18px 24px;
+    max-width: 1320px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 2px;
+    word-break: break-word;
+  }
+  .subtitle {
+    color: var(--muted);
+    margin: 0 0 10px;
+    word-break: break-all;
+    font-size: 11px;
+  }
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .badge {
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .kpi {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .kpi-label {
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .kpi-value {
+    font-size: 17px;
+    font-weight: 600;
+    margin-top: 3px;
+    word-break: break-all;
+    font-variant-numeric: tabular-nums;
+  }
+  .sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 12px;
+    align-items: start;
+  }
+  .section {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--panel);
+    padding: 10px 12px;
+  }
+  .section h2, .subawards > summary, details.tops > summary {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin: 0 0 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--line);
+  }
+  dl {
+    margin: 0;
+    display: grid;
+    grid-template-columns: minmax(130px, 42%) minmax(0, 1fr);
+  }
+  dt, dd {
+    padding: 5px 0;
+    border-bottom: 1px solid var(--line);
+    margin: 0;
+    min-width: 0;
+  }
+  dt {
+    color: var(--muted);
+    padding-right: 10px;
+  }
+  dd {
+    word-break: break-word;
+    font-variant-numeric: tabular-nums;
+  }
+  .section dl dt:nth-last-of-type(1),
+  .section dl dd:nth-last-of-type(1) {
+    border-bottom: 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+  th, td {
+    text-align: left;
+    padding: 4px 6px 4px 0;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  th {
+    color: var(--muted);
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  td.num, th.num {
+    text-align: right;
+    white-space: nowrap;
+  }
+  .pct {
+    color: var(--muted);
+  }
+  details.tops, details.children {
+    margin-top: 22px;
+  }
+  details.tops > summary, details.children > summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  details.tops > summary::-webkit-details-marker,
+  details.children > summary::-webkit-details-marker {
+    display: none;
+  }
+  details.tops > summary::before,
+  details.children > summary::before {
+    content: "\25B8";
+  }
+  details.tops[open] > summary::before,
+  details.children[open] > summary::before {
+    content: "\25BE";
+  }
+  details.children > summary {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin: 0 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--line);
+  }
+  .top-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .top-card {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--panel);
+    padding: 10px 12px;
+  }
+  .top-card h3 {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--fg);
+    margin: 0 0 4px;
+  }
+  details.child {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--panel);
+    margin-bottom: 6px;
+  }
+  details.child > summary {
+    cursor: pointer;
+    padding: 8px 10px;
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    list-style: none;
+  }
+  details.child > summary::-webkit-details-marker {
+    display: none;
+  }
+  details.child > summary::before {
+    content: "\25B8";
+    color: var(--muted);
+    flex: none;
+  }
+  details.child[open] > summary::before {
+    content: "\25BE";
+  }
+  .child-name {
+    flex: 1;
+    min-width: 0;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .child-state {
+    color: var(--muted);
+    font-size: 11px;
+    flex: none;
+  }
+  .child-amount {
+    font-variant-numeric: tabular-nums;
+    flex: none;
+  }
+  .child-body {
+    padding: 8px 10px 10px;
+    border-top: 1px solid var(--line);
+  }
+  .child-body dl {
+    grid-template-columns: minmax(110px, 30%) 1fr;
+  }
+  .note {
+    color: var(--muted);
+    font-size: 11px;
+    margin: 8px 0 0;
+  }
+  .empty {
+    color: var(--muted);
+    padding: 24px 0;
+  }
+  @media (max-width: 900px) {
+    .wrap {
+      padding: 12px 12px 18px;
+    }
+    .kpis {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .sections,
+    .top-grid {
+      grid-template-columns: 1fr;
+    }
+    dl,
+    .child-body dl {
+      grid-template-columns: 1fr;
+    }
+    dt {
+      padding-bottom: 2px;
+      border-bottom: 0;
+    }
+    dd {
+      padding-top: 0;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+  }
+  @media (max-width: 520px) {
+    .kpis {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 class="title">__TITLE__</h1>
+  <p class="subtitle">__SUBTITLE__</p>
+  <div class="badges">__BADGES__</div>
+  <div class="kpis">__KPIS__</div>
+  <div class="sections">__BODY__</div>
+  __TOPS__
+  __CHILDREN__
+</div>
+<script>
+  document.querySelectorAll("[data-value]").forEach(function (el) {
+    var raw = el.getAttribute("data-value");
+    if (raw === null || raw === "") return;
+    if (el.getAttribute("data-prefix") === "pct") {
+      var ratio = parseFloat(raw);
+      if (!isNaN(ratio)) el.textContent = ratio.toFixed(2) + "%";
+      return;
+    }
+    var neg = raw.charAt(0) === "-";
+    var body = neg ? raw.slice(1) : raw;
+    var parts = body.split(".");
+    if (!/^\d+$/.test(parts[0])) return;
+    var grouped = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    var text = (neg ? "-" : "") + grouped + (parts.length > 1 ? "." + parts[1] : "");
+    el.textContent = el.getAttribute("data-prefix") === "usd" ? "$" + text : text;
+  });
+</script>
+</body>
+</html>

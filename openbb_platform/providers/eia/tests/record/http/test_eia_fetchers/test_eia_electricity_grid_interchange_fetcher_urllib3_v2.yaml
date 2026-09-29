@@ -1,0 +1,65 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/electricity/rto/interchange-data/data/?api_key=MOCK_API_KEY&data%5B0%5D=value&end=2019-01-02T00&facets%5Bfromba%5D%5B%5D=AEC&facets%5Btoba%5D%5B%5D=MISO&frequency=hourly&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2019-01-02T00
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY-MM-DD\"T\"HH24","frequency":"hourly","data":[{"period":"2019-01-02T00","fromba":"AEC","fromba-name":"PowerSouth
+        Energy Cooperative","toba":"MISO","toba-name":"Midcontinent Independent System
+        Operator, Inc.","value":"112","value-units":"megawatthours"}],"description":"Daily
+        interchange between neighboring balancing authorities.  \n    Source: Form
+        EIA-930\n    Product: Hourly Electric Grid Monitor"},"request":{"command":"\/v2\/electricity\/rto\/interchange-data\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"hourly","data":["value"],"facets":{"fromba":["AEC"],"toba":["MISO"]},"start":"2019-01-02T00","end":"2019-01-02T00","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 02:59:26 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 02:59:26 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '837'
+    status:
+      code: 200
+      message: OK
+version: 1

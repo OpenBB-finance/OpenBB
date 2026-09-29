@@ -4,9 +4,8 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
-from openbb_cli.config.style import Style
 
-# pylint: disable=redefined-outer-name, protected-access
+from openbb_cli.config.style import Style
 
 
 @pytest.fixture
@@ -58,3 +57,31 @@ def test_available_styles(style):
     """Test listing available styles."""
     style.console_styles_available = {"dark": Path("/path/to/dark.richstyle.json")}
     assert "dark" in style.available_styles
+
+
+def test_apply_style_loaded_from_directory(style, mock_style_directory):
+    """Style not in initial dict gets loaded via _load() and applied."""
+    target = mock_style_directory / "default" / "custom.richstyle.json"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text("{}")
+
+    def fake_load(directory):
+        style.console_styles_available["custom"] = target
+
+    with (
+        patch.object(style, "_load", side_effect=fake_load),
+        patch.object(style, "_from_json", return_value={"background": "white"}),
+    ):
+        style.apply("custom", mock_style_directory)
+    assert style.console_style == {"background": "white"}
+
+
+def test_apply_invalid_with_no_default_prints_error(
+    style, mock_style_directory, capsys
+):
+    """When neither the requested style nor 'dark' exists, error is printed."""
+    style.console_styles_available = {}
+    with patch.object(style, "_load"):
+        style.apply("missing", mock_style_directory)
+    captured = capsys.readouterr()
+    assert "Error loading default" in captured.out

@@ -32,7 +32,6 @@ def get_package_version(package: str):
 
 def is_git_repo(path: Path):
     """Check if the given directory is a git repository."""
-    # pylint: disable=import-outside-toplevel
     import shutil
     import subprocess
 

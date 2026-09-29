@@ -1,7 +1,5 @@
 """Price historical charting utility."""
 
-# pylint: disable=too-many-branches, too-many-locals, unused-argument
-
 from typing import TYPE_CHECKING, Any
 
 from openbb_charting.styles.colors import LARGE_CYCLER
@@ -14,7 +12,6 @@ def price_historical(  # noqa: PLR0912
     **kwargs,
 ) -> tuple["OpenBBFigure", dict[str, Any]]:
     """Equity Price Historical Chart."""
-    # pylint: disable=import-outside-toplevel
     from pandas import DataFrame  # noqa
     from openbb_core.app.utils import basemodel_to_df  # noqa
     from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
@@ -30,11 +27,11 @@ def price_historical(  # noqa: PLR0912
     if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
         data = kwargs["data"]
     elif "data" in kwargs and isinstance(kwargs["data"], list):
-        data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))  # type: ignore
+        data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
     else:
         data = basemodel_to_df(
             kwargs["obbject_item"],
-            index=kwargs.get("index", "date"),  # type: ignore
+            index=kwargs.get("index", "date"),
         )
 
     if "date" in data.columns:
@@ -92,7 +89,7 @@ def price_historical(  # noqa: PLR0912
         multi_symbol = True
         candles = False
         volume = False
-    if (  # pylint: disable = R0916
+    if (
         multi_symbol is False
         and normalize is False
         and returns is False
@@ -106,18 +103,18 @@ def price_historical(  # noqa: PLR0912
             data = heikin_ashi(data)
             title = f"{title} - Heikin Ashi"
         _volume = False
-        if "atr" in indicators:  # type: ignore
+        if "atr" in indicators:
             _volume = volume
             volume = False
         ta = PlotlyTA()
-        fig = ta.plot(  # type: ignore
+        fig = ta.plot(
             data,
-            indicators=indicators if indicators else {},  # type: ignore
+            indicators=indicators if indicators else {},
             symbol=target if candles is False else "",
             candles=candles,
-            volume=volume,  # type: ignore
+            volume=volume,
         )
-        if _volume is True and "atr" in indicators:  # type: ignore
+        if _volume is True and "atr" in indicators:
             fig.add_inchart_volume(data)
         fig.update_layout(
             showlegend=True,
@@ -182,10 +179,11 @@ def price_historical(  # noqa: PLR0912
         if "symbol" not in data.columns and target in data.columns:
             data = data[[target]]
 
-        if "symbol" in data.columns:
+        # pragma: no cover  # unreachable: a "symbol" column forces multi_symbol=True (line 60), so the earlier block already pivots it away when target is a column; otherwise this pivot would KeyError on the missing target.
+        if "symbol" in data.columns:  # pragma: no cover
             data = data.pivot(columns="symbol", values=target)
 
-        title: str = kwargs.get("title", "Historical Prices")  # type: ignore
+        title: str = kwargs.get("title", "Historical Prices")
 
         y1title = data.iloc[:, 0].name
         y2title = ""
@@ -201,8 +199,8 @@ def price_historical(  # noqa: PLR0912
                 else:
                     title = title + " - Normalized"
                 data = data.apply(z_score_standardization)
-                y1title = None  # type: ignore
-                y2title = None  # type: ignore
+                y1title = None
+                y2title = None
 
         fig = OpenBBFigure()
         text_color = "white" if ChartStyle().plt_style == "dark" else "black"
@@ -214,7 +212,7 @@ def price_historical(  # noqa: PLR0912
                 yaxis = (
                     (
                         "y1"
-                        if should_share_axis(data, col, y1title)  # type: ignore
+                        if should_share_axis(data, col, y1title)
                         or col == y1title
                         or normalize is True
                         or returns is True
@@ -238,12 +236,12 @@ def price_historical(  # noqa: PLR0912
             )
 
     if normalize is True or returns is True:
-        y1title = "Percent" if returns is True else None  # type: ignore
-        y2title = None  # type: ignore
+        y1title = "Percent" if returns is True else None
+        y2title = None
 
     if same_axis is True:
-        y1title = None  # type: ignore
-        y2title = None  # type: ignore
+        y1title = None
+        y2title = None
 
     fig.update_layout(
         legend=(

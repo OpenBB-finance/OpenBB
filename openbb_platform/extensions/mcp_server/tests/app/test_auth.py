@@ -1,141 +1,145 @@
-"""Test the auth module."""
+"""Tests for ``openbb_mcp_server.app.auth``."""
 
-from unittest.mock import patch
+import base64
 
+import httpx
 import pytest
-from fastapi import HTTPException
+from fastapi import FastAPI
+from fastmcp import Client
+from fastmcp.client.auth import BearerAuth
+from fastmcp.server.auth.providers.jwt import StaticTokenVerifier
+
+from openbb_mcp_server.app.app import create_mcp_server
 from openbb_mcp_server.app.auth import TokenAuthProvider, get_auth_provider
 from openbb_mcp_server.models.settings import MCPSettings
-from starlette.datastructures import Headers
-from starlette.requests import Request
 
-# pylint: disable=W0621
-
-
-@pytest.fixture
-def mock_settings():
-    """Fixture for mock MCPSettings."""
-    settings = MCPSettings()
-    settings.server_auth = ("testuser", "testpass")
-    return settings
-
-
-@pytest.fixture
-def mock_settings_no_auth():
-    """Fixture for mock MCPSettings without server_auth."""
-    return MCPSettings()
+INITIALIZE = {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "initialize",
+    "params": {
+        "protocolVersion": "2025-11-25",
+        "capabilities": {},
+        "clientInfo": {"name": "test", "version": "0"},
+    },
+}
+MCP_HEADERS = {"Accept": "application/json, text/event-stream"}
 
 
-@pytest.fixture
-def mock_request_with_auth(token="valid_token"):  # noqa: S107
-    """Fixture for a mock request with an Authorization header."""
-    request = Request(
-        scope={
-            "type": "http",
-            "headers": Headers({"authorization": f"Bearer {token}"}).raw,
-        }
+def _token(credentials: str) -> str:
+    return base64.b64encode(credentials.encode("utf-8")).decode("ascii")
+
+
+def _serve_mcp(serve, auth):
+    settings = MCPSettings(default_skills_dir=None)
+    server = create_mcp_server(settings, FastAPI(), auth=auth)
+    return serve(server.http_app(path="/mcp"))
+
+
+class TestTokenAuthProvider:
+    """Verifying ``base64(username:password)`` Bearer tokens."""
+
+    @pytest.mark.asyncio
+    async def test_valid_credentials(self):
+        """Matching credentials yield an access token for the username."""
+        provider = TokenAuthProvider(("testuser", "p:ss"))
+        token = _token("testuser:p:ss")
+        access = await provider.verify_token(token)
+        assert access is not None
+        assert (access.token, access.client_id, access.scopes) == (
+            token,
+            "testuser",
+            [],
+        )
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize(
+        "token",
+        [
+            _token("wronguser:testpass"),
+            _token("testuser:wrongpass"),
+            _token("testuser"),
+            "not%base64$",
+            "ünïcode",
+        ],
+        ids=["wrong-user", "wrong-password", "no-separator", "bad-base64", "non-ascii"],
     )
-    return request
+    async def test_rejected_tokens(self, token):
+        """Wrong, malformed, or undecodable tokens are rejected."""
+        provider = TokenAuthProvider(("testuser", "testpass"))
+        assert await provider.verify_token(token) is None
 
 
-@pytest.fixture
-def mock_request_without_auth():
-    """Fixture for a mock request without an Authorization header."""
-    request = Request(scope={"type": "http", "headers": []})
-    return request
+class TestGetAuthProvider:
+    """Normalizing the ``auth`` argument of ``create_mcp_server``."""
 
+    def test_none_disables_auth(self):
+        """``None`` means no authentication."""
+        assert get_auth_provider(None) is None
 
-@pytest.mark.asyncio
-@patch("openbb_mcp_server.app.auth.base64")
-@patch("openbb_mcp_server.app.auth.secrets")
-async def test_authorize_success(
-    mock_secrets, mock_base64, mock_settings, mock_request_with_auth
-):
-    """Test successful authorization."""
-    mock_base64.b64decode.return_value.decode.return_value = "testuser:testpass"
-    mock_secrets.compare_digest.return_value = True
-    auth_provider = TokenAuthProvider(mock_settings)
-    result = await auth_provider.authorize(mock_request_with_auth)
-    assert result is True
-    assert hasattr(mock_request_with_auth.state, "user")
+    def test_auth_provider_passes_through(self):
+        """A FastMCP auth provider is used unchanged."""
+        verifier = StaticTokenVerifier(tokens={"secret": {"client_id": "c"}})
+        assert get_auth_provider(verifier) is verifier
 
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("credentials", [("user", "pass"), ["user", "pass"]])
+    async def test_credential_pair_builds_token_provider(self, credentials):
+        """A ``(username, password)`` tuple or list builds a token provider for it."""
+        provider = get_auth_provider(credentials)
+        assert isinstance(provider, TokenAuthProvider)
+        assert await provider.verify_token(_token("user:pass")) is not None
 
-@pytest.mark.asyncio
-async def test_authorize_no_auth_configured(
-    mock_settings_no_auth, mock_request_with_auth
-):
-    """Test authorization when no auth is configured."""
-    auth_provider = TokenAuthProvider(mock_settings_no_auth)
-    result = await auth_provider.authorize(mock_request_with_auth)
-    assert result is True
-
-
-@pytest.mark.asyncio
-async def test_authorize_no_header(mock_settings, mock_request_without_auth):
-    """Test authorization failure when no header is present."""
-    auth_provider = TokenAuthProvider(mock_settings)
-    with pytest.raises(HTTPException) as excinfo:
-        await auth_provider.authorize(mock_request_without_auth)
-    assert excinfo.value.status_code == 401
-
-
-@pytest.mark.asyncio
-async def test_authorize_wrong_scheme(mock_settings):
-    """Test authorization failure with the wrong scheme."""
-    request = Request(
-        scope={
-            "type": "http",
-            "headers": Headers({"authorization": "Basic some_token"}).raw,
-        }
+    @pytest.mark.parametrize(
+        "auth",
+        [("user",), ("user", "pass", "extra"), ("user", ""), ("user", 1), "user:pass"],
     )
-    auth_provider = TokenAuthProvider(mock_settings)
-    with pytest.raises(HTTPException) as excinfo:
-        await auth_provider.authorize(request)
-    assert excinfo.value.status_code == 401
+    def test_invalid_auth_raises(self, auth):
+        """Anything else is rejected."""
+        with pytest.raises(TypeError, match="auth must be a fastmcp AuthProvider"):
+            get_auth_provider(auth)
 
 
-@pytest.mark.asyncio
-@patch("openbb_mcp_server.app.auth.base64")
-@patch("openbb_mcp_server.app.auth.secrets")
-async def test_authorize_invalid_token(
-    mock_secrets, mock_base64, mock_settings, mock_request_with_auth
-):
-    """Test authorization failure with an invalid token."""
-    mock_base64.b64decode.return_value.decode.return_value = "wronguser:wrongpass"
-    mock_secrets.compare_digest.return_value = False
-    auth_provider = TokenAuthProvider(mock_settings)
-    with pytest.raises(HTTPException) as excinfo:
-        await auth_provider.authorize(mock_request_with_auth)
-    assert excinfo.value.status_code == 401
+class TestServerAuthentication:
+    """The HTTP transport enforcing the configured auth."""
 
+    @pytest.mark.asyncio
+    async def test_credentials_are_enforced(self, serve):
+        """Requests need a Bearer token carrying the configured credentials."""
+        with _serve_mcp(serve, ("user", "pass")) as url:
+            async with httpx.AsyncClient(base_url=url, headers=MCP_HEADERS) as http:
+                anonymous = await http.post("/mcp", json=INITIALIZE)
+                wrong = await http.post(
+                    "/mcp",
+                    json=INITIALIZE,
+                    headers={"Authorization": f"Bearer {_token('user:nope')}"},
+                )
+            async with Client(f"{url}/mcp", auth=BearerAuth(_token("user:pass"))) as c:
+                tools = {tool.name for tool in await c.list_tools()}
+        assert anonymous.status_code == 401
+        assert wrong.status_code == 401
+        assert "install_skill" in tools
 
-@pytest.mark.asyncio
-@patch("openbb_mcp_server.app.auth.base64")
-@patch("openbb_mcp_server.app.auth.secrets")
-async def test_verify_token_success(mock_secrets, mock_base64, mock_settings):
-    """Test successful token verification."""
-    mock_base64.b64decode.return_value.decode.return_value = "testuser:testpass"
-    mock_secrets.compare_digest.return_value = True
-    auth_provider = TokenAuthProvider(mock_settings)
-    auth_info = await auth_provider.verify_token("valid_token")
-    assert auth_info is not None
-    assert auth_info.client_id == "testuser"
+    @pytest.mark.asyncio
+    async def test_custom_auth_provider_is_enforced(self, serve):
+        """A custom FastMCP auth provider guards the server."""
+        verifier = StaticTokenVerifier(tokens={"secret": {"client_id": "c"}})
+        with _serve_mcp(serve, verifier) as url:
+            async with httpx.AsyncClient(base_url=url, headers=MCP_HEADERS) as http:
+                basic = await http.post(
+                    "/mcp",
+                    json=INITIALIZE,
+                    headers={"Authorization": f"Bearer {_token('user:pass')}"},
+                )
+            async with Client(f"{url}/mcp", auth=BearerAuth("secret")) as client:
+                tools = {tool.name for tool in await client.list_tools()}
+        assert basic.status_code == 401
+        assert "install_skill" in tools
 
-
-@pytest.mark.asyncio
-@patch("openbb_mcp_server.app.auth.base64")
-@patch("openbb_mcp_server.app.auth.secrets")
-async def test_verify_token_invalid(mock_secrets, mock_base64, mock_settings):
-    """Test token verification failure."""
-    mock_base64.b64decode.return_value.decode.return_value = "wronguser:wrongpass"
-    mock_secrets.compare_digest.return_value = False
-    auth_provider = TokenAuthProvider(mock_settings)
-    auth_info = await auth_provider.verify_token("invalid_token")
-    assert auth_info is None
-
-
-def test_get_auth_provider(mock_settings):
-    """Test the get_auth_provider function."""
-    provider = get_auth_provider(mock_settings)
-    assert isinstance(provider, TokenAuthProvider)
-    assert provider.server_auth == ("testuser", "testpass")
+    @pytest.mark.asyncio
+    async def test_no_auth_serves_anonymous_requests(self, serve):
+        """Without auth, anonymous requests are served."""
+        with _serve_mcp(serve, None) as url:
+            async with Client(f"{url}/mcp") as client:
+                tools = {tool.name for tool in await client.list_tools()}
+        assert "install_skill" in tools

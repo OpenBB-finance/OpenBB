@@ -1,12 +1,17 @@
 """FRED SONIA Model."""
 
-# pylint: disable=unused-argument
-
+from datetime import date as dateType
 from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.sonia_rates import SONIAData, SONIAQueryParams
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from pydantic import Field, field_validator
+
+from openbb_fred.utils.query import UseCacheQueryParams
+
+TIME_AXIS: dict[str, Any] = {"x-widget_config": {"chartDataType": "time"}}
+RATE_SERIES: dict[str, Any] = {"x-widget_config": {"chartDataType": "series"}}
 
 SONIA_PARAMETER_TO_FRED_ID = {
     "rate": "IUDSOIA",
@@ -19,7 +24,7 @@ SONIA_PARAMETER_TO_FRED_ID = {
 }
 
 
-class FREDSONIAQueryParams(SONIAQueryParams):
+class FREDSONIAQueryParams(UseCacheQueryParams, SONIAQueryParams):
     """FRED SONIA Query."""
 
     parameter: Literal[
@@ -37,6 +42,15 @@ class FREDSONIAData(SONIAData):
     """FRED SONIA Data."""
 
     __alias_dict__ = {"rate": "value"}
+
+    date: dateType = Field(
+        description=DATA_DESCRIPTIONS.get("date", ""),
+        json_schema_extra=TIME_AXIS,
+    )
+    rate: float | None = Field(
+        description="SONIA rate.",
+        json_schema_extra=RATE_SERIES,
+    )
 
     @field_validator("rate", mode="before", check_fields=False)
     @classmethod
@@ -57,20 +71,22 @@ class FREDSONIAFetcher(Fetcher[FREDSONIAQueryParams, list[FREDSONIAData]]):
         return FREDSONIAQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FREDSONIAQueryParams,
         credentials: dict[str, str] | None,
         **kwargs: Any,
-    ) -> dict:
-        """Extract data."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_fred.utils.fred_base import Fred
+    ) -> list:
+        """Return the raw data from the FRED endpoint."""
+        from openbb_fred.utils.api import get_observations
 
-        key = credentials.get("fred_api_key") if credentials else ""
-        fred_series = SONIA_PARAMETER_TO_FRED_ID[query.parameter]
-        fred = Fred(key)
-        data = fred.get_series(fred_series, query.start_date, query.end_date, **kwargs)
-        return data
+        return await get_observations(
+            SONIA_PARAMETER_TO_FRED_ID[query.parameter],
+            credentials.get("fred_api_key") if credentials else None,
+            start_date=query.start_date,
+            end_date=query.end_date,
+            use_cache=query.use_cache,
+            **kwargs,
+        )
 
     @staticmethod
     def transform_data(

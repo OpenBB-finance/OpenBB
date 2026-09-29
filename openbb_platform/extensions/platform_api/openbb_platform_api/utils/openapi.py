@@ -1,6 +1,5 @@
 """OpenAPI parsing Utils."""
 
-# pylint: disable=C0302,R0912
 # flake8: noqa: PLR0912
 
 from openbb_core.provider.utils.helpers import to_snake_case
@@ -61,6 +60,81 @@ TO_CAPS_STRINGS = [
     "Itm",
     "Fomc",
 ]
+
+
+SSRM_REQUEST_SCHEMA = "AgGridRowsRequest"
+SSRM_RESPONSE_PREFIX = "AgGridRowsResponse"
+
+
+def _schema_inherits(
+    schema: dict | None, openapi_json: dict, target: str, _seen: set | None = None
+) -> bool:
+    """Return True iff ``schema`` is — or transitively ``allOf``-extends — ``target``.
+
+    Walks the OpenAPI ``allOf`` chain, which is how Pydantic emits
+    subclass relationships in the generated schema.
+    """
+    if not isinstance(schema, dict):
+        return False
+    if schema.get("title") == target:
+        return True
+    seen = _seen if _seen is not None else set()
+    for parent in schema.get("allOf", []) or []:
+        ref = parent.get("$ref")
+        if not ref:
+            continue
+        parent_name = ref.split("/")[-1]
+        if parent_name == target:
+            return True
+        if parent_name in seen:
+            continue
+        seen.add(parent_name)
+        parent_schema = (
+            openapi_json.get("components", {}).get("schemas", {}).get(parent_name)
+        )
+        if _schema_inherits(parent_schema, openapi_json, target, seen):
+            return True
+    return False
+
+
+def is_ssrm_route(openapi_json: dict, route: str, method: str) -> bool:
+    """Detect SSRM by request body or response shape.
+
+    Either signal alone is sufficient — both is redundant. The contract:
+
+    * Request body is (or subclasses) ``AgGridRowsRequest``.
+    * 200 response is ``AgGridRowsResponse[_]`` (Pydantic generic — emitted
+      with the row model name baked into the title), or has the
+      structural ``{rowData, rowCount}`` shape.
+    """
+    op = (openapi_json.get("paths", {}) or {}).get(route, {}).get(method, {}) or {}
+    schemas = openapi_json.get("components", {}).get("schemas", {}) or {}
+
+    body_ref = (
+        op.get("requestBody", {})
+        .get("content", {})
+        .get("application/json", {})
+        .get("schema", {})
+        .get("$ref", "")
+    )
+    if body_ref:
+        body_schema = schemas.get(body_ref.split("/")[-1])
+        if _schema_inherits(body_schema, openapi_json, SSRM_REQUEST_SCHEMA):
+            return True
+
+    resp = (
+        op.get("responses", {})
+        .get("200", {})
+        .get("content", {})
+        .get("application/json", {})
+        .get("schema", {})
+    )
+    resp_name = resp.get("$ref", "").split("/")[-1] if "$ref" in resp else ""
+    if resp_name.startswith(SSRM_RESPONSE_PREFIX):
+        return True
+    resp_schema = schemas.get(resp_name) if resp_name else None
+    props = resp_schema.get("properties", {}) if isinstance(resp_schema, dict) else {}
+    return "rowData" in props and "rowCount" in props
 
 
 def extract_providers(params: list[dict]) -> list[str]:
@@ -129,7 +203,7 @@ def set_parameter_type(p: dict, p_schema: dict):
     return p
 
 
-def set_parameter_options(  # noqa: PLR0912  # pylint: disable=too-many-branches
+def set_parameter_options(  # noqa: PLR0912
     p: dict, p_schema: dict, providers: list[str]
 ) -> dict:
     """
@@ -152,7 +226,9 @@ def set_parameter_options(  # noqa: PLR0912  # pylint: disable=too-many-branches
     choices: dict[str, list[dict[str, str]]] = (
         p.get("options", {})
         if p.get("options")
-        else p_schema.get("options", {}) if p_schema.get("options") else {}
+        else p_schema.get("options", {})
+        if p_schema.get("options")
+        else {}
     )
     widget_configs: dict[str, dict] = {}
     multiple_items_allowed_dict: dict = {}
@@ -274,7 +350,13 @@ def set_parameter_options(  # noqa: PLR0912  # pylint: disable=too-many-branches
             key=lambda x: x["label"],
         )
         if not is_provider_specific:
-            if len(providers) == 1:
+            if len(providers) == 1:  # pragma: no cover — see note below
+                # Logically unreachable: the for-loop at lines 257-262
+                # unconditionally sets ``is_provider_specific = True``
+                # whenever ``len(providers) == 1`` (the second clause
+                # of ``provider in p_schema or (len(providers) == 1)``).
+                # Kept defensively as a safety net in case that loop's
+                # invariant ever changes.
                 choices[providers[0]] = unique_general_choices
                 multiple_items_allowed_dict[providers[0]] = p_schema.get(
                     "multiple_items_allowed", False
@@ -330,7 +412,7 @@ def _extract_provider_description(full_description: str, provider: str) -> str:
 
     Description format: "desc1 (provider: prov1);\n    desc2 (provider: prov2)"
     """
-    # pylint: disable=import-outside-toplevel
+
     import re
 
     if not full_description:
@@ -338,9 +420,9 @@ def _extract_provider_description(full_description: str, provider: str) -> str:
 
     # Check if this is a multi-provider description
     if "(provider:" not in full_description:
-        return full_description.split("Multiple comma separated items allowed")[
-            0
-        ].strip()
+        return full_description.split(
+            "Multiple comma separated items allowed", maxsplit=1
+        )[0].strip()
 
     # Handle semicolons embedded in the description text
     parts = re.split(r"(\(provider:\s*[^)]+\))", full_description)
@@ -368,7 +450,7 @@ def _extract_provider_description(full_description: str, provider: str) -> str:
             return desc
 
     # If no specific provider section found, return first section (general description)
-    first_desc = full_description.split("(provider:")[0].strip()
+    first_desc = full_description.split("(provider:", maxsplit=1)[0].strip()
     first_desc = first_desc.split("Multiple comma separated items allowed")[0].strip()
     return first_desc
 
@@ -471,14 +553,14 @@ def process_parameter(
 
     p["multiple_items_allowed"] = multiple_items_allowed_dict
 
-    # Safe check for description
-    if (
-        p.get("description", "")
-        and "Multiple comma separated items allowed" in p["description"]  # type: ignore
-    ):
-        p["description"] = (
-            p["description"].split("Multiple comma separated items allowed")[0].strip()  # type: ignore
-        )
+    # Safe check for description — pull through a local so ty narrows
+    # the ``str | None`` from ``p.get`` to ``str`` after the truthy
+    # check. (Reading ``p["description"]`` again would re-widen.)
+    description = p.get("description", "")
+    if description and "Multiple comma separated items allowed" in description:
+        p["description"] = description.split("Multiple comma separated items allowed")[
+            0
+        ].strip()
 
     if x_widget_config := param.get(
         "x-widget_config", param.get("schema", {}).get("x-widget_config", {})
@@ -489,9 +571,7 @@ def process_parameter(
 
     # Initialize provider specificity tracking
     provider_specific = False
-    available_providers_list = (
-        []
-    )  # Start with empty list - only add providers that match
+    available_providers_list = []  # Start with empty list - only add providers that match
 
     # Extract providers from title
     if p_schema.get("title"):
@@ -527,7 +607,7 @@ def process_parameter(
         p["options"] = {} if providers else []
         if providers:
             for provider in providers:
-                p["options"][provider] = []  # type: ignore
+                p["options"][provider] = []
 
     # Handle widget config
     if _widget_config := p_schema.get("x-widget_config", {}):
@@ -565,7 +645,16 @@ def process_parameter(
             )
 
             # If parameter is provider-specific but not valid for any of our current providers, skip it
-            if not valid_for_current_providers:
+            if not valid_for_current_providers:  # pragma: no cover — see note
+                # Logically unreachable: ``valid_provider_list`` (non-empty
+                # by the enclosing ``if`` guard) is the intersection of
+                # available_providers_list and current providers, and
+                # ``effective_providers`` is either ``valid_provider_list``
+                # itself or ``existing_providers`` from
+                # ``set_parameter_options`` — which is always built from
+                # current providers + desc-providers and so contains at
+                # least one current provider. Kept defensively in case
+                # an upstream invariant ever changes.
                 return {}
 
     return p
@@ -618,7 +707,9 @@ def get_query_schema_for_widget(
     return route_params, has_chart
 
 
-def get_data_schema_for_widget(openapi_json, operation_id, route: str | None = None):
+def get_data_schema_for_widget(  # noqa: PLR0911
+    openapi_json, operation_id, route: str | None = None
+):
     """
     Get the data schema for a widget based on its operationId.
 
@@ -638,7 +729,9 @@ def get_data_schema_for_widget(openapi_json, operation_id, route: str | None = N
                     route = path
                     break
 
-    _route = openapi_json["paths"].get(route, {}).get("get", {})
+    path_item = openapi_json["paths"].get(route, {}) or {}
+    # SSRM routes are POST-only; fall back to POST when GET is missing.
+    _route = path_item.get("get", {}) or path_item.get("post", {}) or {}
 
     if (
         schema := _route.get("responses", {})
@@ -647,6 +740,59 @@ def get_data_schema_for_widget(openapi_json, operation_id, route: str | None = N
         .get("application/json", {})
         .get("schema", {})
     ):
+        # Inline-schema fast paths. Spec-driven launches synthesize the
+        # schema dict directly under ``content.application/json.schema``
+        # (no ``components.schemas`` $ref roundtrip), so we can descend
+        # without going through the named-schema lookup below. Three
+        # shapes matter here:
+        #
+        # * ``{"type": "object", "properties": {"results": {"type":
+        #   "array", "items": {"type": "object", ...}}}}`` — the
+        #   Socrata / OBBject envelope. Descend to the row-shape under
+        #   ``items``.
+        # * ``{"type": "object", "properties": {"rowData": ..., "rowCount":
+        #   ...}}`` — SSRM. Descend to the row schema under
+        #   ``rowData.items``.
+        # * Any other inline ``{"type": "object", "properties": {...}}``
+        #   — treat the schema as the row directly (single-record
+        #   shape).
+        if isinstance(schema, dict) and not schema.get("$ref"):
+            inline_props = (
+                schema.get("properties")
+                if (schema.get("type") == "object" or "properties" in schema)
+                else None
+            )
+            if isinstance(inline_props, dict):
+                if "results" in inline_props:
+                    results = inline_props["results"]
+                    if isinstance(results, dict):
+                        items = results.get("items")
+                        if isinstance(items, dict) and items.get("$ref"):
+                            ref_name = items["$ref"].split("/")[-1]
+                            return (
+                                openapi_json.get("components", {})
+                                .get("schemas", {})
+                                .get(ref_name, items)
+                            )
+                        if isinstance(items, dict):
+                            return items
+                        return results
+                if "rowData" in inline_props and "rowCount" in inline_props:
+                    row_data = inline_props["rowData"]
+                    if isinstance(row_data, dict):
+                        items = row_data.get("items", {}) or {}
+                        if isinstance(items, dict) and items.get("$ref"):
+                            ref_name = items["$ref"].split("/")[-1]
+                            return (
+                                openapi_json.get("components", {})
+                                .get("schemas", {})
+                                .get(ref_name, items)
+                            )
+                        return items
+                # Bare object schema with non-envelope properties — the
+                # schema itself describes one row.
+                return schema
+
         # Get the reference to the schema from the successful response
 
         if "items" in schema:
@@ -671,13 +817,33 @@ def get_data_schema_for_widget(openapi_json, operation_id, route: str | None = N
                 )
                 if props and "results" in props:
                     return props["results"]
+                # SSRM responses wrap the row model in
+                # ``rowData: list[Row]`` — descend one level so column
+                # auto-detection sees the row's fields, not the envelope.
+                if props and "rowData" in props and "rowCount" in props:
+                    row_items = props["rowData"].get("items", {}) or {}
+                    row_ref = row_items.get("$ref")
+                    if row_ref:
+                        row_name = row_ref.split("/")[-1]
+                        return openapi_json["components"]["schemas"].get(
+                            row_name, row_items
+                        )
+                    return row_items
 
-            return openapi_json["components"]["schemas"].get(schema_name, schema_name)
+            # Defensive ``.get()`` chain — a FastAPI app with no
+            # Pydantic models (e.g. the spec-driven proxy launcher)
+            # produces an openapi document without a ``components``
+            # block at all. Fall back to ``schema_name`` when the
+            # lookup misses, mirroring the line above.
+            return (
+                openapi_json.get("components", {})
+                .get("schemas", {})
+                .get(schema_name, schema_name)
+            )
     # Return None if the schema is not found
     return None
 
 
-# pylint: disable=too-many-branches,too-many-statements
 def data_schema_to_columns_defs(  # noqa: PLR0912
     openapi_json,
     operation_id,
@@ -769,6 +935,16 @@ def data_schema_to_columns_defs(  # noqa: PLR0912
         formatterFn = None
         prop = target_schema.get("properties", {}).get(key)
 
+        # Distinguish ``format: "date"`` from ``format: "date-time"`` so
+        # the resulting column tells ag-grid the right cellDataType.
+        # ``"dateString"`` keeps ``YYYY-MM-DD`` values verbatim (no
+        # timezone parsing, no implicit ``T00:00:00`` rendering); ``"date"``
+        # is for full timestamps that should be parsed and locale-rendered.
+        def _date_cell_type(formats: list[str]) -> str:
+            if "date-time" in formats:
+                return "date"
+            return "dateString"
+
         # Handle prop types for both when there's a single prop type or multiple
         if "items" in prop:
             items = prop.get("items", {})
@@ -777,38 +953,41 @@ def data_schema_to_columns_defs(  # noqa: PLR0912
             types = [
                 sub_prop.get("type") for sub_prop in prop["anyOf"] if "type" in sub_prop
             ]
+            formats = [
+                sub_prop.get("format")
+                for sub_prop in prop["anyOf"]
+                if sub_prop.get("format") in {"date", "date-time"}
+            ]
             if "number" in types or "integer" in types or "float" in types:
                 cell_data_type = "number"
-            elif "string" in types and any(
-                sub_prop.get("format") in ["date", "date-time"]
-                for sub_prop in prop["anyOf"]
-                if "format" in sub_prop
-            ):
-                cell_data_type = "date"
+            elif "string" in types and formats:
+                cell_data_type = _date_cell_type(formats)
             else:
                 cell_data_type = "text"
         elif "anyOf" in prop:
             types = [
                 sub_prop.get("type") for sub_prop in prop["anyOf"] if "type" in sub_prop
             ]
+            formats = [
+                sub_prop.get("format")
+                for sub_prop in prop["anyOf"]
+                if sub_prop.get("format") in {"date", "date-time"}
+            ]
             if "number" in types or "integer" in types or "float" in types:
                 cell_data_type = "number"
-            elif "string" in types and any(
-                sub_prop.get("format") in ["date", "date-time"]
-                for sub_prop in prop["anyOf"]
-                if "format" in sub_prop
-            ):
-                cell_data_type = "date"
+            elif "string" in types and formats:
+                cell_data_type = _date_cell_type(formats)
             else:
                 cell_data_type = "text"
         else:
             prop_type = prop.get("type", None)
+            prop_format = prop.get("format")
             if prop_type in ["number", "integer", "float"]:
                 cell_data_type = "number"
                 if prop_type == "integer":
                     formatterFn = "int"
-            elif "format" in prop and prop["format"] in ["date", "date-time"]:
-                cell_data_type = "date"
+            elif prop_format in ["date", "date-time"]:
+                cell_data_type = _date_cell_type([prop_format])
             else:
                 cell_data_type = "text"
 
@@ -835,6 +1014,15 @@ def data_schema_to_columns_defs(  # noqa: PLR0912
             "description", prop.get("title", key.title())
         )
         column_def["cellDataType"] = cell_data_type
+
+        # Time-series convention: a column literally named ``date`` is
+        # the temporal axis of the dataset. Pre-sort descending so the
+        # most recent observation lands at the top — every dashboard
+        # we ship expects this default. Authors can override via
+        # ``widget_config.data.table.columnsDefs[].sort``.
+        if k == "date" and cell_data_type in {"date", "dateString"}:
+            column_def["sort"] = "desc"
+
         measurement = prop.get("x-unit_measurement")
 
         if measurement == "percent":
@@ -865,7 +1053,13 @@ def data_schema_to_columns_defs(  # noqa: PLR0912
                 column_def["headerName"] = column_def["headerName"].upper()
 
         if k in ["fiscal_year", "year", "year_born", "calendar_year"]:
-            column_def["cellDataType"] = "number"
+            # ``cellDataType: "text"`` is the only reliable way to
+            # suppress ag-grid's locale-based thousands separator
+            # ("2,023" → "2023"). ``formatterFn: "none"`` alone
+            # doesn't override the type-driven formatting. 4-digit
+            # year strings sort lexicographically identical to the
+            # numeric sort, so no semantic loss.
+            column_def["cellDataType"] = "text"
             column_def["formatterFn"] = "none"
 
         if (
@@ -997,7 +1191,9 @@ def post_query_schema_for_widget(
         new_params[k]["type"] = (
             "text"
             if v.get("type") == "object"
-            else "date" if "date" in v.get("format", "") else v.get("type", "text")
+            else "date"
+            if "date" in v.get("format", "")
+            else v.get("type", "text")
         )
         new_params[k]["title"] = v.get("title")
         new_params[k]["description"] = v.get("description")
