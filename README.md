@@ -58,14 +58,14 @@ AI Agents integration:
 
 ### Integrating Open Data Platform to the OpenBB Workspace
 
-Connect this library to the OpenBB Workspace with a few simple commands, in a Python (3.9.21 - 3.12) environment.
+Connect this library to the OpenBB Workspace with a few simple commands, in a Python (3.10 - 3.14) environment.
 
 #### Run an ODP backend
 
 - Install the packages.
 
 ```sh
-pip install "openbb[all]"
+pip install openbb
 ```
 
 - Start the API server over localhost.

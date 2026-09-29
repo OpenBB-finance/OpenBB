@@ -4,10 +4,8 @@
 # dev_install.py installs packages from both openbb_platform/ and cli/:
 #   docker build -f openbb_platform/Dockerfile -t openbb-platform .
 #
-# Only openbb-core and openbb-charting are published at their V5 versions on
-# PyPI; every other package here (cli, platform-api, mcp-server, providers,
-# routers) is still pre-V5 upstream, so everything is installed editable from
-# this checkout via openbb_platform/dev_install.py rather than by name.
+# Installs every tracked package editable from this checkout via
+# openbb_platform/dev_install.py.
 
 FROM python:3.11-slim AS builder
 
