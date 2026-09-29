@@ -4,6 +4,7 @@
 
 import asyncio
 import json
+from datetime import datetime, timedelta
 from pathlib import Path
 from unittest.mock import patch
 
@@ -53,7 +54,12 @@ def create_mock_facts(entries: list):
         start = e.get("start")
         end = e["end"]
         form = e.get("form", "10-K")
-        filed = e.get("filed", "2024-03-01")
+        filed = e.get(
+            "filed",
+            (datetime.strptime(end, "%Y-%m-%d") + timedelta(days=45)).strftime(
+                "%Y-%m-%d"
+            ),
+        )
         fy = e.get("fy", int(end[:4]))
 
         # Determine fp if not provided.
@@ -641,20 +647,16 @@ class TestBLKIncomeStatement:
 
     # --- Imputed values ---
 
-    def test_costs_and_expenses_rollup(self, blk_annual):
-        """C&E is imputed as sum of mapped children (diversified template)."""
+    def test_costs_and_expenses_from_operating_expenses(self, blk_annual):
+        """C&E takes the reported OperatingExpenses total; its other line holds the remainder."""
         v, s = _val(blk_annual.income_statement, "costs_and_expenses")
-        assert v == 3_067_000_000
-        assert "imputed-rollup" in s
-        # Enriched source should list child tags with their signs
-        assert "sga_expense(+)" in s
-        assert "restructuring_charge(+)" in s
-        assert "depreciation_and_amortization(+)" in s
-        # Should be sum of sga_expense (2731M) + D&A (297M) + restructuring_charge (39M)
+        assert v == 17_171_000_000
+        assert s == "us-gaap:OperatingExpenses"
         sga, _ = _val(blk_annual.income_statement, "sga_expense")
-        da, _ = _val(blk_annual.income_statement, "depreciation_and_amortization")
         restr, _ = _val(blk_annual.income_statement, "restructuring_charge")
-        assert v == sga + da + restr
+        other, s_other = _val(blk_annual.income_statement, "other_operating_expenses")
+        assert other == v - sga - restr
+        assert s_other.startswith("imputed-plug")
 
     def test_income_before_equity_method(self, blk_annual):
         """income_before_equity_method from XBRL (same tag as total_pretax_income for BLK)."""
@@ -670,19 +672,24 @@ class TestBLKIncomeStatement:
         assert "imputed" in s
 
     def test_plug_rows_present(self, blk_annual):
-        """Plug rows fill the balancing remainder in each IS sub-hierarchy."""
+        """Each total's other line holds its remainder."""
         plugs = {
-            "other_operating_income",
-            "other_other_income",
-            "other_pretax_income",
-            "other_net_income",
-            "other_net_income_to_common",
-            "other_comprehensive_income",
+            "other_operating_expenses",
+            "other_income",
+            "other_adjustments_to_net_income_to_common",
         }
         for tag in plugs:
             v, s = _val(blk_annual.income_statement, tag)
             assert v is not None, f"{tag} missing"
             assert "imputed-plug" in s, f"{tag} should be a plug, got: {s}"
+
+    def test_pretax_articulates_without_remainder(self, blk_annual):
+        """Pretax income is operating income plus non-operating income."""
+        pretax, _ = _val(blk_annual.income_statement, "total_pretax_income")
+        opinc, _ = _val(blk_annual.income_statement, "total_operating_income")
+        other, _ = _val(blk_annual.income_statement, "total_other_income")
+        assert pretax == opinc + other
+        assert _val(blk_annual.income_statement, "other_pretax_income") == (None, None)
 
     def test_tax_decomposition(self, blk_annual):
         """Current + deferred tax should sum to total income tax expense."""
@@ -745,29 +752,29 @@ class TestBLKBalanceSheet:
         assert ta == tle
 
     def test_liabilities_plus_equity_plus_mezzanine(self, blk_annual):
-        """L + ENCI + other_l&e (mezzanine) = L&E."""
+        """L + ENCI + temporary equity = L&E."""
         tl, _ = _val(blk_annual.balance_sheet, "total_liabilities")
         teni, _ = _val(
             blk_annual.balance_sheet, "total_equity_and_noncontrolling_interests"
         )
-        other_le, _ = _val(blk_annual.balance_sheet, "other_liabilities_and_equity")
+        mezz, _ = _val(blk_annual.balance_sheet, "temporary_equity")
         tle, _ = _val(blk_annual.balance_sheet, "total_liabilities_and_equity")
-        assert tl + teni + other_le == tle
+        assert tl + teni + mezz == tle
 
-    # --- Mezzanine equity (redeemable NCI) ---
+    # --- Mezzanine equity (temporary equity) ---
 
-    def test_redeemable_nci_imputed(self, blk_annual):
-        """BLK has redeemable NCI (temporary equity) imputed from the identity gap."""
-        v, s = _val(blk_annual.balance_sheet, "redeemable_noncontrolling_interest")
+    def test_temporary_equity_is_liabilities_and_equity_remainder(self, blk_annual):
+        """BLK mezzanine equity is the remainder of liabilities and equity."""
+        v, s = _val(blk_annual.balance_sheet, "temporary_equity")
         assert v == 5_427_000_000
-        assert "imputed" in s
-        assert "total_liabilities_and_equity" in s
+        assert s.startswith("imputed-plug: total_liabilities_and_equity - ")
+        rnci, _ = _val(blk_annual.balance_sheet, "redeemable_noncontrolling_interest")
+        assert rnci is None
 
-    def test_mezzanine_equals_other_liabilities_and_equity(self, blk_annual):
-        """Redeemable NCI fills the same slot as other_liabilities_and_equity."""
-        mezz, _ = _val(blk_annual.balance_sheet, "redeemable_noncontrolling_interest")
+    def test_mezzanine_leaves_no_liabilities_and_equity_remainder(self, blk_annual):
+        """Redeemable NCI closes L&E, so no other line is created for it."""
         other_le, _ = _val(blk_annual.balance_sheet, "other_liabilities_and_equity")
-        assert mezz == other_le
+        assert other_le is None
 
     # --- Rollups ---
 
@@ -876,21 +883,15 @@ class TestBLKCashFlow:
     # --- Plug rows ---
 
     def test_operating_plug(self, blk_annual):
-        v, s = _val(
-            blk_annual.cash_flow, "other_net_cash_from_continuing_operating_activities"
-        )
+        v, s = _val(blk_annual.cash_flow, "other_operating_activities")
         assert "imputed-plug" in s
 
     def test_investing_plug(self, blk_annual):
-        v, s = _val(
-            blk_annual.cash_flow, "other_net_cash_from_continuing_investing_activities"
-        )
+        v, s = _val(blk_annual.cash_flow, "other_investing_activities_net")
         assert "imputed-plug" in s
 
     def test_financing_plug(self, blk_annual):
-        v, s = _val(
-            blk_annual.cash_flow, "other_net_cash_from_continuing_financing_activities"
-        )
+        v, s = _val(blk_annual.cash_flow, "other_financing_activities_net")
         assert "imputed-plug" in s
 
 
@@ -957,7 +958,7 @@ class TestBLKImputationCounts:
             for r in blk_annual.income_statement
             if r["period_ending"] == "2025-12-31" and "imputed" in r["source"]
         ]
-        assert len(imputed) == 8
+        assert len(imputed) == 4
 
     def test_bs_imputed_count(self, blk_annual):
         imputed = [
@@ -965,7 +966,7 @@ class TestBLKImputationCounts:
             for r in blk_annual.balance_sheet
             if r["period_ending"] == "2025-12-31" and "imputed" in r["source"]
         ]
-        assert len(imputed) == 5
+        assert len(imputed) == 4
 
     def test_cf_imputed_count(self, blk_annual):
         imputed = [
@@ -973,7 +974,7 @@ class TestBLKImputationCounts:
             for r in blk_annual.cash_flow
             if r["period_ending"] == "2025-12-31" and "imputed" in r["source"]
         ]
-        assert len(imputed) == 5
+        assert len(imputed) == 4
 
     def test_no_suspect_zeros(self, blk_annual):
         """No imputed values should be suspect zeros for BLK."""
@@ -1792,58 +1793,55 @@ class TestTagChainPriority:
 
 
 class TestCFFxDerivation:
-    """Deriving FX effect from the CF identity."""
+    """The exchange-rate effect is never derived from the cash identity."""
 
-    def test_fx_derived_when_missing(self):
-        """effect_of_exchange_rate_changes = net_change - op - inv - fin."""
+    def test_fx_not_derived_from_cash_identity(self):
+        """An unexplained net change is held in other_net_changes_in_cash."""
+        m = 1_000_000
         mock = create_mock_facts(
             [
-                {"tag": "Assets", "val": 1000, "end": "2023-12-31"},
+                {"tag": "Assets", "val": 1000 * m, "end": "2023-12-31"},
                 {
                     "tag": "NetCashProvidedByUsedInOperatingActivities",
-                    "val": 500,
+                    "val": 500 * m,
                     "start": "2023-01-01",
                     "end": "2023-12-31",
                 },
                 {
                     "tag": "NetCashProvidedByUsedInInvestingActivities",
-                    "val": -200,
+                    "val": -200 * m,
                     "start": "2023-01-01",
                     "end": "2023-12-31",
                 },
                 {
                     "tag": "NetCashProvidedByUsedInFinancingActivities",
-                    "val": -150,
+                    "val": -150 * m,
                     "start": "2023-01-01",
                     "end": "2023-12-31",
                 },
                 {
                     "tag": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents"
                     "PeriodIncreaseDecreaseIncludingExchangeRateEffect",
-                    "val": 160,
+                    "val": 160 * m,
                     "start": "2023-01-01",
                     "end": "2023-12-31",
                 },
-                # IS duration tag required for date alignment across all 3 statements
                 {
                     "tag": "Revenues",
-                    "val": 800,
+                    "val": 800 * m,
                     "start": "2023-01-01",
                     "end": "2023-12-31",
                 },
             ]
         )
         res = resolve_company_facts(mock, period="annual")
-        fx = [
-            r
-            for r in res.cash_flow
-            if r["tag"] == "effect_of_exchange_rate_changes"
-            and r["period_ending"] == "2023-12-31"
-        ]
-        assert len(fx) == 1
-        # FX = 160 - 500 - (-200) - (-150) = 160 - 500 + 200 + 150 = 10
-        assert fx[0]["value"] == 10
-        assert "imputed" in fx[0]["source"]
+        by_tag = {
+            r["tag"]: r for r in res.cash_flow if r["period_ending"] == "2023-12-31"
+        }
+        assert "effect_of_exchange_rate_changes" not in by_tag
+        other = by_tag["other_net_changes_in_cash"]
+        assert other["value"] == 10 * m
+        assert other["source"].startswith("imputed-plug: net_change_in_cash - ")
 
 
 class TestCFDepreciationDecomposition:
@@ -2857,10 +2855,10 @@ def _mini_result(rows, dates, currency="USD", fiscal=None, preliminary=None):
     )
 
 
-def _row(tag, values, sources=None, **kw):
-    from types import SimpleNamespace
+def _row(tag, values, sources=None):
+    from openbb_sec.utils.statement_schema._types import RowResult
 
-    defaults = dict(
+    return RowResult(
         tag=tag,
         label=tag.replace("_", " ").title(),
         description="d",
@@ -2873,8 +2871,37 @@ def _row(tag, values, sources=None, **kw):
         values=values,
         sources=sources or {},
     )
-    defaults.update(kw)
-    return SimpleNamespace(**defaults)
+
+
+def test_pct_change_pop_skips_zero_prior():
+    """A period-over-period change from a zero prior value is not computed."""
+
+    def rec(date, value):
+        return {
+            "period_ending": date,
+            "fiscal_year": int(date[:4]),
+            "fiscal_period": "FY",
+            "calendar_year": int(date[:4]),
+            "calendar_period": "Q4",
+            "tag": "total_revenue",
+            "label": "Total Revenue",
+            "description": "d",
+            "parent": None,
+            "sequence": 1,
+            "factor": "+",
+            "balance": "credit",
+            "period_type": "duration",
+            "value": value,
+        }
+
+    records = [
+        rec("2021-12-31", 0.0),
+        rec("2022-12-31", 100.0),
+        rec("2023-12-31", 150.0),
+    ]
+    out = cf._compute_pct_change(records, "pop")
+    assert [r["period_ending"] for r in out] == ["2023-12-31"]
+    assert out[0]["value"] == 50.0
 
 
 def test_build_records_skips_all_zero_tags():

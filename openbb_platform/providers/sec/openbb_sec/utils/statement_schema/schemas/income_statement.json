@@ -418,16 +418,16 @@
       "period_type": "duration",
       "xbrl_tags": [
         {
-          "tag": "SalesRevenueNet",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2017
-        },
-        {
           "tag": "Revenues",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
+        },
+        {
+          "tag": "SalesRevenueNet",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2017
         },
         {
           "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -1205,6 +1205,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "ResearchAndDevelopmentExpenseExcludingAcquiredInProcessCost",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
         }
       ]
     },
@@ -1303,7 +1309,7 @@
       "description": "The aggregate expense recognized in the current period that allocates the cost of tangible and intangible assets over their useful lives.",
       "parent": "total_operating_expenses",
       "sequence": 14,
-      "factor": "+",
+      "factor": "0",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
@@ -1318,10 +1324,6 @@
         },
         {
           "tag": "DepreciationAmortizationAndAccretionNet",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "OtherDepreciationAndAmortization",
           "namespace": "us-gaap"
         },
         {
@@ -1660,12 +1662,6 @@
           "last_year": 2026
         },
         {
-          "tag": "InterestIncomeExpenseNet",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
           "tag": "FinanceIncome",
           "namespace": "ifrs-full",
           "first_year": 2020,
@@ -1673,10 +1669,6 @@
         },
         {
           "tag": "RevenueFromInterest",
-          "namespace": "ifrs-full"
-        },
-        {
-          "tag": "InterestRevenueExpense",
           "namespace": "ifrs-full"
         },
         {
@@ -1745,6 +1737,18 @@
         {
           "tag": "InterestExpenseOnOtherFinancialLiabilities",
           "namespace": "ifrs-full"
+        },
+        {
+          "tag": "InterestExpenseNonoperating",
+          "namespace": "us-gaap",
+          "first_year": 2023,
+          "last_year": 2027
+        },
+        {
+          "tag": "InterestAndDebtExpense",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
         }
       ]
     },
@@ -2101,7 +2105,7 @@
       "description": "Amount of income/loss from continuing operations before income from equity method investments.",
       "parent": "total_pretax_income",
       "sequence": 32,
-      "factor": "+",
+      "factor": "0",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",
@@ -2298,7 +2302,7 @@
       "description": "Amount after tax and reclassification adjustments of other comprehensive income (loss).",
       "parent": "net_income",
       "sequence": 37,
-      "factor": "+",
+      "factor": "0",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",
@@ -3076,9 +3080,9 @@
       "tag": "comprehensive_income",
       "label": "Comprehensive Income (Loss)",
       "description": "Amount after tax of increase (decrease) in equity from transactions and other events/circumstances from net income and OCI. Includes portion attributable to NCI.",
-      "parent": "net_income",
+      "parent": null,
       "sequence": 57,
-      "factor": "+",
+      "factor": "0",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",
@@ -3140,23 +3144,19 @@
       "period_type": "duration",
       "xbrl_tags": [
         {
-          "tag": "SalesRevenueNet",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2017
-        },
-        {
           "tag": "Revenues",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
         },
         {
-          "tag": "RevenuesNetOfInterestExpense",
-          "namespace": "us-gaap"
+          "tag": "SalesRevenueNet",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2017
         },
         {
-          "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+          "tag": "RevenuesNetOfInterestExpense",
           "namespace": "us-gaap"
         },
         {
@@ -3166,19 +3166,7 @@
           "last_year": 2017
         },
         {
-          "tag": "RevenueFromContractWithCustomerIncludingAssessedTax",
-          "namespace": "us-gaap",
-          "first_year": 2018,
-          "last_year": 2026
-        },
-        {
           "tag": "Revenue",
-          "namespace": "ifrs-full",
-          "first_year": 2020,
-          "last_year": 2025
-        },
-        {
-          "tag": "RevenueFromContractsWithCustomers",
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
@@ -3253,7 +3241,7 @@
       "description": "The aggregate expense recognized in the current period that allocates the cost of tangible and intangible assets over their useful lives.",
       "parent": "total_noninterest_expense",
       "sequence": 5,
-      "factor": "+",
+      "factor": "0",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
@@ -3268,10 +3256,6 @@
         },
         {
           "tag": "DepreciationAmortizationAndAccretionNet",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "OtherDepreciationAndAmortization",
           "namespace": "us-gaap"
         },
         {
@@ -3627,12 +3611,6 @@
         },
         {
           "tag": "InvestmentIncomeInterestAndDividend",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "InterestIncomeExpenseNet",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
@@ -4245,7 +4223,7 @@
       "description": "Amount of net interest income after provision for credit losses.",
       "parent": "total_revenue",
       "sequence": 35,
-      "factor": "+",
+      "factor": "0",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",
@@ -4449,7 +4427,7 @@
       "description": "Amount of deferred policy acquisition cost capitalized on contract remaining in force.",
       "parent": "total_noninterest_expense",
       "sequence": 41,
-      "factor": "+",
+      "factor": "0",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "instant",
@@ -4802,7 +4780,7 @@
       "description": "Income before equity method investments.",
       "parent": "total_pretax_income",
       "sequence": 50,
-      "factor": "+",
+      "factor": "0",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",
@@ -4975,7 +4953,7 @@
       "description": "Amount after tax and reclassification adjustments of other comprehensive income (loss).",
       "parent": "net_income",
       "sequence": 55,
-      "factor": "+",
+      "factor": "0",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",
@@ -5721,9 +5699,9 @@
       "tag": "comprehensive_income",
       "label": "Comprehensive Income (Loss)",
       "description": "Comprehensive income including NCI.",
-      "parent": "net_income",
+      "parent": null,
       "sequence": 75,
-      "factor": "+",
+      "factor": "0",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",
@@ -6158,16 +6136,16 @@
       "period_type": "duration",
       "xbrl_tags": [
         {
-          "tag": "SalesRevenueNet",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2017
-        },
-        {
           "tag": "Revenues",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
+        },
+        {
+          "tag": "SalesRevenueNet",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2017
         },
         {
           "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
@@ -6649,6 +6627,12 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "ResearchAndDevelopmentExpenseExcludingAcquiredInProcessCost",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
         }
       ]
     },
@@ -6755,7 +6739,7 @@
       "description": "The aggregate expense recognized in the current period that allocates the cost of tangible and intangible assets over their useful lives.",
       "parent": "costs_and_expenses",
       "sequence": 10,
-      "factor": "+",
+      "factor": "0",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
@@ -6770,10 +6754,6 @@
         },
         {
           "tag": "DepreciationAmortizationAndAccretionNet",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "OtherDepreciationAndAmortization",
           "namespace": "us-gaap"
         },
         {
@@ -6997,7 +6977,7 @@
       "description": "Generally recurring costs associated with normal operations.",
       "parent": "total_operating_income",
       "sequence": 16,
-      "factor": "+",
+      "factor": "0",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",
@@ -7020,9 +7000,9 @@
       "tag": "costs_and_expenses",
       "label": "Costs & Expenses",
       "description": "Total costs of sales and operating expenses for the period.",
-      "parent": null,
+      "parent": "total_operating_income",
       "sequence": 17,
-      "factor": "0",
+      "factor": "-",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
@@ -7039,6 +7019,18 @@
         },
         {
           "tag": "CostsAndExpenses",
+          "namespace": "ifrs-full"
+        },
+        {
+          "tag": "OperatingExpenses",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "OperatingCostsAndExpenses",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "OperatingExpense",
           "namespace": "ifrs-full"
         },
         {
@@ -7120,12 +7112,6 @@
           "last_year": 2026
         },
         {
-          "tag": "InterestIncomeExpenseNet",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
           "tag": "FinanceIncome",
           "namespace": "ifrs-full",
           "first_year": 2020,
@@ -7133,10 +7119,6 @@
         },
         {
           "tag": "RevenueFromInterest",
-          "namespace": "ifrs-full"
-        },
-        {
-          "tag": "InterestRevenueExpense",
           "namespace": "ifrs-full"
         },
         {
@@ -7205,6 +7187,18 @@
         {
           "tag": "InterestExpenseOnOtherFinancialLiabilities",
           "namespace": "ifrs-full"
+        },
+        {
+          "tag": "InterestExpenseNonoperating",
+          "namespace": "us-gaap",
+          "first_year": 2023,
+          "last_year": 2027
+        },
+        {
+          "tag": "InterestAndDebtExpense",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
         }
       ]
     },
@@ -7541,7 +7535,7 @@
       "description": "Amount before equity method investments.",
       "parent": "total_pretax_income",
       "sequence": 28,
-      "factor": "+",
+      "factor": "0",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",
@@ -7738,7 +7732,7 @@
       "description": "Amount after tax and reclassification adjustments of other comprehensive income (loss).",
       "parent": "net_income",
       "sequence": 33,
-      "factor": "+",
+      "factor": "0",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",
@@ -8516,9 +8510,9 @@
       "tag": "comprehensive_income",
       "label": "Comprehensive Income (Loss)",
       "description": "Amount after tax of increase (decrease) in equity.",
-      "parent": "net_income",
+      "parent": null,
       "sequence": 53,
-      "factor": "+",
+      "factor": "0",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",
@@ -8580,16 +8574,16 @@
       "period_type": "duration",
       "xbrl_tags": [
         {
-          "tag": "SalesRevenueNet",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2017
-        },
-        {
           "tag": "Revenues",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
+        },
+        {
+          "tag": "SalesRevenueNet",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2017
         },
         {
           "tag": "RevenuesNetOfInterestExpense",
@@ -8740,7 +8734,7 @@
       "description": "The aggregate expense recognized in the current period that allocates the cost of tangible and intangible assets over their useful lives.",
       "parent": "benefits_costs_expenses",
       "sequence": 6,
-      "factor": "+",
+      "factor": "0",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "duration",
@@ -8755,10 +8749,6 @@
         },
         {
           "tag": "DepreciationAmortizationAndAccretionNet",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "OtherDepreciationAndAmortization",
           "namespace": "us-gaap"
         },
         {
@@ -8899,8 +8889,8 @@
     },
     {
       "tag": "investment_securities_interest_income",
-      "label": "Investment Securities Interest Income",
-      "description": "Amount of operating interest income, including amortization and accretion of premiums and discounts, on securities subject to state, federal and other income tax.",
+      "label": "Net Investment Income",
+      "description": "Amount of investment income from interest, dividends and other investments, net of investment expenses.",
       "parent": "total_revenue",
       "sequence": 11,
       "factor": "+",
@@ -8908,6 +8898,12 @@
       "unit": "monetary",
       "period_type": "duration",
       "xbrl_tags": [
+        {
+          "tag": "NetInvestmentIncome",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
+        },
         {
           "tag": "InterestIncomeSecuritiesTaxable",
           "namespace": "us-gaap",
@@ -8925,12 +8921,6 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
-        },
-        {
-          "tag": "NetInvestmentIncome",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
         }
       ]
     },
@@ -8938,7 +8928,7 @@
       "tag": "total_interest_income",
       "label": "Interest and Dividend Income",
       "description": "Amount of operating interest and dividend income.",
-      "parent": "total_revenue",
+      "parent": "investment_securities_interest_income",
       "sequence": 12,
       "factor": "+",
       "balance": "credit",
@@ -8963,10 +8953,6 @@
         },
         {
           "tag": "InterestAndDividendIncomeSecurities",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "InterestIncomeExpenseNet",
           "namespace": "us-gaap"
         }
       ]
@@ -9011,6 +8997,18 @@
           "namespace": "ifrs-full",
           "first_year": 2020,
           "last_year": 2025
+        },
+        {
+          "tag": "InterestExpenseNonoperating",
+          "namespace": "us-gaap",
+          "first_year": 2023,
+          "last_year": 2027
+        },
+        {
+          "tag": "InterestAndDebtExpense",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
         }
       ]
     },
@@ -9279,7 +9277,7 @@
       "description": "Amount of deferred policy acquisition cost capitalized on contract remaining in force.",
       "parent": "benefits_costs_expenses",
       "sequence": 23,
-      "factor": "+",
+      "factor": "0",
       "balance": "debit",
       "unit": "monetary",
       "period_type": "instant",
@@ -9529,7 +9527,7 @@
       "description": "Income before equity method investments.",
       "parent": "total_pretax_income",
       "sequence": 31,
-      "factor": "+",
+      "factor": "0",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",
@@ -9702,7 +9700,7 @@
       "description": "Amount after tax and reclassification adjustments of other comprehensive income (loss).",
       "parent": "net_income",
       "sequence": 36,
-      "factor": "+",
+      "factor": "0",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",
@@ -10465,9 +10463,9 @@
       "tag": "comprehensive_income",
       "label": "Comprehensive Income (Loss)",
       "description": "Comprehensive income including NCI.",
-      "parent": "net_income",
+      "parent": null,
       "sequence": 57,
-      "factor": "+",
+      "factor": "0",
       "balance": "credit",
       "unit": "monetary",
       "period_type": "duration",

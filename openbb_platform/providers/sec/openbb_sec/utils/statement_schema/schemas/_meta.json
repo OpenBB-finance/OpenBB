@@ -68,6 +68,39 @@
       "CostOfSales"
     ],
     "min_financial_signals": 2,
-    "description": "Priority: insurance (>=1 IS + total>=2) > financial (>=2 fin) > industrial (has COGS/GP) > diversified (CostsAndExpenses). Includes both us-gaap and ifrs-full tag names."
+    "measures": {
+      "revenue": [
+        "Revenues",
+        "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "SalesRevenueNet",
+        "RevenuesNetOfInterestExpense",
+        "Revenue"
+      ],
+      "insurance": [
+        "PremiumsEarnedNet",
+        "InsuranceRevenue",
+        "NetEarnedPremium",
+        "PolicyholderBenefitsAndClaimsIncurredNet",
+        "PolicyholderBenefitsAndClaimsIncurredHealthCare",
+        "BenefitsLossesAndExpenses",
+        "InsuranceServiceExpensesFromInsuranceContractsIssued",
+        "SupplementaryInsuranceInformationPremiumRevenue"
+      ],
+      "financial": [
+        "InterestAndDividendIncomeOperating",
+        "InterestIncomeOperating",
+        "InterestRevenueCalculatedUsingEffectiveInterestMethod",
+        "RevenueFromInterest",
+        "InterestIncomeExpenseNet",
+        "NoninterestIncome",
+        "InterestAndFeeIncomeLoansAndLeases",
+        "InterestAndFeeIncomeLoansCommercial",
+        "InvestmentIncomeInterest",
+        "FeeAndCommissionIncome"
+      ]
+    },
+    "min_insurance_share": 0.1,
+    "min_financial_share": 0.1,
+    "description": "Priority: insurance (>=1 IS + total>=2, insurance measures >= min_insurance_share of revenue) > financial (>=2 fin, financial measures >= min_financial_share of revenue; no revenue measure and no recent COGS/GP also qualifies) > industrial (has COGS/GP) > diversified (CostsAndExpenses). Shares use the latest annual filing reporting a revenue measure. Includes both us-gaap and ifrs-full tag names."
   }
 }
