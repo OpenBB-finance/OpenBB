@@ -59,6 +59,37 @@ def test_form_13fhr_aextract_empty_data_error():
     assert "No data was returned" in str(exc.value)
 
 
+def test_form_13fhr_transform_data_none_weight_and_order():
+    """A ``None`` weight validates as 0.0; rows sort by period, then weight."""
+    from datetime import date
+
+    def _row(period, cusip, value, weight):
+        return {
+            "period_ending": period,
+            "nameOfIssuer": "X CORP",
+            "cusip": cusip,
+            "titleOfClass": "COM",
+            "principal_amount": 0,
+            "value": value,
+            "weight": weight,
+        }
+
+    data = [
+        _row(date(2025, 12, 31), "000000000", 0, None),
+        _row(date(2025, 12, 31), "000000001", 0, None),
+        _row(date(2026, 3, 31), "111111111", 25, 0.25),
+        _row(date(2026, 3, 31), "222222222", 75, 0.75),
+    ]
+    query = SecForm13FHRQueryParams(symbol="1562087")
+    result = SecForm13FHRFetcher.transform_data(query, data)
+    assert [(r.period_ending, r.weight) for r in result] == [
+        (date(2026, 3, 31), 0.75),
+        (date(2026, 3, 31), 0.25),
+        (date(2025, 12, 31), 0.0),
+        (date(2025, 12, 31), 0.0),
+    ]
+
+
 def test_form_13fhr_aextract_reraises_openbb_error():
     """form_13FHR.py:90-91 -> an OpenBBError from candidates is re-raised."""
 

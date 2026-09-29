@@ -5,9 +5,9 @@ synthetic statements -- the engine is pure, so no network is involved.
 They cover the source-formatting and multi-pass solver helpers, the
 hierarchical roll-up/plug articulation, the per-statement ``impute()``
 paths for income statement, balance sheet and cash flow, the equity-method
-and ProfitLoss pretax corrections, the quarterly Q4 parent-correction
-block, and the many fact-based reconciliation fallbacks plus the final
-identity enforcement and pending-diagnostic resolution.
+and ProfitLoss pretax corrections, the fiscal-year-end reconciliation, and
+the many fact-based reconciliation fallbacks plus the final identity
+enforcement and pending-diagnostic resolution.
 
 Tests only -- no source under ``openbb_sec/`` is modified.
 """
@@ -16,13 +16,23 @@ Tests only -- no source under ``openbb_sec/`` is modified.
 
 from unittest.mock import patch
 
+import pytest
+
 from openbb_sec.utils.statement_schema._imputation import (
     _apply_hierarchical_articulation,
     _format_impute_source,
+    _formula_terms,
+    _net_change_from_balances,
+    _resolve_sign_flips,
     _run_imputation_passes,
     impute,
+    reconcile_fiscal_year_ends,
 )
-from openbb_sec.utils.statement_schema._types import RowDef, RowResult
+from openbb_sec.utils.statement_schema._types import (
+    RowDef,
+    RowResult,
+    StatementResult,
+)
 
 _M = 1_000_000
 _D = "2023-12-31"
@@ -140,6 +150,128 @@ class TestRunImputationPasses:
         rules = [("nonexistent_target", [("a", 1)])]
         assert _run_imputation_passes(rows, rules, idx, {d}) is False
 
+    def test_rolled_up_ancestor_source_is_skipped(self):
+        d = _D
+        rows = [
+            _rr("parent", {d: 30.0}, sources={d: "imputed-rollup: a(+)"}),
+            _rr("a", {d: 30.0}, parent="parent"),
+            _rr("b", {}, parent="parent"),
+        ]
+        idx = {r.tag: i for i, r in enumerate(rows)}
+        rules = [("b", [("parent", 1), ("a", -1)])]
+        assert _run_imputation_passes(rows, rules, idx, {d}) is False
+        assert d not in rows[2].values
+
+    def test_tagged_ancestor_source_is_used(self):
+        d = _D
+        rows = [
+            _rr("parent", {d: 30.0}, sources={d: "us-gaap:Parent"}),
+            _rr("a", {d: 20.0}, parent="parent"),
+            _rr("b", {}, parent="parent"),
+        ]
+        idx = {r.tag: i for i, r in enumerate(rows)}
+        rules = [("b", [("parent", 1), ("a", -1)])]
+        assert _run_imputation_passes(rows, rules, idx, {d}) is True
+        assert rows[2].values[d] == 10.0
+
+    @pytest.mark.parametrize(
+        ("pretax", "costs_source", "expected"),
+        [
+            (100, "us-gaap:CostsAndExpenses", None),
+            (80, "us-gaap:CostsAndExpenses", 300 * _M),
+            (100, "imputed: total_revenue - total_operating_income", 300 * _M),
+        ],
+    )
+    def test_single_step_costs_total_is_no_input(self, pretax, costs_source, expected):
+        d = _D
+        rows = [
+            _rr("total_revenue", {d: 1000 * _M}, sources={d: "us-gaap:Revenues"}),
+            _rr("costs_and_expenses", {d: 900 * _M}, sources={d: costs_source}),
+            _rr("total_pretax_income", {d: pretax * _M}, sources={d: "us-gaap:P"}),
+            _rr("total_cost_of_revenue", {d: 600 * _M}, sources={d: "us-gaap:C"}),
+            _rr("total_operating_expenses", {}),
+        ]
+        rules = [
+            (
+                "total_operating_expenses",
+                [("costs_and_expenses", 1), ("total_cost_of_revenue", -1)],
+            )
+        ]
+        _run_imputation_passes(rows, rules, {r.tag: i for i, r in enumerate(rows)}, {d})
+        assert _by_tag(rows, "total_operating_expenses").values.get(d) == expected
+
+    @pytest.mark.parametrize(("operating", "expected"), [(500, None), (400, 100 * _M)])
+    def test_zero_gross_line_not_derived(self, operating, expected):
+        d = _D
+        rows = [
+            _rr("costs_and_expenses", {d: 500 * _M}, sources={d: "us-gaap:C"}),
+            _rr(
+                "total_operating_expenses",
+                {d: operating * _M},
+                sources={d: "us-gaap:O"},
+            ),
+            _rr("total_cost_of_revenue", {}),
+        ]
+        rules = [
+            (
+                "total_cost_of_revenue",
+                [("costs_and_expenses", 1), ("total_operating_expenses", -1)],
+            )
+        ]
+        _run_imputation_passes(rows, rules, {r.tag: i for i, r in enumerate(rows)}, {d})
+        assert _by_tag(rows, "total_cost_of_revenue").values.get(d) == expected
+
+    @pytest.mark.parametrize(("net_income", "expected"), [(70, None), (None, 300)])
+    def test_single_step_with_derived_pretax(self, net_income, expected):
+        d = _D
+        rows = [
+            _rr("total_revenue", {d: 1000 * _M}, sources={d: "us-gaap:Revenues"}),
+            _rr(
+                "costs_and_expenses",
+                {d: 900 * _M},
+                sources={d: "us-gaap:CostsAndExpenses"},
+            ),
+            _rr("total_pretax_income", {}),
+            _rr(
+                "net_income_continuing",
+                {} if net_income is None else {d: net_income * _M},
+                sources={} if net_income is None else {d: "us-gaap:N"},
+            ),
+            _rr("income_tax_expense", {d: 30 * _M}, sources={d: "us-gaap:T"}),
+            _rr("total_cost_of_revenue", {d: 600 * _M}, sources={d: "us-gaap:C"}),
+            _rr("total_operating_expenses", {}),
+        ]
+        rules = [
+            (
+                "total_operating_expenses",
+                [("costs_and_expenses", 1), ("total_cost_of_revenue", -1)],
+            ),
+            (
+                "total_pretax_income",
+                [("total_revenue", 1), ("costs_and_expenses", -1)],
+            ),
+            (
+                "total_pretax_income",
+                [("net_income_continuing", 1), ("income_tax_expense", 1)],
+            ),
+        ]
+        _run_imputation_passes(rows, rules, {r.tag: i for i, r in enumerate(rows)}, {d})
+        opex = _by_tag(rows, "total_operating_expenses").values.get(d)
+        assert opex == (None if expected is None else expected * _M)
+        assert _by_tag(rows, "total_pretax_income").values[d] == 100 * _M
+
+    def test_ancestor_walk_stops_on_parent_cycle(self):
+        d = _D
+        rows = [
+            _rr("x", {d: 5.0}, parent="y"),
+            _rr("y", {}, parent="x"),
+            _rr("z", {d: 7.0}, sources={d: "imputed-rollup: q(+)"}),
+        ]
+        idx = {r.tag: i for i, r in enumerate(rows)}
+        rules = [("y", [("z", 1)])]
+        assert _run_imputation_passes(rows, rules, idx, {d}) is True
+        assert rows[1].values[d] == 7.0
+
 
 class TestApplyHierarchicalArticulation:
     def test_no_child_values_leaves_parent_untouched(self):
@@ -162,8 +294,7 @@ class TestApplyHierarchicalArticulation:
         assert d not in _by_tag(rows, "total_assets").values
         assert _by_tag(rows, "other_assets") is None
 
-    def test_existing_nonimputed_plug_not_overwritten(self):
-        # An other_* child that already holds a non-imputed value is left alone.
+    def test_tagged_other_line_replaced_by_remainder(self):
         d = _D
         rows = [
             _rr(
@@ -192,11 +323,56 @@ class TestApplyHierarchicalArticulation:
             ),
         ]
         _apply_hierarchical_articulation(rows, {d})
-        # The hard-sourced other_assets is a real child (counts toward sum) and is
-        # not overwritten by a plug.
         oa = _by_tag(rows, "other_assets")
-        assert oa.values[d] == 7.0 * _M
-        assert "us-gaap:OtherAssets" in oa.sources[d]
+        assert oa.values[d] == 100.0 * _M
+        assert oa.sources[d].startswith("imputed-plug")
+
+    def test_tagged_other_line_kept_when_articulating(self):
+        d = _D
+        rows = [
+            _rr("total_assets", {d: 200.0 * _M}, period_type="instant", sequence=10),
+            _rr(
+                "cash",
+                {d: 100.0 * _M},
+                parent="total_assets",
+                sequence=1,
+                period_type="instant",
+            ),
+            _rr(
+                "other_assets",
+                {d: 100.0 * _M},
+                parent="total_assets",
+                sequence=2,
+                period_type="instant",
+                sources={d: "us-gaap:OtherAssets"},
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "other_assets").sources[d] == "us-gaap:OtherAssets"
+
+    def test_mapped_other_line_holds_remainder(self):
+        d = _D
+        rows = [
+            _rr("total_other_income", {d: 50.0 * _M}, sequence=10),
+            _rr(
+                "total_interest_income",
+                {d: 20.0 * _M},
+                parent="total_other_income",
+                sequence=1,
+            ),
+            _rr(
+                "other_income",
+                {d: 5.0 * _M},
+                parent="total_other_income",
+                sequence=2,
+                sources={d: "us-gaap:OtherNonoperatingIncomeExpense"},
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        oi = _by_tag(rows, "other_income")
+        assert oi.values[d] == 30.0 * _M
+        assert oi.sources[d].startswith("imputed-plug")
+        assert _by_tag(rows, "other_other_income") is None
 
     def test_imputed_plug_child_excluded_then_replug(self):
         # An other_* child already carrying an imputed-plug is excluded from the
@@ -234,10 +410,2474 @@ class TestApplyHierarchicalArticulation:
         assert oa.values[d] == 80.0 * _M
         assert "imputed-plug" in oa.sources[d]
 
+    def test_rollup_requires_required_child_value(self):
+        d = _D
+        rows = [
+            _rr("total_gross_profit", {}, sequence=10),
+            _rr(
+                "total_revenue",
+                {d: 100.0 * _M},
+                parent="total_gross_profit",
+                sequence=1,
+            ),
+            _rr(
+                "total_cost_of_revenue",
+                {},
+                parent="total_gross_profit",
+                factor="-",
+                sequence=2,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert d not in _by_tag(rows, "total_gross_profit").values
+
+    def test_rollup_requirement_ignored_when_not_in_tree(self):
+        d = _D
+        rows = [
+            _rr("total_liabilities", {}, period_type="instant", sequence=10),
+            _rr(
+                "total_current_liabilities",
+                {d: 40.0 * _M},
+                parent="total_liabilities",
+                period_type="instant",
+                sequence=1,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "total_liabilities").values[d] == 40.0 * _M
+
+    def test_empty_rollup_requirement_never_rolls_up(self):
+        d = _D
+        rows = [
+            _rr("comprehensive_income_parent", {}, sequence=10),
+            _rr(
+                "other_comprehensive_income",
+                {d: 5.0 * _M},
+                parent="comprehensive_income_parent",
+                sequence=1,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert d not in _by_tag(rows, "comprehensive_income_parent").values
+
+    def test_rollup_includes_designated_other_line(self):
+        d = _D
+        rows = [
+            _rr("total_other_income", {}, sequence=10),
+            _rr(
+                "total_interest_income",
+                {d: 20.0 * _M},
+                parent="total_other_income",
+                sequence=1,
+            ),
+            _rr(
+                "other_income",
+                {d: 5.0 * _M},
+                parent="total_other_income",
+                sequence=2,
+                sources={d: "us-gaap:OtherNonoperatingIncomeExpense"},
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        toi = _by_tag(rows, "total_other_income")
+        assert toi.values[d] == 25.0 * _M
+        assert toi.sources[d] == (
+            "imputed-rollup: total_interest_income(+) + other_income(+)"
+        )
+
+    def test_rollup_from_designated_other_line_alone(self):
+        d = _D
+        rows = [
+            _rr("total_other_income", {}, sequence=10),
+            _rr(
+                "other_income",
+                {d: 5.0 * _M},
+                parent="total_other_income",
+                sequence=2,
+                sources={d: "us-gaap:OtherNonoperatingIncomeExpense"},
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        toi = _by_tag(rows, "total_other_income")
+        assert toi.values[d] == 5.0 * _M
+        assert toi.sources[d] == "imputed-rollup: other_income(+)"
+
+    def test_contained_component_gets_period_factor_zero(self):
+        d = _D
+        rows = [
+            _rr("total_x", {d: 100.0 * _M}, sequence=10),
+            _rr("a", {d: 60.0 * _M}, parent="total_x", sequence=1),
+            _rr("b", {d: 40.0 * _M}, parent="total_x", sequence=2),
+            _rr("c", {d: 30.0 * _M}, parent="total_x", sequence=3),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        c = _by_tag(rows, "c")
+        assert c.date_factors == {d: "0"}
+        assert c.factor_on(d) == "0"
+        assert c.values[d] == 30.0 * _M
+        assert _by_tag(rows, "other_x") is None
+
+    def test_contained_pair_gets_period_factor_zero(self):
+        d = _D
+        rows = [
+            _rr("total_x", {d: 100.0 * _M}, sequence=10),
+            _rr("a", {d: 70.0 * _M}, parent="total_x", sequence=1),
+            _rr("b", {d: 30.0 * _M}, parent="total_x", sequence=2),
+            _rr("c", {d: 12.0 * _M}, parent="total_x", sequence=3),
+            _rr("e", {d: 8.0 * _M}, parent="total_x", sequence=4),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "c").factor_on(d) == "0"
+        assert _by_tag(rows, "e").factor_on(d) == "0"
+        assert _by_tag(rows, "a").factor_on(d) == "+"
+        assert _by_tag(rows, "other_x") is None
+
+    def test_ambiguous_containment_goes_to_remainder(self):
+        d = _D
+        rows = [
+            _rr("total_x", {d: 100.0 * _M}, sequence=10),
+            _rr("a", {d: 80.0 * _M}, parent="total_x", sequence=1),
+            _rr("b", {d: 20.0 * _M}, parent="total_x", sequence=2),
+            _rr("c", {d: 20.0 * _M}, parent="total_x", sequence=3),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "b").date_factors == {}
+        assert _by_tag(rows, "c").date_factors == {}
+        other = _by_tag(rows, "other_x")
+        assert other.values[d] == -20.0 * _M
+        assert other.sources[d].startswith("imputed-plug: total_x - ")
+
+    def test_contained_single_equal_to_other_line_left_to_other_line(self):
+        d = _D
+        rows = [
+            _rr("total_x", {d: 100.0 * _M}, sequence=10),
+            _rr("a", {d: 60.0 * _M}, parent="total_x", sequence=1),
+            _rr("b", {d: 40.0 * _M}, parent="total_x", sequence=2),
+            _rr(
+                "other_x",
+                {d: 40.0 * _M},
+                parent="total_x",
+                sequence=3,
+                sources={d: "us-gaap:OtherX"},
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "b").date_factors == {}
+        assert d not in _by_tag(rows, "other_x").values
+
+    def test_explicit_line_inside_tagged_other_contained(self):
+        d = _D
+        rows = [
+            _rr(
+                "total_noncurrent_assets",
+                {d: 100.0 * _M},
+                period_type="instant",
+                sequence=10,
+            ),
+            _rr(
+                "net_ppe",
+                {d: 60.0 * _M},
+                parent="total_noncurrent_assets",
+                period_type="instant",
+                sequence=1,
+            ),
+            _rr(
+                "operating_lease_right_of_use_asset",
+                {d: 10.0 * _M},
+                parent="total_noncurrent_assets",
+                period_type="instant",
+                sequence=2,
+            ),
+            _rr(
+                "other_noncurrent_assets",
+                {d: 40.0 * _M},
+                parent="total_noncurrent_assets",
+                period_type="instant",
+                sequence=3,
+                sources={d: "us-gaap:OtherAssetsNoncurrent"},
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "operating_lease_right_of_use_asset").factor_on(d) == "0"
+        other = _by_tag(rows, "other_noncurrent_assets")
+        assert other.values[d] == 40.0 * _M
+        assert other.sources[d] == "us-gaap:OtherAssetsNoncurrent"
+
+    def test_component_without_room_not_contained(self):
+        d = _D
+        rows = [
+            _rr("total_x", {d: -103.0 * _M}, sequence=10),
+            _rr("a", {d: -60.0 * _M}, parent="total_x", sequence=1),
+            _rr("b", {d: -40.0 * _M}, parent="total_x", sequence=2),
+            _rr("c", {d: 50.0 * _M}, parent="total_x", sequence=3),
+            _rr(
+                "other_x",
+                {d: -3.0 * _M},
+                parent="total_x",
+                sequence=4,
+                sources={d: "us-gaap:OtherX"},
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "c").date_factors == {}
+        other = _by_tag(rows, "other_x")
+        assert other.values[d] == -53.0 * _M
+        assert other.sources[d].startswith("imputed-plug")
+
+    def test_scope_variant_contained_without_room(self):
+        d = _D
+        rows = [
+            _rr("total_pretax_income", {d: 100.0 * _M}, sequence=10),
+            _rr(
+                "total_operating_income",
+                {d: 100.0 * _M},
+                parent="total_pretax_income",
+                sequence=1,
+            ),
+            _rr(
+                "equity_method_investments",
+                {d: 150.0 * _M},
+                parent="total_pretax_income",
+                sequence=2,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "equity_method_investments").factor_on(d) == "0"
+
+    def test_net_income_line_holds_no_component(self):
+        d = _D
+        rows = [
+            _rr(
+                "net_cash_from_continuing_operating_activities",
+                {d: 100.0 * _M},
+                sequence=10,
+            ),
+            _rr(
+                "net_income_continuing",
+                {d: 100.0 * _M},
+                parent="net_cash_from_continuing_operating_activities",
+                sequence=1,
+            ),
+            _rr(
+                "stock_based_compensation",
+                {d: 30.0 * _M},
+                parent="net_cash_from_continuing_operating_activities",
+                sequence=2,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "stock_based_compensation").date_factors == {}
+        other = _by_tag(rows, "other_operating_activities") or _by_tag(
+            rows, "other_net_cash_from_continuing_operating_activities"
+        )
+        assert other.values[d] == -30.0 * _M
+
+    def test_mixed_sign_pair_not_contained(self):
+        d = _D
+        rows = [
+            _rr("total_x", {d: 100.0 * _M}, sequence=10),
+            _rr("a", {d: 100.0 * _M}, parent="total_x", sequence=1),
+            _rr("b", {d: 193.0 * _M}, parent="total_x", sequence=2),
+            _rr("c", {d: -124.0 * _M}, parent="total_x", sequence=3),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "b").date_factors == {}
+        assert _by_tag(rows, "c").date_factors == {}
+        assert _by_tag(rows, "other_x").values[d] == -69.0 * _M
+
+    def test_component_outside_reported_section_total_relocated(self):
+        d = _D
+
+        def inst(tag, value, parent, seq):
+            return _rr(
+                tag,
+                {} if value is None else {d: value * _M},
+                parent=parent,
+                period_type="instant",
+                sequence=seq,
+            )
+
+        rows = [
+            inst("total_liabilities_and_equity", 6036.0, None, 30),
+            inst("total_liabilities", None, "total_liabilities_and_equity", 20),
+            inst("total_current_liabilities", 440.0, "total_liabilities", 1),
+            inst("total_noncurrent_liabilities", 1528.0, "total_liabilities", 10),
+            inst("long_term_debt", 2131.0, "total_noncurrent_liabilities", 2),
+            inst(
+                "asset_retirement_and_litigation_obligation",
+                108.0,
+                "total_noncurrent_liabilities",
+                3,
+            ),
+            inst(
+                "noncurrent_deferred_tax_liabilities",
+                513.0,
+                "total_noncurrent_liabilities",
+                4,
+            ),
+            inst(
+                "total_equity_and_noncontrolling_interests",
+                1937.0,
+                "total_liabilities_and_equity",
+                21,
+            ),
+            inst("temporary_equity", None, "total_liabilities_and_equity", 22),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        tncl = _by_tag(rows, "total_noncurrent_liabilities")
+        assert tncl.values[d] == 3659.0 * _M
+        assert tncl.sources[d] == (
+            "corrected: total_noncurrent_liabilities + long_term_debt"
+        )
+        assert _by_tag(rows, "other_noncurrent_liabilities").values[d] == 907.0 * _M
+        assert _by_tag(rows, "total_liabilities").values[d] == 4099.0 * _M
+        assert d not in _by_tag(rows, "temporary_equity").values
+
+    def _inst(self, tag, value, parent=None, seq=1, source=None):
+        d = _D
+        return _rr(
+            tag,
+            {} if value is None else {d: value * _M},
+            parent=parent,
+            period_type="instant",
+            sequence=seq,
+            sources={} if value is None or source is None else {d: source},
+        )
+
+    def test_same_fact_in_two_rows_contained_once(self):
+        d = _D
+        fact = "us-gaap:PropertyPlantAndEquipmentNet"
+        rows = [
+            self._inst("total_assets", 100.0, seq=20),
+            self._inst("cash_and_equivalents", 70.0, "total_assets", 1),
+            self._inst("net_ppe", 30.0, "total_assets", 5, fact),
+            self._inst("net_premises_and_equipment", 30.0, "total_assets", 6, fact),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "net_ppe").date_factors == {}
+        assert _by_tag(rows, "net_premises_and_equipment").factor_on(d) == "0"
+        assert _by_tag(rows, "other_assets") is None
+
+    def test_equal_balances_over_total_contained_once(self):
+        d = _D
+        rows = [
+            self._inst("total_current_assets", 18452.0, seq=20),
+            self._inst("cash_and_equivalents", 3818.0, "total_current_assets", 1),
+            self._inst("short_term_investments", 90.0, "total_current_assets", 2),
+            self._inst("accounts_receivable", 6673.0, "total_current_assets", 3),
+            self._inst("net_inventory", 3886.0, "total_current_assets", 4),
+            self._inst(
+                "prepaid_expenses",
+                2531.0,
+                "total_current_assets",
+                5,
+                "us-gaap:PrepaidExpenseCurrent",
+            ),
+            self._inst(
+                "other_current_nonoperating_assets",
+                2531.0,
+                "total_current_assets",
+                8,
+                "us-gaap:PrepaidExpenseAndOtherAssetsCurrent",
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "prepaid_expenses").date_factors == {}
+        assert _by_tag(rows, "other_current_nonoperating_assets").factor_on(d) == "0"
+        assert _by_tag(rows, "other_current_assets").values[d] == 1454.0 * _M
+
+    def test_nested_group_leaving_smallest_remainder_contained(self):
+        d = _D
+        rows = [
+            self._inst("total_current_liabilities", 30011.0, seq=20),
+            self._inst("accounts_payable", 11260.0, "total_current_liabilities", 1),
+            self._inst("accrued_expenses", 9054.0, "total_current_liabilities", 2),
+            self._inst("short_term_debt", 6183.0, "total_current_liabilities", 3),
+            self._inst(
+                "current_portion_of_long_term_debt",
+                3388.0,
+                "total_current_liabilities",
+                4,
+            ),
+            self._inst(
+                "current_employee_benefit_liabilities",
+                1623.0,
+                "total_current_liabilities",
+                5,
+            ),
+            self._inst("other_taxes_payable", 341.0, "total_current_liabilities", 6),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "current_employee_benefit_liabilities").factor_on(d) == "0"
+        assert _by_tag(rows, "other_taxes_payable").factor_on(d) == "0"
+        assert _by_tag(rows, "current_portion_of_long_term_debt").date_factors == {}
+        assert _by_tag(rows, "other_current_liabilities").values[d] == 126.0 * _M
+
+    def test_total_equity_reconciled_with_common_equity_rollup(self):
+        d = _D
+        rows = [
+            self._inst("total_equity", 100.0, seq=20),
+            self._inst("total_common_equity", None, "total_equity", 10),
+            self._inst("common_equity", 10.0, "total_common_equity", 1),
+            self._inst("additional_paid_in_capital", 50.0, "total_common_equity", 2),
+            self._inst("retained_earnings", 30.0, "total_common_equity", 3),
+            self._inst("other_equity", None, "total_common_equity", 4),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        tce = _by_tag(rows, "total_common_equity")
+        assert tce.values[d] == 100.0 * _M
+        assert tce.sources[d].startswith("imputed-plug: total_equity - ")
+        other = _by_tag(rows, "other_equity")
+        assert other.values[d] == 10.0 * _M
+        assert other.sources[d].startswith("imputed-plug: total_common_equity - ")
+
+    def test_contra_only_components_create_no_remainder(self):
+        d = _D
+        rows = [
+            self._inst("net_ppe", 24675.0, seq=20),
+            self._inst("gross_ppe", None, "net_ppe", 1),
+            _rr(
+                "accumulated_depreciation",
+                {d: 12560.0 * _M},
+                parent="net_ppe",
+                factor="-",
+                period_type="instant",
+                sequence=2,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "other_net_ppe") is None
+        assert _by_tag(rows, "net_ppe").values[d] == 24675.0 * _M
+
+    def test_scope_variant_pair_of_mixed_signs_contained(self):
+        d = _D
+        rows = [
+            _rr("total_x", {d: 47.0 * _M}, sequence=10),
+            _rr("a", {d: 1552.0 * _M}, parent="total_x", sequence=1),
+            _rr(
+                "net_cash_from_discontinued_operating_activities",
+                {d: -7.0 * _M},
+                parent="total_x",
+                sequence=2,
+            ),
+            _rr("b", {d: -663.0 * _M}, parent="total_x", sequence=3),
+            _rr(
+                "net_cash_from_discontinued_investing_activities",
+                {d: 50.0 * _M},
+                parent="total_x",
+                sequence=4,
+            ),
+            _rr("c", {d: -842.0 * _M}, parent="total_x", sequence=5),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert (
+            _by_tag(rows, "net_cash_from_discontinued_operating_activities").factor_on(
+                d
+            )
+            == "0"
+        )
+        assert (
+            _by_tag(rows, "net_cash_from_discontinued_investing_activities").factor_on(
+                d
+            )
+            == "0"
+        )
+        assert _by_tag(rows, "other_x") is None
+
+    def test_imputed_parent_is_not_containment_evidence(self):
+        d = _D
+        rows = [
+            _rr(
+                "total_x",
+                {d: 100.0 * _M},
+                sequence=10,
+                sources={d: "imputed: total_y - total_z"},
+            ),
+            _rr("a", {d: 60.0 * _M}, parent="total_x", sequence=1),
+            _rr("b", {d: 40.0 * _M}, parent="total_x", sequence=2),
+            _rr("c", {d: 30.0 * _M}, parent="total_x", sequence=3),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "c").date_factors == {}
+        assert _by_tag(rows, "other_x").values[d] == -30.0 * _M
+
+    def test_every_same_fact_duplicate_contained(self):
+        d = _D
+        ppe = "us-gaap:PropertyPlantAndEquipmentNet"
+        receivables = "us-gaap:AccountsReceivableNet"
+        rows = [
+            self._inst("total_assets", 65.0, seq=20),
+            self._inst("cash_and_equivalents", 30.0, "total_assets", 1),
+            self._inst("net_ppe", 10.0, "total_assets", 5, ppe),
+            self._inst("net_premises_and_equipment", 10.0, "total_assets", 6, ppe),
+            self._inst("accounts_receivable", 25.0, "total_assets", 7, receivables),
+            self._inst(
+                "customer_and_other_receivables", 25.0, "total_assets", 8, receivables
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "net_premises_and_equipment").factor_on(d) == "0"
+        assert _by_tag(rows, "customer_and_other_receivables").factor_on(d) == "0"
+        assert _by_tag(rows, "net_ppe").date_factors == {}
+        assert _by_tag(rows, "accounts_receivable").date_factors == {}
+
+    def test_contained_component_found_under_rolled_up_other_line(self):
+        d = _D
+        rows = [
+            _rr("total_equity", {d: 100.0 * _M}, period_type="instant", sequence=10),
+            _rr(
+                "total_preferred_equity",
+                {d: 10.0 * _M},
+                parent="total_equity",
+                period_type="instant",
+                sequence=1,
+            ),
+            _rr(
+                "total_common_equity",
+                {},
+                parent="total_equity",
+                period_type="instant",
+                sequence=2,
+            ),
+            _rr(
+                "retained_earnings",
+                {d: 90.0 * _M},
+                parent="total_common_equity",
+                period_type="instant",
+                sequence=3,
+            ),
+            _rr(
+                "preferred_in_common",
+                {d: 10.0 * _M},
+                parent="total_common_equity",
+                period_type="instant",
+                sequence=4,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "preferred_in_common").factor_on(d) == "0"
+        assert _by_tag(rows, "total_common_equity").values[d] == 90.0 * _M
+
+    def test_presented_memo_promoted(self):
+        d = _D
+        rows = [
+            _rr("net_cash_from_operating_activities", {d: 100.0 * _M}, sequence=10),
+            _rr(
+                "net_cash_from_continuing_operating_activities",
+                {d: 70.0 * _M},
+                parent="net_cash_from_operating_activities",
+                sequence=1,
+            ),
+            _rr(
+                "net_cash_from_discontinued_operations",
+                {d: 30.0 * _M},
+                parent="net_cash_from_operating_activities",
+                factor="0",
+                sequence=2,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        memo = _by_tag(rows, "net_cash_from_discontinued_operations")
+        assert memo.factor_on(d) == "+"
+        assert memo.factor == "0"
+        assert _by_tag(rows, "other_net_cash_from_operating_activities") is None
+
+    def test_incomplete_rollup_absorbs_section_difference(self):
+        d = _D
+        rows = [
+            _rr(
+                "total_liabilities_and_equity",
+                {d: 300.0 * _M},
+                period_type="instant",
+                sequence=20,
+            ),
+            _rr(
+                "total_liabilities",
+                {},
+                parent="total_liabilities_and_equity",
+                period_type="instant",
+                sequence=10,
+            ),
+            _rr(
+                "total_current_liabilities",
+                {d: 100.0 * _M},
+                parent="total_liabilities",
+                period_type="instant",
+                sequence=1,
+            ),
+            _rr(
+                "long_term_debt",
+                {d: 50.0 * _M},
+                parent="total_liabilities",
+                period_type="instant",
+                sequence=2,
+            ),
+            _rr(
+                "total_equity_and_noncontrolling_interests",
+                {d: 100.0 * _M},
+                parent="total_liabilities_and_equity",
+                period_type="instant",
+                sequence=11,
+            ),
+            _rr(
+                "temporary_equity",
+                {},
+                parent="total_liabilities_and_equity",
+                period_type="instant",
+                sequence=12,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        tl = _by_tag(rows, "total_liabilities")
+        assert tl.values[d] == 200.0 * _M
+        assert tl.sources[d].startswith("imputed-plug: total_liabilities_and_equity - ")
+        other = _by_tag(rows, "other_liabilities")
+        assert other.values[d] == 50.0 * _M
+        assert d not in _by_tag(rows, "temporary_equity").values
+
+    def test_nonnegative_line_negative_remainder_not_held(self):
+        d = _D
+        rows = [
+            _rr(
+                "total_liabilities_and_equity",
+                {d: 300.0 * _M},
+                period_type="instant",
+                sequence=20,
+            ),
+            _rr(
+                "total_liabilities",
+                {d: 220.0 * _M},
+                parent="total_liabilities_and_equity",
+                period_type="instant",
+                sequence=10,
+            ),
+            _rr(
+                "total_equity_and_noncontrolling_interests",
+                {d: 100.0 * _M},
+                parent="total_liabilities_and_equity",
+                period_type="instant",
+                sequence=11,
+            ),
+            _rr(
+                "temporary_equity",
+                {},
+                parent="total_liabilities_and_equity",
+                period_type="instant",
+                sequence=12,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert d not in _by_tag(rows, "temporary_equity").values
+        assert _by_tag(rows, "other_liabilities_and_equity") is None
+
+    def test_nonnegative_line_positive_remainder_held(self):
+        d = _D
+        rows = [
+            _rr(
+                "total_liabilities_and_equity",
+                {d: 300.0 * _M},
+                period_type="instant",
+                sequence=20,
+            ),
+            _rr(
+                "total_liabilities",
+                {d: 180.0 * _M},
+                parent="total_liabilities_and_equity",
+                period_type="instant",
+                sequence=10,
+            ),
+            _rr(
+                "total_equity_and_noncontrolling_interests",
+                {d: 100.0 * _M},
+                parent="total_liabilities_and_equity",
+                period_type="instant",
+                sequence=11,
+            ),
+            _rr(
+                "temporary_equity",
+                {},
+                parent="total_liabilities_and_equity",
+                period_type="instant",
+                sequence=12,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "temporary_equity").values[d] == 20.0 * _M
+        assert _by_tag(rows, "other_liabilities_and_equity") is None
+
+    def test_negative_noncurrent_remainder_not_held(self):
+        d = _D
+        rows = [
+            _rr("total_assets", {d: 100.0 * _M}, period_type="instant", sequence=20),
+            _rr(
+                "total_current_assets",
+                {d: 110.0 * _M},
+                parent="total_assets",
+                period_type="instant",
+                sequence=1,
+            ),
+            _rr(
+                "total_noncurrent_assets",
+                {},
+                parent="total_assets",
+                period_type="instant",
+                sequence=2,
+            ),
+            _rr(
+                "other_assets",
+                {},
+                parent="total_assets",
+                period_type="instant",
+                sequence=3,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert d not in _by_tag(rows, "total_noncurrent_assets").values
+        assert d not in _by_tag(rows, "other_assets").values
+
+    def test_negative_gross_remainder_not_held(self):
+        d = _D
+        rows = [
+            _rr("depreciation_and_amortization", {d: 100 * _M}, sequence=10),
+            _rr(
+                "depreciation_expense",
+                {d: 80 * _M},
+                parent="depreciation_and_amortization",
+                sequence=1,
+            ),
+            _rr(
+                "amortization_expense",
+                {d: 30 * _M},
+                parent="depreciation_and_amortization",
+                sequence=2,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "other_depreciation_and_amortization") is None
+        assert _by_tag(rows, "depreciation_and_amortization").values[d] == 100 * _M
+
+    @pytest.mark.parametrize(("operating", "expected"), [(None, None), (50, 30 * _M)])
+    def test_pretax_remainder_requires_operating_income(self, operating, expected):
+        d = _D
+        rows = [
+            _rr("total_pretax_income", {d: 100 * _M}, sequence=10),
+            _rr(
+                "total_operating_income",
+                {} if operating is None else {d: operating * _M},
+                parent="total_pretax_income",
+                sequence=1,
+            ),
+            _rr(
+                "total_other_income",
+                {},
+                parent="total_pretax_income",
+                sequence=2,
+            ),
+            _rr(
+                "equity_method_investments",
+                {d: 20 * _M},
+                parent="total_pretax_income",
+                sequence=3,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "total_other_income").values.get(d) == expected
+
+    def test_all_zero_children_not_rolled_up(self):
+        d = _D
+        rows = [
+            _rr("depreciation_and_amortization", {}, sequence=10),
+            _rr("depreciation_expense", {d: 0}, parent="depreciation_and_amortization"),
+            _rr("amortization_expense", {d: 0}, parent="depreciation_and_amortization"),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert d not in _by_tag(rows, "depreciation_and_amortization").values
+
+    def test_contra_only_children_not_rolled_up(self):
+        d = _D
+        rows = [
+            _rr("net_ppe", {}, period_type="instant", sequence=15),
+            _rr("gross_ppe", {}, parent="net_ppe", period_type="instant", sequence=13),
+            _rr(
+                "accumulated_depreciation",
+                {d: 531 * _M},
+                parent="net_ppe",
+                factor="-",
+                period_type="instant",
+                sequence=14,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert d not in _by_tag(rows, "net_ppe").values
+
+    @pytest.mark.parametrize(("operating", "expected"), [(None, None), (500, 300)])
+    def test_pretax_rollup_requires_operating_income(self, operating, expected):
+        d = _D
+        rows = [
+            _rr("total_pretax_income", {}, sequence=10),
+            _rr(
+                "total_operating_income",
+                {} if operating is None else {d: operating * _M},
+                parent="total_pretax_income",
+                sequence=1,
+            ),
+            _rr(
+                "total_other_income",
+                {d: -200 * _M},
+                parent="total_pretax_income",
+                sequence=2,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        pretax = _by_tag(rows, "total_pretax_income").values.get(d)
+        assert pretax == (None if expected is None else expected * _M)
+
+    @pytest.mark.parametrize(
+        ("liabilities", "expected"), [(None, None), (600, 1000 * _M)]
+    )
+    def test_liabilities_and_equity_rollup_requires_liabilities(
+        self, liabilities, expected
+    ):
+        d = _D
+        rows = [
+            _rr("total_liabilities_and_equity", {}, period_type="instant", sequence=73),
+            _rr(
+                "total_liabilities",
+                {} if liabilities is None else {d: liabilities * _M},
+                parent="total_liabilities_and_equity",
+                period_type="instant",
+                sequence=54,
+            ),
+            _rr(
+                "total_equity_and_noncontrolling_interests",
+                {d: 400 * _M},
+                parent="total_liabilities_and_equity",
+                period_type="instant",
+                sequence=72,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "total_liabilities_and_equity").values.get(d) == expected
+
+    def test_operating_totals_never_rolled_up(self):
+        d = _D
+        rows = [
+            _rr("total_operating_income", {}, sequence=10),
+            _rr(
+                "total_gross_profit",
+                {d: 100 * _M},
+                parent="total_operating_income",
+                sequence=1,
+            ),
+            _rr(
+                "total_operating_expenses",
+                {},
+                parent="total_operating_income",
+                factor="-",
+                sequence=2,
+            ),
+            _rr("sga_expense", {d: 30 * _M}, parent="total_operating_expenses"),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert d not in _by_tag(rows, "total_operating_expenses").values
+        assert d not in _by_tag(rows, "total_operating_income").values
+
+    def test_integer_rollup_stays_integer(self):
+        d = _D
+        rows = [
+            _rr("depreciation_and_amortization", {}, sequence=10),
+            _rr(
+                "depreciation_expense",
+                {d: 80 * _M},
+                parent="depreciation_and_amortization",
+            ),
+            _rr(
+                "amortization_expense",
+                {d: 30 * _M},
+                parent="depreciation_and_amortization",
+                factor="-",
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        value = _by_tag(rows, "depreciation_and_amortization").values[d]
+        assert value == 50 * _M
+        assert isinstance(value, int)
+
+    @pytest.mark.parametrize(("liabilities", "expected"), [(None, None), (600, 1100)])
+    def test_date_without_balance_sheet_holds_no_totals(self, liabilities, expected):
+        d = _D
+
+        def inst(tag, value, parent=None, seq=1):
+            return _rr(
+                tag,
+                {} if value is None else {d: value * _M},
+                parent=parent,
+                period_type="instant",
+                sequence=seq,
+                sources={} if value is None else {d: f"us-gaap:{tag}"},
+            )
+
+        rows = [
+            inst("total_assets", None, seq=10),
+            inst("cash_and_equivalents", 100, "total_assets", 1),
+            inst("total_liabilities_and_equity", None, seq=30),
+            inst("total_liabilities", liabilities, "total_liabilities_and_equity", 20),
+            inst(
+                "total_equity_and_noncontrolling_interests",
+                500,
+                "total_liabilities_and_equity",
+                25,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        le = _by_tag(rows, "total_liabilities_and_equity").values.get(d)
+        assert le == (None if expected is None else expected * _M)
+        if expected is None:
+            assert d not in _by_tag(rows, "total_assets").values
+
+    def test_unclassified_section_holds_no_totals(self):
+        d = _D
+
+        def inst(tag, value, parent=None, seq=1, source=None):
+            return _rr(
+                tag,
+                {} if value is None else {d: value * _M},
+                parent=parent,
+                period_type="instant",
+                sequence=seq,
+                sources={} if value is None else {d: source or f"us-gaap:{tag}"},
+            )
+
+        rows = [
+            inst("total_assets", 1000, seq=10),
+            inst("total_current_assets", None, "total_assets", 1),
+            inst("cash_and_equivalents", 300, "total_current_assets", 1),
+            inst("accounts_receivable", 200, "total_current_assets", 2),
+            inst(
+                "other_current_assets",
+                50,
+                "total_current_assets",
+                3,
+                "imputed-plug: total_current_assets - (cash_and_equivalents(+))",
+            ),
+            inst("total_noncurrent_assets", None, "total_assets", 5),
+            inst("goodwill", 400, "total_noncurrent_assets", 1),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert d not in _by_tag(rows, "total_current_assets").values
+        assert d not in _by_tag(rows, "total_noncurrent_assets").values
+        assert d not in _by_tag(rows, "other_current_assets").values
+        assert _by_tag(rows, "other_noncurrent_assets") is None
+        assert _by_tag(rows, "total_assets").values[d] == 1000 * _M
+
+    def test_remainder_rolled_up_from_its_only_match_is_contained(self):
+        d = _D
+
+        def inst(tag, value, parent=None, seq=1):
+            return _rr(
+                tag,
+                {} if value is None else {d: value * _M},
+                parent=parent,
+                period_type="instant",
+                balance="credit",
+                sequence=seq,
+                sources={} if value is None else {d: f"us-gaap:{tag}"},
+            )
+
+        rows = [
+            inst("total_liabilities_and_equity", 1000, seq=10),
+            inst("total_liabilities", 700, "total_liabilities_and_equity", 1),
+            inst(
+                "total_equity_and_noncontrolling_interests",
+                300,
+                "total_liabilities_and_equity",
+                2,
+            ),
+            inst("temporary_equity", None, "total_liabilities_and_equity", 3),
+            inst("redeemable_noncontrolling_interest", 50, "temporary_equity", 1),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "redeemable_noncontrolling_interest").factor_on(d) == "0"
+        assert d not in _by_tag(rows, "temporary_equity").values
+        assert _by_tag(rows, "other_temporary_equity") is None
+
+    def test_soft_total_fallback_rolled_up_from_children(self):
+        d = _D
+        rows = [
+            _rr(
+                "net_cash_from_operating_activities",
+                {d: 999.0 * _M},
+                sequence=10,
+                sources={
+                    d: "us-gaap:NetCashProvidedByUsedInOperatingActivities(fallback)"
+                },
+            ),
+            _rr(
+                "net_cash_from_continuing_operating_activities",
+                {d: 80.0 * _M},
+                parent="net_cash_from_operating_activities",
+                sequence=1,
+            ),
+            _rr(
+                "net_cash_from_discontinued_operating_activities",
+                {d: 20.0 * _M},
+                parent="net_cash_from_operating_activities",
+                sequence=2,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        op = _by_tag(rows, "net_cash_from_operating_activities")
+        assert op.values[d] == 100.0 * _M
+        assert op.sources[d].startswith("imputed-rollup")
+
+    def test_stale_other_plug_and_absorbable_child_go_to_remainder(self):
+        d = _D
+        rows = [
+            _rr("total_operating_income", {d: 100.0 * _M}, sequence=20),
+            _rr(
+                "total_gross_profit",
+                {d: 300.0 * _M},
+                parent="total_operating_income",
+                sequence=1,
+            ),
+            _rr(
+                "total_operating_expenses",
+                {d: 150.0 * _M},
+                parent="total_operating_income",
+                factor="-",
+                sequence=2,
+                sources={d: "imputed-plug: total_operating_income - (stale)"},
+            ),
+            _rr(
+                "sga",
+                {},
+                parent="total_operating_expenses",
+                sequence=3,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        opex = _by_tag(rows, "total_operating_expenses")
+        assert opex.values[d] == 200.0 * _M
+        assert opex.sources[d].startswith("imputed-plug: total_operating_income - ")
+
+    def test_incomplete_rolled_up_other_line_is_absorber(self):
+        d = _D
+
+        def inst(tag, value, parent=None, seq=1, source=None):
+            return _rr(
+                tag,
+                {} if value is None else {d: value * _M},
+                parent=parent,
+                period_type="instant",
+                sequence=seq,
+                sources={} if value is None else {d: source or f"us-gaap:{tag}"},
+            )
+
+        rows = [
+            inst("total_liabilities", 500, seq=20),
+            inst("total_current_liabilities", 200, "total_liabilities", 1),
+            inst(
+                "accrued_charges",
+                5,
+                "total_liabilities",
+                2,
+                "imputed-rollup: x(+) + y(+)",
+            ),
+            inst("total_noncurrent_liabilities", None, "total_liabilities", 3),
+            inst("long_term_debt", 150, "total_noncurrent_liabilities", 1),
+            inst(
+                "noncurrent_deferred_tax_liabilities",
+                50,
+                "total_noncurrent_liabilities",
+                2,
+            ),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        noncurrent = _by_tag(rows, "total_noncurrent_liabilities")
+        assert noncurrent.values[d] == 295 * _M
+        assert noncurrent.sources[d].startswith("imputed-plug: total_liabilities - ")
+        assert _by_tag(rows, "other_noncurrent_liabilities").values[d] == 95 * _M
+
+    @staticmethod
+    def _le_rows(d, liabilities, current):
+        def inst(tag, value, parent=None, seq=1):
+            return _rr(
+                tag,
+                {} if value is None else {d: value * _M},
+                parent=parent,
+                period_type="instant",
+                balance="credit",
+                sequence=seq,
+                sources={} if value is None else {d: f"us-gaap:{tag}"},
+            )
+
+        return [
+            inst("total_liabilities_and_equity", 1000.0, seq=10),
+            inst("total_liabilities", liabilities, "total_liabilities_and_equity", 2),
+            inst("total_current_liabilities", current, "total_liabilities", 1),
+            inst("temporary_equity", None, "total_liabilities_and_equity", 3),
+            inst("redeemable_noncontrolling_interest", None, "temporary_equity", 1),
+            inst(
+                "total_equity_and_noncontrolling_interests",
+                350.0,
+                "total_liabilities_and_equity",
+                4,
+            ),
+        ]
+
+    def test_liabilities_rollup_absorbs_remainder_without_mezzanine(self):
+        d = "2023-12-31"
+        rows = self._le_rows(d, None, 300.0)
+        _apply_hierarchical_articulation(rows, {d})
+        tl = _by_tag(rows, "total_liabilities")
+        assert tl.values[d] == 650.0 * _M
+        assert tl.sources[d].startswith("imputed-plug: total_liabilities_and_equity - ")
+        assert d not in _by_tag(rows, "temporary_equity").values
+
+    def test_liabilities_plug_without_mezzanine(self):
+        d = "2023-12-31"
+        rows = self._le_rows(d, None, None)
+        _apply_hierarchical_articulation(rows, {d})
+        tl = _by_tag(rows, "total_liabilities")
+        assert tl.values[d] == 650.0 * _M
+        assert tl.sources[d].startswith("imputed-plug: total_liabilities_and_equity - ")
+        assert d not in _by_tag(rows, "temporary_equity").values
+
+    def test_mezzanine_remainder_with_reported_liabilities(self):
+        d = "2023-12-31"
+        rows = self._le_rows(d, 600.0, None)
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "total_liabilities").values[d] == 600.0 * _M
+        assert _by_tag(rows, "temporary_equity").values[d] == 50.0 * _M
+
+    def test_complete_rollup_section_keeps_its_amount(self):
+        d = "2023-12-31"
+
+        def inst(tag, value, parent=None, seq=1):
+            return _rr(
+                tag,
+                {} if value is None else {d: value * _M},
+                parent=parent,
+                period_type="instant",
+                balance="debit",
+                sequence=seq,
+                sources={} if value is None else {d: f"us-gaap:{tag}"},
+            )
+
+        rows = [
+            inst("total_assets", 1000.0, seq=10),
+            inst("total_current_assets", None, "total_assets", 1),
+            inst("cash_and_equivalents", 300.0, "total_current_assets", 1),
+            inst("accounts_receivable", 200.0, "total_current_assets", 2),
+            inst("other_current_assets", 100.0, "total_current_assets", 3),
+            inst("total_noncurrent_assets", 350.0, "total_assets", 5),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "total_current_assets").values[d] == 600.0 * _M
+        noncurrent = _by_tag(rows, "total_noncurrent_assets")
+        assert noncurrent.values[d] == 400.0 * _M
+        assert noncurrent.sources[d].startswith("imputed-plug: total_assets - ")
+
+    def test_repeated_amounts_contained_together(self):
+        d = "2023-12-31"
+
+        def inst(tag, value, seq, source):
+            return _rr(
+                tag,
+                {d: value * _M},
+                parent="total_liabilities",
+                period_type="instant",
+                balance="credit",
+                sequence=seq,
+                sources={d: source},
+            )
+
+        rows = [
+            _rr(
+                "total_liabilities",
+                {d: 520.0 * _M},
+                period_type="instant",
+                balance="credit",
+                sequence=10,
+                sources={d: "us-gaap:Liabilities"},
+            ),
+            inst("claims_and_claim_expenses", 300.0, 1, "us-gaap:A"),
+            inst("future_policy_benefits", 300.0, 2, "us-gaap:B"),
+            inst("policyholder_funds", 100.0, 3, "us-gaap:C"),
+            inst("participating_policyholder_equity", 100.0, 4, "us-gaap:C"),
+        ]
+        _apply_hierarchical_articulation(rows, {d})
+        assert _by_tag(rows, "future_policy_benefits").factor_on(d) == "0"
+        assert _by_tag(rows, "participating_policyholder_equity").factor_on(d) == "0"
+        assert _by_tag(rows, "claims_and_claim_expenses").factor_on(d) == "+"
+        other = _by_tag(rows, "other_liabilities")
+        assert other.values[d] == 120.0 * _M
+
+
+class TestResolveSignFlips:
+    @staticmethod
+    def _equity(treasury, source="us-gaap:TreasuryStockValue", parent=100):
+        d = _D
+        return [
+            _rr(
+                "total_common_equity",
+                {} if parent is None else {d: parent * _M},
+                period_type="instant",
+                sequence=10,
+                sources={} if parent is None else {d: "us-gaap:StockholdersEquity"},
+            ),
+            _rr(
+                "additional_paid_in_capital",
+                {d: 140 * _M},
+                parent="total_common_equity",
+                period_type="instant",
+                sources={d: "us-gaap:AdditionalPaidInCapital"},
+            ),
+            _rr(
+                "treasury_stock",
+                {d: treasury * _M},
+                parent="total_common_equity",
+                factor="-",
+                period_type="instant",
+                sequence=2,
+                sources={d: source},
+            ),
+        ]
+
+    @staticmethod
+    def _facts(*values):
+        entries = [
+            _inst(_D, v * _M, filed=f"202{4 + i}-02-15") for i, v in enumerate(values)
+        ]
+        entries += [{"end": _D, "val": None}, {"val": 5}]
+        return {"us-gaap": {"TreasuryStockValue": {"units": {"USD": entries}}}}
+
+    def test_opposite_signed_fact_resolves_parent(self):
+        rows = self._equity(-40)
+        _resolve_sign_flips(rows, {_D}, self._facts(-40, 40), "annual", set(), [])
+        treasury = _by_tag(rows, "treasury_stock")
+        assert treasury.values[_D] == 40 * _M
+        assert treasury.sources[_D] == "us-gaap:TreasuryStockValue(sign-resolved)"
+
+    def test_parent_derived_by_rule(self):
+        rows = self._equity(-40, parent=None) + [
+            _rr("total_equity", {_D: 110 * _M}, period_type="instant"),
+            _rr("total_preferred_equity", {_D: 10 * _M}, period_type="instant"),
+        ]
+        rules = [
+            ("total_common_equity", [("noncontrolling_interests", 1)]),
+            (
+                "total_common_equity",
+                [("total_equity", 1), ("total_preferred_equity", -1)],
+            ),
+        ]
+        _resolve_sign_flips(rows, {_D}, self._facts(-40, 40), "annual", set(), rules)
+        assert _by_tag(rows, "treasury_stock").values[_D] == 40 * _M
+
+    @pytest.mark.parametrize(
+        ("treasury", "source", "facts", "parent"),
+        [
+            (-40, "us-gaap:TreasuryStockValue", (-40,), 100),
+            (-40, "us-gaap:TreasuryStockValue", (40,), 100),
+            (-40, "imputed: total_equity - x", (-40, 40), 100),
+            (0, "us-gaap:TreasuryStockValue", (0,), 140),
+            (40, "us-gaap:TreasuryStockValue", (-40, 40), 100),
+            (-40, "us-gaap:TreasuryStockValue", (-40, 40), None),
+        ],
+    )
+    def test_sign_kept(self, treasury, source, facts, parent):
+        rows = self._equity(treasury, source, parent)
+        _resolve_sign_flips(rows, {_D}, self._facts(*facts), "annual", set(), [])
+        assert _by_tag(rows, "treasury_stock").values[_D] == treasury * _M
+
+    def test_two_candidate_children_left_unchanged(self):
+        rows = self._equity(-40)
+        rows.append(
+            _rr(
+                "retained_earnings",
+                {_D: -40 * _M},
+                parent="total_common_equity",
+                factor="-",
+                period_type="instant",
+                sources={_D: "us-gaap:TreasuryStockValue"},
+            )
+        )
+        rows[0].values[_D] = 140 * _M
+        _resolve_sign_flips(rows, {_D}, self._facts(-40, 40), "annual", set(), [])
+        assert _by_tag(rows, "treasury_stock").values[_D] == -40 * _M
+
+    @staticmethod
+    def _income(later):
+        d, q = "2023-03-31", "2023-06-30"
+        sources = {d: "us-gaap:IncomeLossFromDiscontinuedOperationsNetOfTax"}
+        if later is not None:
+            sources[later] = (
+                "ytd_derived(us-gaap:IncomeLossFromDiscontinuedOperationsNetOfTax)"
+            )
+        rows = [
+            _rr(
+                "net_income",
+                {d: 107 * _M},
+                sequence=10,
+                sources={d: "us-gaap:ProfitLoss"},
+            ),
+            _rr(
+                "net_income_continuing",
+                {d: 415 * _M},
+                parent="net_income",
+                sources={d: "us-gaap:IncomeLossFromContinuingOperations"},
+            ),
+            _rr(
+                "net_income_discontinued",
+                {d: 308 * _M, q: 1 * _M},
+                parent="net_income",
+                sequence=2,
+                sources=sources,
+            ),
+        ]
+        facts = {
+            "us-gaap": {
+                "IncomeLossFromDiscontinuedOperationsNetOfTax": {
+                    "units": {
+                        "USD": [
+                            _dur(
+                                d,
+                                "2023-01-01",
+                                -308 * _M,
+                                form="10-Q",
+                                filed="2023-05-01",
+                            ),
+                            _dur(
+                                d,
+                                "2023-01-01",
+                                308 * _M,
+                                form="10-Q",
+                                filed="2024-05-01",
+                            ),
+                            _dur(
+                                d,
+                                "2022-04-01",
+                                308 * _M,
+                                form="10-K",
+                                filed="2024-02-01",
+                            ),
+                        ]
+                    }
+                }
+            }
+        }
+        return rows, facts, d
+
+    @pytest.mark.parametrize(
+        ("later", "expected"),
+        [(None, -308), ("2023-06-30", 308), ("2024-06-30", -308)],
+    )
+    def test_quarterly_year_to_date_guard(self, later, expected):
+        rows, facts, d = self._income(later)
+        _resolve_sign_flips(rows, {d}, facts, "quarterly", set(), [])
+        assert _by_tag(rows, "net_income_discontinued").values[d] == expected * _M
+
+    def test_cash_flow_negated_row(self):
+        d = _D
+        rows = [
+            _rr("net_cash_from_financing_activities", {d: -100 * _M}, sequence=10),
+            _rr(
+                "payment_of_dividends",
+                {d: -50 * _M},
+                parent="net_cash_from_financing_activities",
+                sources={d: "us-gaap:PaymentsOfDividends"},
+            ),
+            _rr(
+                "repurchase_of_common_equity",
+                {d: 50 * _M},
+                parent="net_cash_from_financing_activities",
+                sequence=2,
+                sources={d: "us-gaap:PaymentsForRepurchaseOfCommonStock"},
+            ),
+        ]
+        facts = {
+            "us-gaap": {
+                "PaymentsForRepurchaseOfCommonStock": {
+                    "units": {
+                        "USD": [
+                            _dur(d, "2023-01-01", -50 * _M),
+                            _dur(d, "2023-01-01", 50 * _M, filed="2025-02-15"),
+                        ]
+                    }
+                }
+            }
+        }
+        _resolve_sign_flips(
+            rows,
+            {d},
+            facts,
+            "annual",
+            {"payment_of_dividends", "repurchase_of_common_equity"},
+            [],
+        )
+        repurchase = _by_tag(rows, "repurchase_of_common_equity")
+        assert repurchase.values[d] == -50 * _M
+        assert repurchase.sources[d].endswith("(sign-resolved)")
+
 
 # ---------------------------------------------------------------------------
 # impute() -- empty-ruleset early return
 # ---------------------------------------------------------------------------
+
+
+_QUARTERS = ["2023-03-31", "2023-06-30", "2023-09-30"]
+
+
+def _concept_facts(fy, quarters, nine=()):
+    starts = ["2023-01-01", "2023-04-01", "2023-07-01"]
+    entries = [_dur(_D, "2023-01-01", v * _M, filed=f) for f, v in fy]
+    entries += [
+        _dur(_QUARTERS[2], "2023-01-01", v * _M, form="10-Q", filed=f) for f, v in nine
+    ]
+    entries += [
+        _dur(d, s, v * _M, form="10-Q", filed="2024-11-01")
+        for d, s, v in zip(_QUARTERS, starts, quarters)
+    ]
+    entries.append({"end": _D, "val": None})
+    return {"units": {"USD": entries}}
+
+
+class TestReconcileFiscalYearEnds:
+    def test_annual_instant_row_created_in_quarterly(self):
+        annual = StatementResult(
+            statement="balance_sheet",
+            company_type="industrial",
+            frequency="annual",
+            currency="USD",
+            dates=[_D],
+            rows=[
+                _rr(
+                    "goodwill",
+                    {_D: 50.0},
+                    period_type="instant",
+                    sources={_D: "us-gaap:Goodwill"},
+                )
+            ],
+        )
+        quarterly = StatementResult(
+            statement="balance_sheet",
+            company_type="industrial",
+            frequency="quarterly",
+            currency="USD",
+            dates=["2023-09-30", _D],
+            rows=[],
+        )
+        reconcile_fiscal_year_ends(quarterly, annual, {"goodwill"})
+        row = _by_tag(quarterly.rows, "goodwill")
+        assert row.values == {_D: 50.0}
+        assert row.sources == {_D: "us-gaap:Goodwill"}
+
+    def test_fourth_quarter_only_remainder_row_holds_no_value(self):
+        quarters = ["2023-03-31", "2023-06-30", "2023-09-30"]
+        annual = StatementResult(
+            statement="income_statement",
+            company_type="industrial",
+            frequency="annual",
+            currency="USD",
+            dates=[_D],
+            rows=[
+                _rr(
+                    "total_x", {_D: 1000.0 * _M}, sequence=10, sources={_D: "us-gaap:X"}
+                ),
+                _rr(
+                    "a",
+                    {_D: 700.0 * _M},
+                    parent="total_x",
+                    sequence=1,
+                    sources={_D: "us-gaap:A"},
+                ),
+            ],
+        )
+        quarterly = StatementResult(
+            statement="income_statement",
+            company_type="industrial",
+            frequency="quarterly",
+            currency="USD",
+            dates=[*quarters, _D],
+            rows=[
+                _rr(
+                    "total_x",
+                    {q: 200.0 * _M for q in quarters},
+                    sequence=10,
+                    sources={q: "us-gaap:X" for q in quarters},
+                ),
+                _rr(
+                    "a",
+                    {q: 150.0 * _M for q in quarters},
+                    parent="total_x",
+                    sequence=1,
+                    sources={q: "us-gaap:A" for q in quarters},
+                ),
+            ],
+        )
+        reconcile_fiscal_year_ends(quarterly, annual, {"total_x", "a"})
+        assert _by_tag(quarterly.rows, "total_x").values[_D] == 400.0 * _M
+        assert _by_tag(quarterly.rows, "a").values[_D] == 250.0 * _M
+        other = _by_tag(quarterly.rows, "other_x")
+        assert _D not in other.values
+
+    def test_preliminary_dates_prefixed_once(self):
+        d = "2024-03-31"
+        annual = StatementResult(
+            statement="income_statement",
+            company_type="industrial",
+            frequency="annual",
+            currency="USD",
+            dates=[_D],
+            rows=[],
+        )
+        quarterly = StatementResult(
+            statement="income_statement",
+            company_type="industrial",
+            frequency="quarterly",
+            currency="USD",
+            dates=[d],
+            rows=[
+                _rr("total_revenue", {d: 10.0}, sources={d: "us-gaap:Revenues"}),
+                _rr("other_revenue", {d: 1.0}, sources={d: "preliminary:us-gaap:X"}),
+                _rr("total_cost_of_revenue", {}),
+            ],
+            preliminary_dates={d},
+        )
+        reconcile_fiscal_year_ends(quarterly, annual, set())
+        assert _by_tag(quarterly.rows, "total_revenue").sources[d] == (
+            "preliminary:us-gaap:Revenues"
+        )
+        assert _by_tag(quarterly.rows, "other_revenue").sources[d] == (
+            "preliminary:us-gaap:X"
+        )
+        assert _by_tag(quarterly.rows, "total_cost_of_revenue").sources == {}
+
+    @staticmethod
+    def _pair(statement, annual_rows, quarterly_rows, quarters):
+        annual = StatementResult(
+            statement=statement,
+            company_type="industrial",
+            frequency="annual",
+            currency="USD",
+            dates=[_D],
+            rows=annual_rows,
+        )
+        quarterly = StatementResult(
+            statement=statement,
+            company_type="industrial",
+            frequency="quarterly",
+            currency="USD",
+            dates=[*quarters, _D],
+            rows=quarterly_rows,
+        )
+        return annual, quarterly
+
+    _Q = _QUARTERS
+
+    def _vintage(self, revenue_q, revenue_fy, facts, statement="income_statement"):
+        tag = "us-gaap:Revenues"
+        cost = "us-gaap:CostOfRevenue"
+        gp = "imputed: total_revenue - total_cost_of_revenue"
+        annual, quarterly = self._pair(
+            statement,
+            [
+                _rr("total_revenue", {_D: revenue_fy * _M}, sources={_D: tag}),
+                _rr("total_cost_of_revenue", {_D: 300 * _M}, sources={_D: cost}),
+                _rr(
+                    "total_gross_profit",
+                    {_D: (revenue_fy - 300) * _M},
+                    sources={_D: gp},
+                ),
+            ],
+            [
+                _rr(
+                    "total_revenue",
+                    {d: v * _M for d, v in zip(self._Q, revenue_q)},
+                    sources=dict.fromkeys(self._Q, tag),
+                ),
+                _rr(
+                    "total_cost_of_revenue",
+                    dict.fromkeys(self._Q, 100 * _M),
+                    sources=dict.fromkeys(self._Q, cost),
+                ),
+                _rr(
+                    "total_gross_profit",
+                    {d: (v - 100) * _M for d, v in zip(self._Q, revenue_q)},
+                    sources=dict.fromkeys(self._Q, gp),
+                ),
+            ],
+            self._Q,
+        )
+        tags = {"total_revenue", "total_cost_of_revenue", "total_gross_profit"}
+        reconcile_fiscal_year_ends(quarterly, annual, tags, facts)
+        return {tag: _by_tag(quarterly.rows, tag) for tag in tags}
+
+    def test_q4_from_annual_filing_before_restatement(self):
+        facts = {
+            "us-gaap": {
+                "Revenues": _concept_facts(
+                    [("2025-02-15", 531), ("2024-02-15", 800)],
+                    [200, 200, 200],
+                    [("2023-11-01", 600)],
+                ),
+                "CostOfRevenue": _concept_facts(
+                    [("2025-02-15", 300), ("2024-02-15", 400)],
+                    [100, 100, 100],
+                    [("2023-11-01", 300)],
+                ),
+            }
+        }
+        rows = self._vintage([200, 200, 200], 531, facts)
+        assert rows["total_revenue"].values[_D] == 200 * _M
+        assert "(filed 2024-02-15)" in rows["total_revenue"].sources[_D]
+        assert rows["total_cost_of_revenue"].values[_D] == 100 * _M
+        assert rows["total_gross_profit"].values[_D] == 100 * _M
+        assert rows["total_gross_profit"].sources[_D] == (
+            "imputed: total_revenue - total_cost_of_revenue"
+        )
+
+    def test_q4_from_latest_nine_months(self):
+        facts = {
+            "us-gaap": {
+                "Revenues": _concept_facts(
+                    [("2024-02-15", 600)], [300, 200, 200], [("2023-11-01", 500)]
+                )
+            }
+        }
+        rows = self._vintage([300, 200, 200], 600, facts)
+        assert rows["total_revenue"].values[_D] == 100 * _M
+        assert rows["total_revenue"].sources[_D] == (
+            "Q4: FY[us-gaap:Revenues] \u2212 9M[us-gaap:Revenues]"
+        )
+
+    def test_q4_kept_without_opposite_signed_quarter(self):
+        facts = {
+            "us-gaap": {
+                "Revenues": _concept_facts(
+                    [("2025-02-15", 531), ("2024-02-15", 800)],
+                    [150, 150, 150],
+                    [("2023-11-01", 450)],
+                )
+            }
+        }
+        rows = self._vintage([150, 150, 150], 531, facts)
+        assert rows["total_revenue"].values[_D] == 81 * _M
+
+    @pytest.mark.parametrize(
+        "facts",
+        [
+            None,
+            {},
+            {"us-gaap": {"Revenues": {"units": {"USD": []}}}},
+            {
+                "us-gaap": {
+                    "Revenues": {
+                        "units": {
+                            "USD": [
+                                _dur(_D, "2023-01-01", 531 * _M, filed="2025-02-15")
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "us-gaap": {
+                    "Revenues": {
+                        "units": {
+                            "USD": [
+                                _dur(_D, "2023-01-01", 531 * _M, filed="2025-02-15"),
+                                _dur(_D, "2023-01-01", 800 * _M, filed="2024-02-15"),
+                                _dur(
+                                    "2023-09-30",
+                                    "2023-01-01",
+                                    600 * _M,
+                                    form="10-Q",
+                                    filed="2024-11-01",
+                                ),
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "us-gaap": {
+                    "Revenues": _concept_facts(
+                        [("2025-02-15", 531), ("2024-02-15", 800)],
+                        [200, 200, 200],
+                        [("2023-11-01", 590)],
+                    )
+                }
+            },
+        ],
+    )
+    def test_q4_kept_without_filing_evidence(self, facts):
+        rows = self._vintage([200, 200, 200], 531, facts)
+        assert rows["total_revenue"].values[_D] == -69 * _M
+
+    def test_q4_from_facts_of_negated_cash_flow_row(self):
+        tag = "us-gaap:PaymentsToAcquirePropertyPlantAndEquipment"
+        annual, quarterly = self._pair(
+            "cash_flow",
+            [
+                _rr(
+                    "purchase_of_plant_property_and_equipment",
+                    {_D: -531 * _M},
+                    balance="credit",
+                    sources={_D: tag},
+                )
+            ],
+            [
+                _rr(
+                    "purchase_of_plant_property_and_equipment",
+                    dict.fromkeys(self._Q, -200 * _M),
+                    balance="credit",
+                    sources=dict.fromkeys(self._Q, tag),
+                )
+            ],
+            self._Q,
+        )
+        facts = {
+            "us-gaap": {
+                "PaymentsToAcquirePropertyPlantAndEquipment": _concept_facts(
+                    [("2025-02-15", 531), ("2024-02-15", 800)],
+                    [200, 200, 200],
+                    [("2023-11-01", 600)],
+                )
+            }
+        }
+        reconcile_fiscal_year_ends(
+            quarterly, annual, {"purchase_of_plant_property_and_equipment"}, facts
+        )
+        row = _by_tag(quarterly.rows, "purchase_of_plant_property_and_equipment")
+        assert row.values[_D] == -200 * _M
+
+    def test_formula_terms(self):
+        assert _formula_terms("imputed: -a + b - c") == [("a", -1), ("b", 1), ("c", -1)]
+
+    def test_q4_from_nine_months_kept(self):
+        quarters = ["2023-03-31", "2023-06-30", "2023-09-30"]
+        tag = "us-gaap:PaymentsToAcquireBusinessesNetOfCashAcquired"
+        nine = f"Q4: FY[{tag}] \u2212 9M[{tag}]"
+        annual, quarterly = self._pair(
+            "cash_flow",
+            [_rr("acquisitions", {_D: -90.0 * _M}, sources={_D: tag})],
+            [
+                _rr(
+                    "acquisitions",
+                    {quarters[2]: -50.0 * _M, _D: -20.0 * _M},
+                    sources={quarters[2]: f"ytd_derived({tag})", _D: nine},
+                )
+            ],
+            quarters,
+        )
+        reconcile_fiscal_year_ends(quarterly, annual, {"acquisitions"})
+        row = _by_tag(quarterly.rows, "acquisitions")
+        assert row.values[_D] == -20.0 * _M
+        assert row.sources[_D] == nine
+
+    def test_q4_not_derived_from_partial_quarters(self):
+        quarters = ["2023-03-31", "2023-06-30", "2023-09-30"]
+        annual, quarterly = self._pair(
+            "income_statement",
+            [_rr("restructuring_charge", {_D: 90.0 * _M}, sources={_D: "us-gaap:R"})],
+            [
+                _rr(
+                    "restructuring_charge",
+                    {quarters[1]: 20.0 * _M, quarters[2]: 50.0 * _M},
+                    sources={quarters[1]: "us-gaap:R", quarters[2]: "us-gaap:R"},
+                )
+            ],
+            quarters,
+        )
+        reconcile_fiscal_year_ends(quarterly, annual, {"restructuring_charge"})
+        assert _D not in _by_tag(quarterly.rows, "restructuring_charge").values
+
+    def test_h2_value_cleared_in_quarterly_year(self):
+        quarters = ["2023-03-31", "2023-06-30", "2023-09-30"]
+        annual, quarterly = self._pair(
+            "income_statement",
+            [_rr("impairment_expense", {_D: 0.0}, sources={_D: "us-gaap:A"})],
+            [
+                _rr(
+                    "impairment_expense",
+                    {quarters[1]: 33.0 * _M, _D: -33.0 * _M},
+                    sources={
+                        quarters[1]: "us-gaap:A",
+                        _D: "H2: FY[us-gaap:A] \u2212 H1[us-gaap:A]",
+                    },
+                )
+            ],
+            quarters,
+        )
+        reconcile_fiscal_year_ends(quarterly, annual, {"impairment_expense"})
+        row = _by_tag(quarterly.rows, "impairment_expense")
+        assert _D not in row.values
+        assert _D not in row.sources
+
+    def test_period_factor_copied_from_annual(self):
+        annual_pref = _rr(
+            "total_preferred_equity",
+            {_D: 100.0 * _M},
+            period_type="instant",
+            sources={_D: "us-gaap:PreferredStockValue"},
+        )
+        annual_pref.date_factors[_D] = "0"
+        annual_gw = _rr(
+            "goodwill",
+            {_D: 50.0 * _M},
+            period_type="instant",
+            sources={_D: "us-gaap:Goodwill"},
+        )
+        quarterly_gw = _rr(
+            "goodwill", {_D: 40.0 * _M}, period_type="instant", sources={_D: "x"}
+        )
+        quarterly_gw.date_factors[_D] = "0"
+        quarterly_dropped = _rr(
+            "intangible_assets", {_D: 5.0 * _M}, period_type="instant"
+        )
+        quarterly_dropped.date_factors[_D] = "0"
+        annual, quarterly = self._pair(
+            "balance_sheet",
+            [annual_pref, annual_gw],
+            [
+                _rr(
+                    "total_preferred_equity",
+                    {_D: 90.0 * _M},
+                    period_type="instant",
+                ),
+                quarterly_gw,
+                quarterly_dropped,
+            ],
+            ["2023-09-30"],
+        )
+        reconcile_fiscal_year_ends(quarterly, annual, set())
+        assert _by_tag(quarterly.rows, "total_preferred_equity").factor_on(_D) == "0"
+        gw = _by_tag(quarterly.rows, "goodwill")
+        assert gw.values[_D] == 50.0 * _M
+        assert _D not in gw.date_factors
+        assert _D not in _by_tag(quarterly.rows, "intangible_assets").date_factors
+
+    def test_q4_beginning_cash_follows_cash_identity(self):
+        quarters = ["2023-03-31", "2023-06-30", "2023-09-30"]
+        annual, quarterly = self._pair(
+            "cash_flow",
+            [
+                _rr(
+                    "net_change_in_cash",
+                    {_D: 100.0 * _M},
+                    sources={_D: "us-gaap:CashPeriodIncreaseDecrease"},
+                ),
+                _rr(
+                    "cash_at_end_of_period",
+                    {_D: 420.0 * _M},
+                    period_type="instant",
+                    sources={_D: "us-gaap:Cash"},
+                ),
+            ],
+            [
+                _rr(
+                    "net_change_in_cash",
+                    {q: v * _M for q, v in zip(quarters, (10.0, 20.0, 30.0))},
+                    sources={q: "us-gaap:CashPeriodIncreaseDecrease" for q in quarters},
+                ),
+                _rr(
+                    "cash_at_end_of_period",
+                    {quarters[2]: 300.0 * _M},
+                    period_type="instant",
+                    sources={quarters[2]: "us-gaap:Cash"},
+                ),
+                _rr(
+                    "cash_at_beginning_of_period",
+                    {_D: 300.0 * _M},
+                    period_type="instant",
+                    sources={_D: f"derived: cash_at_end_of_period({quarters[2]})"},
+                ),
+            ],
+            quarters,
+        )
+        reconcile_fiscal_year_ends(quarterly, annual, {"net_change_in_cash"})
+        assert _by_tag(quarterly.rows, "net_change_in_cash").values[_D] == 40.0 * _M
+        bop = _by_tag(quarterly.rows, "cash_at_beginning_of_period")
+        assert bop.values[_D] == 380.0 * _M
+        assert bop.sources[_D] == (
+            "identity-enforced: cash_at_end_of_period - net_change_in_cash"
+        )
+
+    def test_q4_rollup_quarters_follow_q4_components(self):
+        quarters = ["2023-03-31", "2023-06-30", "2023-09-30"]
+        annual, quarterly = self._pair(
+            "cash_flow",
+            [
+                _rr(
+                    "depreciation_and_amortization",
+                    {_D: 100.0 * _M},
+                    sources={_D: "us-gaap:DepreciationDepletionAndAmortization"},
+                ),
+                _rr(
+                    "depreciation_expense",
+                    {_D: 60.0 * _M},
+                    parent="depreciation_and_amortization",
+                    sources={_D: "us-gaap:Depreciation"},
+                ),
+                _rr(
+                    "amortization_expense",
+                    {_D: 40.0 * _M},
+                    parent="depreciation_and_amortization",
+                    sources={_D: "us-gaap:AmortizationOfIntangibleAssets"},
+                ),
+            ],
+            [
+                _rr(
+                    "depreciation_and_amortization",
+                    {q: 12.0 * _M for q in quarters},
+                    sources={
+                        q: "imputed-rollup: depreciation_expense(+)" for q in quarters
+                    },
+                ),
+                _rr(
+                    "depreciation_expense",
+                    {q: 12.0 * _M for q in quarters},
+                    parent="depreciation_and_amortization",
+                    sources={q: "us-gaap:Depreciation" for q in quarters},
+                ),
+            ],
+            quarters,
+        )
+        reconcile_fiscal_year_ends(
+            quarterly,
+            annual,
+            {"depreciation_and_amortization", "depreciation_expense"},
+        )
+        da = _by_tag(quarterly.rows, "depreciation_and_amortization")
+        assert _by_tag(quarterly.rows, "depreciation_expense").values[_D] == 24.0 * _M
+        assert da.values[_D] == 24.0 * _M
+        assert da.sources[_D].startswith("imputed-rollup")
+
+    @pytest.mark.parametrize(
+        ("fy_value", "fy_source", "amortization", "expected"),
+        [
+            (150.0, "us-gaap:DepreciationDepletionAndAmortization", 40.0, 40.0),
+            (60.0, "imputed-rollup: depreciation_expense(+)", None, 24.0),
+        ],
+    )
+    def test_q4_of_rolled_up_quarters_rolls_up(
+        self, fy_value, fy_source, amortization, expected
+    ):
+        quarters = ["2023-03-31", "2023-06-30", "2023-09-30"]
+        annual_rows = [
+            _rr(
+                "depreciation_and_amortization",
+                {_D: fy_value * _M},
+                sources={_D: fy_source},
+            ),
+            _rr(
+                "depreciation_expense",
+                {_D: 60.0 * _M},
+                parent="depreciation_and_amortization",
+                sources={_D: "us-gaap:Depreciation"},
+            ),
+        ]
+        if amortization is not None:
+            annual_rows.append(
+                _rr(
+                    "amortization_expense",
+                    {_D: amortization * _M},
+                    parent="depreciation_and_amortization",
+                    sources={_D: "us-gaap:AmortizationOfIntangibleAssets"},
+                )
+            )
+        annual, quarterly = self._pair(
+            "cash_flow",
+            annual_rows,
+            [
+                _rr(
+                    "depreciation_and_amortization",
+                    {q: 20.0 * _M for q in quarters},
+                    sources={
+                        q: "imputed-rollup: depreciation_expense(+)"
+                        " + amortization_expense(+)"
+                        for q in quarters
+                    },
+                ),
+                _rr(
+                    "depreciation_expense",
+                    {q: 12.0 * _M for q in quarters},
+                    parent="depreciation_and_amortization",
+                    sources={q: "us-gaap:Depreciation" for q in quarters},
+                ),
+                _rr(
+                    "amortization_expense",
+                    {q: 8.0 * _M for q in quarters},
+                    parent="depreciation_and_amortization",
+                    sources={
+                        q: "us-gaap:AmortizationOfIntangibleAssets" for q in quarters
+                    },
+                ),
+            ],
+            quarters,
+        )
+        reconcile_fiscal_year_ends(
+            quarterly,
+            annual,
+            {
+                "depreciation_and_amortization",
+                "depreciation_expense",
+                "amortization_expense",
+            },
+        )
+        da = _by_tag(quarterly.rows, "depreciation_and_amortization")
+        assert da.values[_D] == expected * _M
+        assert da.sources[_D].startswith("imputed-rollup")
+
+    def test_q4_of_rolled_up_quarters_with_annual_remainder(self):
+        quarters = ["2023-03-31", "2023-06-30", "2023-09-30"]
+        annual, quarterly = self._pair(
+            "cash_flow",
+            [
+                _rr(
+                    "depreciation_and_amortization",
+                    {_D: 150.0 * _M},
+                    sources={_D: "us-gaap:DepreciationDepletionAndAmortization"},
+                ),
+                _rr(
+                    "depreciation_expense",
+                    {_D: 60.0 * _M},
+                    parent="depreciation_and_amortization",
+                    sources={_D: "us-gaap:Depreciation"},
+                ),
+                _rr(
+                    "other_depreciation_and_amortization",
+                    {_D: 90.0 * _M},
+                    parent="depreciation_and_amortization",
+                    sources={
+                        _D: "imputed-plug: depreciation_and_amortization"
+                        " - (depreciation_expense(+))"
+                    },
+                ),
+            ],
+            [
+                _rr(
+                    "depreciation_and_amortization",
+                    {q: 30.0 * _M for q in quarters},
+                    sources={
+                        q: "imputed-rollup: depreciation_expense(+)"
+                        " + other_depreciation_and_amortization(+)"
+                        for q in quarters
+                    },
+                ),
+                _rr(
+                    "depreciation_expense",
+                    {q: 12.0 * _M for q in quarters},
+                    parent="depreciation_and_amortization",
+                    sources={q: "us-gaap:Depreciation" for q in quarters},
+                ),
+                _rr(
+                    "other_depreciation_and_amortization",
+                    {q: 18.0 * _M for q in quarters},
+                    parent="depreciation_and_amortization",
+                    sources={
+                        q: "us-gaap:OtherDepreciationAndAmortization" for q in quarters
+                    },
+                ),
+            ],
+            quarters,
+        )
+        reconcile_fiscal_year_ends(
+            quarterly,
+            annual,
+            {
+                "depreciation_and_amortization",
+                "depreciation_expense",
+                "other_depreciation_and_amortization",
+            },
+        )
+        da = _by_tag(quarterly.rows, "depreciation_and_amortization")
+        assert da.values[_D] == 60.0 * _M
+        assert da.sources[_D].startswith("Q4: FY[")
+
+    def test_q4_from_quarters_concept_kept(self):
+        quarters = ["2023-03-31", "2023-06-30", "2023-09-30"]
+        q4 = "Q4: FY[us-gaap:Revenues] \u2212 (Q1[us-gaap:Revenues])"
+        annual, quarterly = self._pair(
+            "income_statement",
+            [_rr("operating_revenue", {_D: 700.0 * _M}, sources={_D: "us-gaap:R"})],
+            [
+                _rr(
+                    "operating_revenue",
+                    {**{q: 200.0 * _M for q in quarters}, _D: 400.0 * _M},
+                    sources={**{q: "us-gaap:Revenues" for q in quarters}, _D: q4},
+                ),
+                _rr(
+                    "total_revenue",
+                    {q: 200.0 * _M for q in quarters},
+                    sources={q: "us-gaap:Revenues" for q in quarters},
+                ),
+            ],
+            quarters,
+        )
+        annual.rows.append(
+            _rr("total_revenue", {_D: 700.0 * _M}, sources={_D: "us-gaap:R"})
+        )
+        reconcile_fiscal_year_ends(
+            quarterly, annual, {"operating_revenue", "total_revenue"}
+        )
+        row = _by_tag(quarterly.rows, "operating_revenue")
+        assert row.values[_D] == 400.0 * _M
+        assert row.sources[_D] == q4
+        assert _by_tag(quarterly.rows, "total_revenue").values[_D] == 100.0 * _M
+
+    @pytest.mark.parametrize("without_q4", [False, True])
+    def test_zero_q4_remainder_written(self, without_q4):
+        quarters = ["2023-03-31", "2023-06-30", "2023-09-30"]
+        plug = "imputed-plug: total_x - (a(+))"
+        annual, quarterly = self._pair(
+            "income_statement",
+            [
+                _rr(
+                    "total_x", {_D: 1000.0 * _M}, sequence=10, sources={_D: "us-gaap:X"}
+                ),
+                _rr(
+                    "a",
+                    {_D: 700.0 * _M},
+                    parent="total_x",
+                    sequence=1,
+                    sources={_D: "us-gaap:A"},
+                ),
+                _rr(
+                    "other_x",
+                    {_D: 300.0 * _M},
+                    parent="total_x",
+                    sequence=2,
+                    sources={_D: plug},
+                ),
+            ],
+            [
+                _rr(
+                    "total_x",
+                    {q: 250.0 * _M for q in quarters},
+                    sequence=10,
+                    sources={q: "us-gaap:X" for q in quarters},
+                ),
+                _rr(
+                    "a",
+                    {q: 150.0 * _M for q in quarters},
+                    parent="total_x",
+                    sequence=1,
+                    sources={q: "us-gaap:A" for q in quarters},
+                ),
+                _rr(
+                    "other_x",
+                    {**{q: 100.0 * _M for q in quarters}, _D: 5.0 * _M},
+                    parent="total_x",
+                    sequence=2,
+                    sources={**{q: plug for q in quarters}, _D: plug},
+                ),
+            ],
+            quarters,
+        )
+        if without_q4:
+            other = _by_tag(quarterly.rows, "other_x")
+            other.values.pop(_D)
+            other.sources.pop(_D)
+        reconcile_fiscal_year_ends(quarterly, annual, {"total_x", "a", "other_x"})
+        other = _by_tag(quarterly.rows, "other_x")
+        assert other.values[_D] == 0.0
+        assert other.sources[_D].startswith("imputed-plug: total_x - ")
+
+    @pytest.mark.parametrize(
+        ("income", "fy_basic", "expected"),
+        [
+            (200, 101, (103_967_391, 105_967_391, 1.92, 1.89)),
+            (-50, 101, (103_967_391, 103_967_391, -0.48, -0.48)),
+            (200, 1, (None, 105_967_391, None, 1.89)),
+        ],
+    )
+    def test_q4_per_share_derived(self, income, fy_basic, expected):
+        quarters = ["2023-03-31", "2023-06-30", "2023-09-30"]
+
+        def per_share(tag, fy, q, *, parent=None, factor="0", unit="per_share"):
+            source = f"us-gaap:{tag}"
+            return (
+                _rr(
+                    tag,
+                    {_D: fy},
+                    parent=parent,
+                    factor=factor,
+                    unit=unit,
+                    sources={_D: source},
+                ),
+                _rr(
+                    tag,
+                    dict.fromkeys(quarters, q),
+                    parent=parent,
+                    factor=factor,
+                    unit=unit,
+                    sources=dict.fromkeys(quarters, source),
+                ),
+            )
+
+        pairs = [
+            per_share(
+                "weighted_ave_basic_shares_os",
+                fy_basic * _M,
+                100 * _M,
+                parent="basic_eps",
+                factor="/",
+                unit="shares",
+            ),
+            per_share(
+                "weighted_ave_diluted_shares_os",
+                103 * _M,
+                102 * _M,
+                parent="diluted_eps",
+                factor="/",
+                unit="shares",
+            ),
+            per_share("basic_eps", 2.0, 0.5),
+            per_share("diluted_eps", 2.0, 0.5),
+            per_share("cash_dividends_per_share", 0.4, 0.1),
+        ]
+        annual = StatementResult(
+            statement="income_statement",
+            company_type="industrial",
+            frequency="annual",
+            currency="USD",
+            dates=["2022-12-31", _D],
+            rows=[a for a, _ in pairs],
+        )
+        quarterly = StatementResult(
+            statement="income_statement",
+            company_type="industrial",
+            frequency="quarterly",
+            currency="USD",
+            dates=[*quarters, _D],
+            rows=[
+                *(q for _, q in pairs),
+                _rr(
+                    "net_income_to_common",
+                    {_D: income * _M},
+                    sources={
+                        _D: "us-gaap:NetIncomeLossAvailableToCommonStockholdersBasic"
+                    },
+                ),
+            ],
+        )
+        reconcile_fiscal_year_ends(quarterly, annual, set())
+        rows = {r.tag: r for r in quarterly.rows}
+        assert (
+            rows["weighted_ave_basic_shares_os"].values.get(_D),
+            rows["weighted_ave_diluted_shares_os"].values.get(_D),
+            rows["basic_eps"].values.get(_D),
+            rows["diluted_eps"].values.get(_D),
+        ) == expected
+        assert rows["cash_dividends_per_share"].values[_D] == 0.1
+
+    @pytest.mark.parametrize("interim", [True, False])
+    def test_q4_balance_sheet_keeps_interim_lines(self, interim):
+        quarters = ["2023-03-31", "2023-06-30", "2023-09-30"]
+        annual, quarterly = self._pair(
+            "balance_sheet",
+            [
+                _rr(
+                    "total_assets",
+                    {_D: 1000 * _M},
+                    period_type="instant",
+                    sources={_D: "us-gaap:Assets"},
+                ),
+                _rr(
+                    "gross_ppe",
+                    {_D: 500 * _M},
+                    period_type="instant",
+                    sources={_D: "us-gaap:PropertyPlantAndEquipmentGross"},
+                ),
+            ],
+            [
+                _rr(
+                    "total_assets",
+                    dict.fromkeys(quarters, 900 * _M) if interim else {},
+                    period_type="instant",
+                    sources=dict.fromkeys(quarters, "us-gaap:Assets")
+                    if interim
+                    else {},
+                ),
+            ],
+            quarters,
+        )
+        reconcile_fiscal_year_ends(quarterly, annual, set())
+        rows = {r.tag: r for r in quarterly.rows}
+        assert rows["total_assets"].values[_D] == 1000 * _M
+        assert (_D in rows["gross_ppe"].values) is not interim
+
+    def test_q4_balance_sheet_remainder_needs_its_total(self):
+        quarters = ["2023-03-31", "2023-06-30", "2023-09-30"]
+        plug = "imputed-plug: total_current_liabilities - (accounts_payable(+))"
+        annual, quarterly = self._pair(
+            "balance_sheet",
+            [
+                _rr(
+                    "total_current_liabilities",
+                    {_D: 500 * _M},
+                    period_type="instant",
+                    sources={_D: "us-gaap:LiabilitiesCurrent"},
+                ),
+                _rr(
+                    "other_current_liabilities",
+                    {_D: 200 * _M},
+                    parent="total_current_liabilities",
+                    period_type="instant",
+                    sources={_D: plug},
+                ),
+            ],
+            [
+                _rr(
+                    "other_current_liabilities",
+                    dict.fromkeys(quarters, 150 * _M),
+                    parent="total_current_liabilities",
+                    period_type="instant",
+                    sources=dict.fromkeys(quarters, "us-gaap:OtherLiabilitiesCurrent"),
+                ),
+            ],
+            quarters,
+        )
+        reconcile_fiscal_year_ends(quarterly, annual, set())
+        rows = {r.tag: r for r in quarterly.rows}
+        assert _D not in rows["total_current_liabilities"].values
+        assert _D not in rows["other_current_liabilities"].values
+
+    @pytest.mark.parametrize(
+        ("source", "held"),
+        [
+            ("Q4: FY[us-gaap:OtherIncome] \u2212 (Q1[us-gaap:OtherIncome])", False),
+            ("us-gaap:GoodwillAndIntangibleAssetImpairment", True),
+        ],
+    )
+    def test_q4_only_line_held_when_reported(self, source, held):
+        quarters = ["2023-03-31", "2023-06-30", "2023-09-30"]
+        annual, quarterly = self._pair(
+            "income_statement",
+            [_rr("total_revenue", {_D: 400 * _M}, sources={_D: "us-gaap:Revenues"})],
+            [
+                _rr(
+                    "total_revenue",
+                    dict.fromkeys(quarters, 100 * _M),
+                    sources=dict.fromkeys(quarters, "us-gaap:Revenues"),
+                ),
+                _rr("impairment_expense", {_D: 50 * _M}, sources={_D: source}),
+            ],
+            quarters,
+        )
+        reconcile_fiscal_year_ends(quarterly, annual, {"total_revenue"})
+        rows = {r.tag: r for r in quarterly.rows}
+        assert (_D in rows["impairment_expense"].values) is held
+
+    def test_q4_instant_line_held_when_quarters_report_it(self):
+        quarters = ["2023-03-31", "2023-06-30", "2023-09-30"]
+        annual, quarterly = self._pair(
+            "cash_flow",
+            [
+                _rr("net_change_in_cash", {_D: 40 * _M}, sources={_D: "us-gaap:N"}),
+                _rr(
+                    "cash_at_end_of_period",
+                    {_D: 340 * _M},
+                    period_type="instant",
+                    sources={_D: "us-gaap:Cash"},
+                ),
+            ],
+            [
+                _rr(
+                    "net_change_in_cash",
+                    dict.fromkeys(quarters, 10 * _M),
+                    sources=dict.fromkeys(quarters, "us-gaap:N"),
+                ),
+            ],
+            quarters,
+        )
+        reconcile_fiscal_year_ends(quarterly, annual, {"net_change_in_cash"})
+        rows = {r.tag: r for r in quarterly.rows}
+        assert rows["net_change_in_cash"].values[_D] == 10 * _M
+        assert _D not in rows["cash_at_end_of_period"].values
+
+    def test_q4_only_remainder_not_held(self):
+        quarters = ["2023-03-31", "2023-06-30", "2023-09-30"]
+        plug = "imputed-plug: total_x - (a(+))"
+        annual, quarterly = self._pair(
+            "income_statement",
+            [
+                _rr(
+                    "total_x", {_D: 1000.0 * _M}, sequence=10, sources={_D: "us-gaap:X"}
+                ),
+                _rr(
+                    "a",
+                    {_D: 700.0 * _M},
+                    parent="total_x",
+                    sequence=1,
+                    sources={_D: "us-gaap:A"},
+                ),
+                _rr(
+                    "other_x",
+                    {_D: 300.0 * _M},
+                    parent="total_x",
+                    sequence=2,
+                    sources={_D: plug},
+                ),
+            ],
+            [
+                _rr(
+                    "total_x",
+                    dict.fromkeys(quarters, 250.0 * _M),
+                    sequence=10,
+                    sources=dict.fromkeys(quarters, "us-gaap:X"),
+                ),
+                _rr(
+                    "a",
+                    dict.fromkeys(quarters, 250.0 * _M),
+                    parent="total_x",
+                    sequence=1,
+                    sources=dict.fromkeys(quarters, "us-gaap:A"),
+                ),
+                _rr("other_x", {}, parent="total_x", sequence=2),
+            ],
+            quarters,
+        )
+        reconcile_fiscal_year_ends(quarterly, annual, {"total_x", "a", "other_x"})
+        rows = {r.tag: r for r in quarterly.rows}
+        assert rows["total_x"].values[_D] == 250.0 * _M
+        assert rows["a"].values[_D] == -50.0 * _M
+        assert _D not in rows["other_x"].values
+
+    def test_q4_beginning_cash_kept_when_identity_holds(self):
+        quarters = ["2023-03-31", "2023-06-30", "2023-09-30"]
+        annual, quarterly = self._pair(
+            "cash_flow",
+            [
+                _rr("net_change_in_cash", {_D: 100.0 * _M}, sources={_D: "us-gaap:N"}),
+                _rr(
+                    "cash_at_end_of_period",
+                    {_D: 340.0 * _M},
+                    period_type="instant",
+                    sources={_D: "us-gaap:Cash"},
+                ),
+            ],
+            [
+                _rr(
+                    "net_change_in_cash",
+                    {q: v * _M for q, v in zip(quarters, (10.0, 20.0, 30.0))},
+                    sources={q: "us-gaap:N" for q in quarters},
+                ),
+                _rr(
+                    "cash_at_beginning_of_period",
+                    {_D: 300.0 * _M},
+                    period_type="instant",
+                    sources={_D: "derived: cash_at_end_of_period(2023-09-30)"},
+                ),
+            ],
+            quarters,
+        )
+        reconcile_fiscal_year_ends(quarterly, annual, {"net_change_in_cash"})
+        bop = _by_tag(quarterly.rows, "cash_at_beginning_of_period")
+        assert bop.values[_D] == 300.0 * _M
+        assert bop.sources[_D].startswith("derived:")
 
 
 class TestImputeEmptyRuleset:
@@ -487,255 +3127,317 @@ class TestImputeProfitLossDiscAdjust:
 
 
 # ---------------------------------------------------------------------------
-# impute() -- quarterly Q4 parent-correction block (frequency="quarterly")
-# ---------------------------------------------------------------------------
-
-_FY_END = "2023-12-31"
-_FY_START = "2023-01-01"
-_Q1, _Q2, _Q3 = "2023-03-31", "2023-06-30", "2023-09-30"
-
-
-def _q4_run(rows, rdefs, annual_vals, dates):
-    """Drive impute() in quarterly mode with simple row/annual-value providers."""
-
-    def get_rows_fn(statement, company_type):
-        return rdefs
-
-    def get_annual_values_fn(facts, row_def, currency):
-        return annual_vals.get(row_def.tag, {})
-
-    return impute(
-        rows,
-        "income_statement",
-        "industrial",
-        set(dates),
-        facts={"us-gaap": {}},
-        frequency="quarterly",
-        get_rows_fn=get_rows_fn,
-        get_annual_values_fn=get_annual_values_fn,
-    )
-
-
-class TestImputeQuarterlyQ4Correction:
-    def test_q4_parent_corrected_and_missing_child_derived(self):
-        # Parent FY value already equals its one present child (80M) so the first
-        # articulation pass creates no plug; the Q4 block then rewrites the parent
-        # to the FY-minus-quarters value and back-derives the single missing child.
-        parent = _rr(
-            "total_revenue",
-            {_Q1: 100.0 * _M, _Q2: 150.0 * _M, _Q3: 200.0 * _M, _FY_END: 80.0 * _M},
-            sequence=1,
-            sources={_FY_END: "imputed-rollup: segment_a(+) + segment_b(+)"},
-        )
-        child_a = _rr(
-            "segment_a",
-            {_FY_END: 80.0 * _M},
-            parent="total_revenue",
-            factor="+",
-            sequence=2,
-        )
-        child_b = _rr("segment_b", {}, parent="total_revenue", factor="+", sequence=3)
-        rdefs = [
-            _rd("total_revenue", period_type="duration"),
-            _rd("segment_a", period_type="duration", parent="total_revenue"),
-            _rd("segment_b", period_type="duration", parent="total_revenue"),
-        ]
-        annual = {
-            "total_revenue": {_FY_END: (_FY_START, 600.0 * _M, "us-gaap:Revenues")}
-        }
-        out, _ = _q4_run(
-            [parent, child_a, child_b], rdefs, annual, [_Q1, _Q2, _Q3, _FY_END]
-        )
-        rev = _by_tag(out, "total_revenue")
-        assert rev.values[_FY_END] == 150.0 * _M  # 600 - (100+150+200)
-        assert "Q4:" in rev.sources[_FY_END]
-        seg_b = _by_tag(out, "segment_b")
-        assert seg_b.values[_FY_END] == 70.0 * _M  # 150 - 80
-        assert "Q4-derived" in seg_b.sources[_FY_END]
-
-    def test_q4_sign_flip_guard_rejects_correction(self):
-        # Quarters (100+150+200=450) exceed the annual FY value (100) so the derived
-        # Q4 (100-450 = -350) has the opposite sign to FY -> the sign-flip guard skips
-        # the correction (361-362) and the parent keeps its rollup value.
-        parent = _rr(
-            "total_revenue",
-            {_Q1: 100.0 * _M, _Q2: 150.0 * _M, _Q3: 200.0 * _M, _FY_END: 80.0 * _M},
-            sequence=1,
-            sources={_FY_END: "imputed-rollup: segment_a(+)"},
-        )
-        child_a = _rr(
-            "segment_a",
-            {_FY_END: 80.0 * _M},
-            parent="total_revenue",
-            factor="+",
-            sequence=2,
-        )
-        rdefs = [
-            _rd("total_revenue", period_type="duration"),
-            _rd("segment_a", period_type="duration", parent="total_revenue"),
-        ]
-        annual = {
-            "total_revenue": {_FY_END: (_FY_START, 100.0 * _M, "us-gaap:Revenues")}
-        }
-        out, _ = _q4_run([parent, child_a], rdefs, annual, [_Q1, _Q2, _Q3, _FY_END])
-        rev = _by_tag(out, "total_revenue")
-        assert "Q4:" not in rev.sources.get(_FY_END, "")  # correction rejected
-        assert rev.values[_FY_END] == 80.0 * _M  # rollup value preserved
-
-    def test_shares_parent_skipped(self):
-        parent = _rr(
-            "weighted_average_shares_outstanding",
-            {_Q1: 100.0, _Q2: 100.0, _Q3: 100.0, _FY_END: 100.0},
-            unit="shares",
-            sequence=1,
-            sources={_FY_END: "imputed-rollup: a(+)"},
-        )
-        child = _rr(
-            "share_class_a",
-            {_Q1: 100.0},
-            parent="weighted_average_shares_outstanding",
-            factor="+",
-            sequence=2,
-        )
-        rdefs = [
-            _rd(
-                "weighted_average_shares_outstanding",
-                period_type="duration",
-                unit="shares",
-            ),
-            _rd(
-                "share_class_a",
-                period_type="duration",
-                unit="shares",
-                parent="weighted_average_shares_outstanding",
-            ),
-        ]
-        annual = {
-            "weighted_average_shares_outstanding": {
-                _FY_END: (_FY_START, 9999.0, "us-gaap:WAS")
-            }
-        }
-        out, _ = _q4_run([parent, child], rdefs, annual, [_Q1, _Q2, _Q3, _FY_END])
-        assert (
-            _by_tag(out, "weighted_average_shares_outstanding").values[_FY_END] == 100.0
-        )
-
-    def test_parent_not_rollup_sourced_skipped(self):
-        parent = _rr(
-            "total_revenue",
-            {_Q1: 100.0 * _M, _Q2: 150.0 * _M, _Q3: 200.0 * _M, _FY_END: 600.0 * _M},
-            sequence=1,
-            sources={_FY_END: "us-gaap:Revenues"},
-        )
-        child = _rr(
-            "segment_a",
-            {_Q1: 100.0 * _M},
-            parent="total_revenue",
-            factor="+",
-            sequence=2,
-        )
-        rdefs = [
-            _rd("total_revenue", period_type="duration"),
-            _rd("segment_a", period_type="duration", parent="total_revenue"),
-        ]
-        annual = {
-            "total_revenue": {_FY_END: (_FY_START, 600.0 * _M, "us-gaap:Revenues")}
-        }
-        out, _ = _q4_run([parent, child], rdefs, annual, [_Q1, _Q2, _Q3, _FY_END])
-        assert _by_tag(out, "total_revenue").sources[_FY_END] == "us-gaap:Revenues"
-
-    def test_wrong_number_of_quarters_skipped(self):
-        parent = _rr(
-            "total_revenue",
-            {_Q1: 100.0 * _M, _Q2: 150.0 * _M, _FY_END: 9.0 * _M},
-            sequence=1,
-            sources={_FY_END: "imputed-rollup: a(+)"},
-        )
-        child = _rr(
-            "segment_a",
-            {_Q1: 100.0 * _M},
-            parent="total_revenue",
-            factor="+",
-            sequence=2,
-        )
-        rdefs = [
-            _rd("total_revenue", period_type="duration"),
-            _rd("segment_a", period_type="duration", parent="total_revenue"),
-        ]
-        annual = {
-            "total_revenue": {_FY_END: (_FY_START, 600.0 * _M, "us-gaap:Revenues")}
-        }
-        out, _ = _q4_run([parent, child], rdefs, annual, [_Q1, _Q2, _FY_END])
-        assert "imputed-rollup" in _by_tag(out, "total_revenue").sources[_FY_END]
-
-    def test_q4_sign_flip_guard_skips(self):
-        # Quarter sum (900) exceeds FY (600) -> q4 = -300, fy>0 -> q4*fy < 0 -> skip.
-        parent = _rr(
-            "total_revenue",
-            {_Q1: 300.0 * _M, _Q2: 300.0 * _M, _Q3: 300.0 * _M, _FY_END: 9.0 * _M},
-            sequence=1,
-            sources={_FY_END: "imputed-rollup: a(+)"},
-        )
-        rdefs = [_rd("total_revenue", period_type="duration")]
-        annual = {
-            "total_revenue": {_FY_END: (_FY_START, 600.0 * _M, "us-gaap:Revenues")}
-        }
-        out, _ = _q4_run([parent], rdefs, annual, [_Q1, _Q2, _Q3, _FY_END])
-        assert "imputed-rollup" in _by_tag(out, "total_revenue").sources[_FY_END]
-
-    def test_parent_def_instant_skipped(self):
-        parent = _rr(
-            "total_revenue",
-            {_Q1: 100.0 * _M, _Q2: 150.0 * _M, _Q3: 200.0 * _M, _FY_END: 9.0 * _M},
-            sequence=1,
-            sources={_FY_END: "imputed-rollup: a(+)"},
-        )
-        child = _rr(
-            "segment_a",
-            {_Q1: 100.0 * _M},
-            parent="total_revenue",
-            factor="+",
-            sequence=2,
-        )
-        # RowDef marks the parent instant -> the duration guard fails (345-346).
-        rdefs = [
-            _rd("total_revenue", period_type="instant"),
-            _rd("segment_a", period_type="duration", parent="total_revenue"),
-        ]
-        annual = {
-            "total_revenue": {_FY_END: (_FY_START, 600.0 * _M, "us-gaap:Revenues")}
-        }
-        out, _ = _q4_run([parent, child], rdefs, annual, [_Q1, _Q2, _Q3, _FY_END])
-        assert "imputed-rollup" in _by_tag(out, "total_revenue").sources[_FY_END]
-
-    def test_no_annual_values_skipped(self):
-        parent = _rr(
-            "total_revenue",
-            {_Q1: 100.0 * _M, _Q2: 150.0 * _M, _Q3: 200.0 * _M, _FY_END: 9.0 * _M},
-            sequence=1,
-            sources={_FY_END: "imputed-rollup: a(+)"},
-        )
-        child = _rr(
-            "segment_a",
-            {_Q1: 100.0 * _M},
-            parent="total_revenue",
-            factor="+",
-            sequence=2,
-        )
-        rdefs = [
-            _rd("total_revenue", period_type="duration"),
-            _rd("segment_a", period_type="duration", parent="total_revenue"),
-        ]
-        out, _ = _q4_run([parent, child], rdefs, {}, [_Q1, _Q2, _Q3, _FY_END])
-        assert "imputed-rollup" in _by_tag(out, "total_revenue").sources[_FY_END]
-
-
-# ---------------------------------------------------------------------------
 # impute() -- income-statement gross-profit / cogs / opex correction passes
 # ---------------------------------------------------------------------------
 
 
+class TestImputeBalanceSheetRound2:
+    def test_gross_ppe_from_net_and_accumulated_depreciation(self):
+        rows = [
+            _rr(
+                "net_ppe",
+                {_D: 24675.0 * _M},
+                period_type="instant",
+                sequence=3,
+                sources={_D: "us-gaap:PropertyPlantAndEquipmentNet"},
+            ),
+            _rr("gross_ppe", {}, parent="net_ppe", period_type="instant", sequence=1),
+            _rr(
+                "accumulated_depreciation",
+                {_D: 12560.0 * _M},
+                parent="net_ppe",
+                factor="-",
+                period_type="instant",
+                sequence=2,
+                sources={
+                    _D: "us-gaap:AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment"
+                },
+            ),
+        ]
+        out, _ = impute(rows, "balance_sheet", "industrial", {_D}, facts={})
+        gross = _by_tag(out, "gross_ppe")
+        assert gross.values[_D] == 37235.0 * _M
+        assert gross.sources[_D] == "imputed: net_ppe + accumulated_depreciation"
+        assert _by_tag(out, "other_net_ppe") is None
+
+    def test_equity_including_nci_corrected_from_balance_identity(self):
+        def inst(tag, value, parent=None, seq=1):
+            return _rr(
+                tag,
+                {} if value is None else {_D: value * _M},
+                parent=parent,
+                period_type="instant",
+                sequence=seq,
+                sources={} if value is None else {_D: f"us-gaap:{tag}"},
+            )
+
+        rows = [
+            inst("total_liabilities_and_equity", 63519.4, seq=30),
+            inst("total_liabilities", 52400.3, "total_liabilities_and_equity", 10),
+            inst(
+                "total_equity_and_noncontrolling_interests",
+                -1808.5,
+                "total_liabilities_and_equity",
+                20,
+            ),
+            inst(
+                "total_equity", 11119.1, "total_equity_and_noncontrolling_interests", 15
+            ),
+            inst(
+                "noncontrolling_interests",
+                None,
+                "total_equity_and_noncontrolling_interests",
+                16,
+            ),
+            inst("temporary_equity", None, "total_liabilities_and_equity", 21),
+        ]
+        out, _ = impute(rows, "balance_sheet", "insurance", {_D}, facts={})
+        enci = _by_tag(out, "total_equity_and_noncontrolling_interests")
+        assert enci.values[_D] == 11119.1 * _M
+        assert enci.sources[_D] == (
+            "corrected: total_equity + noncontrolling_interests"
+        )
+        assert _by_tag(out, "total_equity").values[_D] == 11119.1 * _M
+        assert _D not in _by_tag(out, "temporary_equity").values
+
+    def test_fallback_equity_including_nci_corrected_to_reference_equity(self):
+        def inst(tag, value, parent=None, seq=1, source=None):
+            return _rr(
+                tag,
+                {} if value is None else {_D: value * _M},
+                parent=parent,
+                period_type="instant",
+                sequence=seq,
+                sources={} if value is None else {_D: source or f"us-gaap:{tag}"},
+            )
+
+        rows = [
+            inst("total_liabilities_and_equity", 9347.0, seq=30),
+            inst(
+                "total_liabilities",
+                10874.0,
+                "total_liabilities_and_equity",
+                10,
+                "imputed-plug: total_liabilities_and_equity - "
+                "(total_equity_and_noncontrolling_interests(+))",
+            ),
+            inst(
+                "total_equity_and_noncontrolling_interests",
+                -1527.0,
+                "total_liabilities_and_equity",
+                20,
+                "us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest(fallback)",
+            ),
+            inst(
+                "total_equity",
+                -1520.0,
+                "total_equity_and_noncontrolling_interests",
+                15,
+                "us-gaap:StockholdersEquity",
+            ),
+            inst(
+                "noncontrolling_interests",
+                None,
+                "total_equity_and_noncontrolling_interests",
+                16,
+            ),
+            inst("temporary_equity", None, "total_liabilities_and_equity", 21),
+        ]
+        out, _ = impute(rows, "balance_sheet", "industrial", {_D}, facts={})
+        enci = _by_tag(out, "total_equity_and_noncontrolling_interests")
+        assert enci.values[_D] == -1520.0 * _M
+        assert enci.sources[_D] == (
+            "corrected: total_equity + noncontrolling_interests"
+        )
+        assert _by_tag(out, "total_equity").values[_D] == -1520.0 * _M
+        assert _by_tag(out, "total_liabilities").values[_D] == 10867.0 * _M
+
+
+class TestNetChangeFromBalances:
+    def _rows(self, eop, eop_sources, ncc=None):
+        return [
+            _rr("net_change_in_cash", ncc or {}, sequence=1),
+            _rr(
+                "cash_at_end_of_period",
+                eop,
+                period_type="instant",
+                sequence=2,
+                sources=eop_sources,
+            ),
+        ]
+
+    def test_annual_change_of_same_tag_balances(self):
+        rows = self._rows(
+            {"2022-12-31": 1000.0 * _M, "2023-12-31": 1200.0 * _M},
+            {"2022-12-31": "us-gaap:Cash", "2023-12-31": "us-gaap:Cash(fallback)"},
+        )
+        _net_change_from_balances(rows, {"2022-12-31", "2023-12-31"}, "annual")
+        ncc = _by_tag(rows, "net_change_in_cash")
+        assert ncc.values == {"2023-12-31": 200.0 * _M}
+        assert ncc.sources["2023-12-31"] == (
+            "imputed: cash_at_end_of_period - cash_at_end_of_period(2022-12-31)"
+        )
+
+    def test_quarterly_span(self):
+        rows = self._rows(
+            {"2023-03-31": 1000.0 * _M, "2023-06-30": 900.0 * _M},
+            {"2023-03-31": "us-gaap:Cash", "2023-06-30": "us-gaap:Cash"},
+        )
+        _net_change_from_balances(rows, {"2023-03-31", "2023-06-30"}, "quarterly")
+        assert _by_tag(rows, "net_change_in_cash").values == {"2023-06-30": -100.0 * _M}
+
+    def test_quarter_gap_not_annual_span(self):
+        rows = self._rows(
+            {"2023-03-31": 1000.0 * _M, "2023-06-30": 900.0 * _M},
+            {"2023-03-31": "us-gaap:Cash", "2023-06-30": "us-gaap:Cash"},
+        )
+        _net_change_from_balances(rows, {"2023-03-31", "2023-06-30"}, "annual")
+        assert _by_tag(rows, "net_change_in_cash").values == {}
+
+    def test_different_tags_not_differenced(self):
+        rows = self._rows(
+            {"2022-12-31": 1000.0 * _M, "2023-12-31": 1200.0 * _M},
+            {"2022-12-31": "us-gaap:Cash", "2023-12-31": "us-gaap:CashAndDue"},
+        )
+        _net_change_from_balances(rows, {"2022-12-31", "2023-12-31"}, "annual")
+        assert _by_tag(rows, "net_change_in_cash").values == {}
+
+    def test_reported_net_change_kept(self):
+        rows = self._rows(
+            {"2022-12-31": 1000.0 * _M, "2023-12-31": 1200.0 * _M},
+            {"2022-12-31": "us-gaap:Cash", "2023-12-31": "us-gaap:Cash"},
+            ncc={"2023-12-31": 150.0 * _M},
+        )
+        _net_change_from_balances(rows, {"2022-12-31", "2023-12-31"}, "annual")
+        assert _by_tag(rows, "net_change_in_cash").values == {"2023-12-31": 150.0 * _M}
+
+    def test_missing_rows_is_noop(self):
+        rows = [_rr("cash_at_end_of_period", {_D: 1.0 * _M}, period_type="instant")]
+        _net_change_from_balances(rows, {_D}, "annual")
+        assert rows[0].values == {_D: 1.0 * _M}
+
+
+class TestImputeTaxSign:
+    def _rows(self, tax, current, deferred, current_source=None):
+        return [
+            _rr(
+                "total_pretax_income",
+                {_D: 1078.0 * _M},
+                sequence=1,
+                sources={
+                    _D: "us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxes"
+                },
+            ),
+            _rr(
+                "income_tax_expense",
+                {_D: tax * _M},
+                sequence=2,
+                sources={_D: "us-gaap:IncomeTaxExpenseBenefit"},
+            ),
+            _rr(
+                "income_tax_current",
+                {} if current is None else {_D: current * _M},
+                sequence=3,
+                sources={}
+                if current is None
+                else {_D: current_source or "us-gaap:CurrentIncomeTaxExpenseBenefit"},
+            ),
+            _rr(
+                "income_tax_deferred",
+                {_D: deferred * _M},
+                sequence=4,
+                sources={_D: "us-gaap:DeferredIncomeTaxExpenseBenefit"},
+            ),
+            _rr(
+                "net_income_continuing",
+                {_D: 769.0 * _M},
+                sequence=5,
+                sources={_D: "us-gaap:ProfitLoss"},
+            ),
+        ]
+
+    def test_reversed_tax_sign_corrected(self):
+        out, _ = impute(
+            self._rows(-309.0, 323.0, -14.0),
+            "income_statement",
+            "industrial",
+            {_D},
+            facts={},
+        )
+        tax = _by_tag(out, "income_tax_expense")
+        assert tax.values[_D] == 309.0 * _M
+        assert tax.sources[_D] == (
+            "corrected: total_pretax_income - net_income_continuing"
+        )
+        assert _by_tag(out, "total_pretax_income").values[_D] == 1078.0 * _M
+
+    def test_imputed_current_tax_rederived_after_sign_correction(self):
+        out, _ = impute(
+            self._rows(-309.0, None, -14.0),
+            "income_statement",
+            "industrial",
+            {_D},
+            facts={},
+        )
+        assert _by_tag(out, "income_tax_expense").values[_D] == 309.0 * _M
+        current = _by_tag(out, "income_tax_current")
+        assert current.values[_D] == 323.0 * _M
+        assert current.sources[_D] == (
+            "imputed: income_tax_expense - income_tax_deferred"
+        )
+
+    def test_tax_sign_kept_when_components_agree(self):
+        out, _ = impute(
+            self._rows(-309.0, -295.0, -14.0),
+            "income_statement",
+            "industrial",
+            {_D},
+            facts={},
+        )
+        assert _by_tag(out, "income_tax_expense").values[_D] == -309.0 * _M
+
+
 class TestImputeISCorrectionPasses:
+    def test_cogs_kept_when_operating_expenses_rolled_up(self):
+        rows = [
+            _rr(
+                "total_revenue",
+                {_D: 1000.0 * _M},
+                sequence=1,
+                sources={_D: "us-gaap:Revenues"},
+            ),
+            _rr(
+                "total_cost_of_revenue",
+                {_D: 300.0 * _M},
+                sequence=2,
+                sources={_D: "us-gaap:CostOfRevenue"},
+            ),
+            _rr(
+                "costs_and_expenses",
+                {_D: 900.0 * _M},
+                sequence=3,
+                sources={_D: "us-gaap:CostsAndExpenses"},
+            ),
+            _rr("total_operating_expenses", {}, sequence=4),
+            _rr(
+                "sga_expense",
+                {_D: 400.0 * _M},
+                parent="total_operating_expenses",
+                sequence=5,
+                sources={_D: "us-gaap:SellingGeneralAndAdministrativeExpense"},
+            ),
+            _rr(
+                "total_operating_income",
+                {_D: 100.0 * _M},
+                sequence=6,
+                sources={_D: "us-gaap:OperatingIncomeLoss"},
+            ),
+        ]
+        out, _ = impute(rows, "income_statement", "industrial", {_D}, facts={})
+        cogs = _by_tag(out, "total_cost_of_revenue")
+        assert cogs.values[_D] == 300.0 * _M
+        assert cogs.sources[_D] == "us-gaap:CostOfRevenue"
+
     def test_gross_profit_rollup_recomputed_from_rev_minus_cogs(self):
         # gp carries an imputed-rollup source and a stale value; with cogs!=0 and
         # rev present it is recomputed to rev - cogs (407-414).
@@ -1811,10 +4513,7 @@ class TestImputeBSMezzanineFallbacks:
         assert all(w.tag != "total_liabilities" for w in diag)
 
     def test_equity_resolved_from_individual_mezzanine_fact(self):
-        # ENCI verify gap (50M) exactly matches a redeemable-NCI carrying-amount fact
-        # -> the individual-fact match resolves it (1527-1547).  A real redeemable_nci
-        # row (50M) makes the earlier equity-reconcile guard fail so it does not pre-
-        # empt the mezzanine path, and feeds _rnci_val into the block.
+        # No liabilities-and-equity total: the equity reconciliation does not apply.
         rows = [
             _rr(
                 "total_assets",
@@ -1831,14 +4530,6 @@ class TestImputeBSMezzanineFallbacks:
                 balance="credit",
                 sequence=2,
                 sources={_D: "us-gaap:Liabilities"},
-            ),
-            _rr(
-                "total_liabilities_and_equity",
-                {_D: 1000.0 * _M},
-                period_type="instant",
-                balance="credit",
-                sequence=3,
-                sources={_D: "us-gaap:LiabilitiesAndStockholdersEquity"},
             ),
             _rr(
                 "total_equity_and_noncontrolling_interests",
@@ -1888,9 +4579,7 @@ class TestImputeBSMezzanineFallbacks:
         assert all(w.tag != "total_equity_and_noncontrolling_interests" for w in diag)
 
     def test_equity_resolved_from_summed_mezzanine_facts(self):
-        # ENCI verify gap (50M) matches no single redeemable-NCI fact but equals the
-        # SUM of two carrying-amount facts (30M + 20M) -> the sum fallback resolves it
-        # (1540-1547, esp. 1543).
+        # No liabilities-and-equity total: the equity reconciliation does not apply.
         rows = [
             _rr(
                 "total_assets",
@@ -1907,14 +4596,6 @@ class TestImputeBSMezzanineFallbacks:
                 balance="credit",
                 sequence=2,
                 sources={_D: "us-gaap:Liabilities"},
-            ),
-            _rr(
-                "total_liabilities_and_equity",
-                {_D: 1000.0 * _M},
-                period_type="instant",
-                balance="credit",
-                sequence=3,
-                sources={_D: "us-gaap:LiabilitiesAndStockholdersEquity"},
             ),
             _rr(
                 "total_equity_and_noncontrolling_interests",
@@ -1967,8 +4648,7 @@ class TestImputeBSMezzanineFallbacks:
         assert all(w.tag != "total_equity_and_noncontrolling_interests" for w in diag)
 
     def test_equity_negative_nci_double_counted(self):
-        # ENCI verify gap equals 2x abs(negative nci) -> the sign-doubling branch
-        # verifies (1552-1558).
+        # No liabilities-and-equity total: the equity reconciliation does not apply.
         rows = [
             _rr(
                 "total_assets",
@@ -1985,14 +4665,6 @@ class TestImputeBSMezzanineFallbacks:
                 balance="credit",
                 sequence=2,
                 sources={_D: "us-gaap:Liabilities"},
-            ),
-            _rr(
-                "total_liabilities_and_equity",
-                {_D: 1000.0 * _M},
-                period_type="instant",
-                balance="credit",
-                sequence=3,
-                sources={_D: "us-gaap:LiabilitiesAndStockholdersEquity"},
             ),
             # equity=420, nci=-20 -> verify sum = 400; ENCI value = 440 -> diff = 40 = 2*20.
             _rr(
@@ -2485,10 +5157,36 @@ class TestImputeIncomeStatement:
         assert cogs.values[d] == 600.0 * _M
         assert "corrected" in cogs.sources[d]
 
+    def test_costs_and_expenses_correction_skips_rolled_up_opex(self):
+        d = "2023-12-31"
+        rows = [
+            _rr("total_revenue", {d: 1000.0 * _M}, sequence=1),
+            _rr(
+                "total_cost_of_revenue",
+                {d: 100.0 * _M},
+                sequence=2,
+                sources={d: "us-gaap:CostOfRevenue"},
+            ),
+            _rr("total_gross_profit", {}, sequence=3),
+            _rr(
+                "sga_expense",
+                {d: 200.0 * _M},
+                parent="total_operating_expenses",
+                sequence=4,
+            ),
+            _rr("total_operating_expenses", {}, sequence=5),
+            _rr("total_operating_income", {d: 200.0 * _M}, sequence=6),
+            _rr("costs_and_expenses", {d: 800.0 * _M}, sequence=7),
+        ]
+        out, _ = impute(rows, "income_statement", "diversified", {d}, facts={})
+        cogs = _by_tag(out, "total_cost_of_revenue")
+        assert cogs.values[d] == 100.0 * _M
+        assert cogs.sources[d] == "us-gaap:CostOfRevenue"
+
     def test_no_rules_for_unknown_statement(self):
         d = "2023-12-31"
         rows = [_rr("x", {d: 1.0})]
-        out, diag = impute(rows, "other", "industrial", {d}, facts={})
+        out, diag = impute(rows, "other", "industrial", {d}, facts={})  # ty: ignore[invalid-argument-type]
         assert out is rows and diag == []
 
     def test_pretax_scope_aligned_when_identity_violated(self):
@@ -2630,51 +5328,39 @@ class TestImputeBalanceSheet:
         assert eq.values[d] == 400.0 * _M
         assert "reconciled" in eq.sources[d]
 
-    def test_redeemable_nci_imputed_from_gap(self):
-        # L&E - L - ENCI leaves a mezzanine remainder imputed into redeemable NCI.
+    def test_temporary_equity_holds_mezzanine_gap(self):
         d = "2023-12-31"
+
+        def inst(tag, value, parent=None, seq=1):
+            return _rr(
+                tag,
+                {} if value is None else {d: value * _M},
+                parent=parent,
+                period_type="instant",
+                balance="credit",
+                sequence=seq,
+                sources={} if value is None else {d: f"us-gaap:{tag}"},
+            )
+
         rows = [
-            _rr(
-                "total_assets",
-                {d: 1000.0 * _M},
-                period_type="instant",
-                balance="debit",
-                sequence=1,
-            ),
-            _rr(
-                "total_liabilities",
-                {d: 600.0 * _M},
-                period_type="instant",
-                balance="credit",
-                sequence=2,
-            ),
-            _rr(
-                "total_liabilities_and_equity",
-                {d: 1000.0 * _M},
-                period_type="instant",
-                balance="credit",
-                sequence=3,
-            ),
-            _rr(
+            inst("total_liabilities_and_equity", 1000.0, seq=10),
+            inst("total_liabilities", 600.0, "total_liabilities_and_equity", 2),
+            inst(
                 "total_equity_and_noncontrolling_interests",
-                {d: 350.0 * _M},
-                period_type="instant",
-                balance="credit",
-                sequence=4,
+                350.0,
+                "total_liabilities_and_equity",
+                4,
             ),
-            _rr(
-                "redeemable_noncontrolling_interest",
-                {},
-                period_type="instant",
-                balance="credit",
-                sequence=5,
-            ),
+            inst("temporary_equity", None, "total_liabilities_and_equity", 3),
+            inst("redeemable_noncontrolling_interest", None, "temporary_equity", 1),
         ]
         out, _ = impute(rows, "balance_sheet", "industrial", {d}, facts={})
-        rnci = _by_tag(out, "redeemable_noncontrolling_interest")
-        # 1000 - 600 - 350 = 50
-        assert rnci.values[d] == 50.0 * _M
-        assert "imputed" in rnci.sources[d]
+        mezz = _by_tag(out, "temporary_equity")
+        assert mezz.values[d] == 50.0 * _M
+        assert mezz.sources[d].startswith(
+            "imputed-plug: total_liabilities_and_equity - "
+        )
+        assert d not in _by_tag(out, "redeemable_noncontrolling_interest").values
 
 
 class TestImputeCashFlow:
@@ -2712,7 +5398,7 @@ class TestImputeCashFlow:
         assert nc.values[d] == 200.0 * _M  # 500 - 200 - 150 + 50
         assert "imputed" in nc.sources[d]
 
-    def test_fx_derived_from_identity(self):
+    def test_fx_not_derived_from_identity(self):
         d = "2023-12-31"
         rows = [
             _rr(
@@ -2737,9 +5423,7 @@ class TestImputeCashFlow:
             _rr("net_change_in_cash", {d: 160.0 * _M}, balance="debit", sequence=5),
         ]
         out, _ = impute(rows, "cash_flow", "industrial", {d}, facts={})
-        fx = _by_tag(out, "effect_of_exchange_rate_changes")
-        assert fx.values[d] == 10.0 * _M  # 160 - 500 + 200 + 150
-        assert "imputed" in fx.sources[d]
+        assert d not in _by_tag(out, "effect_of_exchange_rate_changes").values
 
     def test_da_from_components(self):
         d = "2023-12-31"
@@ -3087,10 +5771,18 @@ class TestImputeBalanceSheetFallbacks:
         # fact path is exercised for the equity rows without producing a warning.
         assert isinstance(diag, list)
 
-    def test_liabilities_mezzanine_reimputed_from_remainder(self):
-        # L&E - L - ENCI is negative-but-material and an imputed redeemable-NCI
-        # row exists -> it is re-imputed to the computed remainder.
-        rows = [
+    def _mezzanine_rows(self, liabilities, equity, mezzanine, mezzanine_source):
+        def inst(tag, value, seq, source=None):
+            return _rr(
+                tag,
+                {_D: value * _M},
+                period_type="instant",
+                balance="credit",
+                sequence=seq,
+                sources={_D: source or f"us-gaap:{tag}"},
+            )
+
+        return [
             _rr(
                 "total_assets",
                 {_D: 1000.0 * _M},
@@ -3099,47 +5791,29 @@ class TestImputeBalanceSheetFallbacks:
                 sequence=1,
                 sources={_D: "us-gaap:Assets"},
             ),
-            _rr(
-                "total_liabilities",
-                {_D: 700.0 * _M},
-                period_type="instant",
-                balance="credit",
-                sequence=2,
-                sources={_D: "us-gaap:Liabilities"},
-            ),
-            _rr(
-                "total_liabilities_and_equity",
-                {_D: 1000.0 * _M},
-                period_type="instant",
-                balance="credit",
-                sequence=3,
-                sources={_D: "us-gaap:LiabilitiesAndStockholdersEquity"},
-            ),
-            _rr(
-                "total_equity_and_noncontrolling_interests",
-                {_D: 320.0 * _M},
-                period_type="instant",
-                balance="credit",
-                sequence=4,
-                sources={
-                    _D: "us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"
-                },
-            ),
-            _rr(
-                "redeemable_noncontrolling_interest",
-                {_D: 5.0 * _M},
-                period_type="instant",
-                balance="credit",
-                sequence=5,
-                sources={
-                    _D: "us-gaap:RedeemableNoncontrollingInterestEquityCarryingAmount (imputed)"
-                },
-            ),
+            inst("total_liabilities", liabilities, 2),
+            inst("total_liabilities_and_equity", 1000.0, 3),
+            inst("total_equity_and_noncontrolling_interests", equity, 4),
+            inst("temporary_equity", mezzanine, 5, mezzanine_source),
         ]
+
+    def test_negative_mezzanine_never_solved(self):
+        rows = self._mezzanine_rows(700.0, 320.0, 5.0, "imputed-plug: prior")
+        out, _ = impute(
+            rows, "balance_sheet", "industrial", {_D}, facts={"us-gaap": {}}
+        )
+        assert _by_tag(out, "temporary_equity").values[_D] == 5.0 * _M
+        liabilities = _by_tag(out, "total_liabilities")
+        assert liabilities.values[_D] == 675.0 * _M
+        assert liabilities.sources[_D].startswith("identity-enforced")
+
+    def test_liabilities_verified_when_mezzanine_gap_closes(self):
+        rows = self._mezzanine_rows(
+            600.0, 400.0, 50.0, "us-gaap:TemporaryEquityCarryingAmount"
+        )
         out, diag = impute(
             rows, "balance_sheet", "industrial", {_D}, facts={"us-gaap": {}}
         )
-        rnci = _by_tag(out, "redeemable_noncontrolling_interest")
-        # remainder = 1000 - 700 - 320 = -20M; row gets re-imputed to it.
-        assert rnci.values[_D] == -20.0 * _M
-        assert "re-imputed" in rnci.sources[_D]
+        assert _by_tag(out, "total_liabilities").values[_D] == 600.0 * _M
+        assert _by_tag(out, "temporary_equity").values[_D] == 50.0 * _M
+        assert diag == []

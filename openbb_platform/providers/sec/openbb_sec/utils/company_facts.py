@@ -235,7 +235,7 @@ def _build_records(
                     "description": r.description,
                     "parent": r.parent,
                     "sequence": r.sequence,
-                    "factor": r.factor,
+                    "factor": r.factor_on(date),
                     "balance": r.balance,
                     "unit": r.unit,
                     "period_type": r.period_type,
@@ -413,10 +413,10 @@ def resolve_company_facts(
     period : PeriodType
         Which periods to include in the output tables.
     pit_mode : bool
-        If True, skip the 10-K vintage override for quarterly data.
-        Quarterly values will reflect the original 10-Q filing vintage,
-        preserving point-in-time fidelity for backtesting.  Note:
-        Q4 values may not reconcile to FY totals in this mode.
+        If True, every period is resolved at the earliest filing that reports it.
+    include_preliminary : bool
+        If True, 8-K data is used for periods no 10-K, 10-Q, 20-F, 40-F, or 6-K
+        had reported when the 8-K was filed.
 
     Returns
     -------
@@ -480,6 +480,8 @@ def resolve_company_facts(
         if period in ("quarterly", "both"):
             frequencies.append("quarterly")
 
+        annual_stmts = None
+
         for freq in frequencies:
             stmts = _schema.extract_all(
                 facts_json,
@@ -487,7 +489,10 @@ def resolve_company_facts(
                 company_type=company_type,
                 pit_mode=pit_mode,
                 include_preliminary=include_preliminary,
+                annual_results=annual_stmts,
             )
+            if freq == "annual":
+                annual_stmts = stmts
             for stmt_result in stmts.values():
                 output.currency = stmt_result.currency
                 break
@@ -533,11 +538,10 @@ async def get_standardized_financials(
     use_cache : bool
         Whether to use the SEC disk cache (6-hour TTL).
     pit_mode : bool
-        If True, skip the 10-K vintage override for quarterly data,
-        preserving point-in-time fidelity for backtesting.
+        If True, every period is resolved at the earliest filing that reports it.
     include_preliminary : bool
-        If True, include 8-K filing data for periods not yet covered
-        by a 10-Q/K.
+        If True, 8-K data is used for periods no 10-K, 10-Q, 20-F, 40-F, or 6-K
+        had reported when the 8-K was filed.
 
     Returns
     -------

@@ -7,7 +7,7 @@ from openbb_core.provider.standard_models.form_13FHR import (
     Form13FHRData,
     Form13FHRQueryParams,
 )
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class SecForm13FHRQueryParams(Form13FHRQueryParams):
@@ -52,6 +52,12 @@ class SecForm13FHRData(Form13FHRData):
         + " , as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
+
+    @field_validator("weight", mode="before")
+    @classmethod
+    def _none_weight_to_zero(cls, v):
+        """Map the weight of a zero-value filing to 0.0."""
+        return 0.0 if v is None else v
 
 
 class SecForm13FHRFetcher(Fetcher[SecForm13FHRQueryParams, list[SecForm13FHRData]]):
@@ -115,11 +121,8 @@ class SecForm13FHRFetcher(Fetcher[SecForm13FHRQueryParams, list[SecForm13FHRData
         **kwargs: Any,
     ) -> list[SecForm13FHRData]:
         """Transform the data."""
-        return [
-            SecForm13FHRData.model_validate(d)
-            for d in sorted(
-                data,
-                key=lambda d: [d["period_ending"], d["weight"]],
-                reverse=True,
-            )
-        ]
+        return sorted(
+            (SecForm13FHRData.model_validate(d) for d in data),
+            key=lambda d: (d.period_ending, d.weight),
+            reverse=True,
+        )
