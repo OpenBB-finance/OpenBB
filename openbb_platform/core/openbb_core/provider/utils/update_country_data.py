@@ -30,8 +30,8 @@ from pathlib import Path
 import requests
 
 try:
-    import pycountry
-    from bs4 import BeautifulSoup
+    import pycountry  # ty: ignore[unresolved-import]
+    from bs4 import BeautifulSoup  # ty: ignore[unresolved-import]
 except ImportError as e:
     missing_package = str(e).split("'")[1] if "'" in str(e) else "unknown"
     raise ImportError(
@@ -119,11 +119,11 @@ def _build_name_index() -> dict[str, str]:
     """Build lowercase name → alpha_2 lookup from pycountry + overrides."""
     idx: dict[str, str] = {}
     for c in pycountry.countries:
-        idx[c.name.lower()] = c.alpha_2  # type: ignore
+        idx[c.name.lower()] = c.alpha_2
         if hasattr(c, "common_name"):
-            idx[c.common_name.lower()] = c.alpha_2  # type: ignore
+            idx[c.common_name.lower()] = c.alpha_2
         if hasattr(c, "official_name"):
-            idx[c.official_name.lower()] = c.alpha_2  # type: ignore
+            idx[c.official_name.lower()] = c.alpha_2
     idx.update(NAME_OVERRIDES)  # type: ignore
     return idx
 
@@ -145,7 +145,7 @@ def resolve_country(name: str) -> str | None:
     try:
         results = pycountry.countries.search_fuzzy(clean)
         if results:
-            return results[0].alpha_2  # type: ignore
+            return results[0].alpha_2
     except LookupError:
         pass
 
@@ -530,14 +530,14 @@ def build_country_data() -> dict:
 
     # 4. Build country list from pycountry
     countries = []
-    for c in sorted(pycountry.countries, key=lambda x: x.alpha_2):  # type: ignore
+    for c in sorted(pycountry.countries, key=lambda x: x.alpha_2):
         entry: dict = {
-            "alpha_2": c.alpha_2,  # type: ignore
-            "alpha_3": c.alpha_3,  # type: ignore
-            "name": _strip_accents(c.name),  # type: ignore
-            "numeric": c.numeric,  # type: ignore
+            "alpha_2": c.alpha_2,
+            "alpha_3": c.alpha_3,
+            "name": _strip_accents(c.name),
+            "numeric": c.numeric,
         }
-        groups = country_groups.get(c.alpha_2)  # type: ignore
+        groups = country_groups.get(c.alpha_2)
         if groups:
             entry["groups"] = groups
         countries.append(entry)

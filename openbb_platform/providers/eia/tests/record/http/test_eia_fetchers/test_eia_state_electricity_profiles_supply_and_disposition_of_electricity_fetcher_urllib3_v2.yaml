@@ -1,0 +1,62 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/electricity/state-electricity-profiles/source-disposition/data/?api_key=MOCK_API_KEY&data%5B0%5D=combined-heat-and-pwr-comm&data%5B10%5D=independent-power-producers&data%5B11%5D=indust-and-comm-gen-subtotal&data%5B12%5D=net-interstate-trade&data%5B13%5D=net-trade-index&data%5B14%5D=total-disposition&data%5B15%5D=total-elect-indust&data%5B16%5D=total-international-exports&data%5B17%5D=total-international-imports&data%5B18%5D=total-net-generation&data%5B19%5D=total-supply&data%5B1%5D=combined-heat-and-pwr-elect&data%5B20%5D=unaccounted&data%5B2%5D=combined-heat-and-pwr-indust&data%5B3%5D=direct-use&data%5B4%5D=elect-pwr-sector-gen-subtotal&data%5B5%5D=electric-utilities&data%5B6%5D=energy-only-providers&data%5B7%5D=estimated-losses&data%5B8%5D=facility-direct&data%5B9%5D=full-service-providers&end=1990&facets%5Bstate%5D%5B%5D=AK&frequency=annual&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=1990
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY","frequency":"annual","data":[{"period":"1990","state":"AK","stateDescription":"Alaska","combined-heat-and-pwr-comm":"265533","combined-heat-and-pwr-elect":"0","combined-heat-and-pwr-indust":"840950","direct-use":"1106473","elect-pwr-sector-gen-subtotal":"4493024","electric-utilities":"4493024","energy-only-providers":"0","estimated-losses":"322955","facility-direct":"0","full-service-providers":"4253840","independent-power-producers":"0","indust-and-comm-gen-subtotal":"1106482","net-interstate-trade":"0","net-trade-index":"1","total-disposition":"5600415","total-elect-indust":"4253840","total-international-exports":"0","total-international-imports":"909","total-net-generation":"5599506","total-supply":"5600415","unaccounted":"5272100","combined-heat-and-pwr-comm-units":"megawatthours","combined-heat-and-pwr-elect-units":"megawatthours","combined-heat-and-pwr-indust-units":"megawatthours","direct-use-units":"megawatthours","elect-pwr-sector-gen-subtotal-units":"megawatthours","electric-utilities-units":"megawatthours","energy-only-providers-units":"megawatthours","estimated-losses-units":"megawatthours","facility-direct-units":"megawatthours","full-service-providers-units":"megawatthours","independent-power-producers-units":"megawatthours","indust-and-comm-gen-subtotal-units":"megawatthours","net-interstate-trade-units":"megawatthours","net-trade-index-units":"ratio","total-disposition-units":"megawatthours","total-elect-indust-units":"megawatthours","total-international-exports-units":"megawatthours","total-international-imports-units":"megawatthours","total-net-generation-units":"megawatthours","total-supply-units":"megawatthours","unaccounted-units":"megawatthours"}],"description":"Supply
+        and disposition of electricity by state.\n    Sources: Forms EIA-860, EIA-861,
+        and EIA-923\n    Product: State Electricity Profiles, Table 10"},"request":{"command":"\/v2\/electricity\/state-electricity-profiles\/source-disposition\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"annual","data":["combined-heat-and-pwr-comm","combined-heat-and-pwr-elect","combined-heat-and-pwr-indust","direct-use","elect-pwr-sector-gen-subtotal","electric-utilities","energy-only-providers","estimated-losses","facility-direct","full-service-providers","independent-power-producers","indust-and-comm-gen-subtotal","net-interstate-trade","net-trade-index","total-disposition","total-elect-indust","total-international-exports","total-international-imports","total-net-generation","total-supply","unaccounted"],"facets":{"state":["AK"]},"start":"1990","end":"1990","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 03:04:04 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 03:04:04 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '2778'
+    status:
+      code: 200
+      message: OK
+version: 1

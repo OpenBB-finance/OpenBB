@@ -1,7 +1,5 @@
 """Nasdaq Historical Dividends Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import (
     date as dateType,
     datetime,
@@ -10,6 +8,7 @@ from typing import Any
 from warnings import warn
 
 from dateutil import parser
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.historical_dividends import (
     HistoricalDividendsData,
@@ -18,11 +17,22 @@ from openbb_core.provider.standard_models.historical_dividends import (
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
 
+from openbb_nasdaq.utils.constants import SYMBOL_CHOICES_ENDPOINT
+
 
 class NasdaqHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
     """Nasdaq Historical Dividends Query Params."""
 
-    __json_schema_extra__ = {"symbol": {"multiple_items_allowed": True}}
+    __json_schema_extra__ = {
+        "symbol": {
+            "multiple_items_allowed": False,
+            "x-widget_config": {
+                "type": "endpoint",
+                "optionsEndpoint": SYMBOL_CHOICES_ENDPOINT,
+                "style": {"popupWidth": 850},
+            },
+        },
+    }
 
 
 class NasdaqHistoricalDividendsData(HistoricalDividendsData):
@@ -102,32 +112,26 @@ class NasdaqHistoricalDividendsFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the raw data."""
-        # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
-        from openbb_core.provider.utils.helpers import amake_request  # noqa
-        from openbb_nasdaq.utils.helpers import get_headers  # noqa
+        import asyncio
+
+        from openbb_nasdaq.utils.helpers import get_nasdaq_data, resolve_asset_class
 
         results = []
         symbols = query.symbol.split(",")
-        IPO_HEADERS = get_headers("json")
 
         async def get_one(symbol):
-            """Response Callback."""
-            data = []
-            asset_class = "stocks"
-            url = f"https://api.nasdaq.com/api/quote/{symbol}/dividends?assetclass={asset_class}"
+            """Collect one symbol's dividend history, trying stocks then ETFs."""
+            data: list = []
+            asset_class = await resolve_asset_class(symbol)
 
-            response = await amake_request(
-                url,
-                headers=IPO_HEADERS,
-            )
-            if response.get("status").get("rCode") == 400:  # type: ignore
-                response = await amake_request(
-                    url.replace("stocks", "etf"),
-                    headers=IPO_HEADERS,
+            try:
+                payload = await get_nasdaq_data(
+                    f"quote/{symbol}/dividends?assetclass={asset_class}"
                 )
-            if response.get("status").get("rCode") == 200:  # type: ignore
-                data = response.get("data").get("dividends").get("rows")  # type: ignore
+            except OpenBBError:
+                payload = None
+
+            data = ((payload or {}).get("dividends") or {}).get("rows") or []
 
             if data:
                 if len(symbols) > 1:

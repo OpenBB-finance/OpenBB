@@ -1,8 +1,6 @@
 """SEC HTM/HTML File Model."""
 
-# pylint: disable=unused-argument
-
-from typing import Any
+from typing import Any, cast
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.data import Data
@@ -14,8 +12,8 @@ from pydantic import Field
 class SecHtmFileQueryParams(QueryParams):
     """SEC HTM File Query Parameters."""
 
-    url: str = Field(
-        default="",
+    url: str | None = Field(
+        default=None,
         description="URL for the SEC filing.",
     )
     use_cache: bool = Field(
@@ -40,21 +38,37 @@ class SecHtmFileFetcher(Fetcher[SecHtmFileQueryParams, SecHtmFileData]):
     @staticmethod
     def transform_query(params: dict[str, Any]) -> SecHtmFileQueryParams:
         """Transform the query."""
-        if not params.get("url"):
+        from urllib.parse import urlparse
+
+        url = params.get("url") or ""
+
+        if not isinstance(url, str) or not url.strip():
             raise OpenBBError(ValueError("Please enter a URL."))
 
-        url = params.get("url", "")
+        parsed = urlparse(url.strip())
 
-        if (
-            not url.startswith("http")
-            or "sec.gov" not in url
-            or (not url.endswith(".htm") and not url.endswith(".html"))
-        ):
+        if parsed.scheme not in ("http", "https"):
+            raise OpenBBError(
+                ValueError("Invalid URL supplied, must use http or https scheme.")
+            )
+
+        host = (parsed.hostname or "").lower()
+        if host != "sec.gov" and not host.endswith(".sec.gov"):
+            raise OpenBBError(
+                ValueError(
+                    "Invalid URL supplied, host must be sec.gov (e.g. https://www.sec.gov/...)."
+                )
+            )
+
+        path = parsed.path or ""
+        if not (path.endswith(".htm") or path.endswith(".html")):
             raise OpenBBError(
                 ValueError(
                     "Invalid URL. Please a SEC URL that directs specifically to a HTM or HTML file."
                 )
             )
+
+        params["url"] = parsed.scheme + "://" + parsed.netloc + path
         return SecHtmFileQueryParams(**params)
 
     @staticmethod
@@ -64,7 +78,6 @@ class SecHtmFileFetcher(Fetcher[SecHtmFileQueryParams, SecHtmFileData]):
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the SEC endpoint."""
-        # pylint: disable=import-outside-toplevel
         from openbb_sec.models.sec_filing import SecBaseFiling
 
         return {
@@ -77,18 +90,17 @@ class SecHtmFileFetcher(Fetcher[SecHtmFileQueryParams, SecHtmFileData]):
         query: SecHtmFileQueryParams, data: dict, **kwargs: Any
     ) -> SecHtmFileData:
         """Transform the data to the standard format."""
-        # pylint: disable=import-outside-toplevel
-        from bs4 import BeautifulSoup  # noqa
+        from bs4 import BeautifulSoup, Tag  # noqa
 
         if not data or not data.get("content"):
             raise OpenBBError("Failed to extract HTM file data.")
 
         content = data.pop("content", "")
-        soup = BeautifulSoup(content, "html.parser").find("html")
+        soup = cast("Tag", BeautifulSoup(content, "html.parser").find("html"))
 
         # Remove style elements that add background color to table rows
         for row in soup.find_all("tr"):
-            if "background-color" in row.get("style", ""):
+            if "background-color" in cast("str", row.get("style", "")):
                 del row["style"]
             for attr in ["class", "bgcolor"]:
                 if attr in row.attrs:

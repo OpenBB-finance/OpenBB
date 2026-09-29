@@ -4,11 +4,12 @@ from collections.abc import Callable
 from functools import wraps
 from typing import Any, TypeVar, overload
 
+from pydantic import ValidationError, validate_call
+from typing_extensions import ParamSpec
+
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.env import Env
 from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
-from pydantic import ValidationError, validate_call
-from typing_extensions import ParamSpec
 
 P = ParamSpec("P")
 R = TypeVar("R")
@@ -16,12 +17,12 @@ R = TypeVar("R")
 
 @overload
 def validate(func: Callable[P, R]) -> Callable[P, R]:
-    pass
+    pass  # pragma: no cover
 
 
 @overload
 def validate(**dec_kwargs) -> Callable[[Callable[P, R]], Callable[P, R]]:
-    pass
+    pass  # pragma: no cover
 
 
 def validate(
@@ -102,7 +103,5 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                 raise OpenBBError(
                     f"\n[Unexpected Error] -> {e.__class__.__name__} -> {e}"
                 ).with_traceback(tb) from None
-
-        return None
 
     return wrapper

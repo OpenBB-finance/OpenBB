@@ -1,0 +1,66 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/electricity/state-electricity-profiles/energy-efficiency/data/?api_key=MOCK_API_KEY&data%5B0%5D=all-other-costs&data%5B1%5D=customer-incentive&data%5B2%5D=energy-savings&data%5B3%5D=potential-peak-savings&end=2013&facets%5Bsector%5D%5B%5D=COM&facets%5Bstate%5D%5B%5D=AK&frequency=annual&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2013
+  response:
+    body:
+      string: '{"response":{"total":"2","dateFormat":"YYYY","frequency":"annual","data":[{"period":"2013","state":"AK","stateName":"Alaska","timePeriod":"Expected
+        Life Cycle of Programs","sector":"COM","sectorName":"commercial","all-other-costs":"251","customer-incentive":"0","energy-savings":"2535","potential-peak-savings":".8","all-other-costs-units":"thousand
+        dollars","customer-incentive-units":"thousand dollars","energy-savings-units":"megawatthours","potential-peak-savings-units":"megawatts"},{"period":"2013","state":"AK","stateName":"Alaska","timePeriod":"Reporting
+        Year","sector":"COM","sectorName":"commercial","all-other-costs":"251","customer-incentive":"0","energy-savings":"988","potential-peak-savings":".3","all-other-costs-units":"thousand
+        dollars","customer-incentive-units":"thousand dollars","energy-savings-units":"megawatthours","potential-peak-savings-units":"megawatts"}],"description":"Costs
+        and savings from energy efficiency programs by state and sector\n    Source:
+        Form EIA-861\n    Product: State Electricity Profiles, Table 13"},"request":{"command":"\/v2\/electricity\/state-electricity-profiles\/energy-efficiency\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"annual","data":["all-other-costs","customer-incentive","energy-savings","potential-peak-savings"],"facets":{"state":["AK"],"sector":["COM"]},"start":"2013","end":"2013","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 03:12:55 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 03:12:55 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '1518'
+    status:
+      code: 200
+      message: OK
+version: 1

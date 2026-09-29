@@ -1,11 +1,6 @@
 """Nasdaq IPO Calendar Model."""
 
-# pylint: disable=unused-argument
-
-from datetime import (
-    date as dateType,
-    datetime,
-)
+from datetime import date as dateType
 from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -13,8 +8,17 @@ from openbb_core.provider.standard_models.calendar_ipo import (
     CalendarIpoData,
     CalendarIpoQueryParams,
 )
-from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import Field, field_validator
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
+from pydantic import Field
+
+from openbb_nasdaq.utils.constants import CELL_CLICK_SYMBOL
+
+STATUS_DATES = {
+    "priced": "ipo_date",
+    "filed": "filed_date",
+    "withdrawn": "withdraw_date",
+    "upcoming": "expected_price_date",
+}
 
 
 class NasdaqCalendarIpoQueryParams(CalendarIpoQueryParams):
@@ -25,93 +29,39 @@ class NasdaqCalendarIpoQueryParams(CalendarIpoQueryParams):
 
     status: Literal["upcoming", "priced", "filed", "withdrawn"] = Field(
         default="priced",
-        description="The status of the IPO.",
+        description="The status of the offering.",
     )
     is_spo: bool = Field(
         default=False,
-        description="If True, returns data for secondary public offerings (SPOs).",
+        description="If True, returns secondary public offerings (SPOs) instead.",
     )
 
 
 class NasdaqCalendarIpoData(CalendarIpoData):
     """Nasdaq IPO Calendar Data."""
 
-    __alias_dict__ = {
-        "symbol": "proposedTickerSymbol",
-        "ipo_date": "pricedDate",
-        "share_price": "proposedSharePrice",
-        "exchange": "proposedExchange",
-        "id": "dealID",
-        "name": "companyName",
-        "offer_amount": "dollarValueOfSharesOffered",
-        "share_count": "sharesOffered",
-        "expected_price_date": "expectedPriceDate",
-        "filed_date": "filedDate",
-        "withdraw_date": "withdrawDate",
-        "deal_status": "dealStatus",
-    }
-
-    name: str | None = Field(
+    symbol: str | None = Field(
         default=None,
-        description="The name of the company.",
+        description=DATA_DESCRIPTIONS.get("symbol", ""),
+        json_schema_extra={"x-widget_config": CELL_CLICK_SYMBOL},
     )
+    name: str | None = Field(default=None, description="The name of the company.")
     offer_amount: float | None = Field(
-        default=None,
-        description="The dollar value of the shares offered.",
+        default=None, description="The dollar value of the shares offered."
     )
     share_count: int | None = Field(
-        default=None,
-        description="The number of shares offered.",
+        default=None, description="The number of shares offered."
     )
     expected_price_date: dateType | None = Field(
-        default=None,
-        description="The date the pricing is expected.",
+        default=None, description="The date the pricing is expected."
     )
     filed_date: dateType | None = Field(
-        default=None,
-        description="The date the IPO was filed.",
+        default=None, description="The date the offering was filed."
     )
     withdraw_date: dateType | None = Field(
-        default=None,
-        description="The date the IPO was withdrawn.",
+        default=None, description="The date the offering was withdrawn."
     )
-    deal_status: str | None = Field(
-        default=None,
-        description="The status of the deal.",
-    )
-
-    @field_validator(
-        "filed_date",
-        "withdraw_date",
-        "expected_price_date",
-        mode="before",
-        check_fields=False,
-    )
-    @classmethod
-    def validate_date(cls, v):
-        """Validate the date if available is a date object."""
-        v = v.replace("N/A", "")
-        return datetime.strptime(v, "%m/%d/%Y").date() if v else None
-
-    @field_validator(
-        "offer_amount",
-        mode="before",
-        check_fields=False,
-    )
-    @classmethod
-    def validate_offer_amount(cls, v):
-        """Validate the offer amount if available is a float."""
-        return float(str(v).replace("$", "").replace(",", "")) if v else None
-
-    @field_validator(
-        "share_count",
-        mode="before",
-        check_fields=False,
-    )
-    @classmethod
-    def validate_share_count(cls, v):
-        """Validate the share count if available is an int."""
-        return int(str(v).replace(",", "")) if v else None
+    deal_status: str | None = Field(default=None, description="The status of the deal.")
 
 
 class NasdaqCalendarIpoFetcher(
@@ -126,21 +76,18 @@ class NasdaqCalendarIpoFetcher(
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> NasdaqCalendarIpoQueryParams:
-        """Transform the query params."""
-        # pylint: disable=import-outside-toplevel
-        from datetime import timedelta
+        """Transform the query, defaulting to the trailing three hundred days."""
+        from datetime import datetime, timedelta
 
-        now = datetime.today().date().strftime("%Y-%m-%d")
-        transformed_params = params
+        today = datetime.now().date()
 
         if params.get("start_date") is None:
-            transformed_params["start_date"] = datetime.strptime(
-                now, "%Y-%m-%d"
-            ) - timedelta(days=300)
-        if params.get("end_date") is None:
-            transformed_params["end_date"] = datetime.strptime(now, "%Y-%m-%d")
+            params["start_date"] = today - timedelta(days=300)
 
-        return NasdaqCalendarIpoQueryParams(**transformed_params)
+        if params.get("end_date") is None:
+            params["end_date"] = today
+
+        return NasdaqCalendarIpoQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
@@ -149,75 +96,86 @@ class NasdaqCalendarIpoFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the Nasdaq endpoint."""
-        # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
-        from openbb_nasdaq.utils.helpers import get_headers, date_range  # noqa
-        from openbb_core.provider.utils.helpers import amake_request  # noqa
+        import asyncio
 
-        IPO_HEADERS = get_headers(accept_type="json")
+        from openbb_nasdaq.utils.helpers import date_range, get_nasdaq_data
 
-        data = []
-        dates = sorted(
-            list(
-                set(
-                    date.strftime("%Y-%m")
-                    for date in date_range(query.start_date, query.end_date)
-                )
-            )
+        months = sorted(
+            {
+                day.strftime("%Y-%m")
+                for day in date_range(query.start_date, query.end_date)
+            }
         )
+        results: list[dict] = []
+        offering = "&type=spo" if query.is_spo else ""
 
-        async def get_calendar_data(date: str):
-            """Get the calendar data for the given date."""
-            response: list = []
-            url = (
-                f"https://api.nasdaq.com/api/ipo/calendar?date={date}"
-                if query.is_spo is False
-                else f"https://api.nasdaq.com/api/ipo/calendar?type=spo&date={date}"
+        async def get_one(month: str) -> None:
+            """Collect the offerings listed for one month."""
+            payload = (
+                await get_nasdaq_data(f"ipo/calendar?date={month}{offering}") or {}
             )
-            r_json = await amake_request(url, headers=IPO_HEADERS)
-            r_json = r_json.get("data", {})  # type: ignore
-            if query.status in r_json:
-                response = (
-                    r_json["upcoming"]["upcomingTable"]["rows"]  # type: ignore
-                    if query.status == "upcoming"
-                    else r_json[query.status]["rows"]  # type: ignore
-                )
-            if response:
-                data.extend(response)
+            block = payload.get(query.status) or {}
+            rows = (
+                (block.get("upcomingTable") or {}).get("rows")
+                if query.status == "upcoming"
+                else block.get("rows")
+            )
 
-        await asyncio.gather(*[get_calendar_data(date) for date in dates])
+            if rows:
+                results.extend(rows)
 
-        return data
+        await asyncio.gather(*[get_one(month) for month in months])
+
+        return results
 
     @staticmethod
     def transform_data(
-        query: NasdaqCalendarIpoQueryParams,
-        data: list[dict],
-        **kwargs: Any,
+        query: NasdaqCalendarIpoQueryParams, data: list[dict], **kwargs: Any
     ) -> list[NasdaqCalendarIpoData]:
-        """Return the transformed data."""
+        """Transform the data to the standard format.
+
+        Raises
+        ------
+        EmptyDataError
+            If no offering matched the requested status and window.
+        """
+        from openbb_core.provider.utils.errors import EmptyDataError
+
+        from openbb_nasdaq.utils.helpers import to_date, to_number
+
         if not data:
-            raise EmptyDataError("The request was returned empty.")
-        if query.status == "priced":
-            data = [
-                {
-                    **d,
-                    "pricedDate": datetime.strptime(
-                        d["pricedDate"], "%m/%d/%Y"
-                    ).strftime("%Y-%m-%d"),
-                }
-                for d in data
-            ]
-            data = sorted(data, key=lambda x: x["pricedDate"])
-
-        if query.status == "withdrawn":
-            data = sorted(
-                data, key=lambda x: datetime.strptime(x["withdrawDate"], "%m/%d/%Y")
+            raise EmptyDataError(
+                f"No '{query.status}' offerings were found between"
+                f" {query.start_date} and {query.end_date}."
             )
 
-        if query.status == "filed":
-            data = sorted(
-                data, key=lambda x: datetime.strptime(x["filedDate"], "%m/%d/%Y")
+        results: list[NasdaqCalendarIpoData] = []
+
+        for row in data:
+            share_count = to_number(row.get("sharesOffered"))
+            results.append(
+                NasdaqCalendarIpoData.model_validate(
+                    {
+                        "symbol": row.get("proposedTickerSymbol"),
+                        "name": row.get("companyName"),
+                        "exchange": row.get("proposedExchange"),
+                        "id": row.get("dealID"),
+                        "ipo_date": to_date(row.get("pricedDate")),
+                        "share_price": to_number(row.get("proposedSharePrice")),
+                        "share_count": None
+                        if share_count is None
+                        else int(share_count),
+                        "offer_amount": to_number(
+                            row.get("dollarValueOfSharesOffered")
+                        ),
+                        "expected_price_date": to_date(row.get("expectedPriceDate")),
+                        "filed_date": to_date(row.get("filedDate")),
+                        "withdraw_date": to_date(row.get("withdrawDate")),
+                        "deal_status": row.get("dealStatus"),
+                    }
+                )
             )
 
-        return [NasdaqCalendarIpoData.model_validate(d) for d in data]
+        field = STATUS_DATES[query.status]
+
+        return sorted(results, key=lambda r: getattr(r, field) or dateType.min)

@@ -13,10 +13,7 @@ from pydantic import Field, field_validator
 
 
 class TmxEtfHoldingsQueryParams(EtfHoldingsQueryParams):
-    """TMX ETF Holdings query.
-
-    Source: https://www.tmx.com/
-    """
+    """TMX ETF Holdings query."""
 
     use_cache: bool = Field(
         default=True,
@@ -99,8 +96,9 @@ class TmxEtfHoldingsFetcher(
     ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
-        from openbb_tmx.utils.helpers import get_all_etfs
         from pandas import DataFrame
+
+        from openbb_tmx.utils.helpers import get_all_etfs, purge_nulls
 
         query.symbol = query.symbol.upper()
         results = []
@@ -127,12 +125,7 @@ class TmxEtfHoldingsFetcher(
                 "shareChange": "share_change",
             }
             top_holdings.rename(columns=_columns, inplace=True)
-            results = (
-                top_holdings.fillna("N/A")
-                .replace("NA", None)
-                .replace("N/A", None)
-                .to_dict("records")
-            )
+            results = purge_nulls(top_holdings.replace("NA", None)).to_dict("records")
 
         return results
 

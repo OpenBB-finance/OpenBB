@@ -2,13 +2,14 @@
 
 from datetime import date as dateType
 
+from pydantic import Field, computed_field, field_validator
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, computed_field, field_validator
 
 
 class YieldCurveQueryParams(QueryParams):
@@ -24,8 +25,9 @@ class YieldCurveQueryParams(QueryParams):
     @classmethod
     def _validate_date(cls, v):
         """Validate the date."""
-        # pylint: disable=import-outside-toplevel
-        from pandas import to_datetime
+        from openbb_core.app.utils_optional import require_optional
+
+        to_datetime = require_optional("pandas").to_datetime  # type: ignore[union-attr]
 
         if v is None:
             return None
@@ -52,17 +54,17 @@ class YieldCurveData(Data):
     )
     maturity: str = Field(description="Maturity length of the security.")
 
-    @computed_field(  # type: ignore
+    @computed_field(
         description="Maturity length, in years, as a decimal.",
         return_type=float | None,
     )
     @property
     def maturity_years(self) -> float | None:
         """Get the maturity in years as a decimal."""
-        if "_" not in self.maturity:  # pylint: disable=E1135
+        if "_" not in self.maturity:
             return None
 
-        parts = self.maturity.split("_")  # pylint: disable=E1101
+        parts = self.maturity.split("_")
         months = sum(
             int(parts[i + 1]) * (12 if parts[i] == "year" else 1)
             for i in range(0, len(parts), 2)

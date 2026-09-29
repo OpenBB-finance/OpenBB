@@ -1,4 +1,4 @@
-"""CBOE Fetchers Tests.
+"""Cboe fetcher tests.
 
 The CBOE provider extension uses request caching.
 
@@ -15,6 +15,8 @@ then only run the single test which needs to be recorded.
 from datetime import date
 
 import pytest
+from openbb_core.app.service.user_service import UserService
+
 from openbb_cboe.models.available_indices import CboeAvailableIndicesFetcher
 from openbb_cboe.models.equity_historical import CboeEquityHistoricalFetcher
 from openbb_cboe.models.equity_quote import CboeEquityQuoteFetcher
@@ -25,22 +27,10 @@ from openbb_cboe.models.index_historical import CboeIndexHistoricalFetcher
 from openbb_cboe.models.index_search import CboeIndexSearchFetcher
 from openbb_cboe.models.index_snapshots import CboeIndexSnapshotsFetcher
 from openbb_cboe.models.options_chains import CboeOptionsChainsFetcher
-from openbb_core.app.service.user_service import UserService
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
 )
-
-
-@pytest.fixture(scope="module")
-def vcr_config():
-    """VCR configuration."""
-    return {
-        "filter_headers": [("User-Agent", None)],
-        "filter_query_parameters": [
-            None,
-        ],
-    }
 
 
 @pytest.mark.record_http

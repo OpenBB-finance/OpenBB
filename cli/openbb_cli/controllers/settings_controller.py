@@ -31,7 +31,7 @@ class SettingsController(BaseController):
             "field_name": k,
         }
         for k, v in sorted(
-            session.settings.model_fields.items(),
+            session.settings.__class__.model_fields.items(),
             key=lambda item: _get_extra(item[1]).get("command", ""),
         )
         if v.json_schema_extra
@@ -102,7 +102,6 @@ class SettingsController(BaseController):
             if get_origin(annotation) is Literal:
                 choices = annotation.__args__
             elif command == "console_style":
-                # To have updated choices for console style
                 choices = session.style.available_styles
             parser = argparse.ArgumentParser(
                 formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -116,13 +115,12 @@ class SettingsController(BaseController):
                 dest="value",
                 action="store",
                 required=False,
-                type=type_,  # type: ignore[arg-type]
+                type=type_,
                 choices=choices,
             )
             ns_parser, _ = self.parse_simple_args(parser, other_args)
             if ns_parser:
                 if ns_parser.value:
-                    # Console style is applied immediately
                     if command == "console_style":
                         session.style.apply(ns_parser.value)
                     session.settings.set_item(field_name, ns_parser.value)

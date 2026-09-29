@@ -1,7 +1,6 @@
 """FRED Commercial Paper Model."""
 
-# pylint: disable=unused-argument
-
+from datetime import date as dateType
 from typing import Any, Literal
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -10,9 +9,14 @@ from openbb_core.provider.standard_models.commercial_paper import (
     CommercialPaperData,
     CommercialPaperParams,
 )
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
+from pydantic import Field, create_model
+
 from openbb_fred.models.series import FredSeriesFetcher
-from pydantic import Field
+from openbb_fred.utils.api import unwrap_series
+from openbb_fred.utils.columns import TIME_COLUMN, series_field
+from openbb_fred.utils.query import UseCacheQueryParams
 
 CP_SERIES_IDS = {
     "RIFSPPAAAD01NB": {
@@ -139,7 +143,7 @@ CP_SERIES_IDS = {
 ALL_IDS = list(CP_SERIES_IDS)
 
 
-class FREDCommercialPaperParams(CommercialPaperParams):
+class FREDCommercialPaperParams(UseCacheQueryParams, CommercialPaperParams):
     """FRED Commercial Paper Query."""
 
     __json_schema_extra__ = {
@@ -250,18 +254,39 @@ class FREDCommercialPaperParams(CommercialPaperParams):
     )
 
 
-class FREDCommercialPaperData(CommercialPaperData):
-    """FRED Commercial Paper Data."""
+CP_ID_TO_COLUMN = {
+    series_id: f"{spec['asset']}_{spec['maturity']}"
+    for series_id, spec in CP_SERIES_IDS.items()
+}
 
-    asset_type: Literal["asset_backed", "financial", "nonfinancial", "a2p2"] = Field(
-        description="The category of asset."
-    )
+
+def _commercial_paper_fields() -> dict:
+    """Declare one column for every maturity and category published."""
+    return {
+        CP_ID_TO_COLUMN[series_id]: series_field(spec["title"])
+        for series_id, spec in CP_SERIES_IDS.items()
+    }
+
+
+FREDCommercialPaperData = create_model(
+    "FREDCommercialPaperData",
+    __base__=CommercialPaperData,
+    __doc__="FRED Commercial Paper Data.",
+    date=(
+        dateType,
+        Field(
+            description=DATA_DESCRIPTIONS.get("date", ""),
+            json_schema_extra=TIME_COLUMN,
+        ),
+    ),
+    **_commercial_paper_fields(),
+)
 
 
 class FREDCommercialPaperFetcher(
     Fetcher[
         FREDCommercialPaperParams,
-        list[FREDCommercialPaperData],
+        list[FREDCommercialPaperData],  # ty: ignore[invalid-type-form]
     ]
 ):
     """FRED Commercial Paper Fetcher."""
@@ -314,15 +339,18 @@ class FREDCommercialPaperFetcher(
                     frequency=query.frequency,
                     aggregation_method=query.aggregation_method,
                     transform=query.transform,
+                    use_cache=query.use_cache,
                 ),
                 credentials,
             )
         except Exception as e:
             raise e from e
 
+        rows, metadata = unwrap_series(response)
+
         return {
-            "metadata": response.metadata,
-            "data": [d.model_dump() for d in response.result],
+            "metadata": metadata,
+            "data": [d.model_dump() for d in rows],
         }
 
     @staticmethod
@@ -330,43 +358,18 @@ class FREDCommercialPaperFetcher(
         query: FREDCommercialPaperParams,
         data: dict,
         **kwargs: Any,
-    ) -> list[FREDCommercialPaperData]:
+    ) -> AnnotatedResult[list[FREDCommercialPaperData]]:  # ty: ignore[invalid-type-form]
         """Transform data."""
-        # pylint: disable=import-outside-toplevel
-        from pandas import Categorical, DataFrame
+        from numpy import nan
+        from pandas import DataFrame
 
-        if not data:
+        if not data.get("data"):
             raise EmptyDataError("The request was returned empty.")
         df = DataFrame(data["data"])
         metadata = data.get("metadata", {})
-        # Flatten data
-        df = df.melt(id_vars="date", var_name="symbol", value_name="value").query(
-            "value.notnull()"
-        )
-        df = df.rename(columns={"value": "rate"}).sort_values(by="date")
-        # Normalize percent values
-        df["rate"] = df["rate"].astype(float) / 100
-        # Add asset type, maturity, and title
-        df["asset_type"] = df["symbol"].apply(lambda x: CP_SERIES_IDS[x]["asset"])
-        df["title"] = df["symbol"].apply(lambda x: CP_SERIES_IDS[x]["title"])
-        df["maturity"] = df["symbol"].apply(lambda x: CP_SERIES_IDS[x]["maturity"])
-        # Categorize and order.
-        asset_type_categories = ["asset_backed", "financial", "nonfinancial", "a2p2"]
-        maturity_categories = [
-            "overnight",
-            "day_7",
-            "day_15",
-            "day_30",
-            "day_60",
-            "day_90",
-        ]
-        df["asset_type"] = Categorical(
-            df["asset_type"], categories=asset_type_categories, ordered=True
-        )
-        df["maturity"] = Categorical(
-            df["maturity"], categories=maturity_categories, ordered=True
-        )
-        df.sort_values(by=["date", "asset_type", "maturity"], inplace=True)
+        published = [c for c in CP_ID_TO_COLUMN if c in df.columns]
+        df = df[["date", *published]].rename(columns=CP_ID_TO_COLUMN)
+        df = df.replace({nan: None}).sort_values("date")
         records = df.to_dict(orient="records")
 
         return AnnotatedResult(

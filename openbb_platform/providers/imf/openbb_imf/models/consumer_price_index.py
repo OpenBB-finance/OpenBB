@@ -1,19 +1,23 @@
 """IMF CPI Data."""
 
-# pylint: disable=unused-argument
+from __future__ import annotations
 
 from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.app.service.system_service import SystemService
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.consumer_price_index import (
     ConsumerPriceIndexData,
     ConsumerPriceIndexQueryParams,
 )
+from pydantic import ConfigDict, Field, field_validator
+
 from openbb_imf.utils.helpers import normalize_country_label
 from openbb_imf.utils.query_builder import ImfQueryBuilder
-from pydantic import Field, field_validator
+
+api_prefix = SystemService().system_settings.api_settings.prefix
 
 CpiCountries = [
     {"label": "Afghanistan", "value": "AFG"},
@@ -265,8 +269,6 @@ expenditure_dict_rev: dict = {
 }
 expenditure_dict: dict = {v: k for k, v in expenditure_dict_rev.items()}
 
-# Order mapping for sorting expenditure categories (COICOP codes)
-# _T (total) comes first, then CP01-CP12 in numerical order
 expenditure_order: dict[str, int] = {
     "_T": 0,
     "CP01": 1,
@@ -308,7 +310,12 @@ class ImfConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
     __json_schema_extra__ = {
         "country": {
             "multiple_items_allowed": True,
-            "choices": list(CPI_LABEL_TO_CODE),
+            "x-widget_config": {
+                "type": "endpoint",
+                "optionsEndpoint": f"{api_prefix}/imf/list_cpi_country_choices",
+                "value": ["USA"],
+                "style": {"popupWidth": 400},
+            },
         },
         "transform": {
             "multiple_items_allowed": False,
@@ -317,8 +324,17 @@ class ImfConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
         "expenditure": {
             "multiple_items_allowed": True,
             "choices": expenditure_choices,
+            "x-widget_config": {
+                "value": "total",
+            },
         },
     }
+
+    country: str = Field(
+        default="USA",
+        description="The country (ISO3 code or label) to get data for.",
+        validate_default=True,
+    )
 
     expenditure: str = Field(
         default="total", description="Expenditure component of CPI."
@@ -333,20 +349,14 @@ class ImfConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
     @field_validator("country", mode="before", check_fields=False)
     @classmethod
     def validate_country(cls, c):
-        """Validate country.
-
-        Accepts both ISO3 codes (e.g., "USA") and snake_case country names
-        (e.g., "united_states"). Converts names to ISO3 codes.
-        """
+        """Validate country."""
         result: list = []
         values = c.replace(" ", "_").split(",")
         for v in values:
             v_upper = v.upper()
             v_lower = v.lower()
-            # Check if it's a valid ISO3 code
             if v_upper in CPI_CODE_SET:
                 result.append(v_upper)
-            # Check if it's a valid snake_case country name
             elif v_lower in CPI_LABEL_TO_CODE:
                 result.append(CPI_LABEL_TO_CODE[v_lower])
             else:
@@ -376,6 +386,21 @@ class ImfConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
 
 class ImfConsumerPriceIndexData(ConsumerPriceIndexData):
     """IMF CPI Data Model."""
+
+    model_config = ConfigDict(
+        extra="allow",
+        json_schema_extra={
+            "x-widget_config": {
+                "$.name": "CPI",
+                "$.description": (
+                    "Consumer Price Index (CPI) and Harmonized Index of Consumer Prices (HICP)."
+                ),
+                "$.gridData": {"w": 40, "h": 14},
+                "$.refetchInterval": False,
+                "$.subCategory": "CPI",
+            }
+        },
+    )
 
     unit: str = Field(
         description="Unit of measurement.",
@@ -449,7 +474,6 @@ class ImfConsumerPriceIndexFetcher(
         }
         query_builder = ImfQueryBuilder()
 
-        # Mappings from IMF dimension codes to user-friendly parameter names
         dim_to_param = {
             "COUNTRY": "country",
             "INDEX_TYPE": "harmonized",
@@ -457,7 +481,6 @@ class ImfConsumerPriceIndexFetcher(
             "TYPE_OF_TRANSFORMATION": "transform",
             "FREQUENCY": "frequency",
         }
-        # Reverse mappings for values
         transformation_rev = {v: k for k, v in transformation_map.items()}
         frequency_map = {"A": "annual", "Q": "quarter", "M": "monthly"}
 
@@ -476,24 +499,18 @@ class ImfConsumerPriceIndexFetcher(
                 **parameters,
             )
         except ValueError as e:
-            # Translate dimension codes to user-friendly parameter names in error message
             error_msg = str(e)
             for dim_code, param_name in dim_to_param.items():
                 error_msg = error_msg.replace(f"'{dim_code}'", f"'{param_name}'")
                 error_msg = error_msg.replace(f'"{dim_code}"', f'"{param_name}"')
-            # Translate transformation values
             for api_val, user_val in transformation_rev.items():
                 error_msg = error_msg.replace(f"'{api_val}'", f"'{user_val}'")
-            # Translate frequency values
             for api_val, user_val in frequency_map.items():
                 error_msg = error_msg.replace(f"'{api_val}'", f"'{user_val}'")
-            # Translate expenditure values
             for api_val, user_val in expenditure_dict_rev.items():
                 error_msg = error_msg.replace(f"'{api_val}'", f"'{user_val}'")
-            # Translate INDEX_TYPE values
             error_msg = error_msg.replace("'CPI'", "'False'")
             error_msg = error_msg.replace("'HICP'", "'True'")
-            # Translate country codes back to user-friendly names
             for code, label in CPI_CODE_TO_LABEL.items():
                 error_msg = error_msg.replace(f"'{code}'", f"'{label}'")
             raise OpenBBError(error_msg) from e
@@ -525,7 +542,6 @@ class ImfConsumerPriceIndexFetcher(
             raise OpenBBError("No data returned for the given query parameters.")
 
         for item in row_data:
-            # Filter by date range here because IMF API date filtering can be inconsistent
             item_date = item.get("TIME_PERIOD", None)
             if (
                 query.start_date
@@ -540,17 +556,13 @@ class ImfConsumerPriceIndexFetcher(
             ):
                 continue
 
-            # Get translated labels (these are now human-readable)
             frequency = (item.get("FREQUENCY") or "").strip()
             index_type = (item.get("INDEX_TYPE") or "").strip()
             expenditure = (item.get("COICOP_1999") or item.get("title") or "").strip()
             expenditure_code = (item.get("COICOP_1999_code") or "").strip()
             transformation = (item.get("TYPE_OF_TRANSFORMATION") or "").strip()
-            # Build title from translated values
             title = f"{frequency} {index_type} - {expenditure} - {transformation}"
-            # Get unit from transformation (use last part if comma-separated)
             unit = (transformation.rsplit(", ", maxsplit=1)[-1] or "").strip()
-            # Get sort order from expenditure code
             order = expenditure_order.get(expenditure_code, 99)
             obs_value = item.get("OBS_VALUE", None)
             multiplier = item.get("UNIT_MULT", 1)
@@ -558,8 +570,7 @@ class ImfConsumerPriceIndexFetcher(
             if "percent" in unit.lower() and obs_value is not None:
                 obs_value = obs_value / 100.0
                 multiplier = 100
-            symbol = item.get("series_id", "").strip().split("IMF_STA_CPI_")[-1]
-            symbol = f"CPI::{symbol}"
+            symbol = (item.get("series_id") or "").strip()
             new_row = {
                 "date": item_date,
                 "country": (item.get("COUNTRY") or "").strip() or None,
@@ -574,7 +585,6 @@ class ImfConsumerPriceIndexFetcher(
             }
             result.append(ImfConsumerPriceIndexData.model_validate(new_row))
 
-        # Sort by date, then country, then order (expenditure)
         result.sort(
             key=lambda x: (
                 x.date,

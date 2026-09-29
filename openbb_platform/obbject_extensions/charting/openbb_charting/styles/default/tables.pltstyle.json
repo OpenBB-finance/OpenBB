@@ -45,7 +45,7 @@
         "hoverlabel": {
             "align": "left"
         },
-        "mapbox": {
+        "map": {
             "style": "light"
         },
         "hovermode": "x",

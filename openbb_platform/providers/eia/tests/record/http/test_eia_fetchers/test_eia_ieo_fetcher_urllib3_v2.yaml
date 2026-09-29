@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/ieo/2023/data/?api_key=MOCK_API_KEY&data%5B0%5D=value&end=2020&facets%5Bhistory%5D%5B%5D=HISTORIC&facets%5BregionId%5D%5B%5D=6-20&facets%5Bscenario%5D%5B%5D=HighMacro&facets%5BseriesId%5D%5B%5D=cnsm_bl_cm_cl_qbtu&facets%5BtableId%5D%5B%5D=95&frequency=annual&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2020
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY","frequency":"annual","data":[{"period":"2020","history":"HISTORIC","scenario":"HighMacro","scenarioDescription":"High
+        economic growth","tableId":"95","tableName":"Buildings delivered energy consumption
+        by end-use sector and fuel","seriesId":"cnsm_bl_cm_cl_qbtu","seriesName":"Energy
+        use : Commercial : Coal","regionId":"6-20","regionName":"Middle East","value":"0.0","unit":"quadrillion
+        Btu"}],"description":"International Energy Outlook 2023"},"request":{"command":"\/v2\/ieo\/2023\/data\/","params":{"frequency":"annual","data":["value"],"facets":{"history":["HISTORIC"],"scenario":["HighMacro"],"tableId":["95"],"seriesId":["cnsm_bl_cm_cl_qbtu"],"regionId":["6-20"]},"start":"2020","end":"2020","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 02:59:36 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 02:59:36 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '871'
+    status:
+      code: 200
+      message: OK
+version: 1

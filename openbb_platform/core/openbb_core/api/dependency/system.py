@@ -3,6 +3,7 @@
 from typing import Annotated
 
 from fastapi import Depends
+
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.service.auth_service import AuthService
 from openbb_core.app.service.system_service import SystemService

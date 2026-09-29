@@ -1,7 +1,5 @@
 """Fixed Income Router."""
 
-# pylint: disable=W0613:unused-argument
-
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.example import APIEx
 from openbb_core.app.model.obbject import OBBject
@@ -57,7 +55,7 @@ async def bond_indices(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject:  # type: ignore
+) -> OBBject:
     """Bond Indices."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -83,6 +81,6 @@ async def mortgage_indices(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject:  # type: ignore
+) -> OBBject:
     """Mortgage Indices."""
     return await OBBject.from_query(Query(**locals()))

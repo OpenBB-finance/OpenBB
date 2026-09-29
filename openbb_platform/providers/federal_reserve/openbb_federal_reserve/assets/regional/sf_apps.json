@@ -1,0 +1,117 @@
+[
+  {
+    "name": "San Francisco Fed",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Fed_Reserve_Bank_of_SF%2C_101_Market_St.JPG/960px-Fed_Reserve_Bank_of_SF%2C_101_Market_St.JPG",
+    "img_dark": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Fed_Reserve_Bank_of_SF%2C_101_Market_St.JPG/960px-Fed_Reserve_Bank_of_SF%2C_101_Market_St.JPG",
+    "img_light": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Fed_Reserve_Bank_of_SF%2C_101_Market_St.JPG/960px-Fed_Reserve_Bank_of_SF%2C_101_Market_St.JPG",
+    "description": "Inflation decomposition and rate analytics from the San Francisco Fed - Cyclical/Acyclical and Supply/Demand-driven PCE inflation, the Proxy Funds Rate, the Treasury term premium and expected short-rate path, the Daily News Sentiment Index, and Fernald's Total Factor Productivity.",
+    "allowCustomization": true,
+    "tabs": {
+      "activity-productivity": {
+        "id": "activity-productivity",
+        "name": "Activity & Productivity",
+        "layout": [
+          {
+            "i": "sf_news_sentiment_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "sf_total_factor_productivity_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "rates-policy": {
+        "id": "rates-policy",
+        "name": "Rates & Policy",
+        "layout": [
+          {
+            "i": "sf_proxy_funds_rate_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "sf_term_premium_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "sf_short_rate_path_federal_reserve_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "inflation": {
+        "id": "inflation",
+        "name": "Inflation",
+        "layout": [
+          {
+            "i": "sf_cyclical_pce_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "sf_supply_demand_pce_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "publications-reports": {
+        "id": "publications-reports",
+        "name": "Publications & Reports",
+        "layout": [
+          {
+            "i": "sf_publications_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      }
+    },
+    "groups": []
+  }
+]

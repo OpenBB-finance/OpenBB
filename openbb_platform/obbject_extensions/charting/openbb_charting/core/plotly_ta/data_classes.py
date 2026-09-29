@@ -1,7 +1,5 @@
 """Dataclasses for the charting extension."""
 
-# pylint: disable=C0302,R0915,R0914,R0913,R0903,R0904
-
 import sys
 import warnings
 from dataclasses import dataclass
@@ -10,7 +8,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from pandas import DataFrame, Series
 
-# pylint: disable=E1123
 datacls_kwargs = {"slots": True} if sys.version_info >= (3, 10) else {}
 
 
@@ -95,7 +92,7 @@ class ChartIndicators:
     def get_indicator(self, name: str) -> TAIndicator | None:
         """Return indicator with given name."""
         output = None
-        for indicator in self.indicators:  # type: ignore
+        for indicator in self.indicators:  # ty: ignore[not-iterable]
             if indicator.name == name:
                 output = indicator
         return output
@@ -146,40 +143,22 @@ class ChartIndicators:
             for opt in options:
                 output[opt] = self.get_indicator_args(name, opt)
 
-        return output
+        return output  # ty: ignore[invalid-return-type]
 
     @staticmethod
     def get_available_indicators() -> tuple[str, ...]:
         """Return tuple of available indicators."""
-        return tuple(
-            TAIndicator.__annotations__["name"].__args__
-        )  # pylint: disable=E1101
+        return tuple(TAIndicator.__annotations__["name"].__args__)
 
     @classmethod
     def from_dict(
         cls, indicators: dict[str, dict[str, list[dict[str, Any]]]]
     ) -> "ChartIndicators":
-        """Return ChartIndicators from dictionary.
-
-        Example
-        -------
-        ChartIndicators.from_dict(
-            {
-                "ad": {
-                    "args": [
-                        {
-                            "label": "AD_LABEL",
-                            "values": [1, 2, 3],
-                        }
-                    ]
-                }
-            }
-        )
-        """
+        """Return ChartIndicators from dictionary."""
         return cls(
             indicators=[
                 TAIndicator(
-                    name=name,  # type: ignore[arg-type]
+                    name=name,  # ty: ignore[invalid-argument-type]
                     args=[
                         Arguments(label=label, values=values)
                         for label, values in args.items()
@@ -226,8 +205,7 @@ class TA_DataException(Exception):
 
 
 class TA_Data:
-    """
-    Process technical analysis data.
+    """Process technical analysis data.
 
     Parameters
     ----------
@@ -242,13 +220,6 @@ class TA_Data:
                 macd=dict(fast=12, slow=26, signal=9),
                 rsi=dict(length=14),
             )
-
-    Methods
-    -------
-    to_dataframe()
-        Return dataframe with technical analysis indicators
-    get_indicator_data(indicator: TAIndicator, **kwargs)
-        Return dataframe given indicator and arguments
     """
 
     def __init__(
@@ -258,7 +229,6 @@ class TA_Data:
         ma_mode: list[str] | None = None,
     ):
         """Initialize."""
-        # pylint: disable=import-outside-toplevel
         from pandas import DataFrame, Series  # noqa
         from openbb_charting.core.plotly_ta.ta_helpers import check_columns  # noqa
 
@@ -273,7 +243,9 @@ class TA_Data:
         self.ma_mode: list[str] = ma_mode or ["sma", "ema", "wma", "hma", "zlma", "rma"]
         self.close_col = check_columns(df_ta)
         if self.close_col is None:
-            raise ValueError("No close column found in dataframe")
+            raise ValueError(  # pragma: no cover  # check_columns returns a str or raises, never None
+                "No close column found in dataframe"
+            )
 
         self.columns: dict[str, list[str]] = {
             "ad": ["high", "low", self.close_col, "volume"],
@@ -293,8 +265,7 @@ class TA_Data:
         self.has_volume = "volume" in df_ta.columns and bool(df_ta["volume"].sum() > 0)
 
     def get_indicator_data(self, indicator: TAIndicator, **args) -> "DataFrame":
-        """
-        Return dataframe with indicator data.
+        """Return dataframe with indicator data.
 
         Parameters
         ----------
@@ -302,13 +273,7 @@ class TA_Data:
             TAIndicator object
         args : dict
             Arguments for given indicator
-
-        Return
-        -------
-        DataFrame
-            Dataframe with indicator data
         """
-        # pylint: disable=import-outside-toplevel
         import pandas_ta as ta
         from pandas import DataFrame
 
@@ -335,14 +300,14 @@ class TA_Data:
 
         elif indicator.name == "vwap":
             ta_columns = self.columns[indicator.name]
-            ta_columns = [self.df_ta[col] for col in ta_columns]  # type: ignore
+            ta_columns = [self.df_ta[col] for col in ta_columns]
 
             output = getattr(ta, indicator.name)(
                 *ta_columns,
             )
         elif indicator.name in self.columns:
             ta_columns = self.columns[indicator.name]
-            ta_columns = [self.df_ta[col] for col in ta_columns]  # type: ignore
+            ta_columns = [self.df_ta[col] for col in ta_columns]
 
             if indicator.get_argument_values("use_open") is True:
                 ta_columns.append(self.df_ta["open"])
@@ -351,20 +316,19 @@ class TA_Data:
         else:
             output = getattr(ta, indicator.name)(self.df_ta[self.close_col], **args)
 
-        # Drop NaN values from output and return None if empty
         if output is not None:
             output.dropna(inplace=True)
             if output.empty:
                 output = None
 
-        return output
+        return output  # ty: ignore[invalid-return-type]
 
     def to_dataframe(self) -> "DataFrame":
         """Return dataframe with all indicators."""
         active_indicators = self.indicators.get_indicators()
 
         if not active_indicators:
-            return None
+            return None  # ty: ignore[invalid-return-type]
 
         output = self.df_ta
         for indicator in active_indicators:

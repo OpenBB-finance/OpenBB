@@ -1,0 +1,489 @@
+[
+  {
+    "name": "Nasdaq Market Data",
+    "img": "https://images.seeklogo.com/logo-png/29/1/nasdaq-logo-png_seeklogo-291807.png",
+    "img_dark": "",
+    "img_light": "",
+    "description": "Company filings, market calendars, screeners, options chains and fundamentals, downloaded from the public Nasdaq website. This app is not affiliated with, or authorized by, Nasdaq.",
+    "allowCustomization": true,
+    "tabs": {
+      "earnings": {
+        "id": "earnings",
+        "name": "Earnings & Filings",
+        "layout": [
+          {
+            "i": "equity_calendar_earnings_nasdaq_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 12,
+            "state": {
+              "columnState": {
+                "default": {
+                  "sort": {
+                    "sortModel": [
+                      {
+                        "colId": "market_cap",
+                        "sort": "desc"
+                      }
+                    ]
+                  },
+                  "columnPinning": {
+                    "leftColIds": [
+                      "symbol",
+                      "name",
+                      "period_ending"
+                    ],
+                    "rightColIds": []
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Symbol"
+            ]
+          },
+          {
+            "i": "nasdaq_equity_filings_viewer_custom_obb",
+            "x": 0,
+            "y": 12,
+            "w": 40,
+            "h": 30,
+            "groups": [
+              "Symbol"
+            ]
+          }
+        ]
+      },
+      "dividends": {
+        "id": "dividends",
+        "name": "Dividends",
+        "layout": [
+          {
+            "i": "equity_calendar_dividend_nasdaq_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "columnState": {
+                "default": {
+                  "sort": {
+                    "sortModel": [
+                      {
+                        "colId": "ex_dividend_date",
+                        "sort": "asc"
+                      }
+                    ]
+                  },
+                  "columnPinning": {
+                    "leftColIds": [
+                      "symbol",
+                      "name"
+                    ],
+                    "rightColIds": []
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Symbol"
+            ]
+          },
+          {
+            "i": "equity_fundamental_dividends_nasdaq_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 16,
+            "groups": [
+              "Symbol"
+            ]
+          }
+        ]
+      },
+      "calendars": {
+        "id": "calendars",
+        "name": "IPO & Splits",
+        "layout": [
+          {
+            "i": "equity_calendar_ipo_nasdaq_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "ipo_date",
+                      "symbol",
+                      "name"
+                    ],
+                    "rightColIds": []
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Symbol"
+            ]
+          },
+          {
+            "i": "equity_calendar_splits_nasdaq_obb",
+            "x": 0,
+            "y": 16,
+            "w": 40,
+            "h": 14,
+            "groups": [
+              "Symbol"
+            ]
+          }
+        ]
+      },
+      "economy": {
+        "id": "economy",
+        "name": "Economic Calendar",
+        "layout": [
+          {
+            "i": "economy_calendar_nasdaq_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "columnState": {
+                "default": {
+                  "sort": {
+                    "sortModel": [
+                      {
+                        "colId": "date",
+                        "sort": "desc"
+                      }
+                    ]
+                  },
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date"
+                    ],
+                    "rightColIds": []
+                  }
+                }
+              }
+            },
+            "groups": []
+          }
+        ]
+      },
+      "screener": {
+        "id": "screener",
+        "name": "Screener",
+        "layout": [
+          {
+            "i": "equity_screener_nasdaq_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 22,
+            "state": {
+              "params": {
+                "exchange": "nasdaq"
+              }
+            },
+            "groups": [
+              "Symbol"
+            ]
+          },
+          {
+            "i": "nasdaq_markets_movers_nasdaq_obb",
+            "x": 0,
+            "y": 22,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "category": "most_active_share_volume"
+              }
+            },
+            "groups": []
+          }
+        ]
+      },
+      "options": {
+        "id": "options",
+        "name": "Options",
+        "layout": [
+          {
+            "i": "derivatives_options_chains_nasdaq_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 34,
+            "state": {
+              "params": {
+                "symbol": "NVDA"
+              }
+            },
+            "groups": [
+              "Symbol"
+            ]
+          }
+        ]
+      },
+      "funds": {
+        "id": "funds",
+        "name": "Funds",
+        "layout": [
+          {
+            "i": "etf_search_nasdaq_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 12,
+            "state": {
+              "params": {
+                "asset_class": "all_asset_classes"
+              }
+            },
+            "groups": [
+              "Fund"
+            ]
+          },
+          {
+            "i": "etf_info_nasdaq_obb",
+            "x": 0,
+            "y": 12,
+            "w": 20,
+            "h": 12,
+            "state": {
+              "params": {
+                "symbol": "QQQ"
+              }
+            },
+            "groups": [
+              "Fund"
+            ]
+          },
+          {
+            "i": "etf_holdings_nasdaq_obb",
+            "x": 20,
+            "y": 12,
+            "w": 20,
+            "h": 12,
+            "state": {
+              "params": {
+                "symbol": "QQQ"
+              }
+            },
+            "groups": [
+              "Fund"
+            ]
+          },
+          {
+            "i": "etf_equity_exposure_nasdaq_obb",
+            "x": 0,
+            "y": 24,
+            "w": 40,
+            "h": 12,
+            "state": {
+              "params": {
+                "symbol": "NVDA"
+              }
+            },
+            "groups": [
+              "Symbol"
+            ]
+          }
+        ]
+      },
+      "indexes": {
+        "id": "indexes",
+        "name": "Indexes",
+        "layout": [
+          {
+            "i": "index_snapshots_nasdaq_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "region": "us"
+              }
+            },
+            "groups": [
+              "Index Symbol"
+            ]
+          },
+          {
+            "i": "index_price_historical_nasdaq_obb",
+            "x": 0,
+            "y": 16,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "symbol": "COMP",
+                "interval": "1d"
+              }
+            },
+            "groups": [
+              "Index Symbol"
+            ]
+          }
+        ]
+      },
+      "nordic": {
+        "id": "nordic",
+        "name": "Nordic",
+        "layout": [
+          {
+            "i": "nasdaq_nordic_screener_nasdaq_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "asset_class": "shares",
+                "market": "main_market"
+              }
+            },
+            "groups": []
+          },
+          {
+            "i": "nasdaq_nordic_info_nasdaq_obb",
+            "x": 0,
+            "y": 16,
+            "w": 13,
+            "h": 14,
+            "state": {
+              "params": {
+                "symbol": "ATCO A"
+              }
+            },
+            "groups": [
+              "Nordic Symbol"
+            ]
+          },
+          {
+            "i": "nasdaq_nordic_historical_nasdaq_obb",
+            "x": 13,
+            "y": 16,
+            "w": 14,
+            "h": 14,
+            "state": {
+              "params": {
+                "symbol": "ATCO A"
+              }
+            },
+            "groups": [
+              "Nordic Symbol"
+            ]
+          },
+          {
+            "i": "nasdaq_nordic_historical_trades_nasdaq_obb",
+            "x": 27,
+            "y": 16,
+            "w": 13,
+            "h": 14,
+            "state": {
+              "params": {
+                "symbol": "ATCO A"
+              }
+            },
+            "groups": [
+              "Nordic Symbol"
+            ]
+          },
+          {
+            "i": "nasdaq_nordic_movers_nasdaq_obb",
+            "x": 0,
+            "y": 30,
+            "w": 26,
+            "h": 16,
+            "state": {
+              "params": {
+                "asset_group": "options_futures"
+              }
+            },
+            "groups": []
+          },
+          {
+            "i": "nasdaq_nordic_derivatives_volume_custom_obb",
+            "x": 26,
+            "y": 30,
+            "w": 14,
+            "h": 16,
+            "groups": []
+          },
+          {
+            "i": "nasdaq_nordic_news_nasdaq_obb",
+            "x": 0,
+            "y": 46,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "market": "all"
+              }
+            },
+            "groups": []
+          }
+        ]
+      }
+    },
+    "groups": [
+      {
+        "name": "Symbol",
+        "type": "endpointParam",
+        "paramName": "symbol",
+        "defaultValue": "AAPL",
+        "widgetIds": [
+          "nasdaq_equity_filings_viewer_custom_obb",
+          "equity_fundamental_dividends_nasdaq_obb",
+          "etf_equity_exposure_nasdaq_obb",
+          "equity_calendar_earnings_nasdaq_obb",
+          "equity_calendar_dividend_nasdaq_obb",
+          "equity_calendar_ipo_nasdaq_obb",
+          "equity_calendar_splits_nasdaq_obb",
+          "equity_screener_nasdaq_obb",
+          "derivatives_options_chains_nasdaq_obb"
+        ]
+      },
+      {
+        "name": "Fund",
+        "type": "endpointParam",
+        "paramName": "symbol",
+        "defaultValue": "QQQ",
+        "widgetIds": [
+          "etf_info_nasdaq_obb",
+          "etf_holdings_nasdaq_obb",
+          "etf_search_nasdaq_obb"
+        ]
+      },
+      {
+        "name": "Index Symbol",
+        "type": "endpointParam",
+        "paramName": "symbol",
+        "defaultValue": "COMP",
+        "widgetIds": [
+          "index_snapshots_nasdaq_obb",
+          "index_price_historical_nasdaq_obb"
+        ]
+      },
+      {
+        "name": "Nordic Symbol",
+        "type": "endpointParam",
+        "paramName": "symbol",
+        "defaultValue": "ATCO A",
+        "widgetIds": [
+          "nasdaq_nordic_info_nasdaq_obb",
+          "nasdaq_nordic_historical_nasdaq_obb",
+          "nasdaq_nordic_historical_trades_nasdaq_obb"
+        ]
+      }
+    ]
+  }
+]

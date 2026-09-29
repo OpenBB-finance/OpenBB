@@ -1,0 +1,550 @@
+[
+  {
+    "name": "TMX",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/5/57/TMX_New_Logo.jpg?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original",
+    "description": "Canadian markets from TMX - equities, funds, indices, Montreal Exchange derivatives, and CIRO fixed income.",
+    "allowCustomization": true,
+    "tabs": {
+      "overview": {
+        "id": "overview",
+        "name": "Market Overview",
+        "layout": [
+          {
+            "i": "tmx_markets_movers_tmx_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 13
+          },
+          {
+            "i": "tmx_equity_gainers_tmx_obb",
+            "x": 0,
+            "y": 13,
+            "w": 40,
+            "h": 13
+          },
+          {
+            "i": "tmx_equity_rankings_tmx_obb",
+            "x": 0,
+            "y": 26,
+            "w": 40,
+            "h": 13
+          },
+          {
+            "i": "tmx_index_snapshots_tmx_obb",
+            "x": 0,
+            "y": 39,
+            "w": 40,
+            "h": 13
+          }
+        ]
+      },
+      "screener": {
+        "id": "screener",
+        "name": "Screener",
+        "layout": [
+          {
+            "i": "tmx_equity_screener_builder_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 24
+          }
+        ]
+      },
+      "company": {
+        "id": "company",
+        "name": "Company",
+        "layout": [
+          {
+            "i": "tmx_equity_search_tmx_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 13
+          },
+          {
+            "i": "tmx_equity_asset_info_obb",
+            "x": 0,
+            "y": 13,
+            "w": 40,
+            "h": 24
+          },
+          {
+            "i": "tmx_equity_historical_tmx_obb",
+            "x": 0,
+            "y": 37,
+            "w": 40,
+            "h": 13
+          },
+          {
+            "i": "tmx_equity_ownership_insider_transactions_tmx_obb",
+            "x": 0,
+            "y": 50,
+            "w": 40,
+            "h": 13
+          },
+          {
+            "i": "tmx_markets_trades_tmx_obb",
+            "x": 0,
+            "y": 63,
+            "w": 16,
+            "h": 24
+          },
+          {
+            "i": "tmx_equity_filings_viewer_obb",
+            "x": 16,
+            "y": 63,
+            "w": 24,
+            "h": 24
+          }
+        ]
+      },
+      "financials": {
+        "id": "financials",
+        "name": "Financials",
+        "layout": [
+          {
+            "i": "tmx_equity_fundamental_income_view_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 13
+          },
+          {
+            "i": "tmx_equity_fundamental_balance_view_obb",
+            "x": 0,
+            "y": 13,
+            "w": 40,
+            "h": 13
+          },
+          {
+            "i": "tmx_equity_fundamental_cash_view_obb",
+            "x": 0,
+            "y": 26,
+            "w": 40,
+            "h": 13
+          },
+          {
+            "i": "tmx_equity_fundamental_dividends_tmx_obb",
+            "x": 0,
+            "y": 39,
+            "w": 20,
+            "h": 11
+          },
+          {
+            "i": "tmx_equity_fundamental_splits_tmx_obb",
+            "x": 20,
+            "y": 39,
+            "w": 20,
+            "h": 11
+          }
+        ]
+      },
+      "options": {
+        "id": "options",
+        "name": "Options",
+        "layout": [
+          {
+            "i": "tmx_derivatives_options_term_structure_custom_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "AC"
+              }
+            },
+            "groups": [
+              "Options Symbol"
+            ]
+          },
+          {
+            "i": "tmx_derivatives_options_stats_custom_obb",
+            "x": 0,
+            "y": 16,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "AC"
+              }
+            },
+            "groups": [
+              "Options Symbol"
+            ]
+          },
+          {
+            "i": "tmx_derivatives_options_smile_custom_obb",
+            "x": 0,
+            "y": 32,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "AC"
+              }
+            },
+            "groups": [
+              "Options Symbol"
+            ]
+          },
+          {
+            "i": "tmx_derivatives_options_surface_custom_obb",
+            "x": 0,
+            "y": 48,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "params": {
+                "symbol": "AC"
+              }
+            },
+            "groups": [
+              "Options Symbol"
+            ]
+          },
+          {
+            "i": "tmx_derivatives_options_chains_tmx_obb",
+            "x": 0,
+            "y": 68,
+            "w": 40,
+            "h": 16,
+            "state": {
+              "params": {
+                "symbol": "AC"
+              }
+            },
+            "groups": [
+              "Options Symbol"
+            ]
+          },
+          {
+            "i": "tmx_derivatives_options_straddle_custom_obb",
+            "x": 0,
+            "y": 84,
+            "w": 40,
+            "h": 12,
+            "state": {
+              "params": {
+                "symbol": "AC"
+              }
+            },
+            "groups": [
+              "Options Symbol"
+            ]
+          },
+          {
+            "i": "tmx_derivatives_options_strangle_custom_obb",
+            "x": 0,
+            "y": 96,
+            "w": 40,
+            "h": 12,
+            "state": {
+              "params": {
+                "symbol": "AC"
+              }
+            },
+            "groups": [
+              "Options Symbol"
+            ]
+          },
+          {
+            "i": "tmx_derivatives_options_spreads_custom_obb",
+            "x": 0,
+            "y": 108,
+            "w": 40,
+            "h": 12,
+            "state": {
+              "params": {
+                "symbol": "AC"
+              }
+            },
+            "groups": [
+              "Options Symbol"
+            ]
+          },
+          {
+            "i": "tmx_derivatives_options_covered_calls_tmx_obb",
+            "x": 0,
+            "y": 120,
+            "w": 40,
+            "h": 12,
+            "state": {
+              "params": {
+                "symbol": "AC"
+              }
+            },
+            "groups": [
+              "Options Symbol"
+            ]
+          }
+        ]
+      },
+      "futures": {
+        "id": "futures",
+        "name": "Futures & FX",
+        "layout": [
+          {
+            "i": "tmx_derivatives_futures_instruments_tmx_obb",
+            "x": 0,
+            "y": 0,
+            "w": 16,
+            "h": 13
+          },
+          {
+            "i": "tmx_derivatives_futures_historical_tmx_obb",
+            "x": 16,
+            "y": 0,
+            "w": 24,
+            "h": 13
+          },
+          {
+            "i": "tmx_currency_historical_tmx_obb",
+            "x": 0,
+            "y": 13,
+            "w": 40,
+            "h": 12
+          }
+        ]
+      },
+      "fixedincome": {
+        "id": "fixedincome",
+        "name": "Fixed Income",
+        "layout": [
+          {
+            "i": "tmx_fixedincome_prices_tmx_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 13
+          },
+          {
+            "i": "tmx_fixedincome_treasury_prices_tmx_obb",
+            "x": 0,
+            "y": 13,
+            "w": 40,
+            "h": 13
+          },
+          {
+            "i": "tmx_fixedincome_trades_tmx_obb",
+            "x": 0,
+            "y": 26,
+            "w": 40,
+            "h": 13
+          }
+        ]
+      },
+      "etfs": {
+        "id": "etfs",
+        "name": "ETFs",
+        "layout": [
+          {
+            "i": "tmx_etf_search_tmx_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 13
+          },
+          {
+            "i": "tmx_etf_fund_info_obb",
+            "x": 0,
+            "y": 13,
+            "w": 40,
+            "h": 22
+          },
+          {
+            "i": "tmx_etf_historical_tmx_obb",
+            "x": 0,
+            "y": 35,
+            "w": 40,
+            "h": 13
+          }
+        ]
+      },
+      "indices": {
+        "id": "indices",
+        "name": "Indices",
+        "layout": [
+          {
+            "i": "tmx_index_available_tmx_obb",
+            "x": 0,
+            "y": 0,
+            "w": 14,
+            "h": 22
+          },
+          {
+            "i": "tmx_index_documents_obb",
+            "x": 14,
+            "y": 0,
+            "w": 26,
+            "h": 22
+          },
+          {
+            "i": "tmx_index_info_tmx_obb",
+            "x": 0,
+            "y": 22,
+            "w": 40,
+            "h": 13
+          },
+          {
+            "i": "tmx_index_historical_tmx_obb",
+            "x": 0,
+            "y": 35,
+            "w": 40,
+            "h": 13
+          },
+          {
+            "i": "tmx_index_constituents_tmx_obb",
+            "x": 0,
+            "y": 48,
+            "w": 26,
+            "h": 13
+          },
+          {
+            "i": "tmx_index_sectors_tmx_obb",
+            "x": 26,
+            "y": 48,
+            "w": 14,
+            "h": 13
+          }
+        ]
+      },
+      "news": {
+        "id": "news",
+        "name": "News",
+        "layout": [
+          {
+            "i": "tmx_news_feed_custom_obb",
+            "x": 0,
+            "y": 0,
+            "w": 20,
+            "h": 14
+          },
+          {
+            "i": "tmx_news_search_custom_obb",
+            "x": 20,
+            "y": 0,
+            "w": 20,
+            "h": 14
+          },
+          {
+            "i": "tmx_news_market_custom_obb",
+            "x": 0,
+            "y": 14,
+            "w": 20,
+            "h": 13
+          },
+          {
+            "i": "tmx_news_blog_custom_obb",
+            "x": 20,
+            "y": 14,
+            "w": 20,
+            "h": 13
+          }
+        ]
+      }
+    },
+    "groups": [
+      {
+        "name": "Company Symbol",
+        "type": "param",
+        "paramName": "symbol",
+        "defaultValue": "AC",
+        "widgetIds": [
+          "tmx_equity_search_tmx_obb",
+          "tmx_equity_asset_info_obb",
+          "tmx_equity_historical_tmx_obb",
+          "tmx_equity_ownership_insider_transactions_tmx_obb",
+          "tmx_markets_trades_tmx_obb",
+          "tmx_equity_filings_viewer_obb"
+        ]
+      },
+      {
+        "name": "Financials Symbol",
+        "type": "param",
+        "paramName": "symbol",
+        "defaultValue": "AC",
+        "widgetIds": [
+          "tmx_equity_fundamental_income_view_obb",
+          "tmx_equity_fundamental_balance_view_obb",
+          "tmx_equity_fundamental_cash_view_obb",
+          "tmx_equity_fundamental_dividends_tmx_obb",
+          "tmx_equity_fundamental_splits_tmx_obb"
+        ]
+      },
+      {
+        "name": "Options Symbol",
+        "type": "param",
+        "paramName": "symbol",
+        "defaultValue": "AC",
+        "widgetIds": [
+          "tmx_derivatives_options_term_structure_custom_obb",
+          "tmx_derivatives_options_stats_custom_obb",
+          "tmx_derivatives_options_smile_custom_obb",
+          "tmx_derivatives_options_surface_custom_obb",
+          "tmx_derivatives_options_chains_tmx_obb",
+          "tmx_derivatives_options_straddle_custom_obb",
+          "tmx_derivatives_options_strangle_custom_obb",
+          "tmx_derivatives_options_spreads_custom_obb",
+          "tmx_derivatives_options_covered_calls_tmx_obb"
+        ]
+      },
+      {
+        "name": "Futures & FX Contract",
+        "type": "param",
+        "paramName": "symbol",
+        "defaultValue": "CGB",
+        "widgetIds": [
+          "tmx_derivatives_futures_instruments_tmx_obb",
+          "tmx_derivatives_futures_historical_tmx_obb"
+        ]
+      },
+      {
+        "name": "Fixed Income CUSIP",
+        "type": "param",
+        "paramName": "cusip",
+        "defaultValue": "135087U28",
+        "widgetIds": [
+          "tmx_fixedincome_prices_tmx_obb",
+          "tmx_fixedincome_trades_tmx_obb"
+        ]
+      },
+      {
+        "name": "ETFs Symbol",
+        "type": "param",
+        "paramName": "symbol",
+        "defaultValue": "XIU",
+        "widgetIds": [
+          "tmx_etf_search_tmx_obb",
+          "tmx_etf_fund_info_obb",
+          "tmx_etf_historical_tmx_obb"
+        ]
+      },
+      {
+        "name": "Indices Index",
+        "type": "param",
+        "paramName": "symbol",
+        "defaultValue": "^TSX",
+        "widgetIds": [
+          "tmx_index_available_tmx_obb",
+          "tmx_index_documents_obb",
+          "tmx_index_info_tmx_obb",
+          "tmx_index_historical_tmx_obb",
+          "tmx_index_constituents_tmx_obb",
+          "tmx_index_sectors_tmx_obb"
+        ]
+      },
+      {
+        "name": "News Symbol",
+        "type": "param",
+        "paramName": "symbol",
+        "defaultValue": "AC",
+        "widgetIds": [
+          "tmx_news_feed_custom_obb"
+        ]
+      }
+    ]
+  }
+]

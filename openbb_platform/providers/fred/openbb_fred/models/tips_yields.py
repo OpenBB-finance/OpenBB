@@ -1,7 +1,6 @@
 """FRED TIPS Yields Model."""
 
-# pylint: disable=unused-argument,too-many-locals
-
+from datetime import date as dateType
 from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -11,11 +10,22 @@ from openbb_core.provider.standard_models.tips_yields import (
     TipsYieldsData,
     TipsYieldsQueryParams,
 )
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 
+from openbb_fred.utils.query import UseCacheQueryParams
 
-class FredTipsYieldsQueryParams(TipsYieldsQueryParams):
+TIME_COLUMN: dict[str, Any] = {"x-widget_config": {"chartDataType": "time"}}
+CATEGORY_COLUMN: dict[str, Any] = {"x-widget_config": {"chartDataType": "category"}}
+EXCLUDED_COLUMN: dict[str, Any] = {"x-widget_config": {"chartDataType": "excluded"}}
+SERIES_PERCENT_COLUMN: dict[str, Any] = {
+    "x-unit_measurement": "percent",
+    "x-widget_config": {"cellDataType": "number", "chartDataType": "series"},
+}
+
+
+class FredTipsYieldsQueryParams(UseCacheQueryParams, TipsYieldsQueryParams):
     """FRED TIPS Yields Query."""
 
     maturity: Literal["5", "10", "20", "30"] | None = Field(
@@ -110,6 +120,31 @@ class FredTipsYieldsQueryParams(TipsYieldsQueryParams):
 class FredTipsYieldsData(TipsYieldsData):
     """FRED TIPS Yields Data."""
 
+    date: dateType = Field(
+        description=DATA_DESCRIPTIONS.get("date", ""),
+        json_schema_extra=TIME_COLUMN,
+    )
+    symbol: str | None = Field(
+        default=None,
+        description=DATA_DESCRIPTIONS.get("symbol", ""),
+        json_schema_extra=CATEGORY_COLUMN,
+    )
+    due: dateType | None = Field(
+        default=None,
+        description="The due date (maturation date) of the security.",
+        json_schema_extra=EXCLUDED_COLUMN,
+    )
+    name: str | None = Field(
+        default=None,
+        description="The name of the security.",
+        json_schema_extra=EXCLUDED_COLUMN,
+    )
+    value: float | None = Field(
+        default=None,
+        description="The yield value.",
+        json_schema_extra=SERIES_PERCENT_COLUMN,
+    )
+
 
 class FredTipsYieldsFetcher(
     Fetcher[
@@ -131,19 +166,20 @@ class FredTipsYieldsFetcher(
         **kwargs: Any,
     ) -> dict:
         """Extract the data."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_fred.models.search import FredSearchFetcher
-        from openbb_fred.models.series import FredSeriesFetcher
         from pandas import DataFrame, to_datetime
 
-        # We get the series IDs because they will change over time.
+        from openbb_fred.models.search import FredSearchData, FredSearchFetcher
+        from openbb_fred.models.series import FredSeriesFetcher
+        from openbb_fred.utils.api import unwrap_series
+
         async def get_tips_series():
             """Get series IDs for the TIPS."""
             fetcher = FredSearchFetcher()
-            res = await fetcher.fetch_data(
+            found = await fetcher.fetch_data(
                 params={"release_id": 72}, credentials=credentials
             )
-            df = DataFrame([d.model_dump() for d in res])  # type: ignore
+            res = [d for d in found if isinstance(d, FredSearchData)]
+            df = DataFrame([d.model_dump() for d in res])
             df = df.query("not title.str.contains('DISCONTINUED')").set_index(
                 "series_id"
             )
@@ -152,7 +188,7 @@ class FredTipsYieldsFetcher(
                 to_datetime
             )
             df = df[["due", "observation_start", "observation_end", "title"]]
-            return df.sort_values(by="due").reset_index()  # type: ignore
+            return df.sort_values(by="due").reset_index()
 
         try:
             ids_df = await get_tips_series()
@@ -161,16 +197,13 @@ class FredTipsYieldsFetcher(
             message = str(e) or f"FRED request failed ({type(e).__name__})."
             raise OpenBBError(message) from e
 
-        # If we are looking for a specific tenor, the request will be smaller.
         if query.maturity:
             ids = [
                 i
                 for i in ids
                 if i.rsplit("DTP", maxsplit=1)[-1].startswith(str(query.maturity))
             ]
-        # We split the due date from the title so that we can format it as a datetime.date object.
         due_map = ids_df.set_index("series_id")["due"].dt.date.to_dict()
-        # We make a seriesID-title map for later.
         title_map = (
             ids_df.set_index("series_id")["title"]
             .str.replace("Treasury Inflation-Indexed", "TIPS")
@@ -195,8 +228,8 @@ class FredTipsYieldsFetcher(
         try:
             fetcher = FredSeriesFetcher()
             res = await fetcher.fetch_data(params=params, credentials=credentials)
-            df = DataFrame([d.model_dump() for d in res.result])  # type: ignore
-            meta: dict = res.metadata or {}  # type: ignore
+            rows, meta = unwrap_series(res)
+            df = DataFrame([d.model_dump() for d in rows])
         except Exception as e:
             message = str(e) or f"FRED request failed ({type(e).__name__})."
             raise OpenBBError(message) from e
@@ -204,8 +237,6 @@ class FredTipsYieldsFetcher(
         for k, v in title_map.items():
             if k in meta:
                 meta[k]["title"] = v
-
-        # We flatten the data and format the output with the metadata.
 
         df = (
             df.melt(
@@ -219,9 +250,8 @@ class FredTipsYieldsFetcher(
         df = df.reset_index(drop=True)
         df["due"] = df.symbol.map(due_map)
         df["name"] = df.symbol.map(title_map)
-        df["value"] = df["value"] / 100
         df = df[["date", "due", "symbol", "name", "value"]]
-        df = df.sort_values(by=["date", "due"])  # type: ignore
+        df = df.sort_values(by=["date", "due"])
         records = df.to_dict(orient="records")
         output = {
             "records": records,

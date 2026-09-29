@@ -14,11 +14,6 @@ from typing import (
 )
 
 from fastapi import Body, Query
-from openbb_core.app.model.abstract.singleton import SingletonMeta
-from openbb_core.app.model.obbject import OBBject
-from openbb_core.provider.query_executor import QueryExecutor
-from openbb_core.provider.registry_map import MapType, RegistryMap
-from openbb_core.provider.utils.helpers import to_snake_case
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -29,6 +24,12 @@ from pydantic import (
     create_model,
 )
 from pydantic.fields import FieldInfo
+
+from openbb_core.app.model.abstract.singleton import SingletonMeta
+from openbb_core.app.model.obbject import OBBject
+from openbb_core.provider.query_executor import QueryExecutor
+from openbb_core.provider.registry_map import MapType, RegistryMap
+from openbb_core.provider.utils.helpers import to_snake_case
 
 TupleFieldType = tuple[str, type | None, Any | None]
 
@@ -169,7 +170,7 @@ class ProviderInterface(metaclass=SingletonMeta):
 
     def create_executor(self) -> QueryExecutor:
         """Get query executor."""
-        return self._query_executor(self._registry_map.registry)  # type: ignore[operator]
+        return self._query_executor(self._registry_map.registry)  # type: ignore[operator]  # ty: ignore[call-non-callable]
 
     @staticmethod
     def _merge_fields(
@@ -235,8 +236,8 @@ class ProviderInterface(metaclass=SingletonMeta):
             json_schema_extra=json_schema_extra,
         )
 
-        merged_type: type | None = (
-            Union[curr_type, inc_type] if curr_type != inc_type else curr_type  # type: ignore[assignment]  # noqa
+        merged_type: type | None = (  # ty: ignore[invalid-assignment]
+            Union[curr_type, inc_type] if curr_type != inc_type else curr_type  # type: ignore[assignment]  # noqa  # ty: ignore[invalid-type-form]
         )
 
         return DataclassField(curr_name, merged_type, merged_default)
@@ -259,11 +260,14 @@ class ProviderInterface(metaclass=SingletonMeta):
             for p, v in extra.items():  # type: ignore
                 if isinstance(v, dict) and v.get("multiple_items_allowed"):
                     providers.append(p)
-                    choices[p] = {"multiple_items_allowed": True, "choices": v.get("choices")}  # type: ignore
+                    choices[p] = {
+                        "multiple_items_allowed": True,
+                        "choices": v.get("choices"),
+                    }
                 elif isinstance(v, list) and "multiple_items_allowed" in v:
                     # For backwards compatibility, before this was a list
                     providers.append(p)
-                    choices[p] = {"multiple_items_allowed": True, "choices": None}  # type: ignore
+                    choices[p] = {"multiple_items_allowed": True, "choices": None}
                 elif isinstance(v, dict) and v.get("choices"):
                     choices[p] = {
                         "multiple_items_allowed": False,
@@ -326,12 +330,12 @@ class ProviderInterface(metaclass=SingletonMeta):
 
         if (
             hasattr(annotation, "__name__")
-            and annotation.__name__ in ["Dict", "dict", "Data"]  # type: ignore
+            and annotation.__name__ in ["Dict", "dict", "Data"]
             or field.kw_only is True
         ):
             return DataclassField(
                 new_name,
-                annotation,
+                annotation,  # ty: ignore[invalid-argument-type]
                 Body(
                     default=default,
                     title=provider_name,
@@ -346,7 +350,7 @@ class ProviderInterface(metaclass=SingletonMeta):
             # up in the swagger, it's a fastapi limitation
             return DataclassField(
                 new_name,
-                annotation,
+                annotation,  # ty: ignore[invalid-argument-type]
                 Query(
                     default=default,
                     title=provider_name,
@@ -358,7 +362,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         if provider_name:
             return DataclassField(
                 new_name,
-                annotation,
+                annotation,  # ty: ignore[invalid-argument-type]
                 Field(
                     default=default or None,
                     title=provider_name,
@@ -367,7 +371,11 @@ class ProviderInterface(metaclass=SingletonMeta):
                 ),
             )
 
-        return DataclassField(new_name, annotation, default)
+        return DataclassField(
+            new_name,
+            annotation,  # ty: ignore[invalid-argument-type]
+            default,
+        )
 
     @classmethod
     def _extract_params(
@@ -559,7 +567,7 @@ class ProviderInterface(metaclass=SingletonMeta):
             if "openbb" in choices:
                 choices.remove("openbb")
 
-            result[model_name] = make_dataclass(  # type: ignore
+            result[model_name] = make_dataclass(
                 cls_name=model_name,
                 fields=[
                     (
@@ -619,12 +627,12 @@ class ProviderInterface(metaclass=SingletonMeta):
                 "standard": create_model(  # type: ignore
                     model_name,
                     __base__=StandardData,
-                    **self._fields_to_pydantic(list(standard.values())),  # type: ignore
+                    **self._fields_to_pydantic(list(standard.values())),
                 ),
-                "extra": create_model(
+                "extra": create_model(  # ty: ignore[no-matching-overload]
                     model_name,
                     __base__=ExtraData,
-                    **self._fields_to_pydantic(list(extra.values())),  # type: ignore
+                    **self._fields_to_pydantic(list(extra.values())),
                 ),
             }
 
@@ -663,7 +671,7 @@ class ProviderInterface(metaclass=SingletonMeta):
             result[model_name] = create_model(  # type: ignore
                 model_name,
                 __config__=model_config,
-                **fields_dict,  # type: ignore
+                **fields_dict,
             )
 
         return result
@@ -732,7 +740,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         for name, models in original_models.items():
             outer = {model["results_type"] for model in models.values()}
             inner = self._get_annotated_union(models)
-            full = Union[tuple((o[inner] if o else inner) for o in outer)]  # type: ignore  # noqa
+            full = Union[tuple((o[inner] if o else inner) for o in outer)]  # noqa
             annotations[name] = create_model(
                 f"OBBject_{name}",
                 __base__=OBBject[full],  # type: ignore

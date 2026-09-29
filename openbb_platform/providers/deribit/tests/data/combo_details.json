@@ -1,0 +1,17 @@
+{
+ "id": "BTC-STRG-30OCT26-66000_90000",
+ "state": "active",
+ "legs": [
+  {
+   "amount": 1,
+   "instrument_name": "BTC-30OCT26-66000-P"
+  },
+  {
+   "amount": 1,
+   "instrument_name": "BTC-30OCT26-90000-C"
+  }
+ ],
+ "instrument_id": 698294,
+ "creation_timestamp": 1789845798000,
+ "state_timestamp": 1789845798201
+}

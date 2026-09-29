@@ -9,7 +9,7 @@ from openbb_core.provider.standard_models.equity_info import (
     EquityInfoData,
     EquityInfoQueryParams,
 )
-from pydantic import Field, model_validator
+from pydantic import Field, field_validator, model_validator
 
 
 class TmxEquityProfileQueryParams(EquityInfoQueryParams):
@@ -35,6 +35,14 @@ class TmxEquityProfileData(EquityInfoData):
         "shares_escrow": "sharesESCROW",
         "total_shares_outstanding": "totalSharesOutStanding",
     }
+
+    @field_validator("company_url", mode="before", check_fields=False)
+    @classmethod
+    def url_validate(cls, v):
+        """Return the website as an absolute URL."""
+        from openbb_tmx.utils.helpers import normalize_url
+
+        return normalize_url(v)
 
     email: str | None = Field(description="The email of the company.", default=None)
     issue_type: str | None = Field(
@@ -84,47 +92,27 @@ class TmxEquityProfileFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
-        # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
-        import json  # noqa
-        from openbb_tmx.utils import gql  # noqa
-        from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
+        import asyncio
+
+        from openbb_tmx.utils import gql
+        from openbb_tmx.utils.cache import amake_gql_request
+        from openbb_tmx.utils.helpers import normalize_symbol
 
         symbols = query.symbol.split(",")
-
-        # The list where the results will be stored and appended to.
         results: list[dict] = []
-        user_agent = get_random_agent()
-
-        url = "https://app-money.tmx.com/graphql"
 
         async def create_task(symbol: str, results) -> None:
-            """Make a POST request to the TMX GraphQL endpoint for a single symbol."""
-            symbol = (
-                symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
+            """Fetch the profile for a single symbol."""
+            symbol = normalize_symbol(symbol)
+            response = await amake_gql_request(
+                "getQuoteBySymbol",
+                gql.QUOTE_BY_SYMBOL,
+                {"symbol": symbol, "locale": "en"},
+                symbol=symbol,
             )
 
-            payload = gql.stock_info_payload.copy()
-            payload["variables"]["symbol"] = symbol
-
-            data = {}
-            r = await get_data_from_gql(
-                method="POST",
-                url=url,
-                data=json.dumps(payload),
-                headers={
-                    "authority": "app-money.tmx.com",
-                    "referer": f"https://money.tmx.com/en/quote/{symbol}",
-                    "locale": "en",
-                    "Content-Type": "application/json",
-                    "User-Agent": user_agent,
-                    "Accept": "*/*",
-                },
-                timeout=3,
-            )
-            if r["data"].get("getQuoteBySymbol"):
-                data = r["data"]["getQuoteBySymbol"]
-                results.append(data)
+            if response and response.get("getQuoteBySymbol"):
+                results.append(response["getQuoteBySymbol"])
 
         tasks = [create_task(symbol, results) for symbol in symbols]
         await asyncio.gather(*tasks)
@@ -137,7 +125,6 @@ class TmxEquityProfileFetcher(
         **kwargs: Any,
     ) -> list[TmxEquityProfileData]:
         """Return the transformed data."""
-        # Get only the items associated with `equity.profile()`.
         items_list = [
             "shortDescription",
             "longDescription",
@@ -159,7 +146,6 @@ class TmxEquityProfileFetcher(
             "employees",
         ]
         data = [{k: v for k, v in d.items() if k in items_list} for d in data]
-        # Sort the data by the order of the symbols in the query.
         symbols = query.symbol.split(",")
         symbol_to_index = {symbol: index for index, symbol in enumerate(symbols)}
         data = sorted(data, key=lambda d: symbol_to_index[d["symbol"]])

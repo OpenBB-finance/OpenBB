@@ -1,80 +1,58 @@
-"""Helper functions for Quantitative Analysis."""
+"""Helper functions for the quantitative extension."""
 
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from pandas import DataFrame, Series
 
+_FAMA_FRENCH_FACTORS_URL = (
+    "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/"
+    "F-F_Research_Data_Factors_CSV.zip"
+)
 
-# ruff: ignore=S310
+
 def get_fama_raw(start_date: str, end_date: str) -> "DataFrame":
-    """Get base Fama French data to calculate risk.
+    """Download the Fama-French research factors for a date range.
 
-    Returns
-    -------
-    DataFrame
-        A data with fama french model information
+    Returns a DataFrame indexed by date with the excess market return ('mkt_rf'),
+    size ('smb'), value ('hml'), and risk-free ('rf') factors as decimal fractions.
     """
-    # pylint: disable=import-outside-toplevel
     from io import BytesIO
     from urllib.request import urlopen
     from zipfile import ZipFile
 
     from pandas import read_csv, to_datetime, to_numeric
 
-    with urlopen(  # nosec  # noqa: S310 SIM117
-        "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
-    ) as url:
-        # Download Zipfile and create pandas DataFrame
-        with ZipFile(BytesIO(url.read())) as zipfile:
-            with zipfile.open("F-F_Research_Data_Factors.csv") as zip_open:
-                df = read_csv(
-                    zip_open,
-                    header=0,
-                    names=["Date", "MKT-RF", "SMB", "HML", "RF"],
-                    skiprows=3,
-                )
-
-    df = df[df["Date"].apply(lambda x: len(str(x).strip()) == 6)]
-    df["Date"] = df["Date"].astype(str) + "01"
-    df["Date"] = to_datetime(df["Date"], format="%Y%m%d")
-    df["MKT-RF"] = to_numeric(df["MKT-RF"], downcast="float")
-    df["SMB"] = to_numeric(df["SMB"], downcast="float")
-    df["HML"] = to_numeric(df["HML"], downcast="float")
-    df["RF"] = to_numeric(df["RF"], downcast="float")
-    df["MKT-RF"] = df["MKT-RF"] / 100
-    df["SMB"] = df["SMB"] / 100
-    df["HML"] = df["HML"] / 100
-    df["RF"] = df["RF"] / 100
-    df = df.set_index("Date")
-
-    dt_start_date = to_datetime(start_date, format="%Y-%m-%d")
-    if dt_start_date > df.index.max():
-        raise ValueError(
-            f"Start date '{dt_start_date}' is after the last date available for Fama-French '{df.index[-1]}'"
+    with (
+        urlopen(_FAMA_FRENCH_FACTORS_URL) as response,  # noqa: S310
+        ZipFile(BytesIO(response.read())) as archive,
+        archive.open("F-F_Research_Data_Factors.csv") as handle,
+    ):
+        df = read_csv(
+            handle,
+            header=0,
+            names=["date", "mkt_rf", "smb", "hml", "rf"],
+            skiprows=3,
         )
 
-    df = df.loc[start_date:end_date]  # type: ignore
+    df = df[df["date"].apply(lambda value: len(str(value).strip()) == 6)]
+    df["date"] = to_datetime(df["date"].astype(str) + "01", format="%Y%m%d")
+    for column in ("mkt_rf", "smb", "hml", "rf"):
+        df[column] = to_numeric(df[column], downcast="float") / 100
+    df = df.set_index("date")
 
-    return df
+    if to_datetime(start_date) > df.index.max():
+        raise ValueError(
+            f"Start date '{start_date}' is after the last available Fama-French"
+            f" observation '{df.index.max().date()}'."
+        )
+
+    return df.loc[start_date:end_date]
 
 
-def validate_window(input_data: Union["Series", "DataFrame"], window: int) -> None:
-    """Validate the window input.
-
-    Parameters
-    ----------
-    input_data : Union[Series, DataFrame]
-        The input data to be validated.
-    window : int
-        The window to be validated.
-
-    Raises
-    ------
-    ValueError
-        If the window is greater than the input data length.
-    """
+def validate_window(input_data: "Series | DataFrame", window: int) -> None:
+    """Raise a ValueError when the rolling window exceeds the data length."""
     if window > len(input_data):
         raise ValueError(
-            f"Window '{window}' is greater than the input data length '{len(input_data)}'"
+            f"Window '{window}' is larger than the data length '{len(input_data)}'."
         )

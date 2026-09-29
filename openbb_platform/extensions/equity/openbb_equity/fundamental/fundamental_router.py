@@ -1,4 +1,3 @@
-# pylint: disable=W0613:unused-argument
 """Fundamental Analysis Router."""
 
 from openbb_core.app.model.command_context import CommandContext

@@ -1,0 +1,63 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/petroleum/pnp/crq/data/?api_key=MOCK_API_KEY&data%5B0%5D=value&end=1985-01&facets%5Bduoarea%5D%5B%5D=R2A&facets%5Bduoarea%5D%5B%5D=R2B&facets%5Bduoarea%5D%5B%5D=R2C&facets%5Bduoarea%5D%5B%5D=R3A&facets%5Bduoarea%5D%5B%5D=R3B&facets%5Bduoarea%5D%5B%5D=R3C&facets%5Bduoarea%5D%5B%5D=R3D&facets%5Bduoarea%5D%5B%5D=R3E&facets%5Bduoarea%5D%5B%5D=RAP&facets%5Bduoarea%5D%5B%5D=REC&facets%5Bprocess%5D%5B%5D=YCG&facets%5Bproduct%5D%5B%5D=EPC0&facets%5Bseries%5D%5B%5D=MCRAP2A2&frequency=monthly&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=1985-01
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY-MM","frequency":"monthly","data":[{"period":"1985-01","duoarea":"R2A","area-name":"NA","product":"EPC0","product-name":"Crude
+        Oil","process":"YCG","process-name":"Refinery Inputs, Average API Gravity","series":"MCRAP2A2","series-description":"Indiana,
+        Illinois, Kentucky Refinery District API Gravity (Weighted Average) of Crude
+        Oil Input to Refineries (Degrees)","value":"36.54","units":"D"}]},"request":{"command":"\/v2\/petroleum\/pnp\/crq\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"monthly","data":["value"],"facets":{"duoarea":["R2A","R3B","R3A","REC","R3D","R3C","R2B","R2C","R3E","RAP"],"product":["EPC0"],"process":["YCG"],"series":["MCRAP2A2"]},"start":"1985-01","end":"1985-01","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '11'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 03:01:36 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 03:01:36 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '902'
+    status:
+      code: 200
+      message: OK
+version: 1

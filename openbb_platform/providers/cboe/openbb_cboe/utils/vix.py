@@ -1,9 +1,11 @@
-"""VIX Utilities."""
+"""Cboe VIX Futures Utilities."""
+
+from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal
 
 if TYPE_CHECKING:
-    from pandas import DataFrame  # pylint: disable=import-outside-toplevel
+    from pandas import DataFrame
 
 
 VX_AM_SYMBOLS = [
@@ -33,98 +35,130 @@ VX_EOD_SYMBOL_TO_MONTH = {
     "UZZ": 12,
 }
 
+VX_EOD_SYMBOLS = list(VX_EOD_SYMBOL_TO_MONTH)
 
-def get_front_month(date: str | None = None):
-    """Get the front month based on the third Wednesday of the month."""
-    # pylint: disable=import-outside-toplevel
-    from datetime import datetime  # noqa
+
+def get_front_month(date: str | None = None) -> int:
+    """Get the front month, rolling on the third Wednesday of the month.
+
+    Parameters
+    ----------
+    date : str | None
+        The reference date, [YYYY-MM-DD]. Defaults to today.
+
+    Returns
+    -------
+    int
+        The front-month number, 1-12.
+    """
     from calendar import monthcalendar
+    from datetime import datetime
 
-    today = datetime.now() if date is None else datetime.strptime(date, "%Y-%m-%d")
+    from openbb_cboe.utils.helpers import ny_now
+
+    today = ny_now() if date is None else datetime.strptime(date, "%Y-%m-%d")
     third_wednesday = [
         week[2] for week in monthcalendar(today.year, today.month) if week[2] != 0
     ][2]
+
     if today.day > third_wednesday:
-        # If today is after the third Wednesday of the month, return the next month
         return (today.month % 12) + 1
-    # Otherwise, return the current month
+
     return today.month
 
 
-def get_vx_symbols(date: str | None = None) -> dict:
-    """Get the VIX symbols based on relative position to the front month."""
-    # pylint: disable=import-outside-toplevel
+def get_vx_symbols(date: str | None = None) -> dict[str, str]:
+    """Map the VX1-VX12 relative contracts to Cboe EOD symbols.
+
+    Parameters
+    ----------
+    date : str | None
+        The reference date, [YYYY-MM-DD]. Defaults to today.
+
+    Returns
+    -------
+    dict[str, str]
+        Relative contract name mapped to the Cboe symbol.
+    """
     from collections import deque
 
-    VIX_SYMBOLS = deque(
-        [
-            "UZF",  # Jan
-            "UZG",  # Feb
-            "UZH",  # Mar
-            "UZJ",  # Apr
-            "UZK",  # May
-            "UZM",  # Jun
-            "UZN",  # Jul
-            "UZQ",  # Aug
-            "UZU",  # Sep
-            "UZV",  # Oct
-            "UZX",  # Nov
-            "UZZ",  # Dec
-        ]
-    )
-    VIX_SYMBOLS.rotate(-(get_front_month(date) - 1))
+    symbols = deque(VX_EOD_SYMBOLS)
+    symbols.rotate(-(get_front_month(date) - 1))
 
-    return {f"VX{i + 1}": symbol for i, symbol in enumerate(VIX_SYMBOLS)}
+    return {f"VX{i + 1}": symbol for i, symbol in enumerate(symbols)}
 
 
-def get_months(front_month):
-    """Translate the front month into forward expiration dates."""
-    # pylint: disable=import-outside-toplevel
+def get_months(front_month: int) -> dict[str, int]:
+    """Map the VX1-VX12 relative contracts to forward expiration months.
+
+    Parameters
+    ----------
+    front_month : int
+        The front-month number, 1-12.
+
+    Returns
+    -------
+    dict[str, int]
+        Relative contract name mapped to the calendar month.
+    """
     from collections import deque
 
     front_month = front_month % 12
-    MONTHS = deque([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
-    MONTHS.rotate(-front_month + 1)
+    months = deque([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+    months.rotate(-front_month + 1)
 
-    return {f"VX{i + 1}": month for i, month in enumerate(MONTHS)}
+    return {f"VX{i + 1}": month for i, month in enumerate(months)}
 
 
 def check_date(date):
-    """Check the date for weekdays."""
-    # pylint: disable=import-outside-toplevel
+    """Roll a weekend date back to the preceding Friday.
+
+    Parameters
+    ----------
+    date : datetime
+        The date to check.
+
+    Returns
+    -------
+    datetime
+        The nearest preceding weekday.
+    """
     from datetime import timedelta
 
-    return (
-        date
-        if date.date().weekday() < 5
-        else date - timedelta(days=6 - date.date().weekday())
-    )
+    weekday = date.date().weekday()
+
+    return date if weekday < 5 else date - timedelta(days=weekday - 4)
 
 
 async def get_vx_current(
     vx_type: Literal["am", "eod"] = "eod", use_cache: bool = True
-) -> "DataFrame":
-    """Get the current quotes for VX Futures.
+) -> DataFrame:
+    """Get the current quotes for VX futures.
 
     Parameters
     ----------
     vx_type : Literal["am", "eod"]
-        The type of VX futures to get. Default is "eod".
-            am: Mid-morning TWAP value
-            eod: End-of-day value
+        The type of VX futures to get. 'am' is the mid-morning TWAP value,
+        'eod' is the end-of-day value.
     use_cache : bool
-        Whether to use the cache. Default is True. Cache is only used for symbol mapping.
+        When True, the symbol directories are cached on disk for 24 hours.
 
     Returns
     -------
     DataFrame
-        DataFrame with the current VX futures data.
+        Expiration and price for the current VX futures curve.
+
+    Raises
+    ------
+    OpenBBError
+        If ``vx_type`` is not 'am' or 'eod'.
     """
-    # pylint: disable=import-outside-toplevel
-    from datetime import datetime  # noqa
+    from datetime import datetime
+
     from openbb_core.app.model.abstract.error import OpenBBError
-    from openbb_cboe.models.equity_quote import CboeEquityQuoteFetcher
     from pandas import DataFrame
+
+    from openbb_cboe.models.equity_quote import CboeEquityQuoteFetcher
 
     if vx_type not in ["am", "eod"]:
         raise OpenBBError("vx_type must be one of: 'am', 'eod'")
@@ -136,11 +170,11 @@ async def get_vx_current(
     data = await CboeEquityQuoteFetcher.fetch_data(
         {"symbol": ",".join(symbols), "use_cache": use_cache}, {}
     )
-    df = DataFrame([d.model_dump() for d in data])  # type: ignore
+    df = DataFrame([d.model_dump() for d in data])  # ty: ignore[unresolved-attribute]
 
     if vx_type == "am":
         df = df[["symbol", "last_price"]]
-    elif vx_type == "eod":
+    else:
         df = df.sort_values(by="last_timestamp", ascending=False)[
             ["symbol", "last_price"]
         ]
@@ -149,6 +183,7 @@ async def get_vx_current(
         df = df.rename(columns={"index": "symbol"})
 
     expirations: list = []
+
     for month in current_months:
         new_year = month == 1
         current_year = (
@@ -156,54 +191,56 @@ async def get_vx_current(
             if new_year and datetime.today().month != 1
             else current_year
         )
-        new_month = "0" + str(month) if month < 10 else str(month)  # type: ignore
+        new_month = f"0{month}" if month < 10 else str(month)  # ty: ignore[unsupported-operator]
         expirations.append(f"{current_year}-{new_month}")
 
     df.symbol = expirations
-    df = df.rename(columns={"symbol": "expiration", "last_price": "price"}).dropna(
+
+    return df.rename(columns={"symbol": "expiration", "last_price": "price"}).dropna(
         how="any"
     )
 
-    return df
 
-
-# pylint: disable=too-many-locals
 async def get_vx_by_date(
     date: str | list[str],
     vx_type: Literal["am", "eod"] = "eod",
     use_cache: bool = True,
-) -> "DataFrame":
-    """Get VX futures by date(s).
+) -> DataFrame:
+    """Get the VX futures curve as of one or more dates.
 
     Parameters
     ----------
-    date : str or List[str]
-        The date(s) to get VX futures for.
+    date : str | list[str]
+        The date(s) to get VX futures for. A string may be comma-separated.
     vx_type : Literal["am", "eod"]
-        The type of VX futures to get. Default is "eod".
-            am: Mid-morning TWAP value
-            eod: End-of-day value
+        The type of VX futures to get. 'am' is the mid-morning TWAP value,
+        'eod' is the end-of-day value.
     use_cache : bool
-        Whether to use the cache. Default is True. Cache is only used for symbol mapping.
+        When True, the symbol directories are cached on disk for 24 hours.
 
     Returns
     -------
     DataFrame
-        Categorical DataFrame with VX futures data for the given date(s).
+        Date, expiration, symbol, and price for each requested date.
+
+    Raises
+    ------
+    OpenBBError
+        If ``vx_type`` is not 'am' or 'eod'.
+    EmptyDataError
+        If no data was returned for any requested date.
     """
-    # pylint: disable=import-outside-toplevel
-    from datetime import datetime, timedelta  # noqa
+    from datetime import datetime, timedelta
+
     from openbb_core.app.model.abstract.error import OpenBBError
     from openbb_core.provider.utils.errors import EmptyDataError
-    from openbb_cboe.models.equity_historical import CboeEquityHistoricalFetcher
     from pandas import Categorical, DataFrame, DatetimeIndex, concat, isna, to_datetime
+
+    from openbb_cboe.models.equity_historical import CboeEquityHistoricalFetcher
 
     if vx_type not in ["am", "eod"]:
         raise OpenBBError("'vx_type' must be one of: 'am', 'eod'")
 
-    df = DataFrame()
-    start_date = ""
-    end_date = ""
     symbols = list(get_vx_symbols().values()) if vx_type == "eod" else VX_AM_SYMBOLS
     dates = date.split(",") if isinstance(date, str) else date
     dates = sorted([check_date(to_datetime(d)) for d in dates])
@@ -211,6 +248,7 @@ async def get_vx_by_date(
 
     if len(dates) == 1:
         new_date = check_date(to_datetime(dates[0]))
+
         if new_date.strftime("%Y-%m-%d") == today:
             df = await get_vx_current(vx_type=vx_type)
             df["date"] = new_date.strftime("%Y-%m-%d")
@@ -222,24 +260,12 @@ async def get_vx_by_date(
         start_date = check_date(dates[0]).strftime("%Y-%m-%d")
         end_date = check_date(dates[-1]).strftime("%Y-%m-%d")
 
-    # The data from the current date is not available in the historical data,
-    # so we need to get it separately, if required.
     current_data = DataFrame()
 
     if end_date == today:
         current_data = await get_vx_current(vx_type=vx_type)
         current_data["date"] = end_date
-        current_data["symbol"] = [
-            "VX1",
-            "VX2",
-            "VX3",
-            "VX4",
-            "VX5",
-            "VX6",
-            "VX7",
-            "VX8",
-            "VX9",
-        ]
+        current_data["symbol"] = [f"VX{i}" for i in range(1, 10)]
 
     data = await CboeEquityHistoricalFetcher.fetch_data(
         {
@@ -249,60 +275,65 @@ async def get_vx_by_date(
             "use_cache": use_cache,
         }
     )
-    df = DataFrame([d.model_dump() for d in data])  # type: ignore
+    df = DataFrame([d.model_dump() for d in data])  # ty: ignore[unresolved-attribute]
     df = df.set_index("date").sort_index()
-
     df.index = df.index.astype(str)
     df.index = DatetimeIndex(df.index)
     dates_list = DatetimeIndex(dates)
-    symbols = df.symbol.unique().tolist()
-    df = df.reset_index().pivot(columns="symbol", values="close", index="date").copy()  # type: ignore
+    df = df.reset_index().pivot(columns="symbol", values="close", index="date").copy()
+
     if vx_type == "am":
         df = df.dropna(how="any")
 
-    nearest_dates = []
+    nearest_dates: list = []
+
     for date_ in dates_list:
         nearest_date = df.index.asof(date_)
-        if isna(nearest_date):
-            differences = abs(df.index - date_)  # type: ignore
-            min_diff_index = differences.argmin()
-            nearest_date = df.index[min_diff_index]
-        nearest_dates.append(nearest_date)
-    nearest_dates = DatetimeIndex(nearest_dates)
 
-    # Filter for only the nearest dates
-    df = df[df.index.isin(nearest_dates)]
+        if isna(nearest_date):
+            differences = abs(df.index - date_)
+            nearest_date = df.index[differences.argmin()]
+
+        nearest_dates.append(nearest_date)
+
+    nearest_index = DatetimeIndex(nearest_dates)
+    df = df[df.index.isin(nearest_index)]
     df = df.fillna("N/A").replace("N/A", None)
-    output = DataFrame()
     df.index = df.index.astype(str)
-    # For each date, we need to arrange VX1 - VX9 according to the relative front month.
+    output = DataFrame()
+
     for _date in df.index.tolist():
         temp = df.filter(like=_date, axis=0).copy()
-        current_symbols = list(get_vx_symbols(date=_date).values())[:9]
-        current_symbols = VX_AM_SYMBOLS if vx_type == "am" else current_symbols
+        current_symbols = (
+            VX_AM_SYMBOLS
+            if vx_type == "am"
+            else list(get_vx_symbols(date=_date).values())[:9]
+        )
         temp = temp.filter(items=current_symbols, axis=1)
         current_month = get_front_month(_date)
         current_months = get_months(current_month)
         current_year = int(_date.split("-")[0])
         expirations: list = []
+
         for month in list(current_months.values())[:9]:
             new_year = month == 1
             current_year = (
                 current_year + 1 if new_year and current_month != 1 else current_year
             )
-            new_month = "0" + str(month) if month < 10 else str(month)  # type: ignore
+            new_month = f"0{month}" if month < 10 else str(month)
             expirations.append(f"{current_year}-{new_month}")
+
         flattened = temp.reset_index().melt(
             id_vars="date", var_name="expiration", value_name="price"
         )
-        if vx_type == "eod":
-            vx_symbols = {v: k for k, v in get_vx_symbols(date=_date).items()}
-        elif vx_type == "am":
-            vx_symbols = {item: item.replace("TWLV", "VX") for item in VX_AM_SYMBOLS}
+        vx_symbols = (
+            {item: item.replace("TWLV", "VX") for item in VX_AM_SYMBOLS}
+            if vx_type == "am"
+            else {v: k for k, v in get_vx_symbols(date=_date).items()}
+        )
         flattened["symbol"] = flattened.expiration.map(vx_symbols)
         flattened.expiration = expirations
         flattened = flattened.dropna(how="any", subset=["price"])
-
         output = concat([output, flattened])
 
     if not current_data.empty and current_data.date[0] not in output.date.unique():
@@ -313,17 +344,18 @@ async def get_vx_by_date(
 
     output = output.sort_values("date")
     dates = DatetimeIndex(dates)
-    if dates[-1] != nearest_dates[-1] and not current_data.empty:
-        output = output[output.date != nearest_dates[-1].strftime("%Y-%m-%d")]  # type: ignore
+
+    if dates[-1] != nearest_index[-1] and not current_data.empty:
+        output = output[output.date != nearest_index[-1].strftime("%Y-%m-%d")]
+
     output["symbol"] = Categorical(
         output["symbol"],
         categories=sorted(output.symbol.unique().tolist()),
         ordered=True,
     )
-    output = (
+
+    return (
         output.sort_values(by=["date", "symbol"])
         .reset_index(drop=True)
         .dropna(how="any")
     )
-
-    return output

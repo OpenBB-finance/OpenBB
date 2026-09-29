@@ -1,7 +1,5 @@
 """Test Economy API."""
 
-# pylint: disable=too-many-lines
-
 import base64
 
 import pytest
@@ -18,9 +16,6 @@ def headers():
     base64_bytes = base64.b64encode(userpass_bytes)
 
     return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
-
-
-# pylint: disable=redefined-outer-name
 
 
 @pytest.mark.parametrize(

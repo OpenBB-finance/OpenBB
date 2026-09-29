@@ -14,12 +14,12 @@ class Preferences(BaseModel):
     data_directory: str = str(Path.home() / "OpenBBUserData")
     export_directory: str = str(Path.home() / "OpenBBUserData" / "exports")
     metadata: bool = True
-    output_type: Literal[
-        "OBBject", "dataframe", "polars", "numpy", "dict", "chart", "llm"
-    ] = Field(
-        default="OBBject",
-        description="Python default output type.",
-        validate_default=True,
+    output_type: Literal["OBBject", "dataframe", "polars", "numpy", "dict", "llm"] = (
+        Field(
+            default="OBBject",
+            description="Python default output type.",
+            validate_default=True,
+        )
     )
     request_timeout: PositiveInt = 60
     show_warnings: bool = False

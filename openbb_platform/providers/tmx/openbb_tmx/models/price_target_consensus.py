@@ -90,48 +90,27 @@ class TmxPriceTargetConsensusFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
-        # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
-        import json  # noqa
-        from openbb_tmx.utils import gql  # noqa
-        from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
+        import asyncio
+
+        from openbb_tmx.utils import gql
+        from openbb_tmx.utils.cache import amake_gql_request
+        from openbb_tmx.utils.helpers import normalize_symbol
 
         symbols = query.symbol.split(",")  # type: ignore
         results: list[dict] = []
 
         async def create_task(symbol, results):
             """Create a task for each symbol provided."""
-            symbol = (
-                symbol.upper()
-                .replace("-", ".")
-                .replace(".TO", "")
-                .replace(".TSXV", "")
-                .replace(".TSX", "")
-            )
-
-            payload = gql.get_company_analysts_payload.copy()
-            payload["variables"]["symbol"] = symbol
-            payload["variables"]["datatype"] = "equity"
-
+            symbol = normalize_symbol(symbol)
             data = {}
-            url = "https://app-money.tmx.com/graphql"
-            response = await get_data_from_gql(
-                method="POST",
-                url=url,
-                data=json.dumps(payload),
-                headers={
-                    "authority": "app-money.tmx.com",
-                    "referer": f"https://money.tmx.com/en/quote/{symbol}",
-                    "locale": "en",
-                    "Content-Type": "application/json",
-                    "User-Agent": get_random_agent(),
-                    "Accept": "*/*",
-                },
-                timeout=10,
+            response = await amake_gql_request(
+                "getCompanyAnalysts",
+                gql.COMPANY_ANALYSTS,
+                {"symbol": symbol, "datatype": "equity"},
+                symbol=symbol,
             )
-            r_data = (
-                response["data"].get("analysts", None) if response.get("data") else None
-            )
+            r_data = (response or {}).get("getCompanyAnalysts")
+
             if r_data:
                 data.update(
                     {

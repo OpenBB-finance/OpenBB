@@ -1,8 +1,6 @@
-"""TMX Equity Search fetcher."""
+"""TMX Equity Search Model."""
 
-# pylint: disable=unused-argument
-
-from typing import Any
+from typing import Any, Literal
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_search import (
@@ -11,28 +9,54 @@ from openbb_core.provider.standard_models.equity_search import (
 )
 from pydantic import Field
 
+from openbb_tmx.utils.choices import literal_choices
+
 
 class TmxEquitySearchQueryParams(EquitySearchQueryParams):
-    """TMX Equity Search query.
+    """TMX Equity Search Query."""
 
-    Source: https://www.tmx.com/
-    """
+    __json_schema_extra__ = {
+        "country": {
+            "x-widget_config": {"options": literal_choices(("CA", "US", "GB"))}
+        },
+    }
 
+    country: Literal["CA", "US", "GB"] | None = Field(
+        default="CA",
+        description="Restrict to a two-letter country code. Set to None for every market.",
+    )
+    symbol_only: bool = Field(
+        default=False,
+        description="Match the symbol only, instead of the symbol or the name.",
+    )
+    limit: int = Field(default=200, description="The maximum number of results.")
     use_cache: bool = Field(
         default=True,
-        description="Whether to use a cached request. The list of companies is cached for two days.",
+        description="Whether to use the on-disk response cache. Set to False to bypass.",
     )
 
 
 class TmxEquitySearchData(EquitySearchData):
     """TMX Equity Search Data."""
 
+    exchange: str | None = Field(
+        default=None, description="The exchange the instrument trades on."
+    )
+    exchange_code: str | None = Field(default=None, description="The exchange code.")
+    country: str | None = Field(
+        default=None, description="The country the instrument is listed in."
+    )
+    security_type: str | None = Field(default=None, description="The instrument type.")
+    market_cap: float | None = Field(
+        default=None, description="The market capitalization."
+    )
+    optionable: bool | None = Field(
+        default=None, description="Whether the instrument has listed options."
+    )
+
 
 class TmxEquitySearchFetcher(
-    Fetcher[
-        TmxEquitySearchQueryParams,
-        list[TmxEquitySearchData],
-    ]
+    Fetcher[TmxEquitySearchQueryParams, list[TmxEquitySearchData]]
 ):
     """TMX Equity Search Fetcher."""
 
@@ -47,26 +71,50 @@ class TmxEquitySearchFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Return the raw data from the TMX endpoint."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_tmx.utils.helpers import get_all_tmx_companies
-        from pandas import DataFrame
+        """Return the raw data from the symbology."""
+        from openbb_core.provider.utils.errors import EmptyDataError
 
-        companies = await get_all_tmx_companies(use_cache=query.use_cache)
-        results = DataFrame(index=companies, data=companies.values(), columns=["name"])
-        results = results.reset_index().rename(columns={"index": "symbol"})
+        from openbb_tmx.utils.directory import browse_symbols, lookup_symbols
 
-        if query:
-            results = results[
-                results["name"].str.contains(query.query, case=False)
-                | results["symbol"].str.contains(query.query, case=False)
-            ]
+        if not query.query:
+            results = await browse_symbols(
+                limit=query.limit,
+                country=query.country,
+                use_cache=query.use_cache,
+            )
+        else:
+            results = await lookup_symbols(
+                query.query,
+                limit=query.limit,
+                country=query.country,
+                symbol_only=query.symbol_only,
+                use_cache=query.use_cache,
+            )
 
-        return results.reset_index(drop=True).astype(str).to_dict("records")
+        if not results:
+            raise EmptyDataError(f"No instruments matched '{query.query}'.")
+
+        return results
 
     @staticmethod
     def transform_data(
-        query: TmxEquitySearchQueryParams, data: list[dict], **kwargs: Any
+        query: TmxEquitySearchQueryParams,
+        data: list[dict],
+        **kwargs: Any,
     ) -> list[TmxEquitySearchData]:
-        """Transform the data to the standard format."""
-        return [TmxEquitySearchData.model_validate(d) for d in data]
+        """Transform the data and validate the model."""
+        return [
+            TmxEquitySearchData.model_validate(
+                {
+                    "symbol": d.get("symbol"),
+                    "name": d.get("name"),
+                    "exchange": d.get("exchangeShortName"),
+                    "exchange_code": d.get("exchangeCode"),
+                    "country": d.get("countryCode"),
+                    "security_type": d.get("symbolType"),
+                    "market_cap": d.get("marketCap"),
+                    "optionable": d.get("optionable"),
+                }
+            )
+            for d in data
+        ]

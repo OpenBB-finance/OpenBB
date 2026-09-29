@@ -1,11 +1,10 @@
 """Company type detection, filing-date resolution, and fiscal metadata."""
 
-# pylint: disable=R0912,R0914
-
 from __future__ import annotations
 
+from bisect import bisect_left, bisect_right
 from collections import Counter
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any
 
 from openbb_sec.utils.statement_schema._types import (
@@ -15,8 +14,10 @@ from openbb_sec.utils.statement_schema._types import (
     PRELIMINARY_FORMS,
     QUARTERLY_FORMS,
     SEMI_ANNUAL_FORMS,
+    SUPERSEDED_SUFFIX,
     CompanyType,
     Frequency,
+    PreliminaryFacts,
 )
 
 
@@ -29,6 +30,11 @@ def detect_type(
     min_financial_signals: int,
     industrial_signals: list[str],
     diversified_signals: list[str],
+    revenue_measures: list[str] | None = None,
+    insurance_measures: list[str] | None = None,
+    financial_measures: list[str] | None = None,
+    min_insurance_share: float = 0.0,
+    min_financial_share: float = 0.0,
 ) -> CompanyType:
     """Classify a company as industrial, financial, diversified, or insurance."""
     company_tags: set[str] = set()
@@ -37,28 +43,39 @@ def detect_type(
         if isinstance(ns_data, dict):
             company_tags.update(ns_data.keys())
 
+    has_cogs = any(
+        s in company_tags and _has_recent_data(facts, s) for s in industrial_signals
+    )
+    revenue, shares = _latest_annual_shares(
+        facts,
+        revenue_measures or [],
+        {"insurance": insurance_measures or [], "financial": financial_measures or []},
+    )
+    insurance_share = shares["insurance"]
+    financial_share = shares["financial"]
     ins_is = sum(1 for s in insurance_is_signals if s in company_tags)
     ins_bs = sum(1 for s in insurance_bs_signals if s in company_tags)
     ins_total = ins_is + ins_bs
-    is_insurance = ins_is >= 1 and ins_total >= 2
+    is_insurance = (
+        ins_is >= 1
+        and ins_total >= 2
+        and (
+            revenue is None
+            or (insurance_share is not None and insurance_share >= min_insurance_share)
+        )
+    )
     fin_count = sum(1 for s in financial_signals if s in company_tags)
-    is_financial = fin_count >= min_financial_signals
+    is_financial = fin_count >= min_financial_signals and (
+        (revenue is None and not has_cogs)
+        or (financial_share is not None and financial_share >= min_financial_share)
+    )
 
     if is_insurance and is_financial:
-        # Both templates plausible: prefer financial when core-banking signals
-        # outnumber insurance income-statement signals. This keeps genuine
-        # insurers (few financial signals) on the insurance template while
-        # classifying banks that carry an insurance subsidiary (e.g., BMO,
-        # 5 financial vs 4 insurance-IS signals) as financial.
-        return "insurance" if ins_is >= fin_count else "financial"
+        return "insurance" if ins_total > fin_count else "financial"
     if is_insurance:
         return "insurance"
     if is_financial:
         return "financial"
-
-    has_cogs = any(
-        s in company_tags and _has_recent_data(facts, s) for s in industrial_signals
-    )
 
     if has_cogs:
         return "industrial"
@@ -71,8 +88,93 @@ def detect_type(
     return "industrial"
 
 
+def _latest_annual_shares(
+    facts: dict[str, Any],
+    revenue_measures: list[str],
+    measure_groups: dict[str, list[str]],
+) -> tuple[float | None, dict[str, float | None]]:
+    """Revenue and each measure group's share of it in the latest annual filing that reports revenue."""
+    latest: tuple[str, str, str, str] | None = None
+    revenue_values: dict[tuple[str, str, str], float] = {}
+
+    for ns_data in facts.values():
+        if not isinstance(ns_data, dict):
+            continue
+
+        for tag in revenue_measures:
+            for unit, entries in ns_data.get(tag, {}).get("units", {}).items():
+                for entry in entries:
+                    start, end = entry.get("start", ""), entry.get("end", "")
+
+                    if (
+                        entry.get("form", "") not in ANNUAL_FORMS
+                        or not start
+                        or not end
+                    ):
+                        continue
+
+                    if not 300 <= (_parse(end) - _parse(start)).days <= 400:
+                        continue
+
+                    accn = entry.get("accn", "")
+                    key = (accn, end, unit)
+                    val = entry.get("val")
+
+                    if val is None:
+                        continue
+
+                    if key not in revenue_values or abs(val) > abs(revenue_values[key]):
+                        revenue_values[key] = val
+
+                    candidate = (entry.get("filed", ""), accn, end, unit)
+
+                    if latest is None or candidate[:3] > latest[:3]:
+                        latest = candidate
+
+    empty: dict[str, float | None] = dict.fromkeys(measure_groups)
+
+    if latest is None:
+        return None, empty
+
+    _, accn, end, unit = latest
+    revenue = revenue_values.get((accn, end, unit))
+
+    if not revenue:
+        return None, empty
+
+    shares: dict[str, float | None] = {}
+
+    for group, tags in measure_groups.items():
+        found: list[float] = []
+
+        for ns_data in facts.values():
+            if not isinstance(ns_data, dict):
+                continue
+
+            for tag in tags:
+                for entry in ns_data.get(tag, {}).get("units", {}).get(unit, []):
+                    start = entry.get("start", "")
+
+                    if (
+                        entry.get("accn", "") == accn
+                        and entry.get("end") == end
+                        and start
+                        and 300 <= (_parse(end) - _parse(start)).days <= 400
+                        and entry.get("val") is not None
+                    ):
+                        found.append(entry["val"])
+
+        shares[group] = max(found) / revenue if found else None
+
+    return revenue, shares
+
+
+def _parse(date: str) -> datetime:
+    return datetime.strptime(date, "%Y-%m-%d")
+
+
 def _has_recent_data(facts: dict[str, Any], tag: str, max_age_years: int = 5) -> bool:
-    """Check if a tag has data from a recent 10-K filing."""
+    """Check if a tag has data from a recent annual filing."""
     cutoff_year = datetime.now().year - max_age_years
 
     for ns_data in facts.values():
@@ -83,7 +185,7 @@ def _has_recent_data(facts: dict[str, Any], tag: str, max_age_years: int = 5) ->
 
         for entries in tag_data.get("units", {}).values():
             for entry in entries:
-                if entry.get("form", "") in ("10-K", "10-K/A", "20-F", "20-F/A"):
+                if entry.get("form", "") in ANNUAL_FORMS:
                     end = entry.get("end", "")
                     if end and int(end[:4]) >= cutoff_year:
                         return True
@@ -91,14 +193,52 @@ def _has_recent_data(facts: dict[str, Any], tag: str, max_age_years: int = 5) ->
     return False
 
 
+def _anchor_distance(dt: datetime, month: int, day: int) -> int:
+    """Days from ``dt`` to the nearest ``month``-``day`` anchor in the adjacent years."""
+    distances: list[int] = []
+
+    for year in (dt.year - 1, dt.year, dt.year + 1):
+        try:
+            anchor = datetime(year, month, day)
+        except ValueError:
+            anchor = datetime(year, month, min(day, 28))
+        distances.append(abs((dt - anchor).days))
+
+    return min(distances)
+
+
+def _collapse_near_dates(
+    dates: set[str], anchors: set[str], weights: Counter[str]
+) -> set[str]:
+    """Drop interim ends within 7 days of a fiscal-year end or of a better-supported interim end."""
+    anchor_dts = [datetime.strptime(a, "%Y-%m-%d") for a in anchors]
+    kept: list[tuple[str, datetime]] = []
+
+    for date in sorted(dates):
+        dt = datetime.strptime(date, "%Y-%m-%d")
+
+        if any(abs((dt - a).days) <= 7 for a in anchor_dts):
+            continue
+
+        if kept and (dt - kept[-1][1]).days <= 7:
+            if weights[date] > weights[kept[-1][0]]:
+                kept[-1] = (date, dt)
+            continue
+
+        kept.append((date, dt))
+
+    return {d for d, _ in kept}
+
+
 def get_filing_dates(  # noqa: PLR0912
     facts: dict[str, Any],
     frequency: Frequency = "annual",
     include_preliminary: bool = False,
 ) -> set[str]:
-    """Determine canonical period-end dates from actual filings."""
+    """Determine canonical period-end dates from facts filed after the period ends."""
     filing_dates: set[str] = set()
     preliminary_candidates: set[str] = set()
+    weights: Counter[str] = Counter()
 
     for ns_facts in facts.values():
         for tag_data in ns_facts.values():
@@ -108,7 +248,12 @@ def get_filing_dates(  # noqa: PLR0912
                     start = entry.get("start", "")
                     end = entry.get("end", "")
 
-                    if not start or not end or start == end:
+                    if (
+                        not start
+                        or not end
+                        or start == end
+                        or entry.get("filed", "") <= end
+                    ):
                         continue
                     try:
                         days = (
@@ -121,6 +266,7 @@ def get_filing_dates(  # noqa: PLR0912
                     if frequency == "annual":
                         if form in ANNUAL_PERIOD_FORMS and 300 <= days <= 400:
                             filing_dates.add(end)
+                            weights[end] += 1
                         elif (
                             include_preliminary
                             and form in PRELIMINARY_FORMS
@@ -130,12 +276,14 @@ def get_filing_dates(  # noqa: PLR0912
                     else:
                         if form in QUARTERLY_FORMS and 60 <= days <= 135:
                             filing_dates.add(end)
+                            weights[end] += 1
                         if form in SEMI_ANNUAL_FORMS and (
                             60 <= days <= 135
                             or 150 <= days <= 200
                             or 240 <= days <= 310
                         ):
                             filing_dates.add(end)
+                            weights[end] += 1
                         if (
                             include_preliminary
                             and form in PRELIMINARY_FORMS
@@ -158,17 +306,13 @@ def get_filing_dates(  # noqa: PLR0912
         # (common for 40-F/MJDS filers that report only annually via 6-K).
         # Treat that as no quarterly data so callers fall back to annual.
         if interim_dates and canonical_annual:
-            latest_annual = max(canonical_annual)
-            latest_interim = max(interim_dates)
-            try:
-                lapse = (
-                    datetime.strptime(latest_annual, "%Y-%m-%d")
-                    - datetime.strptime(latest_interim, "%Y-%m-%d")
-                ).days
-            except (ValueError, TypeError):
-                lapse = 0
-            if lapse > 460:
+            latest_annual = datetime.strptime(max(canonical_annual), "%Y-%m-%d")
+            latest_interim = datetime.strptime(max(interim_dates), "%Y-%m-%d")
+            if (latest_annual - latest_interim).days > 460:
                 return set()
+
+        interim_dates = _collapse_near_dates(interim_dates, canonical_annual, weights)
+        filing_dates = interim_dates | (filing_dates & canonical_annual)
 
         # Fold a fiscal year-end into the quarterly series only when that
         # fiscal year actually has at least one interim period.
@@ -179,55 +323,45 @@ def get_filing_dates(  # noqa: PLR0912
                 filing_dates.add(annual_end)
 
     if frequency == "annual" and len(filing_dates) > 3:
-        parsed = [(d, datetime.strptime(d, "%Y-%m-%d")) for d in filing_dates]
-        md_counts: Counter[tuple[int, int]] = Counter()
+        parsed = sorted((d, datetime.strptime(d, "%Y-%m-%d")) for d in filing_dates)
+        anchors = sorted({(dt.month, dt.day) for _, dt in parsed})
+        support = {
+            md: (
+                sum(weights[d] for d, dt in parsed if _anchor_distance(dt, *md) <= 7),
+                sum(weights[d] for d, dt in parsed if (dt.month, dt.day) == md),
+            )
+            for md in anchors
+        }
+        dom_m, dom_d = max(anchors, key=support.__getitem__)
+        canonical_pairs = [
+            (d, dt) for d, dt in parsed if _anchor_distance(dt, dom_m, dom_d) <= 7
+        ]
 
-        for _, dt in parsed:
-            md_counts[(dt.month, dt.day)] += 1
+        if len(canonical_pairs) >= max(3, len(parsed) * 0.4):
+            canonical: set[str] = {d for d, _ in canonical_pairs}
+            canonical_dts: list[datetime] = [dt for _, dt in canonical_pairs]
+            non_canonical: list[tuple[str, datetime]] = [
+                (d, dt) for d, dt in parsed if d not in canonical
+            ]
 
-        dominant_md, dom_freq = md_counts.most_common(1)[0]
-        dom_m, dom_d = dominant_md
+            clusters: list[list[tuple[str, datetime]]] = []
 
-        if dom_freq >= max(3, len(parsed) * 0.4):
-            canonical: set[str] = set()
-            canonical_dts: list[datetime] = []
-            non_canonical: list[tuple[str, datetime]] = []
-
-            for d, dt in parsed:
-                is_match = False
-
-                for y in (dt.year - 1, dt.year, dt.year + 1):
-                    try:
-                        anchor = datetime(y, dom_m, dom_d)
-                    except ValueError:
-                        anchor = datetime(y, dom_m, min(dom_d, 28))
-                    if abs((dt - anchor).days) <= 5:
-                        is_match = True
-                        break
-
-                if is_match:
-                    canonical.add(d)
-                    canonical_dts.append(dt)
+            for d, dt in sorted(canonical_pairs):
+                if clusters and (dt - clusters[-1][-1][1]).days <= 10:
+                    clusters[-1].append((d, dt))
                 else:
-                    non_canonical.append((d, dt))
+                    clusters.append([(d, dt)])
 
-            canonical_sorted = sorted(canonical)
-
-            for i in range(len(canonical_sorted) - 1):
-                d1 = canonical_sorted[i]
-                d2 = canonical_sorted[i + 1]
-                dt1 = datetime.strptime(d1, "%Y-%m-%d")
-                dt2 = datetime.strptime(d2, "%Y-%m-%d")
-
-                if (dt2 - dt1).days <= 10:
-                    exact1 = dt1.month == dom_m and dt1.day == dom_d
-                    exact2 = dt2.month == dom_m and dt2.day == dom_d
-                    if exact2 and not exact1:
-                        canonical.discard(d1)
-                    elif exact1 and not exact2:
-                        canonical.discard(d2)
-
-            filtered = set(canonical)
+            filtered = {
+                max(
+                    cluster,
+                    key=lambda p: (
+                        weights[p[0]],
+                        (p[1].month, p[1].day) == (dom_m, dom_d),
+                    ),
+                )[0]
+                for cluster in clusters
+            }
 
             for d, dt in non_canonical:
                 has_nearby = any(abs((dt - ct).days) <= 200 for ct in canonical_dts)
@@ -271,172 +405,281 @@ def get_filing_dates(  # noqa: PLR0912
     return filing_dates
 
 
-def get_fiscal_meta(  # noqa: PLR0912
+def _reference_year(date: str) -> int:
+    """Calendar year of the day 45 days before a fiscal year end."""
+    return (datetime.strptime(date, "%Y-%m-%d") - timedelta(days=45)).year
+
+
+def annual_fiscal_years(
+    facts: dict[str, Any], annual_dates: set[str]
+) -> dict[str, int]:
+    """Fiscal year per annual period end from the original annual filing that reports it after it ends."""
+    period_end: dict[str, str] = {}
+    first: dict[str, tuple[str, str, int]] = {}
+
+    for namespace, ns_facts in facts.items():
+        if namespace == "dei" or not isinstance(ns_facts, dict):
+            continue
+
+        for tag_data in ns_facts.values():
+            for entries in tag_data.get("units", {}).values():
+                for entry in entries:
+                    start = entry.get("start", "")
+                    end = entry.get("end", "")
+                    filed = entry.get("filed", "")
+
+                    if (
+                        entry.get("form", "") not in ANNUAL_FORMS
+                        or not start
+                        or not end
+                        or filed <= end
+                    ):
+                        continue
+
+                    try:
+                        days = (
+                            datetime.strptime(end, "%Y-%m-%d")
+                            - datetime.strptime(start, "%Y-%m-%d")
+                        ).days
+                    except (ValueError, TypeError):
+                        continue
+
+                    if not 300 <= days <= 400:
+                        continue
+
+                    filing = entry.get("accn") or filed
+
+                    if end > period_end.get(filing, ""):
+                        period_end[filing] = end
+
+                    fy = entry.get("fy")
+
+                    if (
+                        end in annual_dates
+                        and fy is not None
+                        and (end not in first or (filed, filing) < first[end][:2])
+                    ):
+                        first[end] = (filed, filing, fy)
+
+    years = {
+        end: fy
+        - round(
+            (
+                datetime.strptime(period_end[filing], "%Y-%m-%d")
+                - datetime.strptime(end, "%Y-%m-%d")
+            ).days
+            / 365.25
+        )
+        for end, (_, filing, fy) in first.items()
+    }
+    offsets = Counter(year - _reference_year(end) for end, year in years.items())
+    offset = max(sorted(offsets), key=offsets.__getitem__) if offsets else 0
+    ordered = sorted(annual_dates)
+
+    for end in ordered:
+        years.setdefault(end, _reference_year(end) + offset)
+
+    for i, end in enumerate(ordered):
+        expected = _reference_year(end) + offset
+
+        if years[end] == expected:
+            continue
+
+        if (i > 0 and years[ordered[i - 1]] >= years[end]) or (
+            i + 1 < len(ordered) and years[ordered[i + 1]] <= years[end]
+        ):
+            years[end] = expected
+
+    return years
+
+
+def _fiscal_position(
+    date: str, ends: list[str], years: dict[str, int]
+) -> tuple[int, int]:
+    """Fiscal year and quarter number (1-4) of a period end on the fiscal-year-end grid."""
+    dt = datetime.strptime(date, "%Y-%m-%d")
+    index = min(bisect_left(ends, date), len(ends) - 1)
+    fye = datetime.strptime(ends[index], "%Y-%m-%d")
+    fiscal_year = years[ends[index]]
+
+    while (fye - dt).days >= 355:
+        fye -= timedelta(days=365)
+        fiscal_year -= 1
+
+    while (dt - fye).days > 10:
+        fye += timedelta(days=365)
+        fiscal_year += 1
+
+    fye_date = fye.strftime("%Y-%m-%d")
+    position = bisect_left(ends, fye_date)
+    prev = fye - timedelta(days=365)
+
+    if position < len(ends) and ends[position] == fye_date and position > 0:
+        candidate = datetime.strptime(ends[position - 1], "%Y-%m-%d")
+        if 330 <= (fye - candidate).days <= 400:
+            prev = candidate
+
+    return fiscal_year, min(4, max(1, round((dt - prev).days / 91.31)))
+
+
+def get_fiscal_meta(
     facts: dict[str, Any],
     frequency: Frequency,
     filing_dates: set[str],
 ) -> dict[str, dict[str, Any]]:
-    """Build fiscal metadata for each period-end date."""
+    """Build fiscal year and period labels for each period-end date."""
+    if not filing_dates:
+        return {}
+
     annual_dates = get_filing_dates(facts, "annual")
-    _fye_counts = Counter(int(d[5:7]) for d in annual_dates)
-    fye_month = _fye_counts.most_common(1)[0][0] if _fye_counts else 12
-    best_annual: dict[str, tuple[str, int, str]] = {}
-    best_quarterly: dict[str, tuple[str, int, str]] = {}
-    best_semi: dict[str, tuple[str, int, str]] = {}
-    best_instant: dict[str, tuple[str, int, str]] = {}
-    best_preliminary: dict[str, tuple[str, int, str]] = {}
+    grid = annual_dates | filing_dates if frequency == "annual" else annual_dates
+    years = annual_fiscal_years(facts, grid)
+
+    if frequency == "annual":
+        return {
+            date: {"fiscal_year": years[date], "fiscal_period": "FY"}
+            for date in filing_dates
+        }
+
+    if not years:
+        first_year = min(int(d[:4]) for d in filing_dates)
+        last_year = max(int(d[:4]) for d in filing_dates)
+        years = {f"{y}-12-31": y for y in range(first_year - 1, last_year + 2)}
+
+    quarterly_dates: set[str] = set()
+    semi_dates: set[str] = set()
 
     for ns_facts in facts.values():
         for tag_data in ns_facts.values():
-            for entries_list in tag_data.get("units", {}).values():
-                for entry in entries_list:
+            for entries in tag_data.get("units", {}).values():
+                for entry in entries:
                     end = entry.get("end", "")
-
-                    if end not in filing_dates:
-                        continue
-
-                    filed = entry.get("filed", "")
-                    fy = entry.get("fy")
-                    fp = entry.get("fp", "")
                     form = entry.get("form", "")
 
-                    if not filed:
-                        continue
-                    if fy is None or not fp:
+                    if end not in filing_dates or not entry.get("filed"):
                         continue
 
-                    if form in ANNUAL_FORMS:
-                        if end not in best_annual or filed < best_annual[end][0]:
-                            best_annual[end] = (filed, fy, fp)
-                    elif form in QUARTERLY_FORMS:
-                        if end not in best_quarterly or filed < best_quarterly[end][0]:
-                            best_quarterly[end] = (filed, fy, fp)
-                    elif form in SEMI_ANNUAL_FORMS:
-                        # A 6-K can carry quarterly, semi-annual, or full-year periods.
-                        start = entry.get("start", "")
-                        days = None
-                        if start and start != end:
-                            try:
-                                days = (
-                                    datetime.strptime(end, "%Y-%m-%d")
-                                    - datetime.strptime(start, "%Y-%m-%d")
-                                ).days
-                            except (ValueError, TypeError):
-                                days = None
-                        end_month = int(end[5:7])
-                        fis_year = (
-                            int(end[:4]) if end_month <= fye_month else int(end[:4]) + 1
-                        )
-                        fis_q = f"Q{((end_month - fye_month - 1) % 12) // 3 + 1}"
-                        q_label = fp if fp.startswith("Q") else fis_q
-                        if days is not None and 300 <= days <= 400:
-                            if end not in best_annual or filed < best_annual[end][0]:
-                                best_annual[end] = (filed, fis_year, "FY")
-                        elif days is not None and (
-                            60 <= days <= 135 or 240 <= days <= 310
-                        ):
-                            if (
-                                end not in best_quarterly
-                                or filed < best_quarterly[end][0]
-                            ):
-                                best_quarterly[end] = (filed, fis_year, q_label)
-                        elif days is not None and 150 <= days <= 200:
-                            if end not in best_semi or filed < best_semi[end][0]:
-                                best_semi[end] = (filed, fis_year, "H1")
-                        elif end not in best_instant or filed < best_instant[end][0]:
-                            # Instant (balance-sheet) 6-K snapshot with no
-                            # duration; used only when no duration period
-                            # classifies the date.
-                            best_instant[end] = (filed, fis_year, q_label)
-                    elif form in PRELIMINARY_FORMS:
-                        if fy is not None and fp:
-                            if (
-                                end not in best_preliminary
-                                or filed < best_preliminary[end][0]
-                            ):
-                                best_preliminary[end] = (filed, fy, fp)
-                        elif end not in best_preliminary:
-                            month = int(end[5:7])
-                            cal_q = f"Q{(month - 1) // 3 + 1}"
-                            best_preliminary[end] = (
-                                filed,
-                                int(end[:4]),
-                                cal_q,
-                            )
+                    if form in QUARTERLY_FORMS:
+                        quarterly_dates.add(end)
+                    elif form in SEMI_ANNUAL_FORMS and entry.get("start"):
+                        days = (
+                            datetime.strptime(end, "%Y-%m-%d")
+                            - datetime.strptime(entry["start"], "%Y-%m-%d")
+                        ).days
+                        if 60 <= days <= 135 or 240 <= days <= 310:
+                            quarterly_dates.add(end)
+                        elif 150 <= days <= 200:
+                            semi_dates.add(end)
 
+    end_period = "Q4"
+
+    if not quarterly_dates and semi_dates:
+        non_annual = filing_dates - annual_dates
+        end_period = "Q4" if len(non_annual) > len(annual_dates) else "H2"
+
+    ends = sorted(years)
     result: dict[str, dict[str, Any]] = {}
 
     for date in filing_dates:
-        if frequency == "annual":
-            info = best_annual.get(date)
-            result[date] = {
-                "fiscal_year": info[1] if info else int(date[:4]),
-                "fiscal_period": "FY",
-            }
-        elif date in annual_dates:
-            info = best_annual.get(date)
-            period = "Q4"
-            if not best_quarterly and best_semi:
-                non_annual = {d for d in filing_dates if d not in annual_dates}
-                period = "Q4" if len(non_annual) > len(annual_dates) else "H2"
-            result[date] = {
-                "fiscal_year": info[1] if info else int(date[:4]),
-                "fiscal_period": period,
-            }
+        fiscal_year, quarter = _fiscal_position(date, ends, years)
+
+        if quarter == 4:
+            period = end_period
+        elif date in semi_dates and date not in quarterly_dates:
+            period = "H1"
         else:
-            q_info = best_quarterly.get(date)
+            period = f"Q{quarter}"
 
-            if q_info:
-                result[date] = {
-                    "fiscal_year": q_info[1],
-                    "fiscal_period": q_info[2],
-                }
-            else:
-                s_info = best_semi.get(date) or best_instant.get(date)
-                if s_info:
-                    result[date] = {
-                        "fiscal_year": s_info[1],
-                        "fiscal_period": s_info[2],
-                    }
-                else:
-                    p_info = best_preliminary.get(date)
-                    if p_info:
-                        result[date] = {
-                            "fiscal_year": p_info[1],
-                            "fiscal_period": p_info[2],
-                        }
-                    else:
-                        result[date] = {
-                            "fiscal_year": int(date[:4]),
-                            "fiscal_period": "Q4",
-                        }
-
-    if frequency == "annual" and result:
-        sorted_dates = sorted(result.keys())
-        for i in range(len(sorted_dates) - 2, -1, -1):
-            cur = sorted_dates[i]
-            nxt = sorted_dates[i + 1]
-            if result[cur]["fiscal_year"] >= result[nxt]["fiscal_year"]:
-                result[cur]["fiscal_year"] = result[nxt]["fiscal_year"] - 1
-
-    elif frequency == "quarterly" and result:
-        sorted_dates = sorted(result.keys())
-        annual_set = set(annual_dates)
-
-        for i, date in enumerate(sorted_dates):
-            if (
-                date in annual_set
-                and result[date]["fiscal_period"] in ("Q4", "H2")
-                and i > 0
-            ):
-                prev = sorted_dates[i - 1]
-                prev_meta = result[prev]
-                if prev_meta["fiscal_period"] in ("Q1", "Q2", "Q3", "H1"):
-                    prev_fy = prev_meta["fiscal_year"]
-                    if result[date]["fiscal_year"] != prev_fy:
-                        result[date]["fiscal_year"] = prev_fy
+        result[date] = {"fiscal_year": fiscal_year, "fiscal_period": period}
 
     return result
+
+
+def preliminary_view(facts: dict[str, Any], pit_mode: bool = False) -> PreliminaryFacts:
+    """Return facts in which an 8-K entry keeps its form only while no regular filing had reported its period when it was filed.
+
+    Outside pit_mode an 8-K entry is also superseded once any regular filing reports its period.
+    """
+    regular: list[tuple[str, str]] = []
+    reported: set[str] = set()
+
+    for namespace, ns_facts in facts.items():
+        if namespace == "dei" or not isinstance(ns_facts, dict):
+            continue
+
+        for tag_data in ns_facts.values():
+            for entries in tag_data.get("units", {}).values():
+                for entry in entries:
+                    end = entry.get("end", "")
+                    filed = entry.get("filed", "")
+
+                    if entry.get("form", "") in ALL_FORMS and end and filed > end:
+                        regular.append((filed, end))
+                        reported.add(end)
+
+    regular.sort()
+    filed_dates = [filed for filed, _ in regular]
+    latest: list[str] = []
+
+    for _, end in regular:
+        latest.append(max(end, latest[-1]) if latest else end)
+
+    view = PreliminaryFacts()
+    view.pit_mode = pit_mode
+
+    for namespace, ns_facts in facts.items():
+        if not isinstance(ns_facts, dict):
+            view[namespace] = ns_facts
+            continue
+
+        view_ns: dict[str, Any] = {}
+
+        for tag, tag_data in ns_facts.items():
+            units = tag_data.get("units", {})
+
+            if not any(
+                entry.get("form", "") in PRELIMINARY_FORMS
+                for entries in units.values()
+                for entry in entries
+            ):
+                view_ns[tag] = tag_data
+                continue
+
+            view_units: dict[str, list[dict[str, Any]]] = {}
+
+            for unit, entries in units.items():
+                view_entries: list[dict[str, Any]] = []
+
+                for entry in entries:
+                    form = entry.get("form", "")
+                    view_entry = entry
+
+                    if form in PRELIMINARY_FORMS:
+                        end = entry.get("end", "")
+                        filed = entry.get("filed", "")
+                        index = bisect_right(filed_dates, filed)
+                        known = latest[index - 1] if index else ""
+
+                        if not (
+                            end
+                            and filed > end
+                            and end > known
+                            and (pit_mode or end not in reported)
+                        ):
+                            view_entry = {
+                                **entry,
+                                "form": form + SUPERSEDED_SUFFIX,
+                            }
+
+                    view_entries.append(view_entry)
+
+                view_units[unit] = view_entries
+
+            view_ns[tag] = {**tag_data, "units": view_units}
+
+        view[namespace] = view_ns
+
+    return view
 
 
 def detect_reporting_currency(facts: dict[str, Any]) -> str:
@@ -461,7 +704,7 @@ def detect_reporting_currency(facts: dict[str, Any]) -> str:
     if not currency_counts:
         return "USD"
 
-    return max(currency_counts, key=currency_counts.get)  # type: ignore[arg-type]
+    return max(currency_counts, key=lambda _k: currency_counts[_k])
 
 
 def prior_period_end(date: str) -> str | None:

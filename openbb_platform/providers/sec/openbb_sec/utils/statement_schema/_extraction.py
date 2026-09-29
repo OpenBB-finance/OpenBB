@@ -1,21 +1,33 @@
 """Row-level value extraction from SEC XBRL facts."""
 
-# pylint: disable=R0912,R0914,R0915,R0917
-
 from __future__ import annotations
 
-from collections import defaultdict
+from collections import Counter, defaultdict
+from dataclasses import replace
 from datetime import datetime
-from math import isclose
+from decimal import Decimal
+from math import isclose, log10
+from statistics import median
 from typing import Any
 
+from openbb_sec.utils.statement_schema._rules import (
+    FILER_SCALES,
+    NET_POSITIONS,
+    NONNEGATIVE_CONCEPTS,
+    SCALE_SPAN,
+    SCALED_FILING_MIN,
+    WEIGHTED_SHARE_CONCEPTS,
+)
 from openbb_sec.utils.statement_schema._types import (
     ALL_FORMS,
+    ANNUAL_FORMS,
     ANNUAL_PERIOD_FORMS,
     PRELIMINARY_FORMS,
     SEMI_ANNUAL_FORMS,
     Frequency,
     RowDef,
+    ScaledFacts,
+    source_tag,
 )
 
 
@@ -46,13 +58,242 @@ def _get_unit_data(
     return None
 
 
+_EXPONENTS = tuple(round(log10(s)) for s in FILER_SCALES)
+Periods = dict[tuple[str | None, str], list[dict[str, Any]]]
+
+
+def _restated(val: float, factor: Decimal) -> float:
+    """Return val times factor, as an integer when whole."""
+    out = Decimal(str(val)) * factor
+
+    return int(out) if out == out.to_integral_value() else float(out)
+
+
+def _scaled(val: float, other: float) -> bool:
+    """Return True when val is 1,000 or 1,000,000 times other, or other that many times val."""
+    return any(
+        isclose(val * 10.0**x, other, rel_tol=1e-3)
+        or isclose(val, other * 10.0**x, rel_tol=1e-3)
+        for x in _EXPONENTS
+    )
+
+
+def _filing_factors(
+    groups: dict[tuple[str, str, str], Periods],
+) -> dict[tuple[str, bool], Decimal]:
+    """Return {(accession, shares): factor} for filings whose values are mostly off by a filer scale."""
+    offsets: dict[tuple[str, bool], Counter] = defaultdict(Counter)
+
+    for key, periods in groups.items():
+        for group in periods.values():
+            by_accn = {e.get("accn", ""): abs(e["val"]) for e in group}
+
+            if len(by_accn) < 2:
+                continue
+
+            for accn, val in by_accn.items():
+                other = median(v for a, v in by_accn.items() if a != accn)
+                offset = next(
+                    (
+                        k
+                        for x in _EXPONENTS
+                        for k in (x, -x)
+                        if isclose(val * 10.0**k, other, rel_tol=1e-3)
+                    ),
+                    0,
+                )
+                offsets[(accn, key[2] == "shares")][offset] += 1
+
+    factors: dict[tuple[str, bool], Decimal] = {}
+
+    for filing, counts in offsets.items():
+        offset, count = counts.most_common(1)[0]
+        total = sum(counts.values())
+
+        if offset and total >= SCALED_FILING_MIN and count * 2 > total:
+            factors[filing] = Decimal(10) ** offset
+
+    return factors
+
+
+def _cover_counts(facts: dict[str, Any]) -> dict[str, float]:
+    """Return {accession: cover-page share count} for counts within SCALE_SPAN of those filed within a year."""
+    filed: dict[str, tuple[datetime, float]] = {}
+
+    for entry in (
+        facts.get("dei", {})
+        .get("EntityCommonStockSharesOutstanding", {})
+        .get("units", {})
+        .get("shares", [])
+    ):
+        if entry.get("val", 0) > 0 and entry.get("accn") and entry.get("filed"):
+            count = max(filed.get(entry["accn"], (None, 0))[1], entry["val"])
+            filed[entry["accn"]] = (
+                datetime.strptime(entry["filed"], "%Y-%m-%d"),
+                count,
+            )
+
+    cover: dict[str, float] = {}
+
+    for accn, (date, count) in filed.items():
+        near = [
+            log10(c)
+            for a, (d, c) in filed.items()
+            if a != accn and abs((d - date).days) <= 366
+        ]
+
+        if near and abs(log10(count) - median(near)) < SCALE_SPAN:
+            cover[accn] = count
+
+    return cover
+
+
+def _settle_disputes(periods: Periods, values: dict[int, float]) -> None:
+    """Restate each value that differs from another filing's value for its period by a filer scale."""
+
+    def value(entry: dict[str, Any]) -> float:
+        return values.get(id(entry), entry["val"])
+
+    disputed: dict[tuple[str | None, str], float] = {}
+    own: dict[str, list[float]] = defaultdict(list)
+
+    for period, group in periods.items():
+        vals = [abs(value(e)) for e in group]
+        top = max(vals)
+
+        if any(_scaled(v, top) for v in vals):
+            disputed[period] = top
+
+    for period, group in periods.items():
+        if period not in disputed:
+            for e in group:
+                own[e.get("accn", "")].append(log10(abs(value(e))))
+
+    if not disputed or not own:
+        return
+
+    center = median(v for logs in own.values() for v in logs)
+
+    for period, top in disputed.items():
+        fits = [
+            x for x in (0, *_EXPONENTS) if abs(log10(top) - x - center) < SCALE_SPAN
+        ]
+        right = [
+            e
+            for e in periods[period]
+            if len(fits) == 1
+            and isclose(abs(value(e)) * 10.0 ** fits[0], top, rel_tol=1e-3)
+        ]
+
+        if not right:
+            continue
+
+        chosen = abs(value(min(right, key=lambda e: e.get("filed", ""))))
+
+        for e in periods[period]:
+            logs = own.get(e.get("accn", ""))
+
+            if _scaled(abs(value(e)), chosen) and (
+                logs is None or abs(log10(abs(value(e))) - median(logs)) >= SCALE_SPAN
+            ):
+                values[id(e)] = chosen if value(e) > 0 else -chosen
+
+
+def rescaled_facts(facts: dict[str, Any]) -> ScaledFacts:
+    """Return facts with dollar values and weighted-average share counts at the filer's scale.
+
+    A filing whose dollar values (or share counts) for periods other filings report are,
+    for most of them, 1/1,000 or 1/1,000,000 of those values or 1,000 or 1,000,000 times
+    them has all its dollar values (or share counts) restated. A share count at least
+    SCALE_SPAN orders of magnitude from its filing's cover-page share count takes the scale
+    within SCALE_SPAN of it. A value that differs from another filing's value for the same
+    concept and period by such a factor takes the scale within SCALE_SPAN of the median of
+    the concept's undisputed values, unless it is within SCALE_SPAN of its own filing's
+    undisputed values of the concept; a restated value keeps its sign.
+    """
+    series: dict[tuple[str, str, str], list[dict[str, Any]]] = {
+        (ns, tag, unit): entries
+        for ns, ns_facts in facts.items()
+        if ns != "dei" and isinstance(ns_facts, dict)
+        for tag, tag_data in ns_facts.items()
+        for unit, entries in tag_data.get("units", {}).items()
+        if (len(unit) == 3 and unit.isupper())
+        or (unit == "shares" and f"{ns}:{tag}" in WEIGHTED_SHARE_CONCEPTS)
+    }
+    groups: dict[tuple[str, str, str], Periods] = {}
+
+    for key, entries in series.items():
+        groups[key] = defaultdict(list)
+
+        for entry in entries:
+            if entry.get("val") and entry.get("end") and entry.get("form") in ALL_FORMS:
+                groups[key][(entry.get("start"), entry["end"])].append(entry)
+
+    factors = _filing_factors(groups)
+    values: dict[int, float] = {
+        id(entry): _restated(entry["val"], factors[(entry["accn"], unit == "shares")])
+        for (_, _, unit), entries in series.items()
+        for entry in entries
+        if entry.get("val") and (entry.get("accn"), unit == "shares") in factors
+    }
+    cover = _cover_counts(facts)
+
+    for (_, _, unit), entries in series.items():
+        if unit != "shares":
+            continue
+
+        for entry in entries:
+            count = cover.get(entry.get("accn", ""))
+
+            if not count or not entry.get("val"):
+                continue
+
+            gap = log10(abs(values.get(id(entry), entry["val"]))) - log10(count)
+            fits = [
+                k
+                for x in _EXPONENTS
+                for k in (x, -x)
+                if abs(gap) >= SCALE_SPAN and abs(gap + k) < SCALE_SPAN
+            ]
+
+            if len(fits) == 1:
+                values[id(entry)] = _restated(
+                    values.get(id(entry), entry["val"]), Decimal(10) ** fits[0]
+                )
+
+    for periods in groups.values():
+        _settle_disputes(periods, values)
+
+    result = ScaledFacts(facts)
+
+    for (ns, tag, unit), entries in series.items():
+        if not any(id(e) in values for e in entries):
+            continue
+
+        if result[ns] is facts[ns]:
+            result[ns] = dict(facts[ns])
+
+        if result[ns][tag] is facts[ns][tag]:
+            result[ns][tag] = {
+                **facts[ns][tag],
+                "units": dict(facts[ns][tag]["units"]),
+            }
+
+        result[ns][tag]["units"][unit] = [
+            {**e, "val": values[id(e)]} if id(e) in values else e for e in entries
+        ]
+
+    return result
+
+
 def _get_annual_values(
     facts: dict[str, Any],
     row: RowDef,
     currency: str = "USD",
     include_preliminary: bool = False,
+    ref_filed_map: dict[str, str] | None = None,
 ) -> dict[str, tuple[str, float, str]]:
-    """Return {fy_end_date: (fy_start_date, value, xbrl_source)} for annual periods."""
+    """Return {fy_end_date: (fy_start_date, value, xbrl_source)} for annual periods, resolved at the reference filing when a map is given."""
     if row.period_type != "duration":
         return {}
 
@@ -73,9 +314,12 @@ def _get_annual_values(
             continue
 
         entries_by_date: dict[str, dict[str, tuple[str, float]]] = {}
+        net_side = NET_POSITIONS.get(f"{xbrl_entry['namespace']}:{xbrl_entry['tag']}")
+        magnitude = (
+            f"{xbrl_entry['namespace']}:{xbrl_entry['tag']}" in NONNEGATIVE_CONCEPTS
+        )
 
         for entry in unit_data:
-
             _av_allowed = (
                 ANNUAL_PERIOD_FORMS | PRELIMINARY_FORMS
                 if include_preliminary
@@ -101,7 +345,7 @@ def _get_annual_values(
 
             val = entry.get("val")
 
-            if val is None:
+            if val is None or (val < 0 and net_side == row.balance):
                 continue
 
             filed = entry.get("filed", "")
@@ -110,7 +354,7 @@ def _get_annual_values(
                 entries_by_date[end] = {}
 
             if filed not in entries_by_date[end]:
-                entries_by_date[end][filed] = (start, val)
+                entries_by_date[end][filed] = (start, abs(val) if magnitude else val)
 
         tag_candidates.append(entries_by_date)
 
@@ -121,7 +365,43 @@ def _get_annual_values(
 
     result: dict[str, tuple[str, float, str]] = {}
 
-    for end_date in all_dates:
+    for end_date in sorted(all_dates):
+        if ref_filed_map is not None:
+            ref_filed = ref_filed_map.get(end_date)
+
+            if ref_filed is None:
+                continue
+
+            for i, tc in enumerate(tag_candidates):
+                filings = tc.get(end_date)
+
+                if filings and ref_filed in filings:
+                    start, val = filings[ref_filed]
+                    xbrl_e = row.xbrl_tags[i]
+                    result[end_date] = (
+                        start,
+                        val,
+                        f"{xbrl_e['namespace']}:{xbrl_e['tag']}",
+                    )
+                    break
+            else:
+                for i, tc in enumerate(tag_candidates):
+                    filings = tc.get(end_date)
+
+                    if filings:
+                        before = [f for f in filings if f <= ref_filed]
+                        best = max(before) if before else min(filings)
+                        start, val = filings[best]
+                        xbrl_e = row.xbrl_tags[i]
+                        result[end_date] = (
+                            start,
+                            val,
+                            f"{xbrl_e['namespace']}:{xbrl_e['tag']}(fallback)",
+                        )
+                        break
+
+            continue
+
         ref_filed = None
 
         for tc in tag_candidates:
@@ -133,7 +413,9 @@ def _get_annual_values(
                 if ref_filed is None or earliest < ref_filed:
                     ref_filed = earliest
 
-        if ref_filed is None:
+        if (
+            ref_filed is None
+        ):  # pragma: no cover - all_dates keys guarantee a ref filing
             continue
 
         for i, tc in enumerate(tag_candidates):
@@ -256,6 +538,7 @@ def extract_row_values(  # noqa: PLR0912
     cross_targets: dict[str, float] | None = None,
     statement: str = "",
     include_preliminary: bool = False,
+    annual_ref_map: dict[str, str] | None = None,
 ) -> tuple[dict[str, float], dict[str, str]]:
     """Extract values for a single schema row across all periods."""
     period_type = row.period_type
@@ -296,6 +579,10 @@ def extract_row_values(  # noqa: PLR0912
         entries_by_date: dict[str, dict[str, float]] = {}
         _dur_by_date: dict[str, dict[str, int]] = {}
         ytd_entries_by_date: dict[str, dict[str, tuple[str, float]]] = {}
+        net_side = NET_POSITIONS.get(f"{xbrl_entry['namespace']}:{xbrl_entry['tag']}")
+        magnitude = (
+            f"{xbrl_entry['namespace']}:{xbrl_entry['tag']}" in NONNEGATIVE_CONCEPTS
+        )
 
         for entry in unit_data:
             form = entry.get("form", "")
@@ -331,10 +618,16 @@ def extract_row_values(  # noqa: PLR0912
                         60 <= days <= 135 or 150 <= days <= 200 or 240 <= days <= 310
                     ):
                         continue
+                elif form in ANNUAL_FORMS and row.unit == "monetary":
+                    continue
                 elif not 60 <= days <= 135:
                     if collect_ytd and 136 <= days <= 310:
                         ytd_val = entry.get("val")
-                        if ytd_val is not None:
+                        if ytd_val is not None and magnitude:
+                            ytd_val = abs(ytd_val)
+                        if ytd_val is not None and not (
+                            ytd_val < 0 and net_side == row.balance
+                        ):
                             filed = entry.get("filed", "")
                             if end_date not in ytd_entries_by_date:
                                 ytd_entries_by_date[end_date] = {}
@@ -345,10 +638,16 @@ def extract_row_values(  # noqa: PLR0912
                                 )
                     continue
 
+            elif entry.get("start", end_date) != end_date:
+                continue
+
             val = entry.get("val")
 
-            if val is None:
+            if val is None or (val < 0 and net_side == row.balance):
                 continue
+
+            if magnitude:
+                val = abs(val)
 
             filed = entry.get("filed", "")
 
@@ -367,11 +666,13 @@ def extract_row_values(  # noqa: PLR0912
             ytd_tag_candidates.append(ytd_entries_by_date)
 
     all_dates: set[str] = set()
+    rank_by_date: dict[str, int] = {}
+    n_tags = len(row.xbrl_tags)
 
     for tc in tag_candidates:
         all_dates.update(tc.keys())
 
-    for end_date in all_dates:
+    for end_date in sorted(all_dates):
         if ref_filed_map is not None:
             ref_filed = ref_filed_map.get(end_date)
         else:
@@ -398,6 +699,7 @@ def extract_row_values(  # noqa: PLR0912
                 for val in filings.values():
                     if isclose(val, target_val, rel_tol=1e-5, abs_tol=1.0):
                         values_by_date[end_date] = val
+                        rank_by_date[end_date] = i
                         xbrl_e = row.xbrl_tags[i]
                         sources_by_date[end_date] = (
                             f"{xbrl_e['namespace']}:{xbrl_e['tag']}(identity_lock:{statement})"
@@ -411,62 +713,65 @@ def extract_row_values(  # noqa: PLR0912
         if matched_identity:
             continue
 
-        if frequency == "quarterly" and period_type == "duration":
-            for i, tc in enumerate(tag_candidates):
-                filings = tc.get(end_date)
+        for i, tc in enumerate(tag_candidates):
+            filings = tc.get(end_date)
 
-                if not filings:
-                    continue
-
+            if filings and ref_filed in filings:
+                values_by_date[end_date] = filings[ref_filed]
+                rank_by_date[end_date] = i
                 xbrl_e = row.xbrl_tags[i]
-
-                if ref_filed in filings:
-                    values_by_date[end_date] = filings[ref_filed]
-                    sources_by_date[end_date] = f"{xbrl_e['namespace']}:{xbrl_e['tag']}"
-                else:
-                    before = [f for f in filings if f <= ref_filed]
-                    best = max(before) if before else min(filings)
-                    values_by_date[end_date] = filings[best]
-                    sources_by_date[end_date] = (
-                        f"{xbrl_e['namespace']}:{xbrl_e['tag']}(fallback)"
-                    )
+                sources_by_date[end_date] = f"{xbrl_e['namespace']}:{xbrl_e['tag']}"
                 break
         else:
             for i, tc in enumerate(tag_candidates):
                 filings = tc.get(end_date)
 
-                if filings and ref_filed in filings:
-                    values_by_date[end_date] = filings[ref_filed]
+                if filings:
+                    before = [f for f in filings if f <= ref_filed]
+                    best = max(before) if before else min(filings)
+                    values_by_date[end_date] = filings[best]
+                    rank_by_date[end_date] = n_tags + i
                     xbrl_e = row.xbrl_tags[i]
-                    sources_by_date[end_date] = f"{xbrl_e['namespace']}:{xbrl_e['tag']}"
+                    sources_by_date[end_date] = (
+                        f"{xbrl_e['namespace']}:{xbrl_e['tag']}(fallback)"
+                    )
                     break
-            else:
-                for i, tc in enumerate(tag_candidates):
-                    filings = tc.get(end_date)
 
-                    if filings:
-                        before = [f for f in filings if f <= ref_filed]
-                        best = max(before) if before else min(filings)
-                        values_by_date[end_date] = filings[best]
-                        xbrl_e = row.xbrl_tags[i]
-                        sources_by_date[end_date] = (
-                            f"{xbrl_e['namespace']}:{xbrl_e['tag']}(fallback)"
-                        )
-                        break
+    nine_months: dict[str, tuple[str, float, str]] = {}
+
+    def concept_annual(
+        concept: str | None, fy_end: str
+    ) -> tuple[str, float, str] | None:
+        chain = tuple(
+            x for x in row.xbrl_tags if f"{x['namespace']}:{x['tag']}" == concept
+        )
+
+        return _get_annual_values(
+            facts,
+            replace(row, xbrl_tags=chain),
+            currency,
+            include_preliminary=include_preliminary,
+            ref_filed_map=annual_ref_map,
+        ).get(fy_end)
 
     if frequency == "quarterly" and period_type == "duration":
         annual_vals = _get_annual_values(
-            facts, row, currency, include_preliminary=include_preliminary
+            facts,
+            row,
+            currency,
+            include_preliminary=include_preliminary,
+            ref_filed_map=annual_ref_map,
         )
 
         if collect_ytd and ytd_tag_candidates:
             ytd_resolved: dict[str, tuple[str, float, str]] = {}
+            ytd_rank: dict[str, int] = {}
             ytd_all_dates: set[str] = set()
 
             for ytc in ytd_tag_candidates:
                 ytd_all_dates.update(ytc.keys())
 
-            for end_date in ytd_all_dates:
+            for end_date in sorted(ytd_all_dates):
                 if ref_filed_map is not None:
                     ref = ref_filed_map.get(end_date)
                 else:
@@ -482,26 +787,39 @@ def extract_row_values(  # noqa: PLR0912
                 if ref is None:
                     continue
 
-                for i, ytc in enumerate(ytd_tag_candidates):
-                    ytd_fdata = ytc.get(end_date)
+                chosen = next(
+                    (
+                        i
+                        for i, ytc in enumerate(ytd_tag_candidates)
+                        if ref in ytc.get(end_date, {})
+                    ),
+                    None,
+                )
 
-                    if not ytd_fdata:
-                        continue
-
-                    if ref in ytd_fdata:
-                        start_d, val = ytd_fdata[ref]
-                    else:
-                        before = [f for f in ytd_fdata if f <= ref]
-                        best = max(before) if before else min(ytd_fdata)
-                        start_d, val = ytd_fdata[best]
-
-                    xbrl_e = row.xbrl_tags[i]
-                    ytd_resolved[end_date] = (
-                        start_d,
-                        val,
-                        f"{xbrl_e['namespace']}:{xbrl_e['tag']}",
+                if chosen is None:
+                    chosen = next(
+                        i
+                        for i, ytc in enumerate(ytd_tag_candidates)
+                        if ytc.get(end_date)
                     )
-                    break
+
+                ytd_fdata = ytd_tag_candidates[chosen][end_date]
+
+                if ref in ytd_fdata:
+                    start_d, val = ytd_fdata[ref]
+                    ytd_rank[end_date] = chosen
+                else:
+                    before = [f for f in ytd_fdata if f <= ref]
+                    best = max(before) if before else min(ytd_fdata)
+                    start_d, val = ytd_fdata[best]
+                    ytd_rank[end_date] = n_tags + chosen
+
+                xbrl_e = row.xbrl_tags[chosen]
+                ytd_resolved[end_date] = (
+                    start_d,
+                    val,
+                    f"{xbrl_e['namespace']}:{xbrl_e['tag']}",
+                )
 
             if ytd_resolved:
                 by_fy_start: dict[str, list[tuple[str, float, str]]] = defaultdict(list)
@@ -529,30 +847,59 @@ def extract_row_values(  # noqa: PLR0912
 
                     all_q_dates = sorted(set(fy_q_dates) | set(ytd_map.keys()))
 
-                    prev_cum = 0.0
-                    for d in all_q_dates:
-                        has_standalone = d in values_by_date
-                        has_ytd = d in ytd_map
+                    prev_cum = 0
+                    prev_tag: int | None = None
+                    prev_end = fy_start
+                    contiguous = True
 
-                        if not has_standalone and has_ytd:
+                    for d, v, s in ytd_list:
+                        if (
+                            240
+                            <= (
+                                datetime.strptime(d, "%Y-%m-%d")
+                                - datetime.strptime(fy_start, "%Y-%m-%d")
+                            ).days
+                            <= 310
+                        ):
+                            nine_months[fy_start] = (d, v, s)
+
+                    for d in all_q_dates:
+                        has_ytd = d in ytd_map
+                        adjacent = (
+                            contiguous
+                            and (
+                                datetime.strptime(d, "%Y-%m-%d")
+                                - datetime.strptime(prev_end, "%Y-%m-%d")
+                            ).days
+                            <= 135
+                        )
+                        has_standalone = d in values_by_date and not (
+                            has_ytd
+                            and ytd_rank[d] < rank_by_date.get(d, -1)
+                            and prev_tag == ytd_rank[d] % n_tags
+                        )
+
+                        if not has_standalone and has_ytd and adjacent:
                             ytd_val, ytd_src = ytd_map[d]
                             values_by_date[d] = ytd_val - prev_cum
                             sources_by_date[d] = f"ytd_derived({ytd_src})"
 
                         if has_ytd:
                             prev_cum = ytd_map[d][0]
+                            prev_tag = ytd_rank[d] % n_tags
+                            contiguous = True
                         elif has_standalone:
                             prev_cum += values_by_date[d]
+                            prev_tag = (
+                                rank_by_date[d] % n_tags if d in rank_by_date else -1
+                            )
+                            contiguous = adjacent
 
-        if row.unit == "shares":
-            for fy_end, (fy_start, fy_val, fy_xbrl_src) in annual_vals.items():
-                if fy_end not in values_by_date:
-                    values_by_date[fy_end] = fy_val
-                    sources_by_date[fy_end] = f"Q4: FY[{fy_xbrl_src}]"
+                        prev_end = d
 
-        else:
+        if row.unit == "monetary":
             for fy_end, (fy_start, fy_val, fy_xbrl_src) in annual_vals.items():
-                q_sum = 0.0
+                q_sum = 0
                 q_count = 0
                 for q_end, q_val in values_by_date.items():
                     if fy_start < q_end < fy_end:
@@ -564,11 +911,38 @@ def extract_row_values(  # noqa: PLR0912
                         for q_end in sorted(values_by_date)
                         if fy_start < q_end < fy_end
                     ]
-                    q_labels = "+".join(f"Q{i+1}[{s}]" for i, s in enumerate(q_srcs))
-                    values_by_date[fy_end] = fy_val - q_sum
-                    sources_by_date[fy_end] = (
-                        f"Q4: FY[{fy_xbrl_src}] \u2212 ({q_labels})"
+                    q_tags = {source_tag(src) for src in q_srcs}
+                    base_val, base_src = fy_val, fy_xbrl_src
+
+                    if (
+                        len(q_tags) == 1
+                        and None not in q_tags
+                        and q_tags != {source_tag(fy_xbrl_src)}
+                    ):
+                        own = concept_annual(next(iter(q_tags)), fy_end)
+
+                        if own is not None:
+                            _, base_val, base_src = own
+
+                    q_labels = "+".join(f"Q{i + 1}[{s}]" for i, s in enumerate(q_srcs))
+                    values_by_date[fy_end] = base_val - q_sum
+                    sources_by_date[fy_end] = f"Q4: FY[{base_src}] \u2212 ({q_labels})"
+                elif (
+                    fy_start in nine_months
+                    and fy_start < nine_months[fy_start][0] < fy_end
+                ):
+                    _, nine_val, nine_src = nine_months[fy_start]
+                    base = (
+                        (fy_start, fy_val, fy_xbrl_src)
+                        if source_tag(fy_xbrl_src) == nine_src
+                        else concept_annual(nine_src, fy_end)
                     )
+
+                    if base is not None:
+                        values_by_date[fy_end] = base[1] - nine_val
+                        sources_by_date[fy_end] = (
+                            f"Q4: FY[{base[2]}] \u2212 9M[{nine_src}]"
+                        )
                 elif q_count == 1:
                     interim_date = next(
                         q_end for q_end in values_by_date if fy_start < q_end < fy_end
@@ -656,8 +1030,14 @@ def compute_ref_filings(
                             or 240 <= days <= 310
                         ):
                             continue
-                    elif not 60 <= days <= 135:
+                    elif (
+                        form in ANNUAL_FORMS
+                        and row_def.unit == "monetary"
+                        or not 60 <= days <= 135
+                    ):
                         continue
+                elif entry.get("start", end_date) != end_date:
+                    continue
 
                 filed = entry.get("filed", "")
 
@@ -685,55 +1065,3 @@ def compute_ref_filings(
                     ref_map[end_date] = filed
 
     return ref_map
-
-
-def quarterly_ref_filings(
-    facts: dict[str, Any],
-    base_ref_map: dict[str, str],
-) -> dict[str, str]:
-    """Override quarterly ref filings to prefer 10-K vintage."""
-    fy_filings: dict[str, tuple[str, str]] = {}
-
-    for ns_facts in facts.values():
-        for tag_data in ns_facts.values():
-            for entries in tag_data.get("units", {}).values():
-                for entry in entries:
-                    form = entry.get("form", "")
-
-                    if form not in ANNUAL_PERIOD_FORMS:
-                        continue
-
-                    start = entry.get("start", "")
-                    end = entry.get("end", "")
-                    filed = entry.get("filed", "")
-
-                    if not start or not end or not filed or start == end:
-                        continue
-
-                    try:
-                        days = (
-                            datetime.strptime(end, "%Y-%m-%d")
-                            - datetime.strptime(start, "%Y-%m-%d")
-                        ).days
-                    except (ValueError, TypeError):
-                        continue
-
-                    if 300 <= days <= 400 and (
-                        end not in fy_filings or filed < fy_filings[end][1]
-                    ):
-                        fy_filings[end] = (start, filed)
-
-    if not fy_filings:
-        return base_ref_map
-
-    result = dict(base_ref_map)
-    sorted_fys = sorted(fy_filings.keys())
-
-    for date in base_ref_map:
-        for fy_end in sorted_fys:
-            fy_start, fy_filed = fy_filings[fy_end]
-            if fy_start < date <= fy_end:
-                result[date] = fy_filed
-                break
-
-    return result

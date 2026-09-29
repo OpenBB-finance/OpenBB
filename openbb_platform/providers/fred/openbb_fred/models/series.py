@@ -1,7 +1,5 @@
 """FRED Series Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -14,8 +12,10 @@ from openbb_core.provider.standard_models.fred_series import (
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field
 
+from openbb_fred.utils.query import UseCacheQueryParams
 
-class FredSeriesQueryParams(SeriesQueryParams):
+
+class FredSeriesQueryParams(UseCacheQueryParams, SeriesQueryParams):
     """FRED Series Query Params."""
 
     __alias_dict__ = {
@@ -116,29 +116,31 @@ class FredSeriesFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Extract data."""
-        # pylint: disable=import-outside-toplevel
         import asyncio
 
-        from openbb_core.provider.utils.helpers import get_querystring
-        from openbb_fred.utils.rate_limiter import fred_get
         from pandas import DataFrame
 
+        from openbb_fred.utils.api import build_url
+        from openbb_fred.utils.rate_limiter import fred_get
+
         api_key = credentials.get("fred_api_key") if credentials else ""
-
-        base_url = "https://api.stlouisfed.org/fred/series/observations"
-        metadata_url = "https://api.stlouisfed.org/fred/series"
-
-        querystring = get_querystring(query.model_dump(), ["series_id"])
+        params = query.model_dump(exclude_none=True)
+        params.pop("series_id", None)
+        params.pop("use_cache", None)
         series_ids = query.symbol.split(",") if "," in query.symbol else [query.symbol]
 
         async def fetch_one(series_id: str) -> dict:
-            obs_url = f"{base_url}?series_id={series_id}&{querystring}&file_type=json&api_key={api_key}"
-            meta_url = (
-                f"{metadata_url}?series_id={series_id}&file_type=json&api_key={api_key}"
+            obs_url = build_url(
+                "series/observations", api_key, series_id=series_id, **params
             )
+            meta_url = build_url("series", api_key, series_id=series_id)
 
-            observations_response = await fred_get(obs_url, timeout=5, **kwargs)
-            metadata_response = await fred_get(meta_url, timeout=5, **kwargs)
+            observations_response = await fred_get(
+                obs_url, timeout=5, use_cache=query.use_cache, **kwargs
+            )
+            metadata_response = await fred_get(
+                meta_url, timeout=5, use_cache=query.use_cache, **kwargs
+            )
 
             _metadata = (
                 metadata_response.get("seriess", [{}])[0]
@@ -183,10 +185,10 @@ class FredSeriesFetcher(
             for result in await asyncio.gather(
                 *[fetch_one(sid) for sid in series_ids], return_exceptions=True
             ):
-                if isinstance(result, Exception):
+                if isinstance(result, BaseException):
                     raise result
                 if result:
-                    results.append(result)  # type: ignore
+                    results.append(result)
             return results
         except OpenBBError:
             raise
@@ -199,7 +201,6 @@ class FredSeriesFetcher(
         query: FredSeriesQueryParams, data: list[dict], **kwargs: Any
     ) -> AnnotatedResult[list[FredSeriesData]]:
         """Transform data."""
-        # pylint: disable=import-outside-toplevel
         from pandas import DataFrame  # noqa
         from numpy import nan
 

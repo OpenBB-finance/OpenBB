@@ -1,6 +1,6 @@
 """IMF Port Info Model."""
 
-# pylint: disable=unused-argument
+from __future__ import annotations
 
 from typing import Any
 
@@ -10,20 +10,18 @@ from openbb_core.provider.standard_models.port_info import (
     PortInfoData,
     PortInfoQueryParams,
 )
+from pydantic import ConfigDict, Field, field_validator
+
 from openbb_imf.utils.constants import (
     PORT_CONTINENTS,
     PORT_COUNTRIES_CHOICES,
     PortContinents,
     PortCountries,
 )
-from pydantic import ConfigDict, Field, field_validator
 
 
 class ImfPortInfoQueryParams(PortInfoQueryParams):
-    """IMF Port Info Query Parameters.
-
-    Source: https://portwatch.imf.org/pages/port-monitor
-    """
+    """IMF Port Info Query Parameters."""
 
     __json_schema_extra__ = {
         "continent": {
@@ -68,10 +66,7 @@ class ImfPortInfoQueryParams(PortInfoQueryParams):
 
 
 class ImfPortInfoData(PortInfoData):
-    """IMF Port Info Data.
-
-    Source: https://portwatch.imf.org/pages/port-monitor
-    """
+    """IMF Port Info Data."""
 
     model_config = ConfigDict(
         extra="ignore",
@@ -82,6 +77,9 @@ class ImfPortInfoData(PortInfoData):
                     "w": 25,
                 },
                 "$.description": "General information and statistics about global ports.",
+                "$.category": "IMF Utilities",
+                "$.subCategory": "Port Watch",
+                "$.source": ["UN Global Platform; IMF PortWatch"],
             }
         },
     )
@@ -226,50 +224,70 @@ class ImfPortInfoFetcher(Fetcher[ImfPortInfoQueryParams, list[ImfPortInfoData]])
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list:
-        """Extract the raw data from the IMF Port Watch API."""
-        # pylint: disable=import-outside-toplevel
+        """Extract the raw data from the IMF Port Watch API.
+
+        Filters (``country`` / ``continent``), sort order and ``limit`` are
+        pushed to the ArcGIS query string so the server filters at source and
+        only the requested rows come back.
+        """
+        from urllib.parse import urlencode
+
         from openbb_core.provider.utils.helpers import get_async_requests_session
 
-        all_ports_url = (
-            "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/PortWatch_ports_database/FeatureServer/0/query?"
-            + "where=1%3D1&outFields=*&returnGeometry=false&outSR=&f=json"
+        if query.country:
+            where = f"ISO3='{query.country.upper()}'"
+        elif query.continent:
+            target_continent = next(
+                c["label"] for c in PORT_CONTINENTS if c["value"] == query.continent
+            )
+            where = f"continent='{target_continent}'"
+        else:
+            where = "1=1"
+
+        base_params: dict[str, str] = {
+            "where": where,
+            "outFields": "*",
+            "returnGeometry": "false",
+            "outSR": "",
+            "f": "json",
+            "orderByFields": "vessel_count_total DESC",
+        }
+        if query.limit:
+            base_params["resultRecordCount"] = str(query.limit)
+
+        base_url = (
+            "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/"
+            "PortWatch_ports_database/FeatureServer/0/query"
         )
+
         try:
             output: list = []
-            data: dict = {}
 
             async with await get_async_requests_session() as session:
-                async with await session.get(all_ports_url) as response:
-                    if response.status != 200:
-                        raise OpenBBError(
-                            f"Failed to fetch data: {response.status} -> {response.reason}"
-                        )
+                offset = 0
+                while True:
+                    page_params = {**base_params, "resultOffset": str(offset)}
+                    url = f"{base_url}?{urlencode(page_params)}"
 
-                    data = await response.json()
+                    async with await session.get(url) as response:
+                        if response.status != 200:
+                            raise OpenBBError(
+                                f"Failed to fetch data: {response.status} "
+                                f"-> {response.reason}"
+                            )
+                        data = await response.json()
 
-                if "features" in data:
-                    output.extend(data["features"])
+                    features = data.get("features") or []
+                    output.extend(features)
 
-                    if "exceededTransferLimit" in data:
-                        while data.get("exceededTransferLimit"):
-                            offset = len(output)
-                            url = f"{all_ports_url}&resultOffset={offset}"
+                    if query.limit and len(output) >= query.limit:
+                        output = output[: query.limit]
+                        break
+                    if not data.get("exceededTransferLimit") or not features:
+                        break
+                    offset = len(output)
 
-                            async with await session.get(url) as response:
-                                if response.status != 200:
-                                    raise OpenBBError(
-                                        f"Failed to fetch data: {response.status}"
-                                    )
-
-                                data = await response.json()
-                                if "features" in data:
-                                    output.extend(data["features"])
-
-            return sorted(
-                output,
-                key=lambda x: x["attributes"]["vessel_count_total"],
-                reverse=True,
-            )
+            return output
 
         except Exception as e:
             raise OpenBBError(e) from e
@@ -280,55 +298,5 @@ class ImfPortInfoFetcher(Fetcher[ImfPortInfoQueryParams, list[ImfPortInfoData]])
         data: list,
         **kwargs: Any,
     ) -> list[ImfPortInfoData]:
-        """Transform the raw data into a list of ImfPortInfoData."""
-        results: list[ImfPortInfoData] = []
-
-        if query.country:
-            results.extend(
-                [
-                    ImfPortInfoData(**d["attributes"])
-                    for d in sorted(
-                        data,
-                        key=lambda x: x["attributes"]["vessel_count_total"],
-                        reverse=True,
-                    )
-                    if d["attributes"]["ISO3"] == query.country.upper()
-                ]
-            )
-            if query.limit:
-                results = results[: query.limit]
-        elif query.continent:
-            target_continent: str = ""
-            for continent in PORT_CONTINENTS:
-                if continent["value"] == query.continent:
-                    target_continent = continent["label"]
-                    break
-            if target_continent:
-                results.extend(
-                    [
-                        ImfPortInfoData(**d["attributes"])
-                        for d in sorted(
-                            data,
-                            key=lambda x: x["attributes"]["vessel_count_total"],
-                            reverse=True,
-                        )
-                        if d["attributes"]["continent"] == target_continent
-                    ]
-                )
-                if query.limit:
-                    results = results[: query.limit]
-        else:
-            results.extend(
-                [
-                    ImfPortInfoData(**d["attributes"])
-                    for d in sorted(
-                        data,
-                        key=lambda x: x["attributes"]["vessel_count_total"],
-                        reverse=True,
-                    )
-                ]
-            )
-            if query.limit:
-                results = results[: query.limit]
-
-        return results
+        """Coerce the server-filtered rows into ``ImfPortInfoData``."""
+        return [ImfPortInfoData(**d["attributes"]) for d in data]

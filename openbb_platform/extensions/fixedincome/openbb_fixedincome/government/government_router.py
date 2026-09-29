@@ -13,8 +13,6 @@ from openbb_core.app.router import Router
 
 router = Router(prefix="/government")
 
-# pylint: disable=unused-argument
-
 
 @router.command(
     model="YieldCurve",
@@ -43,7 +41,7 @@ async def yield_curve(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject:  # type: ignore
+) -> OBBject:
     """Get yield curve data by country and date."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -140,7 +138,7 @@ async def svensson_yield_curve(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject:  # type: ignore
+) -> OBBject:
     """Svensson Nominal Yield Curve Data.
 
     Source: https://www.federalreserve.gov/data/nominal-yield-curve.htm

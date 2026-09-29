@@ -108,9 +108,8 @@ The system likewise does not treat apparent direct Q4 values for monetary
 duration items as authoritative. For SEC annual filings, the reliable fact is
 the full-year audited duration total; Q4 is ordinarily recovered by
 subtracting reported interim quarters from that annual total. Shares and
-per-share metrics are explicitly excluded from this additive reconstruction
-because they do not aggregate across quarters in the same way as monetary
-flows.
+per-share metrics are not reconstructed by subtraction: a Q4 the filings do
+not report is derived from the metric's own definition (Section 13.3).
 
 ---
 
@@ -468,40 +467,40 @@ re-exported via `__init__.py`:
 ```python
 @dataclass
 class RowResult:
-    tag: str                        # Standardized tag name
-    label: str                      # Display label
-    description: str                # Long-form schema description
-    parent: str | None              # Parent tag (None = root)
-    sequence: int | float           # Display order (plugs may be fractional)
-    factor: str                     # "+", "-", or "0"
-    balance: str                    # "debit" or "credit"
-    unit: str                       # "monetary", "per_share", or "shares"
-    values: dict[str, float]        # {period_end_date: value}
-    sources: dict[str, str]         # {date: provenance string}
+    tag: str  # Standardized tag name
+    label: str  # Display label
+    description: str  # Long-form schema description
+    parent: str | None  # Parent tag (None = root)
+    sequence: int | float  # Display order (plugs may be fractional)
+    factor: str  # "+", "-", or "0"
+    balance: str  # "debit" or "credit"
+    unit: str  # "monetary", "per_share", or "shares"
+    values: dict[str, float]  # {period_end_date: value}
+    sources: dict[str, str]  # {date: provenance string}
 ```
 
 ```python
 @dataclass
 class StatementResult:
-    statement: str                   # "income_statement", "balance_sheet", "cash_flow"
-    company_type: str                # "industrial", "financial", etc.
-    frequency: str                   # "annual" or "quarterly"
-    currency: str                    # ISO code (e.g., "USD")
-    dates: list[str]                 # Sorted period-end dates
-    rows: list[RowResult]            # Extracted line items
-    fiscal_data: dict[str, dict]     # {date: {fiscal_year, fiscal_period}}
+    statement: str  # "income_statement", "balance_sheet", "cash_flow"
+    company_type: str  # "industrial", "financial", etc.
+    frequency: str  # "annual" or "quarterly"
+    currency: str  # ISO code (e.g., "USD")
+    dates: list[str]  # Sorted period-end dates
+    rows: list[RowResult]  # Extracted line items
+    fiscal_data: dict[str, dict]  # {date: {fiscal_year, fiscal_period}}
     diagnostics: list[ValidationWarning]
 ```
 
 ```python
 @dataclass
 class ValidationWarning:
-    date: str         # Period-end date of the discrepancy
-    tag: str          # Standardized tag whose value disagrees
-    expected: float   # Value computed from the accounting identity
-    actual: float     # Value extracted from XBRL
-    formula: str      # Human-readable formula
-    identity: str     # Full identity description
+    date: str  # Period-end date of the discrepancy
+    tag: str  # Standardized tag whose value disagrees
+    expected: float  # Value computed from the accounting identity
+    actual: float  # Value extracted from XBRL
+    formula: str  # Human-readable formula
+    identity: str  # Full identity description
 ```
 
 The `diagnostics` list on `StatementResult` surfaces any accounting-identity
@@ -524,6 +523,7 @@ The `sources` field tracks exactly how every value was obtained:
 | `us-gaap:NetIncomeLoss(NCI-corrected)` | NI switched from NCI-inclusive to parent-only |
 | `us-gaap:ProfitLoss(disc-adjusted)` | NI adjusted from total to continuing-ops scope |
 | `us-gaap:NetIncomeLoss(identity_lock:cash_flow)` | Direct XBRL value locked to a cross-statement identity target |
+| `us-gaap:TreasuryStockValue(sign-resolved)` | Opposite-sign value of the same tag and period from another filing (Section 9.3) |
 | `reconciled: total_equity_and_nci - noncontrolling_interests` | Equity decomposition override |
 | `Q4: FY − (Q1+Q2+Q3)` | Q4 derived from annual minus first three quarters |
 | `H2: FY − H1` | H2 derived from annual minus first-half semi-annual filing |
@@ -563,10 +563,13 @@ not SIC/NAICS codes. The priority cascade:
 
 ```
 1. INSURANCE  — ≥ 1 insurance IS signal AND (IS + BS signals) ≥ 2
-   (defers to financial when the financial signal count exceeds the
-   insurance income-statement signal count, so a bank carrying an
-   insurance subsidiary — e.g., BMO — classifies as financial)
+   AND insurance measures ≥ 10% of revenue in the latest annual filing
+   (when both insurance and financial qualify, insurance wins only if the
+   insurance signal count (IS + BS) exceeds the financial signal count,
+   so a bank carrying an insurance subsidiary — e.g., BMO — classifies
+   as financial)
 2. FINANCIAL  — ≥ 2 financial signals
+   AND financial measures ≥ 10% of revenue in the latest annual filing
 3. INDUSTRIAL — any COGS or GrossProfit tag present **in recent filings**
 4. DIVERSIFIED — has CostsAndExpenses without COGS
 5. INDUSTRIAL — ultimate fallback
@@ -617,10 +620,53 @@ gross profit figures. With the recency check, EQR correctly classifies as
 diversified.
 
 The recency check is implemented via `_has_recent_data()`, which scans the
-raw Company Facts entries for 10-K/20-F filings with an `end` date within
-the cutoff window. Only industrial signals require this check — insurance
-and financial signals are structural to the company type and do not exhibit
-the same stale-tag pattern.
+raw Company Facts entries for annual filings (10-K, 20-F, 40-F and their
+amendments) with an `end` date within the cutoff window.
+
+#### 4.2.2 Materiality in the Latest Annual Filing
+
+Signal presence alone does not separate insurers and banks from companies
+that carry an insurance or finance subsidiary, or that report ordinary
+interest lines. `InterestIncomeExpenseNet` and
+`InterestAndDividendIncomeOperating` are the non-operating "interest, net"
+and "interest income" lines of many industrial filers (Nucor, Quest
+Diagnostics, Celsius), and IFRS industrials report
+`FinancialAssetsAtAmortisedCost` or `InterestIncomeOnLoansAndReceivables`
+in their notes (AstraZeneca, AB InBev). Captive insurance and warranty
+subsidiaries report premium and claim tags (U-Haul, Deere, insurance
+brokers). Each of these reaches the insurance or financial signal
+thresholds.
+
+The insurance and financial branches therefore also require the business
+to be material in the latest annual filing (10-K, 20-F or 40-F) that
+reports a revenue measure. For that filing's fiscal-year period and unit:
+
+- **Revenue** is the largest of the `measures.revenue` tags
+  (`Revenues`, `RevenueFromContractWithCustomerExcludingAssessedTax`,
+  `SalesRevenueNet`, `RevenuesNetOfInterestExpense`, IFRS `Revenue`).
+- **Insurance share** is the largest `measures.insurance` value (premiums
+  earned, insurance revenue, policyholder benefits and claims, Schedule III
+  premium revenue) divided by revenue. Insurance requires it to be at least
+  `min_insurance_share` (10%).
+- **Financial share** is the largest `measures.financial` value (operating
+  interest income, net interest income, noninterest income, loan interest
+  and fees, investment interest income, fee and commission income) divided
+  by revenue. Financial requires it to be at least `min_financial_share`
+  (10%).
+
+When no revenue measure is reported (common for banks, whose income
+statements have no total-revenue line), the insurance branch keeps its
+signal result, and the financial branch keeps its signal result unless the
+filer reports a COGS or GrossProfit tag in recent filings.
+
+The measure lists and thresholds live in `_meta.json` under `detection`.
+On the validation corpus, checked against SEC SIC codes, the gate moves
+every non-financial filer off the financial template (Nucor, H&R Block,
+Textron, Harley-Davidson, AstraZeneca, Quest Diagnostics, Insulet, CarMax,
+Celsius, RH, AB InBev, PDD) and moves captive-insurance and broker filers
+off the insurance template (U-Haul, Deere, Arthur J. Gallagher, Brown &
+Brown, Credit Acceptance), while every commercial bank, insurance carrier
+and broker-dealer keeps its template.
 
 ---
 
@@ -663,6 +709,160 @@ way are marked with a `(fallback)` suffix — e.g., `us-gaap:Revenues(fallback)`
 This provenance marker is used downstream by the identity enforcement system
 to recognize cross-vintage values (Section 11.4).
 
+**Subset chains.** Some chains hold a concept that a filer can report for
+only part of the line beside a concept for the whole line (`CHAIN_SUBSETS`
+in `_rules.py`):
+
+| Row | Resolved concept | Whole-line concept |
+|-----|------------------|--------------------|
+| `rd_expense` | `ResearchAndDevelopmentExpense` | `ResearchAndDevelopmentExpenseExcludingAcquiredInProcessCost` |
+| `total_revenue`, `operating_revenue` | `Revenues` | `SalesRevenueNet` |
+| `total_cost_of_revenue`, `operating_cost_of_revenue` | `CostOfGoodsAndServicesSold` | `CostOfRevenue` |
+
+`Revenues` precedes the deprecated `SalesRevenueNet` in `total_revenue`
+(Section 5.1, rule 2): where both are reported and differ, `Revenues` is the
+total in 31 corpus filers (GE 117,386M against sales of goods and services
+of 105,809M; Berkshire Hathaway, Oracle, Ford, Costco, Walmart) and a
+partial disclosure in 15 (Flowserve and Alaska Air report `Revenues` of 0,
+Westlake and Teledyne segment amounts), which the subset rule replaces with
+the larger `SalesRevenueNet`.
+
+`CostOfGoodsAndServicesSold` precedes `CostOfRevenue`. Of 76 annual
+filings reporting both for one fiscal year with `CostOfGoodsAndServicesSold`
+the smaller, revenue less `CostOfRevenue` is the filing's gross profit in 41
+(SBA Communications, Block, Zscaler, MercadoLibre, YETI), each concept
+articulates with its own revenue concept in 12 (Labcorp, Sealed Air), and
+without a gross profit `CostOfGoodsAndServicesSold` is a fragment in 23
+(Caterpillar 2024: 33M against cost of goods sold of 40,199M; HEICO, Crown
+Castle, Aramark).
+
+When the row resolves to the resolved concept for a period and the same
+filing's whole-line concept is larger, the resolved concept holds only a
+part of the line in that filing, and the whole-line value is taken.
+
+**Net positions.** A concept that nets an asset against a liability
+(`NET_POSITIONS` in `_rules.py`: `DeferredTaxAssetsLiabilitiesNetNoncurrent`)
+populates the asset row only with a non-negative value; a negative value
+is the net liability, and the chain continues with the next concept. Of
+146 annual negative values, 139 were the tax note's net position of a
+filer that also reports its deferred tax liability line. The depreciation
+and amortization concepts (`DepreciationDepletionAndAmortization`,
+`DepreciationAndAmortization`, `DepreciationAmortizationAndAccretionNet`,
+`AmortizationOfIntangibleAssets`) populate their rows the same way, in
+annual, quarterly and year-to-date values: a negative value is either a
+net amount outside the line (accretion of investment discounts at
+insurers and banks: 141 corpus values of
+`DepreciationAmortizationAndAccretionNet` are negative in every filing
+that reports them) or a sign error another filing corrects, and the period then takes that
+filing's value (Eli Lilly 2008: 1,122.6M from the 2011 10-K, not the
+−1,122.6M of the 2010 10-K). The deferred tax liability concepts
+(`DeferredIncomeTaxLiabilitiesNet`, `DeferredTaxLiabilitiesNoncurrent`,
+`DeferredIncomeTaxLiabilities`, `DeferredTaxLiabilities`) populate the
+liability row only with a non-negative value: a negative value is a net
+deferred tax asset (Costco 2021: −754M) or a sign error another filing
+corrects (Boeing 2013: 15,664M in the 2014 10-K, −15,664M in the 2015
+10-K).
+
+**Magnitudes.** A concept whose amount is never negative
+(`NONNEGATIVE_CONCEPTS` in `_rules.py`: cost of revenue, SG&A, R&D,
+depreciation, interest expense, cash, receivables, inventory, goodwill,
+gross PP&E, accumulated depreciation, payables, borrowings, treasury
+stock, and the payments for interest, dividends, share repurchases and
+capital expenditures) is read as its magnitude, in the annual, quarterly
+and year-to-date values alike. A negative fact of such a concept is the
+filer's sign error, repeated in every filing that reports the period (GE
+and AIG interest paid, Aflac and Caterpillar treasury stock, Hasbro and
+Halliburton interest expense); read as reported, it reverses the line and
+every total derived from it. In the corpus, 181 negative
+`InterestExpense` periods are reported with the same amount and a
+positive sign by another filing.
+
+**Filer scale.** Filers tag values in thousands or millions without the
+scale, or apply the scale twice: a value is then 1/1,000 or 1/1,000,000 of
+the value another filing reports for the same concept and period, or 1,000
+or 1,000,000 times it (`FILER_SCALES`). Before extraction, dollar values
+and weighted-average share counts (`WEIGHTED_SHARE_CONCEPTS`) are restated
+at the filer's scale (`rescaled_facts` in `_extraction.py`):
+
+1. A filing whose dollar values (or share counts) for periods other
+   filings also report are, for most of at least `SCALED_FILING_MIN` (10)
+   of them, off by one such factor has all its dollar values (or share
+   counts) restated, including the periods no other filing reports. Five
+   corpus filings report their dollar values this way: Kimberly-Clark's
+   10-Q of May 7, 2010 and Southwest Airlines' second- and third-quarter
+   2011 10-Qs in millions without the scale (Southwest's June 30, 2011
+   total assets: 18,945), Atmos Energy's first-quarter 2011 10-Q in
+   thousands, and Pinnacle Financial's second-quarter 2011 10-Q a thousand
+   times too large (total assets of 4,831,332,779,000). Six report their
+   share counts this way.
+2. A share count at least `SCALE_SPAN` (one order of magnitude) from its
+   filing's cover-page share count (`dei:EntityCommonStockSharesOutstanding`)
+   takes the scale within `SCALE_SPAN` of it. The cover-page count serves
+   only when it is within `SCALE_SPAN` of the median of the cover-page
+   counts filed within a year of it, since cover-page counts are
+   mis-scaled too (Markel's May 2012 10-Q: 9,652,596,000 shares). Lincoln
+   National's 2011 10-Qs report weighted-average shares a million times too
+   large (304,779,641,000,000 for the third quarter); Nutanix's fiscal 2025
+   10-K reports them in thousands (267,479).
+3. A value that differs from another filing's value for the same concept
+   and period by such a factor takes the scale within `SCALE_SPAN` of the
+   median of the concept's undisputed values, keeping its sign, unless it
+   is within `SCALE_SPAN` of its own filing's undisputed values of the
+   concept: a filing that reports the concept in one scale throughout is
+   not overruled by another filing's scale. McDonald's 2020 10-K reports
+   its 2020 asset impairment charges as 26.3 and its 2022 10-K as
+   26,300,000; the annual statement showed 26.3 and other operating
+   expenses of 11,883,799,973.7.
+
+Where no scale fits, the reference filing's value stands. The corpus has
+951 dollar facts and 3,150 share counts of chain concepts restated. The
+rule replaces taking the larger of two filings' share counts, which put
+Lincoln National's 2010 quarterly weighted-average shares at 313 trillion
+(its 2011 10-Qs report the 2010 comparatives a million times too large),
+Northern Trust's 2008–2010 annual shares above 220 trillion and Berkshire
+Hathaway's 2009–2011 annual shares above 1.5 trillion.
+
+**Component concepts.** A chain holds only concepts with the row's scope. A
+component of the row is not a fallback, because it would present part of
+the line as the whole: land within gross PP&E, unsecured or senior notes
+within long-term debt, other PP&E purchases within capital expenditures.
+`OtherDepreciationAndAmortization` (other depreciation and amortization,
+smaller than the depreciation, depletion and amortization total in 664 of
+729 corpus filings that report both) is not a depreciation and amortization
+concept, interest income net of interest expense (`InterestIncomeExpenseNet`,
+`InterestRevenueExpense`) is not interest income (623 of the 1,047 annual
+interest-income values it supplied were negative, and beside a reported
+interest expense it counts the expense twice: Howmet 2019, −338M against
+interest expense of 338M; the net amount is non-operating income), and the statement-of-equity concepts for shares issued under
+share-based compensation (`StockIssuedDuringPeriodValueShareBasedCompensation`,
+`IncreaseDecreaseThroughSharebasedPaymentTransactions`) are not the
+cash-flow add-back. Alternative concepts for the whole line are fallbacks:
+`TreasuryStockCommonValue` for treasury stock,
+`LongTermDebtAndCapitalLeaseObligationsCurrent` for the current portion of
+long-term debt, the preferred stock carrying amounts including paid-in
+capital, the retail and finished-goods inventory changes retailers
+report as their only inventory change, and the predecessors of the
+temporary-equity concepts: `TemporaryEquityCarryingAmount` (2009–2012; it
+equals the balance-sheet mezzanine, liabilities and equity less
+liabilities and equity including NCI, at 352 of 392 corpus dates) for
+temporary equity, and
+`TemporaryEquityCarryingAmountAttributableToNoncontrollingInterest`
+(2012–2014; 155 of 179) for redeemable noncontrolling interest.
+
+The financial template's total revenue chain holds no revenue from
+contracts with customers (`RevenueFromContractWithCustomerExcludingAssessedTax`,
+`RevenueFromContractWithCustomerIncludingAssessedTax`,
+`RevenueFromContractsWithCustomers`): a bank's ASC 606 revenue is the fee
+income outside interest income, and all 56 annual corpus values it
+supplied were below net interest income plus noninterest income. In the
+insurance template, `investment_securities_interest_income` is net
+investment income (`NetInvestmentIncome` first) and interest and dividend
+income (`total_interest_income`) is its component, not a revenue line
+beside it: 231 annual insurer dates reported both, and the gross amount
+was counted twice against total revenue. Net investment income less
+interest and dividends is other investment income net of investment
+expenses.
+
 ### 5.3 Chain Statistics
 
 The two revenue rows (`operating_revenue` and `total_revenue`) have
@@ -699,6 +899,15 @@ When called via `extract_all`, a single shared reference filing map is
 computed across all rows from IS, BS, and CF, ensuring that net income on
 the income statement matches net income on the cash flow statement.
 
+**Balance-sheet anchor.** For the balance sheet, the reference filing of a
+period end is the latest filing that reports `total_liabilities_and_equity`
+at that date, or `total_assets` when no filing reports
+`total_liabilities_and_equity`. Later filings report the prior-year
+quarter's equity as the opening balance of the statement of equity, and
+total assets in highlights and segment tables, without the balance sheet
+itself; the anchor keeps every balance-sheet line of a period from the
+filing that presents the balance sheet.
+
 **450-day filing cap.** In default (non-PIT) mode, the engine ignores any
 filing whose `filed` date is more than 450 days after the `end` date.
 This prevents stale re-filings (e.g., a late 10-K/A filed years after the
@@ -720,12 +929,19 @@ forms (8-K filings) are excluded by default because they may contain
 unaudited, incomplete, or press-release-grade figures.
 
 **`include_preliminary` parameter.** Both API functions accept
-`include_preliminary=True`, which adds `PRELIMINARY_FORMS` to the set of
-allowed forms during reference filing computation. This is useful when an
-issuer's only source of certain interim data is an 8-K (e.g., preliminary
-earnings releases before the 10-Q is filed). The parameter does not affect
-the extraction pipeline itself — it only widens the filing-date discovery
-window.
+`include_preliminary=True`, which admits 8-K data for periods that the
+regular filings have not reported yet (e.g., an earnings release filed before
+the 10-Q or 10-K). An 8-K fact is eligible only when its period ends after
+every period reported by a 10-K, 10-Q, 20-F, 40-F, or 6-K filed on or before
+the 8-K, and only when the 8-K itself was filed after the period ended. Most
+8-K XBRL in Company Facts is not preliminary: filers furnish recast financial
+statements on 8-K after the 10-K (segment changes, discontinued operations),
+and those facts are never eligible. Outside `pit_mode`, an eligible 8-K fact
+is also superseded once any regular filing reports its period, so periods the
+regular filings cover are extracted exactly as with `include_preliminary=False`;
+the parameter only adds periods (and Q4 of a fiscal year whose 10-K is not
+filed yet). Ineligible 8-K facts are hidden from form admission only; the raw
+lookups used during verification see the same facts in both modes.
 
 ### 6.2 Annual Extraction Pipeline
 
@@ -763,9 +979,23 @@ INPUT: Company Facts JSON, statement name, company type
 
  2. DISCOVER FILING DATES
     Find period-end dates from 10-K/20-F/40-F forms with 300–400 day
-    duration items. Deduplicate using the dominant fiscal-year-end
-    month-day pattern. Drop earliest date if no Assets instant exists
-    (incomplete early XBRL era).
+    duration items filed after the period ended (forward-looking facts,
+    such as future amortization schedules, never define a period).
+    Deduplicate using the fiscal-year-end anchor: the month-day whose
+    ±7-day window holds the most annual facts, ties broken by facts on the
+    exact month-day. Footnote-only 12-month periods (e.g., a calendar-year
+    401(k) plan cost at a June filer) therefore never outvote the
+    statements. Anchored ends no more than 10 days apart are one fiscal
+    year: the end carrying the most annual facts is kept, the anchor
+    month-day breaking ties (a 52/53-week year end with a stray calendar
+    or mis-dated end, e.g. Hologic 2012-09-29 against 2012-09-24). A
+    fiscal-year end that the interim series folds in is present in all
+    three quarterly statements when any of them reports it, so the
+    Q4 column is rebuilt from the annual statements (Section 13.2).
+    For quarterly dates, interim ends within 7 days of a
+    fiscal-year end or of a better-supported interim end are collapsed
+    (a quarter re-dated in a later filing is one period). Drop earliest
+    date if no Assets instant exists (incomplete early XBRL era).
 
  3. COMPUTE REFERENCE FILINGS
     Per period-end, find the LATEST filing date across ALL rows in
@@ -774,7 +1004,12 @@ INPUT: Company Facts JSON, statement name, company type
  4. EXTRACT EACH ROW
     Walk the xbrl_tags chain. First tag with data matching (end_date,
     ref_filing_date) wins. Fallback to nearest alternative filing if no
-    match. Record provenance in sources dict.
+    match. Record provenance in sources dict. Instant rows take only
+    instant facts. Quarterly monetary values come from interim filings
+    (10-Q, 6-K): a three-month or year-to-date value in a 10-K, 20-F or
+    40-F is the unaudited quarterly-data note, not a statement (GE's 2016
+    10-K reports a Q1 2015 gross profit from sales of 5,514M), and it
+    neither sets a quarter's reference filing nor fills a quarter.
 
  5. PRE-IMPUTATION CORRECTIONS (Section 9)
     Fix scope mismatches in pretax income and net income before imputation.
@@ -814,8 +1049,8 @@ INPUT: Company Facts JSON, statement name, company type
     Remove dates where every row is NULL.
 
 15. BUILD FISCAL METADATA
-    Compute fiscal_year/fiscal_period per date from SEC fy/fp fields.
-    Apply monotonicity correction for early XBRL era duplicates.
+    Fiscal year of each fiscal-year end from the original annual filing
+    (Section 6.4); interim periods numbered by position in that year.
 
 OUTPUT: StatementResult with dates, rows, currency, fiscal_data, diagnostics
 ```
@@ -830,6 +1065,8 @@ When extracting all three statements via `extract_all`:
    are retained.
 4. For quarterly: trim incomplete leading fiscal years.
 5. Apply the aligned date set and unified fiscal metadata to all.
+6. For quarterly: rebuild every fiscal-year-end column from the annual
+   statements (Section 13.2).
 
 ### 6.4 The Fiscal Year Field (`fy`) and Comparative-Data Duplication
 
@@ -837,10 +1074,28 @@ The SEC `fy` field carries the fiscal year of the *filing*, not the *period*.
 When Apple files a FY 2024 10-K, prior-year comparatives also carry
 `fy=2024`. The same `end` date can appear with multiple `fy` values.
 
-**Resolution:** `get_fiscal_meta()` selects the earliest `filed` date per
-`end` date to get the original filing's `fy`. A monotonicity correction
-walks backwards and decrements any `fy` ≥ the next date's — fixing the
-first-ever XBRL filing case where historical comparatives all share one `fy`.
+**Annual periods.** For each fiscal-year end, `get_fiscal_meta()` takes the
+earliest annual filing (10-K, 20-F, 40-F and amendments) that reports a
+300–400-day duration ending on that date *after* the date — facts filed
+before their period ends are forward-looking disclosures from an older
+filing and never label a period. The filing's `fy` is reduced by the whole
+years between the filing's own fiscal-year end (the latest such period end
+in the same accession) and the date, so comparatives presented in a filer's
+first XBRL 10-K are labelled with their own years. SEC `fy` values are
+occasionally wrong (e.g., one 10-K tagged a year early); a label that breaks
+strict ordering with a neighbour and departs from the filer's usual offset
+between `fy` and the calendar year 45 days before the fiscal-year end is
+replaced by that offset. Dates reported by no annual filing (6-K or 8-K
+annual periods) take the same offset. There is no backward cascade: one
+anomalous filing cannot relabel every earlier year.
+
+**Interim periods.** Quarterly labels are positional within the annual
+labels. An interim end belongs to the fiscal year of the next fiscal-year
+end; its quarter number is the elapsed time since the prior fiscal-year end
+in ~91-day steps. A fiscal-year end is `Q4` (or `H2`, Section 13.4), including
+a preliminary one not yet reported on a 10-K. Interim labels therefore always
+agree with the annual labels, and quarters known only as comparatives in the
+next year's 10-Q are not labelled with the next year.
 
 ---
 
@@ -860,6 +1115,28 @@ The target is computed as: `target = Σ(source × sign)`.
 A rule fires only when:
 1. The target has no extracted value for the period
 2. ALL source tags have values for the period
+3. No source is an `imputed-rollup` value of an ancestor of the target. A
+   rolled-up parent is the sum of its present children, so deriving one of
+   its missing descendants from it only restates the parent's other
+   children.
+4. No source is a reported `costs_and_expenses` that equals revenue less
+   pretax income for the period (`SINGLE_STEP`): that total is the costs of
+   a single-step income statement, operating and non-operating together,
+   not cost of revenue plus operating expenses. Pretax income is the
+   reported value or, without one, the first rule for it whose inputs have
+   values and include neither revenue nor costs (net income from
+   continuing operations plus income tax expense; Range Resources
+   2016–2019 reports no pretax income, and its operating income derived
+   from single-step costs equalled pretax income). 33 corpus filers (GE,
+   Chevron, Bristol-Myers Squibb, Ross Stores, ConocoPhillips) had an
+   operating income equal to pretax income derived from it (GE 2015:
+   8,186M, with 26,018M of non-operating costs in other operating
+   expenses).
+
+A derivation of exactly zero on a balance or gross line (`NONNEGATIVE_LINES`)
+holds no value: two totals of one scope cancel, and the line does not exist
+(Omnicom, Alnylam, Paychex: cost of revenue as costs and expenses less
+reported operating expenses of the same amount; 339 corpus values).
 
 The **first applicable rule wins** for each target tag — if an identity is
 satisfied by one rule, later rules for the same target are skipped.
@@ -877,7 +1154,8 @@ satisfied by one rule, later rules for the same target are skipped.
 | `total_cost_of_revenue` | = | `total_revenue` − `total_gross_profit` | GP inverse |
 | `total_operating_expenses` | = | `total_gross_profit` − `total_operating_income` | OpInc identity |
 | `total_operating_income` | = | `total_gross_profit` − `total_operating_expenses` | OpInc inverse |
-| `total_other_income` | = | `total_pretax_income` − `total_operating_income` | Below-the-line residual |
+| `total_other_income` | = | `total_pretax_income` − `total_operating_income` − `equity_method_investments` | Below-the-line residual |
+| `total_other_income` | = | `total_pretax_income` − `total_operating_income` | Below-the-line residual (no equity-method income) |
 
 The C&E-based rules fire first because when `costs_and_expenses` is directly
 reported (as many filers do), they can derive COGS even before GP is known.
@@ -892,6 +1170,7 @@ the C&E decomposition path available in the first imputation pass.
 | `total_operating_income` | = | `total_pretax_income` − `total_other_income` |
 | `total_operating_income` | = | `total_revenue` − `costs_and_expenses` |
 | `costs_and_expenses` | = | `total_revenue` − `total_operating_income` |
+| `total_other_income` | = | `total_pretax_income` − `total_operating_income` − `equity_method_investments` |
 | `total_other_income` | = | `total_pretax_income` − `total_operating_income` |
 
 No gross profit decomposition — diversified companies report aggregate
@@ -904,6 +1183,7 @@ costs rather than the COGS + SG&A split.
 | `total_interest_income` | = | `net_interest_income` + `total_interest_expense` |
 | `net_interest_income_after_provision` | = | `net_interest_income` − `provision_for_credit_losses` |
 | `total_revenue` | = | `net_interest_income` + `total_noninterest_income` |
+| `total_revenue` | = | `total_pretax_income` + `total_noninterest_expense` + `provision_for_credit_losses` |
 | `total_revenue` | = | `total_pretax_income` + `total_noninterest_expense` |
 
 Rule 3 handles cases like American Express pre-2015 where no direct revenue
@@ -939,10 +1219,12 @@ pretax + opex.
 
 | Target | = | Formula | Notes |
 |--------|---|---------|-------|
+| `gross_ppe` | = | `net_ppe` + `accumulated_depreciation` | |
+| `accumulated_depreciation` | = | `gross_ppe` − `net_ppe` | |
 | `total_noncurrent_assets` | = | `total_assets` − `total_current_assets` | |
 | `total_noncurrent_liabilities` | = | `total_liabilities` − `total_current_liabilities` | |
 | `total_liabilities_and_equity` | = | `total_assets` | Accounting equation |
-| `total_liabilities` | = | `L&E` − `E_nci` − `redeemable_nci` | With mezzanine (tried first) |
+| `total_liabilities` | = | `L&E` − `E_nci` − `temporary_equity` | With mezzanine (tried first) |
 | `total_liabilities` | = | `L&E` − `E_nci` | Without mezzanine (fallback) |
 | `total_equity_and_nci` | = | `total_equity` + `NCI` | |
 | `total_equity` | = | `E_nci` − `NCI` | |
@@ -950,19 +1232,25 @@ pretax + opex.
 | `total_common_equity` | = | `total_equity` | When no preferred stock |
 | `E_nci` | = | `total_equity` | When NCI not separately reported |
 | `redeemable_nci` | = | `redeemable_nci_common` + `redeemable_nci_preferred` + `redeemable_nci_other` | Direct mezzanine breakdown |
-| `redeemable_nci` | = | `L&E` − `L` − `E_nci` | Mezzanine from identity (e.g., BlackRock) |
+
+Mezzanine equity from the balance-sheet identity (`L&E` − `L` − `E_nci`,
+e.g., BlackRock) is held in `temporary_equity`, the remainder line of
+`total_liabilities_and_equity` (Section 8.2), when total liabilities is
+reported or the filer reports a temporary-equity line at the date.
+Otherwise the difference belongs to total liabilities (`EVIDENCED_LINES`).
 
 ### 7.4 Cash Flow Rules
 
 | Target | = | Formula |
 |--------|---|---------|
 | `net_change_in_cash` | = | `operating` + `investing` + `financing` + `fx_effect` |
-| `effect_of_exchange_rate_changes` | = | `net_change` − `operating` − `investing` − `financing` |
 | `depreciation_and_amortization` | = | `depreciation_expense` + `amortization_expense` |
 
-The FX derivation is common after companies switch to the
-`...IncludingExchangeRateEffect` net-change tag, which embeds FX in the
-total and eliminates the separate FX line item.
+The FX line is never derived as a residual of the net change: a remainder of
+`net_change_in_cash` is held in its other line, `other_net_changes_in_cash`
+(Section 8.2). Filers that switched to the
+`...IncludingDisposalGroupAndDiscontinuedOperations` FX element are covered
+by its entry in the FX chain.
 
 ### 7.5 Multi-Pass Cascading
 
@@ -981,24 +1269,265 @@ Early exit occurs on the first pass with no new derivations.
 ### 8.1 The Parent-Child Tree
 
 Schema rows define a tree structure via the `parent` and `factor` fields.
-For example, `total_operating_expenses` is the parent node; `selling_general_and_admin`,
-`depreciation_and_amortization`, `research_and_development`, etc. are its
-children with `factor="+"`.
+For example, `total_operating_expenses` is the parent node; `sga_expense`,
+`rd_expense`, `restructuring_charge`, etc. are its children with
+`factor="+"`.
 
-### 8.2 Bottom-Up Rollup and Plug Generation
+Rows with `factor="0"` are memo rows: they are extracted and reported but
+never enter a parent's arithmetic. They are rows whose value is an
+alternative measure of, or is contained in, other lines of the same
+statement:
 
-Before imputation, the engine performs hierarchical articulation:
+| Row | Why it is not a component |
+|-----|---------------------------|
+| `income_before_equity_method` | An alternative pretax measure, not a part of pretax income |
+| `comprehensive_income` (root) | Net income plus OCI, not a part of net income |
+| `other_adjustments_to_consolidated_net_income` | Tagged with OCI, not a part of net income |
+| `depreciation_and_amortization` (income statement) | Sourced from cash flow tags and usually contained in cost of revenue or SG&A |
+| `net_interest_income_after_provision` (financial) | Net interest income less provision; both already enter revenue and pretax |
+| `policy_acquisition_costs` (financial, insurance) | A deferred acquisition cost balance, not a period expense |
+| `total_operating_expenses` (diversified) | The same cost total as `costs_and_expenses` |
+| `net_cash_from_discontinued_operations` (cash flow) | The sum of the per-activity discontinued-operations lines, which the operating, investing, and financing totals contain |
 
-1. **Process deepest nodes first** (strict bottom-up traversal).
-2. **If a parent has no value**: impute it as the sum of its children
-   (weighted by each child's factor). Source: `"imputed-rollup"`.
-3. **If a parent has a value that differs from the children sum beyond
-   tolerance**: generate a synthetic `other_{parent_tag}` plug row equal to
-   the difference. Source: `"imputed-plug"`.
+In the cash flow statement, `net_cash_from_{operating,investing,financing}_activities`
+are totals including discontinued operations: continuing plus
+discontinued. Their chains hold no `...ContinuingOperations` tags; when a
+filer reports only the continuing amount, the total is the rollup of its
+continuing and discontinued children.
 
-This ensures the statement tree always articulates exactly. The plug rows
-represent line items the company reports but may not tag individually in XBRL
-(e.g., "other operating expenses" that aren't separately itemized).
+In the diversified template `costs_and_expenses` is the cost total that
+operating income subtracts (Section 4.1): `total_operating_income =
+total_revenue - costs_and_expenses`.
+
+Mezzanine equity is one line of `total_liabilities_and_equity`:
+`temporary_equity` = `temporary_equity_parent` (redeemable preferred and
+other temporary equity of the parent) + `redeemable_noncontrolling_interest`.
+The redeemable NCI chain holds only redeemable NCI concepts; the
+temporary-equity totals and the parent's redeemable preferred stock belong
+to `temporary_equity` and `temporary_equity_parent`.
+
+### 8.2 Bottom-Up Rollup and Reconciliation
+
+Before imputation, the engine articulates the tree, deepest parents first,
+and repeats the passes until no value changes:
+
+1. **Parent without a value**: rolled up as the sum of its children,
+   weighted by each child's factor for the period. Source:
+   `"imputed-rollup"`. A parent in the rollup-requirements table is rolled
+   up only when one of its required children has a value, so gross profit
+   is never revenue alone and operating income is never gross profit alone.
+   A requirement applies to a company type only when a required line is a
+   child of the parent in that type's tree; an empty requirement means the
+   parent is never rolled up. Operating income and total operating
+   expenses are never rolled up: 146 corpus filers present no operating
+   income (IBM, Eli Lilly, Nucor, Exxon Mobil), and the sum of the operating
+   lines a filer tags (PACCAR's selling, general and administrative and
+   research and development expenses) is not its operating expenses. Both
+   are reported or derived from reported totals (Section 7.2). A parent
+   whose present children are all zero is not rolled up (PACCAR 2012: an
+   impairment of 0 is not a total operating expense of 0). A parent whose
+   present children are all contra lines (factor `"-"`) and whose remainder
+   line has no value is not rolled up: accumulated depreciation without
+   gross PP&E is not a negative net PP&E (105 corpus values). Total
+   liabilities and equity is never equity alone (24 corpus values), and
+   pretax income is never the non-operating items alone (Range Resources
+   2021: −226,385,000 of non-operating items against pretax income of
+   402,035,000, net income plus income tax).
+
+   **Unclassified balance sheets.** At a date where neither total of a
+   classified section is reported (`CLASSIFIED_SECTIONS`: current and
+   noncurrent assets; current and noncurrent liabilities), the balance
+   sheet does not classify that side, and neither total is rolled up or
+   holds a remainder. REITs, homebuilders and lessors (BXP, Toll Brothers,
+   Air Lease, Western Union) present unclassified balance sheets; 408 corpus
+   filers had 9,375 current and noncurrent totals derived at dates with no
+   classified total reported.
+
+   **Dates without a balance sheet.** At a date where none of total assets,
+   total liabilities and total liabilities and equity is reported
+   (`BALANCE_TOTALS`), no balance sheet is reported: the date's values are
+   cash from the cash flow statement and equity from the statement of
+   equity, and none of the three totals is rolled up. Howmet 2009-03-31
+   reports cash of 1,131M and equity of 14,937M; a total assets rolled up
+   from cash alone less that equity gave total liabilities of −13,806M
+   (94 quarterly corpus values).
+2. **Parent with a value**: the children articulate when the explicit
+   children plus the parent's remainder line equal the parent within
+   tolerance. Otherwise the difference is resolved in this order:
+   1. **Contained component.** When the difference between the parent
+      and its components (explicit components plus the remainder line's
+      reported or rolled-up amount) is exactly one leaf component, or
+      exactly one pair of leaf components of the same sign (or two
+      presentation-dependent lines, such as discontinued operating and
+      investing cash flows a continuing-only net change excludes), counted
+      twice, that component is contained: an amortization or
+      restructuring amount the filer includes in SG&A, a note-level
+      breakdown of accrued liabilities, a right-of-use asset included in
+      the filer's other assets, equity-method income a pretax total
+      excludes, a discontinued-operations line a continuing-only total
+      excludes. The component keeps its value and its factor is `"0"` for
+      that period. Candidates are leaf rows among the parent's components
+      and inside its rolled-up components. Only a reported parent total,
+      or one derived in a single step from reported totals (non-operating
+      income as reported pretax less reported operating income), is
+      evidence of a component counted twice; a rolled-up total, or one
+      derived from another derived total, is not. A contained component must fit
+      inside another present line of the parent or inside the remainder
+      line's reported amount (same sign, at least as large; net-income
+      lines hold no component), unless its inclusion depends on the
+      filer's presentation (`SCOPE_VARIANTS`: equity-method income,
+      interest income and expense, which filers net, report in operating
+      income or show gross, non-operating gains, excise and sales taxes,
+      discontinued operations, preferred dividends, the exchange-rate
+      effect). A net line can hold a larger gross amount (interest expense
+      within interest expense, net), so these lines need no room. An amount no present line can hold is a face
+      line with no standardized row, such as an early debt repayment equal
+      to a debt issuance, and stays in the remainder line. A single match
+      whose amount equals the remainder line's own amount is left to the
+      remainder line, unless the remainder line is rolled up from that match
+      alone.
+
+      Two components carrying one amount are one component counted twice:
+      the same fact extracted by two rows (a tag shared by two chains), or,
+      in a balance-sheet section whose explicit components exceed the
+      total, two of its own lines with the same balance whose removal
+      leaves the remainder non-negative (Eli Lilly tags its prepaid
+      expenses line with two concepts). The later row in schema order is contained.
+      When a section repeats several amounts this way and containing the
+      later row of every pair leaves the remainder non-negative, all of them
+      are contained (Unum 2009: the claims reserve and the future policy
+      benefits reserve both carry 39,478M, and one policyholder-funds fact
+      populates two rows).
+
+      In a balance-sheet section whose explicit components exceed the
+      total, lines that filers present within another balance-sheet line
+      among the section's own lines
+      (`CONTAINABLE`: employee-related liabilities, taxes payable,
+      dividends payable, accrued interest, lease assets and liabilities,
+      deferred revenue, deferred taxes, asset retirement obligations,
+      prepaid expenses, restricted cash, the current portion of long-term
+      debt) and that fit inside another present line are contained as the
+      group whose removal leaves the smallest non-negative remainder. The
+      remainder here is the section total less its explicit lines; a
+      tagged amount on the remainder line is replaced by it, since a
+      filer's note-level "other" amount can itself sit inside another
+      line (Analog Devices tags other current liabilities from the note
+      to accrued liabilities).
+      Procter & Gamble and AutoZone report employee-related liabilities and
+      taxes payable in the note to accrued liabilities, beside a small
+      income taxes payable line the remainder holds.
+   2. **Presented memo row.** Exactly one promotable memo row whose value
+      equals the difference is a component for that period (factor
+      `"+"`): the combined discontinued-operations cash line when the filer
+      presents it apart from continuing activity totals, income-statement
+      D&A when it is its own expense line, and diversified
+      `total_operating_expenses` when it is the reported cost total.
+   3. **Component outside a reported section total.** When the
+      difference equals exactly one leaf component of a reported section
+      total below the parent, and that section total is smaller than its
+      own explicit components, the filer's section total excludes the
+      component: utilities present long-term debt under capitalization
+      and report noncurrent liabilities as deferred credits only. The
+      section total is corrected to include the component
+      (`"corrected: <section> + <component>"`), its own remainder line
+      holds the rest of the section, and the parent articulates without a
+      remainder.
+   4. **Incomplete rolled-up component.** When the parent's remainder line
+      is a section total (a remainder line not named `other_*`), exactly
+      one incomplete rolled-up component absorbs the difference and holds
+      it in its own remainder line. A rollup is incomplete when it sums two
+      or more children and its own remainder line has no reported value.
+      Example: total liabilities rolled up from partial noncurrent lines
+      absorbs the difference to total liabilities and equity.
+   5. **Remainder line.** Otherwise the remainder line holds the parent
+      minus every explicit component, replacing a tagged value that does
+      not articulate, so a filer's own tagged amount for that line is inside
+      it. When the schema has no remainder line under the parent, a
+      synthetic `other_{base}` row is created, where `base` is the parent
+      tag without its `total_` prefix. Source: `"imputed-plug"`. A parent
+      whose only present child is its remainder line keeps the tagged value.
+      A remainder line that is a balance or a gross amount
+      (`NONNEGATIVE_LINES`: temporary equity, the noncurrent totals, cost of
+      revenue, costs and expenses, interest expense, benefits and expenses,
+      and the other depreciation and amortization, current and noncurrent
+      asset and liability, net PP&E and temporary equity lines) never holds a
+      negative remainder: when the components exceed the parent, no
+      remainder is held (GE 2020: depreciation of 4,636M from an earlier
+      filing and amortization of 1,336M against depreciation and
+      amortization of 2,128M).
+      No synthetic row is created when every present component is a
+      contra line (accumulated depreciation without gross PP&E): the
+      difference is the missing gross amount, not an "other" line.
+      `total_equity` is reconciled with `total_common_equity` even when
+      no preferred equity is reported (`WHOLE_REMAINDERS`), so the
+      difference to the named common-equity components is held in
+      `other_equity`. Pretax income is reconciled only when operating
+      income has a value (`REMAINDER_REQUIRES`): without it the difference
+      is the operating result and the non-operating items together, not
+      non-operating income (GE 2021: pretax income of −3,683M less
+      equity-method income replaced the reported non-operating income of
+      2,823M; 475 annual and 1,531 quarterly corpus values).
+      A remainder line in `EVIDENCED_LINES` (`temporary_equity`) holds a
+      positive remainder only when it is reported or rolled up from its
+      own lines at the date. Without that evidence the named sibling
+      (`total_liabilities`) holds it: a rolled-up or remainder total
+      liabilities absorbs it, and an absent one is set to the remainder.
+      CVS 2008–2015 and PACCAR 2008–2012 report no mezzanine; their
+      liabilities are partial rollups or untagged, and the difference to
+      total liabilities and equity is liabilities (e.g. CVS 2010: 24,469M,
+      not 15,292M of liabilities plus 9,177M of temporary equity).
+3. **Recompute until stable**: rollups and remainders from earlier passes
+   are cleared and recomputed on every pass. A remainder whose parent ends
+   without a value is removed. A period factor, once set,
+   holds for the statement and appears in that period's output `factor`;
+   a row that receives a remainder counts in its parent, so its period
+   factor is cleared. A remainder line is never a contained component.
+
+Remainder lines (`OTHER_LINES` in `_rules.py`; the first one that is a
+child of the parent in the company type's tree):
+
+| Parent | Remainder line |
+|--------|----------------|
+| `total_gross_profit` | `total_cost_of_revenue` |
+| `total_operating_income` | `total_operating_expenses` (industrial), `costs_and_expenses` (diversified) |
+| `total_pretax_income` | `total_other_income` (industrial, diversified), `benefits_costs_expenses` (insurance) |
+| `total_other_income` | `other_income` |
+| `costs_and_expenses` (diversified) | `other_operating_expenses` |
+| `total_noninterest_expense` (financial) | `other_operating_expenses` |
+| `benefits_costs_expenses` (insurance) | `other_operating_expenses` |
+| `net_interest_income` (financial) | `total_interest_expense` |
+| `net_income_to_common` | `other_adjustments_to_net_income_to_common` |
+| `comprehensive_income` | `comprehensive_income_nci` |
+| `total_assets` | `total_noncurrent_assets` (industrial) |
+| `total_liabilities` | `total_noncurrent_liabilities` (industrial), `other_long_term_liabilities` (financial, insurance) |
+| `total_liabilities_and_equity` | `temporary_equity` |
+| `total_equity` | `total_common_equity` |
+| `redeemable_noncontrolling_interest` | `redeemable_nci_other` |
+| `total_common_equity` | `other_equity` |
+| `net_cash_from_continuing_operating_activities` | `other_operating_activities` |
+| `increase_decrease_in_operating_capital` | `change_in_other_operating_assets_and_liabilities` |
+| `net_cash_from_continuing_investing_activities` | `other_investing_activities_net` |
+| `net_cash_from_continuing_financing_activities` | `other_financing_activities_net` |
+| `net_change_in_cash` | `other_net_changes_in_cash` |
+
+Rollup requirements (`ROLLUP_REQUIRES`):
+
+| Parent | Rolled up only with |
+|--------|---------------------|
+| `total_gross_profit` | `total_cost_of_revenue` |
+| `total_operating_income`, `total_operating_expenses` | never |
+| `net_interest_income` | `total_interest_expense` |
+| `total_assets` | `total_noncurrent_assets` |
+| `total_liabilities` | `total_noncurrent_liabilities` |
+| `total_liabilities_and_equity` | `total_liabilities` |
+| `total_pretax_income` | `total_operating_income` |
+| `comprehensive_income_parent`, `comprehensive_income_nci` | never (their tree holds only the OCI line) |
+
+This ensures the statement tree always articulates exactly, and every
+difference is held at the lowest level that can hold it: a
+balance-sheet total's difference is in its noncurrent section, a pretax
+difference in the non-operating section, a mezzanine difference in
+temporary equity.
 
 ### 8.3 Large Plug Diagnostics
 
@@ -1028,12 +1557,31 @@ Articulation runs **twice**: once before imputation (to seed the rules) and
 once after identity enforcement (to propagate any overrides back through
 the tree).
 
+### 8.5 Cash Flow Totals and Net Change
+
+- `net_cash_from_{operating,investing,financing}_activities` are rolled up
+  from their continuing and discontinued children, instead of taking their
+  own value, when that value is a fallback from another filing than the
+  period's reference filing.
+- A `net_change_in_cash` with no reported value is the difference of
+  consecutive period-end `cash_at_end_of_period` values when both come from
+  the same tag, before articulation; the activity totals then articulate
+  against it.
+- `cash_at_beginning_of_period` is the prior period's
+  `cash_at_end_of_period`. When beginning cash plus net change does not
+  equal ending cash, and the activity totals (with FX) explain the change in
+  cash within tolerance or ten times better than the reported net change,
+  the reported net change is corrected to ending minus beginning cash
+  (`"corrected: cash_at_end_of_period - cash_at_beginning_of_period"`) and
+  the statement is re-articulated for that period. Otherwise beginning cash
+  is `"identity-enforced"` from ending cash minus net change.
+
 ---
 
 ## 9. Pre-Imputation Corrections
 
-Before imputation rules fire, two targeted corrections fix known scope
-mismatches that would otherwise propagate errors through the derivation chain.
+Before imputation rules fire, three targeted corrections fix known scope
+and sign errors that would otherwise propagate through the derivation chain.
 
 ### 9.1 Equity-Method Pretax Reclassification
 
@@ -1080,6 +1628,32 @@ the pretax identity holds as-is.
 This guard resolved 7 identity failures (IBM, Merck, Honeywell) where
 the original unguarded adjustment broke the NI/tax scope alignment.
 
+### 9.3 Cross-Filing Sign Resolution
+
+**Problem:** A filer occasionally tags a fact with the opposite sign in one
+filing: the same tag, period and magnitude is `v` in one filing and `−v` in
+another (GE treasury stock at 2013-12-31: 42,561M in the 2014, 2016 and
+2017 10-Ks, −42,561M in the 2015 10-K; GE Q1 2016 discontinued operations:
+−308M in four filings, 308M in the Q1 2017 10-Q). When the wrong-signed
+filing is the reference filing, the row carries the sign error and the
+parent's remainder twice its magnitude (GE 2013 other equity −85,122M).
+
+**Resolution:** Before the first articulation pass, a child whose value is
+a direct fact (`ns:Tag`, `ns:Tag(fallback)` or `ns:Tag(identity_lock:…)`)
+is a candidate when another filing reports the same tag, period end and
+period length with the opposite sign (magnitudes within 0.5%). For a parent
+whose children do not articulate to it, when exactly one candidate child's
+opposite-signed fact makes the parent articulate within tolerance, that
+child takes it. A parent without a value is derived by the first
+imputation rule whose inputs all have values (total common equity as total
+equity less preferred equity). The value is sourced `ns:Tag(sign-resolved)`.
+
+**Guards:** The alternative is a reported fact of the same tag and period;
+a parent that articulates is never changed; a quarter from which a later
+quarter of the same fiscal year is derived by year-to-date subtraction is
+never changed. A sign error every filing repeats has no opposite-signed
+fact and is not changed.
+
 ---
 
 ## 10. Post-Imputation Corrections
@@ -1099,7 +1673,9 @@ Some companies (e.g., Verizon 2015–2017) report a *narrow*
 engine overrides: `COGS = C&E − OpEx`.
 
 Guards prevent false positives:
-- Only triggers on direct XBRL values (not already-imputed ones)
+- Only triggers when COGS and OpEx are direct XBRL values (not imputed or
+  rolled up); a rolled-up OpEx may be missing lines, and that gap belongs
+  to OpEx (Section 10.3), not to COGS
 - C&E must approximately equal `Revenue − OpInc` (within tolerance)
 - Reported COGS + OpEx must be < 95% of C&E (confirming COGS is partial)
 
@@ -1113,8 +1689,23 @@ corrects: `OpEx = GP − OpInc`. Source: `"corrected: total_gross_profit - total
 ### 10.4 Equity Reconciliation
 
 When the XBRL decomposition of equity into parent + NCI is inconsistent with
-the reported total, but the top-level BS identity (`L + E_nci + R_nci = L&E`)
-holds within tolerance, the engine overrides:
+the reported total, the balance-sheet identity decides which figure is
+wrong.
+
+- When `L + total_equity + NCI + temporary_equity = L&E` holds with
+  mezzanine equity that is reported or rolled up (not the remainder of
+  `total_liabilities_and_equity`) and a `total_liabilities` that is not
+  imputed from `E_nci`, the equity-including-NCI total is corrected:
+  `total_equity_and_nci = total_equity + noncontrolling_interests`
+  (`"corrected: total_equity + noncontrolling_interests"`). Unum tags the
+  AOCI amount as `StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest`.
+- Otherwise, when `L + E_nci + temporary_equity = L&E` holds only because
+  `total_liabilities` was derived from `E_nci`, and `E_nci` is a fallback
+  from another filing while `total_equity` comes from the period's
+  reference filing, the reference figure is kept and `E_nci` is corrected
+  the same way.
+- Otherwise, when `L + E_nci + temporary_equity = L&E` holds, the parent
+  equity is overridden:
 
 ```
 total_equity = total_equity_and_nci − noncontrolling_interests
@@ -1180,7 +1771,7 @@ Honeywell, J&J, Merck).
 | `total_assets = total_liabilities_and_equity` | Fundamental equation |
 | `E_nci = total_equity + NCI` | Equity decomposition |
 | `total_equity = E_nci − NCI` | Equity inverse |
-| `total_liabilities = L&E − E_nci − redeemable_nci` | With mezzanine |
+| `total_liabilities = L&E − E_nci − temporary_equity` | With mezzanine |
 | `total_liabilities = L&E − E_nci` | Without mezzanine (fallback) |
 
 **Excluded:** Noncurrent derivations and common equity identity
@@ -1224,7 +1815,8 @@ components, floored at **$100,000** and capped at **$1,000,000**:
 
 ```python
 _TOLERANCE_FLOOR = 100_000
-_TOLERANCE_CAP   = 1_000_000
+_TOLERANCE_CAP = 1_000_000
+
 
 def _tolerance(*values):
     scale = max(abs(v) for v in values if v is not None)
@@ -1397,6 +1989,12 @@ strings, ensuring edge cases where only the activity totals are derived
 
 ---
 
+### 11.11 Statement Identities
+
+`enforce_identities` makes each `IDENTITIES` relation hold at every date on final values; `identity_diagnostics` reports the relations that do not. Terms are explicit (`total_assets = total_liabilities_and_equity`, `cash_at_end_of_period = cash_at_beginning_of_period + net_change_in_cash`) or the target's `+`/`-` children, excluding synthetic plugs; a children-based relation applies when the first child is present. Tolerance is `_tolerance(target, sum of terms)`.
+
+The changed term is chosen by evidence: a derived value, the target's remainder line, another filing's value that satisfies the relation, a term whose reported lines equal its implied value, a term with its own synthetic plug, the only term not confirmed by its lines or another holding relation. A fiscal-year-end difference within the rounding inherited from the annual and interim columns, or any difference the evidence does not resolve (target's `ROLLUP_REQUIRES` lines present), solves the line the verify rules align (`total_pretax_income` for the tax bridge). At fiscal-year ends, a Q4 value is derived when it is not `FY − ΣQ`, its FY was restated after the quarters' last filing, or a filed three-month fact contradicts it; terms of a still-failing relation built on a restated FY are removed.
+
 ## 12. Scope Mismatch Resolution
 
 Scope mismatches are the most challenging class of XBRL data quality issues.
@@ -1442,6 +2040,18 @@ the alternative tag.
 
 ---
 
+### 12.5 Reversed Income Tax Sign
+
+Some filers tag income tax expense with the sign of a benefit (Hilton
+2018 and 2019: `IncomeTaxExpenseBenefit` = −309 with pretax income 1,078
+and net income 769). When reported pretax income and reported continuing
+net income satisfy `pretax = net income + tax` only with the tax sign
+reversed, the tax sign is corrected
+(`"corrected: total_pretax_income - net_income_continuing"`) instead of
+restating pretax income. Imputed current or deferred tax is re-derived
+from the corrected total. The correction is not made when reported current
+and deferred tax both sum to the tagged sign.
+
 ## 13. Quarterly Methodology & Q4 Reconstruction
 
 ### 13.1 Why Quarterly Reconstruction Is Necessary
@@ -1468,28 +2078,187 @@ the completed fiscal year and uses them to reconstruct Q4 for monetary flow
 items. Shares and per-share metrics are handled differently because they do
 not aggregate additively across quarters.
 
-### 13.2 10-K Vintage Override
+Interim quarters reported only as year-to-date values are de-cumulated
+(`Q2 = YTD_Q2 − Q1`, `Q3 = YTD_Q3 − YTD_Q2`). A quarter keeps the concept of
+the preceding quarter: a year-to-date value of that concept takes
+precedence over a three-month value of a later concept in the chain, also
+when the preceding quarter was matched to the other statement's value
+(`identity_lock`). PACCAR tags its property, plant and equipment D&A as
+`DepreciationDepletionAndAmortization` (year-to-date in its 10-Qs) and its
+operating-lease equipment D&A as `DepreciationAndAmortization`; its cash
+flow Q2 2025 took the second (207.3M) after a first quarter of the first
+(99.7M), and Q4 was −6.6M.
 
-For quarters within a completed fiscal year, the reference filing date is
-overridden to the 10-K filing date for IS and CF only. This ensures restated
-comparatives match the annual total. BS is excluded — the 10-K only contains
-FY-end instant snapshots, not Q1/Q2/Q3 snapshots.
+A year-to-date value is a quarter's value only as the difference to a
+cumulative value that runs from the fiscal-year start to the quarter
+before it. A year-to-date value longer than one quarter with no such
+preceding value is no quarter's value: the filings report no amount for
+the quarters it spans, and treating the earlier quarters as zero puts
+several quarters in one column. PACCAR reports 2024 deferred income taxes
+only for nine months (−67.8M, the comparative of its 2025 third-quarter
+10-Q) and for the year (−79.3M); its 2024 10-Qs carry no deferred tax
+line, so Q1–Q3 2024 have no value, where the nine months stood in Q3 and
+made its current tax 352.0M. Likewise a nine-month value less a
+first-quarter value with no second quarter between them is two quarters,
+not the third. The value still anchors the next quarter
+(`Q3 = YTD_Q3 − YTD_Q2`), and Q4 is the annual value less the nine-month
+value when fewer than three quarters are known
+(`Q4: FY[ns:Tag] − 9M[ns:Tag]`). Before this rule, 16,616 corpus quarter
+values were a first year-to-date value standing in for a quarter
+(acquisitions, debt issued and repaid, share repurchases, interest and
+taxes paid, deferred taxes). The annual value is that of the nine-month
+value's concept, and without it Q4 has no value: CSX reports its 2025
+goodwill impairment (164M) for the third quarter, the nine months and the
+year, and asset impairment charges, first in the chain, for the year only
+(26M); the first concept's annual value less the nine months put −138M in
+Q4, where the filings give 0.
 
-This override is a methodological choice in favor of internal consistency.
-Without it, a quarterly series can mix preliminary interim values from 10-Qs
-with the audited annual total from the 10-K, producing a Q4 residual that
-absorbs filing-vintage differences rather than economic activity. By forcing
-the completed fiscal year's duration series to reference the 10-K vintage,
-the system ensures that Q1 + Q2 + Q3 + Q4 ties back to the audited annual
-figure whenever a complete monetary series exists.
+### 13.2 Shared Reference Vintage
+
+Quarterly and annual series follow the same vintage rule: the reference
+filing for every period is the latest filing within 450 days of the period
+end that reports it (Section 6.1). For a completed fiscal year that is the
+following year's 10-K for the annual total and the following year's 10-Q
+comparatives for Q1–Q3, so restatements such as discontinued-operations
+recasts and full-retrospective ASC 606 adoption are reflected in both series.
+
+Interim balance-sheet instants are reported only by the interim filing itself
+and resolve to it as `(fallback)` when a later filing is the period's
+reference.
+
+**Fiscal-year-end reconciliation.** The quarterly pipeline derives a working
+Q4 during extraction (fiscal-year value at the annual reference filing minus
+the extracted quarters) so that Q4 imputation and verification have inputs.
+After the annual and quarterly statements are both complete and aligned,
+every fiscal-year-end column of the quarterly statements is rebuilt from the
+annual statements:
+
+1. Every instant row takes the annual value at the fiscal-year end, and
+   instant values the annual statement does not report are removed, so the
+   Q4 balance sheet is the annual balance sheet. Period factors are copied
+   with the values, so a line held as a memo in the annual statement is a
+   memo in Q4. `cash_at_beginning_of_period` is excluded: its Q4 value is
+   the Q3 ending cash (item 7). The quarterly Q4 column then keeps only
+   the instant lines the fiscal year's interim quarters report, so it
+   carries the same lines as Q1–Q3: the condensed 10-Q balance sheet
+   omits lines the 10-K reports (gross PP&E, accumulated depreciation,
+   deferred taxes, lease balances; 48,011 corpus values were present only
+   in Q4), and some filers' 10-Qs report no ending cash on the cash flow
+   statement. The annual statement keeps them. A remainder line whose
+   total the interim quarters do not report holds no Q4 value either
+   (Edwards Lifesciences reports no current or noncurrent liability totals
+   in its 10-Qs). A fiscal year with no interim values keeps the annual
+   values.
+2. For a fiscal year with exactly three interim quarters, every monetary
+   duration row with an annual value and all three quarters takes
+   `Q4 = FY − (Q1 + Q2 + Q3)`, where FY is the value the annual statement
+   reports (after its imputation, corrections, and identity enforcement)
+   and Q1–Q3 are the quarterly statement's final values. A row with
+   fewer quarters keeps `Q4 = FY − 9M` from extraction when the filings
+   report the nine-month value (Section 13.1).
+3. `H2` values (FY minus a single interim value) are cleared: in a
+   three-quarter fiscal year they would hold Q3 and Q4 together.
+4. A row whose quarters are all rollups takes no `FY − (Q1 + Q2 + Q3)`
+   when the annual statement reports a component the quarters lack
+   (amortization only in the 10-Qs, depreciation and amortization in the
+   10-K), reports every component the quarters roll up (a remainder line
+   is not reported, and has no Q4 of its own), or rolls the row up itself: its Q4 rolls up from the Q4 values of the same components,
+   so Q4 never holds full-year amounts of components the 10-Qs do not
+   report, and the quarters of the line share one composition. A tagged
+   annual total of another scope than its components' sum no longer
+   lands in Q4 (Intel 2015: depreciation and amortization Q4 of −6,300M,
+   the annual `DepreciationAndAmortization` less three quarters rolled up
+   from depreciation and amortization).
+5. A row whose quarters were read from another concept than its annual
+   value keeps the Q4 derived at extraction from that concept's own
+   fiscal-year value (U-Haul reports `Revenues` in its 10-Qs and the
+   narrower `RevenueFromContractWithCustomerExcludingAssessedTax` in its
+   10-K; Q4 is total revenues minus the quarters, 1,189M for FY2023, not
+   −3,930M). When the annual filing does not report that concept, Q4 is
+   the annual value minus the quarters: the two concepts are alternatives
+   for one line (`IncomeTaxesPaidNet` in the 10-K, `IncomeTaxesPaid` in the
+   10-Qs).
+6. Balancing plugs in the Q4 column are cleared and re-articulated. A
+   remainder line of the fiscal year (a plug in Q4 or in every interim
+   quarter) whose Q4 recomputes to zero keeps that zero, so the line has no
+   Q4 gap. A line none of the fiscal year's interim quarters report holds
+   no derived Q4 value (remainder, imputed, rolled-up or subtracted): when
+   the quarters articulate and the annual statement does not (income tax
+   against its current and deferred parts, net income against continuing
+   operations), the whole annual difference would land in a line only Q4
+   has (3,540 corpus values). Q4 then differs from its lines by the
+   annual-only difference, as the annual statement does. A three-month
+   Q4 value a filing reports is kept: an impairment or a dividend in the
+   fourth quarter alone (General Mills fiscal 2026: a goodwill and
+   intangible impairment of 1,750M; Mattel's annual dividend).
+7. Q4 beginning cash is `cash_at_end_of_period − net_change_in_cash` when
+   the Q3 ending cash does not roll to the annual ending cash with the Q4
+   net change (the 10-Q cash measure differs from the 10-K's), the same
+   identity enforcement as an annual period (Section 11.2).
+8. A Q4 of the opposite sign of the fiscal year's three quarters, which
+   share one sign, marks quarters and an annual value from different
+   filing bases. For a row whose quarters and annual value are one concept,
+   that concept's facts give the Q4 on the quarters' basis:
+   - FY less the latest nine-month value filed on or before the annual
+     value, when the quarters do not sum to it: a quarter was reported
+     before a recast the later quarters carry (Howmet 2019 revenue: Q1
+     3,541M before the Arconic separation, Q2 and Q3 after; Q4 1,734M,
+     not −55M; Armstrong World 2015, Baxter 2023).
+   - Otherwise the fiscal year as filed before a restatement the quarters
+     predate, when a nine-month value filed before that annual filing
+     equals the quarters (IBM 2020 cost of revenue before the Kyndryl
+     recast: Q4 9,844M, not −3,888M; Armstrong World 2016 revenue: 297.9M,
+     not −99.3M).
+
+   When one row's Q4 is repaired this way, every row of the fiscal year
+   whose facts give such a Q4 takes it, and a row derived by an imputation
+   formula (`imputed: total_revenue - total_cost_of_revenue`) recomputes Q4
+   from the rows it is derived from, so the Q4 column articulates. The
+   source names the nine-month value (`Q4: FY[ns:Tag] − 9M[ns:Tag]`) or
+   the annual filing (`Q4: FY[ns:Tag(filed 2021-02-23)] − (…)`). The
+   quarters of such a fiscal year sum to the quarters' basis, not to the
+   restated annual value.
+9. Share counts, dividends per share and EPS the filings do not report for
+   Q4 (the 10-K's quarterly data reports EPS for about 5,700 of 13,682
+   corpus fiscal years) are derived when the fiscal year's three quarters
+   report them (Section 13.3).
+
+`Q1 + Q2 + Q3 + Q4 = FY` therefore holds by construction for every reported,
+rolled-up, imputed, corrected, or identity-enforced row whose quarters and
+annual value are the same measure and filing basis (item 8), and every linear identity that holds for
+the annual period and for Q1–Q3 holds for Q4, except against a remainder line
+only the annual statement holds (item 6). Where the 10-Qs report a
+narrower rollup or another concept than the 10-K (items 4 and 5), the
+quarters sum to the quarterly measure's own fiscal-year value. A row
+the annual statement reports but the interim filings do not (for example an
+amortization line disclosed only in the 10-K) has no Q4 value; the Q4 plug of
+its parent absorbs it, and the parent's remainder line then sums over the
+four quarters to its annual value plus the 10-K-only line. A line first
+reported mid-year as a three-month value, with no nine-month value, has
+no Q4 value either. Semi-annual fiscal years keep the `H2`
+value from extraction.
 
 ### 13.3 Reconstruction Rules by Unit Type
 
 | Unit Type | Derivation |
 |-----------|-----------|
 | `monetary` | `Q4 = FY − (Q1 + Q2 + Q3)`. Always override any direct Q4 value. |
-| `shares` | No derivation. Weighted-average shares don't sum across quarters. |
-| `per_share` | No derivation. Affected by stock-split vintage mismatches. |
+| `shares` | A reported Q4 value; otherwise `Q4 = (FY × FY days − Σ Qi × Qi days) ÷ Q4 days`, the day-weighted average, to the whole share; a loss quarter's diluted shares are its basic shares. |
+| `per_share` | A reported Q4 value; otherwise dividends per share `Q4 = FY − (Q1 + Q2 + Q3)` in decimal arithmetic, and EPS `Q4 = net_income_to_common ÷ Q4 shares`, to the cent. |
+
+Where the filer reports the Q4 value, the derivations reproduce it: basic
+weighted shares within 1% in 971 of 1,021 corpus fiscal years (median
+error 0.016%), EPS within 1.5 cents in 922 of 976 (basic) and 932 of 1,000
+(diluted), dividends per share exactly in 1,745 of 2,009. Diluted shares
+are the day-weighted average in a profitable quarter (748 of 894 within
+1%) and the basic shares in a loss quarter (140 of 148, against 63 of 146
+day-weighted): the annual diluted count is computed at the year's average
+price and without antidilutive shares, so it is not the day-weighted
+average of the quarterly counts. A derived share count at or below zero,
+or a negative dividend, is not taken. The days are the quarters' own
+spans from the prior fiscal-year end, so 52/53-week years and a 16-week
+first quarter weigh correctly. EPS is derived only for a fiscal year
+whose interim quarters report EPS.
 
 The override for monetary items is intentional. If a direct-looking Q4 fact
 appears in Company Facts, it is not treated as more authoritative than the
@@ -1498,9 +2267,9 @@ is the primary fact; Q4 is the residual required to produce a complete,
 internally consistent quarterly series.
 
 This rule should be interpreted narrowly. It applies only to **monetary
-duration items**. Shares outstanding, weighted-average shares, earnings per
-share, and similar metrics are excluded because additive quarter subtraction
-is not economically meaningful for those unit types.
+duration items**. Weighted-average shares and earnings per share are not
+additive across quarters; their Q4 is derived from their definitions above,
+and dividends per share, which are additive, by subtraction.
 
 ### 13.4 Semi-Annual Reporters
 
@@ -1535,6 +2304,10 @@ and that interim date lies near the fiscal midpoint (within ±45 days of half
 the fiscal-year length). This midpoint guard prevents a quarterly filer with
 only one available interim fact, such as an isolated Q3, from being
 misclassified as a semi-annual reporter and producing a false `H2` residual.
+A row of a quarterly filer with a single mid-year value passes the guard at
+extraction; the fiscal-year-end reconciliation clears that value in every
+fiscal year with three interim quarters (Section 13.2), because it holds Q3
+and Q4 together (AMD FY2016 impairment: Q4 −33M against an annual 0).
 
 The annual total remains authoritative here for the same reason it does in
 Q4 reconstruction: the audited full-year duration fact is the anchor, and the
@@ -1557,11 +2330,11 @@ the correct filing vintage and the correct annual anchor.
 
 ### 13.5 Point-in-Time Considerations
 
-**Design trade-off:** The 10-K vintage override (Section 13.2) optimizes for
-*accounting consistency* — ensuring `Q1 + Q2 + Q3 + Q4 = FY` — rather than
-*point-in-time (PIT) fidelity*. For a completed fiscal year, the Q1 record
-reflects the restated value from the annual audit, not the preliminary value
-that was publicly available at the end of Q1.
+**Design trade-off:** The shared reference vintage (Section 13.2) optimizes
+for *accounting consistency* — restated values with `Q1 + Q2 + Q3 + Q4 = FY` —
+rather than *point-in-time (PIT) fidelity*. For a completed fiscal year, the
+Q1 record reflects the value as re-presented in the following year's 10-Q,
+not the value that was publicly available at the end of Q1.
 
 **Who is affected:** Quantitative finance practitioners who backtest trading
 strategies against this data. Using the default (consistency) mode, a
@@ -1573,34 +2346,34 @@ of the decision — a form of look-ahead bias.
 Both `resolve_company_facts()` and `get_standardized_financials()` accept a
 `pit_mode=True` parameter. When enabled:
 
-1. The 10-K vintage override is **skipped** for quarterly IS and CF data.
+1. Every reference filing is the **earliest** filing that reports the period,
+   for annual and quarterly data alike: annual values are the original 10-K
+   values, and balance-sheet instants come from the filing that first
+   reported them.
 2. Each quarter's values reflect the filing vintage of the original 10-Q.
-3. Q4 values may not reconcile to the FY total (because Q1–Q3 values may
-   differ between the preliminary 10-Q and the restated 10-K comparatives).
+3. Q4 is the original 10-K annual total minus the original quarters, so
+   `Q1 + Q2 + Q3 + Q4 = FY` holds against the point-in-time annual series.
 
 **When to use each mode:**
 
 | Use Case | Mode | Rationale |
 |----------|------|-----------|
-| Financial analysis, screening, dashboards | Default (`pit_mode=False`) | Internal consistency matters more than temporal accuracy |
-| Backtesting, event studies, PIT databases | `pit_mode=True` | Temporal accuracy matters more than arithmetic consistency |
+| Financial analysis, screening, dashboards | Default (`pit_mode=False`) | Restated values, comparable across years |
+| Backtesting, event studies, PIT databases | `pit_mode=True` | Values as first reported |
 | Academic research | Depends on methodology | PIT for asset pricing; default for accounting studies |
 
-The `pit_mode` flag does not affect annual data (annual values are inherently
-per-filing) or balance sheet data (BS values are always per-filing because
-instant snapshots are only available from the filing that reported them).
-
-Additionally, `pit_mode` changes filing-date selection from *latest* to
-*earliest* in `compute_ref_filings`, and disables the 450-day filing cap
-(Section 6.1), since the goal is to capture the original filing regardless
-of when later amendments were filed.
+`pit_mode` changes filing-date selection from *latest* to *earliest* in
+`compute_ref_filings`, and disables the 450-day filing cap (Section 6.1),
+since the goal is to capture the original filing regardless of when later
+amendments were filed.
 
 **Combining with `include_preliminary`.** When both `pit_mode=True` and
-`include_preliminary=True` are set, 8-K filings are eligible for reference
-filing selection. This can capture preliminary earnings data released before
-the 10-Q is filed — the most temporally accurate view available. Use this
-combination for PIT databases that need to reflect what the market saw at the
-earliest possible date.
+`include_preliminary=True` are set, an 8-K that reported a period before any
+regular filing did (Section 6.1) remains eligible after the 10-Q or 10-K is
+filed, and as the earliest filing it becomes that period's reference. This
+captures preliminary earnings data as released — the most temporally accurate
+view available. Use this combination for PIT databases that need to reflect
+what the market saw at the earliest possible date.
 
 ---
 
@@ -1627,7 +2400,7 @@ API:
 | `balance` | `str` | `"debit"` or `"credit"` |
 | `unit` | `str` | `"monetary"`, `"per_share"`, or `"shares"` |
 | `currency` | `str` | ISO currency code |
-| `value` | `float` | The extracted, derived, or enforced value |
+| `value` | `int \| float` | The extracted, derived, or enforced value; an integer when its inputs are integers |
 | `source` | `str` | Full provenance string |
 | `frequency` | `str` | `"annual"` or `"quarterly"` |
 
@@ -1909,8 +2682,7 @@ The calculation linkbase is fetched with:
 ```python
 # Calculation relationships for the income statement, year 2026
 calc_url = mgr.client.find_file(
-    "https://xbrl.fasb.org/us-gaap/2026/stm/",
-    "soi", "cal", "2026"
+    "https://xbrl.fasb.org/us-gaap/2026/stm/", "soi", "cal", "2026"
 )
 content = mgr.client.fetch_file(calc_url)
 calculations = mgr.parser.parse_calculation(content, TaxonomyStyle.FASB_STANDARD)
@@ -2163,10 +2935,12 @@ quarterly frequencies. The validation checklist:
    These usually indicate a tag chain that crosses scope boundaries.
 
 **Quarterly consistency:**
-8. `Q1 + Q2 + Q3 + Q4 = FY` for all monetary duration items. Failures
-   here indicate the quarterly reference filing date override (Section 13.2)
-   isn't working correctly for that company's fiscal calendar. For
-   semi-annual IFRS filers, the analogous check is `H1 + H2 = FY`.
+8. `Q1 + Q2 + Q3 + Q4 = FY` for all monetary duration items, and the Q4
+   balance sheet equals the annual balance sheet. Both hold by construction
+   after fiscal-year-end reconciliation (Section 13.2); a failure means the
+   reconciliation did not run for that fiscal year (it needs exactly three
+   interim quarters). For semi-annual IFRS filers, the analogous check is
+   `H1 + H2 = FY`.
 
 **Edge cases:**
 9. Non-December fiscal year-ends (Apple September, Walmart January,
@@ -2240,10 +3014,11 @@ CI = CI (Parent) + CI (NCI)
 
 ```
 Total Assets = Total Liabilities and Equity
-L&E = Total Liabilities + Total Equity (incl NCI) + Redeemable NCI
-Total Liabilities = L&E − E_nci − Redeemable NCI
+L&E = Total Liabilities + Total Equity (incl NCI) + Temporary Equity
+Total Liabilities = L&E − E_nci − Temporary Equity
 Total Liabilities = L&E − E_nci                       [no mezzanine]
-Redeemable NCI = L&E − L − E_nci
+Temporary Equity = L&E − L − E_nci
+Temporary Equity = Temporary Equity (Parent) + Redeemable NCI
 Total Assets = Current Assets + Noncurrent Assets
 Total Liabilities = Current Liabilities + Noncurrent Liabilities
 E_nci = Total Equity + Noncontrolling Interests
@@ -2459,7 +3234,7 @@ reporters with quarterly reporters that have missing interim data.
 | `statement_schema/__init__.py` | ~33 | Package init: re-exports all public names for backward-compatible imports |
 | `statement_schema/_types.py` | ~88 | Dataclasses (`RowDef`, `RowResult`, `StatementResult`, `ValidationWarning`), enums, constants |
 | `statement_schema/_detection.py` | ~420 | Company-type classification, filing-date discovery, fiscal metadata, currency detection |
-| `statement_schema/_extraction.py` | ~730 | Row-level XBRL value extraction, reference filing computation |
+| `statement_schema/_extraction.py` | ~730 | Filer-scale restatement of facts, row-level XBRL value extraction, reference filing computation |
 | `statement_schema/_rules.py` | ~310 | Pure data: imputation and verification rule dictionaries |
 | `statement_schema/_imputation.py` | ~1,800 | Multi-pass imputation, hierarchical articulation, identity enforcement, scope corrections |
 | `statement_schema/_schema.py` | ~660 | `StatementSchema` class: pipeline orchestration, `extract`, `extract_all`, `merge_facts` |

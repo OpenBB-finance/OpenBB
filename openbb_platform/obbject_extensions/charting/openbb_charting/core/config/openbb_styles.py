@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING, Any, Optional
 if TYPE_CHECKING:
     from pandas import DataFrame
 
-# Vsurf Plot Settings
 PLT_3DMESH_COLORSCALE = "Jet"
 PLT_3DMESH_SCENE = dict(
     xaxis=dict(
@@ -30,7 +29,6 @@ PLT_3DMESH_SCENE = dict(
 )
 PLT_3DMESH_HOVERLABEL = dict(bgcolor="gold")
 
-# Chart Plots Settings
 PLT_STYLE_TEMPLATE = "plotly_dark"
 PLT_STYLE_INCREASING = "#00ACFF"
 PLT_STYLE_DECREASING = "#e4003a"
@@ -59,15 +57,15 @@ PLT_COLORWAY = [
 ]
 
 PLT_FIB_COLORWAY: list[Any] = [
-    "rgb(195, 50, 69)",  # 0
-    "rgb(130, 38, 96)",  # 0.235
-    "rgb(120, 70, 200)",  # 0.382
-    "rgb(0, 93, 168)",  # 0.5
-    "rgb(173, 0, 95)",  # 0.618
-    "rgb(235, 184, 0)",  # 0.65 Golden Pocket
-    "rgb(162, 115, 206)",  # 1
-    dict(family="Arial Black", size=10),  # Fib's Text
-    dict(color="rgb(0, 230, 195)", width=0.9, dash="dash"),  # Fib Trendline
+    "rgb(195, 50, 69)",
+    "rgb(130, 38, 96)",
+    "rgb(120, 70, 200)",
+    "rgb(0, 93, 168)",
+    "rgb(173, 0, 95)",
+    "rgb(235, 184, 0)",
+    "rgb(162, 115, 206)",
+    dict(family="Arial Black", size=10),
+    dict(color="rgb(0, 230, 195)", width=0.9, dash="dash"),
 ]
 
 PLT_INCREASING_COLORWAY = [
@@ -131,7 +129,6 @@ PLT_DECREASING_COLORWAY_RED = [
 ]
 
 
-# Table Plots Settings
 PLT_TBL_HEADER = dict(
     fill_color="rgb(30, 30, 30)",
     font_color="white",
@@ -158,8 +155,6 @@ def de_increasing_color_list(
 ) -> list[str]:
     """Make a colorlist for decrease/increase if value in df_column.
 
-    Contains "{contains_str}" default is "-"
-
     Parameters
     ----------
     df_column : DataFrame, optional
@@ -179,7 +174,7 @@ def de_increasing_color_list(
         List of colors for df_column
     """
     if df_column is None:
-        colorlist = [decreasing_color if contains_str in text else increasing_color]  # type: ignore
+        colorlist = [decreasing_color if contains_str in text else increasing_color]  # ty: ignore[unsupported-operator]
     else:
         colorlist = [
             decreasing_color if boolv else increasing_color
@@ -189,7 +184,6 @@ def de_increasing_color_list(
 
 
 PLOTLY_THEME = dict(
-    # Layout
     layout=dict(
         colorway=PLT_COLORWAY,
         font=PLOTLY_FONT,

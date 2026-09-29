@@ -1,9 +1,9 @@
 """Generate API integration tests."""
 
 import argparse
+import inspect as _inspect
 import os
 from pathlib import Path
-import inspect as _inspect
 from typing import Literal
 
 import pytest
@@ -138,7 +138,7 @@ def write_commands_integration_tests(
             commands_not_found.append(route)
         else:
             sig = _inspect.signature(cm_map[route])
-            param_names = [k for k in sig.parameters.keys() if k not in ("cc", "return")]
+            param_names = [k for k in sig.parameters if k not in ("cc", "return")]
 
             params_list = (
                 [{k: "" for k in param_names}]

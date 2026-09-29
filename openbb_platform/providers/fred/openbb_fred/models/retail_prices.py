@@ -1,7 +1,5 @@
 """FRED Retail Prices Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any, Literal
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -12,8 +10,11 @@ from openbb_core.provider.standard_models.retail_prices import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_fred.models.series import FredSeriesFetcher
 from pydantic import Field, field_validator
+
+from openbb_fred.models.series import FredSeriesFetcher
+from openbb_fred.utils.api import unwrap_series
+from openbb_fred.utils.query import UseCacheQueryParams
 
 PRICES_MEATS = [
     "bacon",
@@ -204,7 +205,7 @@ frequency_dict = {
 }
 
 
-class FredRetailPricesQueryParams(RetailPricesQueryParams):
+class FredRetailPricesQueryParams(UseCacheQueryParams, RetailPricesQueryParams):
     """FRED Retail Prices Query Parameters."""
 
     __json_schema_extra__ = {
@@ -275,7 +276,6 @@ class FredRetailPricesFetcher(
         **kwargs: Any,
     ) -> dict:
         """Extract data."""
-        # pylint: disable=import-outside-toplevel
         import json
         from importlib.resources import files
 
@@ -297,7 +297,6 @@ class FredRetailPricesFetcher(
             "meats": PRICES_MEATS,
             "all_items": ALL_ITEMS,
         }
-        # Get the series IDs for each item in the group.
         series: list = []
         items_list = items_dict.get(query.item, [query.item])
         for k, v in all_symbols.items():
@@ -312,18 +311,21 @@ class FredRetailPricesFetcher(
                 end_date=query.end_date,
                 frequency=frequency,
                 transform=transform,
+                use_cache=query.use_cache,
             ),
             credentials,
         )
-        if not response.result:  # type: ignore
+        rows, metadata = unwrap_series(response)
+
+        if not rows:
             raise EmptyDataError(
                 "No data found for the item and region combination."
                 + " You may also be experiencing rate limiting."
                 + " Please adjust the parameters or try again in a few minutes."
             )
         return {
-            "metadata": response.metadata,  # type: ignore
-            "data": [d.model_dump() for d in response.result],  # type: ignore
+            "metadata": metadata,
+            "data": [d.model_dump() for d in rows],
         }
 
     @staticmethod
@@ -333,7 +335,6 @@ class FredRetailPricesFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[list[FredRetailPricesData]]:
         """Transform data."""
-        # pylint: disable=import-outside-toplevel
         import json  # noqa
         from importlib.resources import files  # noqa
         from pandas import DataFrame  # noqa
@@ -347,16 +348,11 @@ class FredRetailPricesFetcher(
 
         df = DataFrame(data["data"])
         metadata = data["metadata"]
-        # Flatten data
         df = df.melt(id_vars="date", var_name="description", value_name="value").query(
             "value.notnull()"
         )
         df["symbol"] = df["description"].copy()
-        # Map the description to the symbol
         df.description = df.description.map(all_symbols).str.strip()
-        # Normalize percent values
-        if query.transform in ["pch", "pc1", "pca", "cch", "cca"]:
-            df["value"] = df["value"] / 100
         df["country"] = "united_states"
         df = df.set_index(["date", "description"]).sort_index().reset_index()
         records = df.to_dict(orient="records")
