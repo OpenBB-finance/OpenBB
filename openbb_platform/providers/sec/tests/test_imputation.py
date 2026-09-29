@@ -479,9 +479,9 @@ class TestApplyHierarchicalArticulation:
             ),
         ]
         _apply_hierarchical_articulation(rows, {d})
-        toi = _by_tag(rows, "total_other_income")
-        assert toi.values[d] == 25.0 * _M
-        assert toi.sources[d] == (
+        total_other = _by_tag(rows, "total_other_income")
+        assert total_other.values[d] == 25.0 * _M
+        assert total_other.sources[d] == (
             "imputed-rollup: total_interest_income(+) + other_income(+)"
         )
 
@@ -498,9 +498,9 @@ class TestApplyHierarchicalArticulation:
             ),
         ]
         _apply_hierarchical_articulation(rows, {d})
-        toi = _by_tag(rows, "total_other_income")
-        assert toi.values[d] == 5.0 * _M
-        assert toi.sources[d] == "imputed-rollup: other_income(+)"
+        total_other = _by_tag(rows, "total_other_income")
+        assert total_other.values[d] == 5.0 * _M
+        assert total_other.sources[d] == "imputed-rollup: other_income(+)"
 
     def test_contained_component_gets_period_factor_zero(self):
         d = _D

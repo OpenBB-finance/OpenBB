@@ -12,7 +12,7 @@ openbb_platform
     └───<provider_name>
         |   README.md
         │   pyproject.toml
-        │   poetry.lock
+        │   uv.lock
         |───tests
         └───openbb_<provider_name>
             │   __init__.py

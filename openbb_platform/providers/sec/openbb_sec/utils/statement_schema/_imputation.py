@@ -127,12 +127,12 @@ def _run_imputation_passes(
         else set()
     )
 
-    def is_ancestor(anc: str, tag: str) -> bool:
+    def is_ancestor(ancestor: str, tag: str) -> bool:
         seen: set[str] = set()
         p = parent_of.get(tag)
 
         while p and p not in seen:
-            if p == anc:
+            if p == ancestor:
                 return True
 
             seen.add(p)
