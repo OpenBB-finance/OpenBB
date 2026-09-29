@@ -31,7 +31,10 @@ from pathlib import Path
 
 import pytest
 
-OPENBB_DIR = Path(importlib.util.find_spec("openbb").origin).parent
+_OPENBB_SPEC = importlib.util.find_spec("openbb")
+if _OPENBB_SPEC is None or _OPENBB_SPEC.origin is None:
+    raise RuntimeError("The 'openbb' package must be installed to run cli tests.")
+OPENBB_DIR = Path(_OPENBB_SPEC.origin).parent
 PACKAGE_DIR = OPENBB_DIR / "package"
 ASSETS_DIR = OPENBB_DIR / "assets"
 
