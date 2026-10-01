@@ -13,6 +13,8 @@ on:
       - '!openbb_platform/providers/**'
       - '!openbb_platform/obbject_extensions/**'
       - '.github/workflows/lint-openbb-platform.yml'
+      - '.github/codeql/**'
+      - '.github/workflows/codeql.yml'
   merge_group:
     types: [checks_requested]
 

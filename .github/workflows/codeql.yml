@@ -13,11 +13,11 @@ name: "CodeQL Advanced"
 
 on:
   push:
-    branches: [ "develop", "PR-review", "gh-pages", "main", "v5" ]
+    branches: [ "develop", "PR-review", "gh-pages", "main" ]
     paths-ignore:
       - 'cookiecutter/**'
   pull_request:
-    branches: [ "develop", "PR-review", "gh-pages", "main", "v5" ]
+    branches: [ "develop", "PR-review", "gh-pages", "main" ]
     paths-ignore:
       - 'cookiecutter/**'
   schedule:
@@ -52,7 +52,7 @@ jobs:
           config-file: ''
         - language: python
           build-mode: none
-          config-file: ''
+          config-file: .github/codeql/python.yml
         - language: rust
           build-mode: none
           config-file: .github/codeql/desktop-only.yml
