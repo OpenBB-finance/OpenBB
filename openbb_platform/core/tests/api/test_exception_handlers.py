@@ -34,3 +34,25 @@ def test_missing_fetcher_query_param_returns_422():
 
     assert response.status_code == 422
     assert b'"loc":["query","category"]' in response.body
+
+
+def test_missing_body_param_preserves_body_location():
+    """Missing body fields must not be relabeled as query parameters."""
+    request = Request(
+        {
+            "type": "http",
+            "method": "POST",
+            "path": "/api/v1/example",
+            "headers": [],
+            "query_string": b"",
+        }
+    )
+    error = ValidationError.from_exception_data(
+        "QueryParams",
+        [{"type": "missing", "loc": ("body", "category"), "input": {}}],
+    )
+
+    response = asyncio.run(ExceptionHandlers.validation(request, error))
+
+    assert response.status_code == 422
+    assert b'"loc":["body","category"]' in response.body
