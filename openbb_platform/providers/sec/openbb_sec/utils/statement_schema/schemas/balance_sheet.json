@@ -2890,7 +2890,9 @@
       "balance": "credit",
       "unit": "monetary",
       "period_type": "instant",
-      "xbrl_tags": []
+      "xbrl_tags": [
+
+      ]
     },
     {
       "tag": "trading_account_securities",
@@ -7730,7 +7732,9 @@
       "balance": "credit",
       "unit": "monetary",
       "period_type": "instant",
-      "xbrl_tags": []
+      "xbrl_tags": [
+
+      ]
     },
     {
       "tag": "trading_account_securities",
