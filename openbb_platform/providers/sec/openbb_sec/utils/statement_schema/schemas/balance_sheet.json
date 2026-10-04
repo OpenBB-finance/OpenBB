@@ -1084,6 +1084,14 @@
           "namespace": "us-gaap"
         },
         {
+          "tag": "NotesAndLoansPayable",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "OtherShortTermBorrowings",
+          "namespace": "us-gaap"
+        },
+        {
           "tag": "ShorttermBorrowings",
           "namespace": "ifrs-full"
         },
@@ -1130,6 +1138,14 @@
         },
         {
           "tag": "CurrentPortionOfLongTermDebt",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "LongTermDebtCurrentMaturities",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "DebtCurrent",
           "namespace": "us-gaap"
         },
         {
@@ -2874,9 +2890,7 @@
       "balance": "credit",
       "unit": "monetary",
       "period_type": "instant",
-      "xbrl_tags": [
-
-      ]
+      "xbrl_tags": []
     },
     {
       "tag": "trading_account_securities",
@@ -3646,6 +3660,14 @@
         {
           "tag": "ShortTermDebtCurrent",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "NotesAndLoansPayable",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "OtherShortTermBorrowings",
+          "namespace": "us-gaap"
         }
       ]
     },
@@ -3674,6 +3696,14 @@
         },
         {
           "tag": "CurrentPortionOfLongTermDebt",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "LongTermDebtCurrentMaturities",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "DebtCurrent",
           "namespace": "us-gaap"
         }
       ]
@@ -5906,6 +5936,14 @@
           "namespace": "us-gaap"
         },
         {
+          "tag": "NotesAndLoansPayable",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "OtherShortTermBorrowings",
+          "namespace": "us-gaap"
+        },
+        {
           "tag": "ShorttermBorrowings",
           "namespace": "ifrs-full"
         },
@@ -5952,6 +5990,14 @@
         },
         {
           "tag": "CurrentPortionOfLongTermDebt",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "LongTermDebtCurrentMaturities",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "DebtCurrent",
           "namespace": "us-gaap"
         },
         {
@@ -7684,9 +7730,7 @@
       "balance": "credit",
       "unit": "monetary",
       "period_type": "instant",
-      "xbrl_tags": [
-
-      ]
+      "xbrl_tags": []
     },
     {
       "tag": "trading_account_securities",
@@ -8394,6 +8438,14 @@
           "namespace": "us-gaap"
         },
         {
+          "tag": "NotesAndLoansPayable",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "OtherShortTermBorrowings",
+          "namespace": "us-gaap"
+        },
+        {
           "tag": "ShorttermBorrowings",
           "namespace": "ifrs-full"
         },
@@ -8428,6 +8480,14 @@
         },
         {
           "tag": "CurrentPortionOfLongTermDebt",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "LongTermDebtCurrentMaturities",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "DebtCurrent",
           "namespace": "us-gaap"
         }
       ]
