@@ -203,6 +203,8 @@ class FredTipsYieldsFetcher(
                 for i in ids
                 if i.rsplit("DTP", maxsplit=1)[-1].startswith(str(query.maturity))
             ]
+        if not ids:
+            raise EmptyDataError("No TIPS series are published for this maturity.")
         due_map = ids_df.set_index("series_id")["due"].dt.date.to_dict()
         title_map = (
             ids_df.set_index("series_id")["title"]
@@ -233,6 +235,9 @@ class FredTipsYieldsFetcher(
         except Exception as e:
             message = str(e) or f"FRED request failed ({type(e).__name__})."
             raise OpenBBError(message) from e
+
+        if df.empty or "date" not in df.columns:
+            raise EmptyDataError("The request was returned empty.")
 
         for k, v in title_map.items():
             if k in meta:

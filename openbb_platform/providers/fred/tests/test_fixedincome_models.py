@@ -1084,6 +1084,21 @@ class TestTipsYields:
 
         assert asked[0]["symbol"].split(",") == ["DTP5J29", "DTP10J32"]
 
+    async def test_a_maturity_with_no_live_security_is_empty(self, monkeypatch):
+        """FRED's 5-year TIPS are all discontinued, so ``maturity=5`` has nothing."""
+        _serve_tips_catalog(monkeypatch, [TIPS_CATALOG[0], TIPS_CATALOG[2]])
+        asked = _serve_series(monkeypatch, [])
+        with pytest.raises(EmptyDataError, match="No TIPS series"):
+            await FredTipsYieldsFetcher.fetch_data({"maturity": "5"}, CREDENTIALS)
+
+        assert asked == []
+
+    async def test_no_observations_is_empty(self, monkeypatch):
+        _serve_tips_catalog(monkeypatch)
+        _serve_series(monkeypatch, [])
+        with pytest.raises(EmptyDataError, match="The request was returned empty"):
+            await FredTipsYieldsFetcher.fetch_data({}, CREDENTIALS)
+
     async def test_a_maturity_narrows_the_securities_read(self, monkeypatch):
         _serve_tips_catalog(monkeypatch)
         asked = _serve_series(
