@@ -1,10 +1,12 @@
 """Exception handlers module."""
 
+import json
 import logging
 from collections.abc import Iterable
 from typing import Any
 
 from fastapi import Request
+from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import ResponseValidationError
 from fastapi.responses import JSONResponse, Response
 from pydantic import ValidationError
@@ -35,7 +37,22 @@ class ExceptionHandlers:
     @staticmethod
     async def exception(_: Request, error: Exception) -> JSONResponse:
         """Exception handler for Base Exception."""
+        if isinstance(error, TimeoutError):
+            return await ExceptionHandlers._handle(
+                exception=error,
+                status_code=504,
+                detail=str(error)
+                or "The upstream data source did not respond in time.",
+            )
+        if isinstance(error, json.JSONDecodeError):
+            return await ExceptionHandlers._handle(
+                exception=error,
+                status_code=502,
+                detail="The data source returned a response that is not valid JSON.",
+            )
         errors = error.errors if hasattr(error, "errors") else error
+        if callable(errors):
+            errors = errors()
 
         if errors:
             if isinstance(errors, ValueError):
@@ -45,13 +62,15 @@ class ExceptionHandlers:
                     detail=errors.args,
                 )
             # Required parameters are missing and is not handled by ValidationError.
-            if isinstance(errors, Iterable):
+            if isinstance(errors, Iterable) and "QueryParams" in getattr(
+                error, "title", ""
+            ):
                 for err in errors:
                     if err.get("type") == "missing":
                         return await ExceptionHandlers._handle(
                             exception=error,
                             status_code=422,
-                            detail={**err},
+                            detail=jsonable_encoder(err),
                         )
         return await ExceptionHandlers._handle(
             exception=error,
