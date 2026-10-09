@@ -104,6 +104,30 @@ async def test_exception_handler_missing_query_params_field_is_422(monkeypatch):
 
 
 @pytest.mark.asyncio
+async def test_exception_handler_missing_field_of_any_query_params_subclass_is_422(
+    monkeypatch,
+):
+    """A QueryParams subclass whose name lacks "QueryParams" is still client input."""
+    from openbb_core.provider.abstract.query_params import QueryParams
+
+    monkeypatch.setattr(
+        "openbb_core.api.exception_handlers.Env", type("E", (), {"DEBUG_MODE": False})
+    )
+
+    class BalanceQuery(QueryParams):
+        symbol: str
+
+    try:
+        BalanceQuery()  # type: ignore[call-arg]
+    except ValidationError as ve:
+        err = ve
+
+    resp = await ExceptionHandlers.exception(_make_request(), err)
+    assert resp.status_code == 422
+    assert json.loads(resp.body)["detail"]["type"] == "missing"
+
+
+@pytest.mark.asyncio
 async def test_exception_handler_missing_data_field_stays_500(monkeypatch):
     """A Data model missing a field is the upstream response's fault, not the client's."""
     monkeypatch.setattr(

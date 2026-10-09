@@ -18,6 +18,19 @@ from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
 logger = logging.getLogger("uvicorn.error")
 
 
+def _is_query_model(title: str) -> bool:
+    """Whether a validation error's model is a QueryParams class (client input), not a Data model."""
+    from openbb_core.provider.abstract.query_params import QueryParams
+
+    classes = [QueryParams]
+    while classes:
+        cls = classes.pop()
+        if cls.__name__ == title:
+            return True
+        classes.extend(cls.__subclasses__())
+    return False
+
+
 class ExceptionHandlers:
     """Exception handlers."""
 
@@ -62,8 +75,9 @@ class ExceptionHandlers:
                     detail=errors.args,
                 )
             # Required parameters are missing and is not handled by ValidationError.
-            if isinstance(errors, Iterable) and "QueryParams" in getattr(
-                error, "title", ""
+            title = getattr(error, "title", "")
+            if isinstance(errors, Iterable) and (
+                "QueryParams" in title or _is_query_model(title)
             ):
                 for err in errors:
                     if err.get("type") == "missing":
