@@ -32,7 +32,7 @@ def ttl_cache(maxsize: int = 128, typed: bool = False, ttl: int = -1):
 
 
 def _ttl_hash_gen(seconds: int):
-    start_time = time.time()
+    start_time = time.monotonic()
 
     while True:
-        yield floor((time.time() - start_time) / seconds)
+        yield floor((time.monotonic() - start_time) / seconds)
