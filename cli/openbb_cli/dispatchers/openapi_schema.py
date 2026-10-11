@@ -572,7 +572,7 @@ def _escape_help(text: str | None) -> str | None:
 
 
 def parameter_to_kwargs(param: dict[str, Any]) -> tuple[str, dict[str, Any]] | None:
-    """Translate one OpenAPI parameter to ``(flag, add_argument kwargs)``."""
+    """Translate one parameter; booleans accept positive and negative flags."""
     name = param.get("name")
     if not name or name == "chart":
         return None
@@ -597,7 +597,10 @@ def parameter_to_kwargs(param: dict[str, Any]) -> tuple[str, dict[str, Any]] | N
         return (f"--{name}", kwargs)
 
     if py_type is bool:
-        kwargs.update(action="store_true", default=bool(schema.get("default", False)))
+        kwargs.update(
+            action=argparse.BooleanOptionalAction,
+            default=bool(schema.get("default", False)),
+        )
         return (f"--{name}", kwargs)
 
     kwargs["type"] = py_type

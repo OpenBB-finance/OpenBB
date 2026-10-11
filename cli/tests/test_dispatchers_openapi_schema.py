@@ -151,7 +151,7 @@ def test_parameter_to_kwargs_boolean_flag():
     _, kwargs = parameter_to_kwargs(
         {"name": "verbose", "schema": {"type": "boolean", "default": False}}
     )
-    assert kwargs["action"] == "store_true"
+    assert kwargs["action"] is argparse.BooleanOptionalAction
     assert kwargs["default"] is False
 
 
