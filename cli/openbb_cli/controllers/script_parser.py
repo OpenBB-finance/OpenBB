@@ -209,7 +209,9 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
             matches: list[Match[str]] | None = re.findall(pattern, line)
 
             if matches:
-                for match in matches:
+                for match in sorted(
+                    matches, key=lambda value: len(value[0]), reverse=True
+                ):
                     if match:
                         VAR_NAME = "$" + match[1]
                         VAR_SLICE = match[2][1:-1] if match[2] else ""
