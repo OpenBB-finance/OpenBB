@@ -830,7 +830,13 @@ def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=Tr
 
     if not saved_path.exists():
         with pd.ExcelWriter(saved_path, engine="openpyxl") as writer:
-            df.to_excel(writer, sheet_name=sheet_name, index=index, header=header)
+            df.to_excel(
+                writer,
+                sheet_name=sheet_name,
+                startrow=start_row,
+                index=index,
+                header=header,
+            )
 
     else:
         with pd.ExcelFile(saved_path) as reader:
@@ -840,9 +846,6 @@ def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=Tr
                     "\nSheet already exists. Overwrite/Append/New? [o/a/n]: "
                 ).lower()
                 start_row = 0
-                if overwrite_option == "a":
-                    existing_df = pd.read_excel(saved_path, sheet_name=sheet_name)
-                    start_row = existing_df.shape[0] + 1
 
             with pd.ExcelWriter(
                 saved_path,
@@ -850,6 +853,8 @@ def save_to_excel(df, saved_path, sheet_name, start_row=0, index=True, header=Tr
                 if_sheet_exists=overwrite_options[overwrite_option],  # ty: ignore[invalid-argument-type]
                 engine="openpyxl",
             ) as writer:
+                if overwrite_option == "a":
+                    start_row = writer.book[sheet_name].max_row
                 df.to_excel(
                     writer,
                     sheet_name=sheet_name,
