@@ -1054,20 +1054,28 @@ def request(
 def parse_unknown_args_to_dict(unknown_args: list[str] | None) -> dict[str, str]:
     """Parse unknown arguments to a dictionary."""
     unknown_args_dict = {}
-    if unknown_args:
-        for idx, arg in enumerate(unknown_args):
-            if arg.startswith("--"):
-                if idx + 1 < len(unknown_args):
-                    try:
-                        unknown_args_dict[arg.replace("--", "")] = ast.literal_eval(
-                            unknown_args[idx + 1]
-                        )
-                    except (ValueError, SyntaxError):
-                        unknown_args_dict[arg.replace("--", "")] = unknown_args[idx + 1]
-                else:
-                    session.console.print(
-                        f"Missing value for argument {arg}. Skipping this argument."
-                    )
+    arguments = iter(unknown_args or [])
+    pending = None
+    while True:
+        arg = pending if pending is not None else next(arguments, None)
+        pending = None
+        if arg is None:
+            break
+        if not arg.startswith("--"):
+            continue
+        name, equals, value = arg[2:].partition("=")
+        if not equals:
+            value = next(arguments, None)
+            if value is None or value.startswith("--"):
+                session.console.print(
+                    f"Missing value for argument {arg}. Skipping this argument."
+                )
+                pending = value
+                continue
+        try:
+            unknown_args_dict[name] = ast.literal_eval(value)
+        except (ValueError, SyntaxError):
+            unknown_args_dict[name] = value
     return unknown_args_dict
 
 
