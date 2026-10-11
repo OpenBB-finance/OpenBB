@@ -589,7 +589,7 @@ def _single_prop_inner_schema(props: dict[str, Any]) -> dict[str, Any] | None:
             only_dict = cast(dict[str, Any], only_value)
             if _is_array_schema(only_dict):
                 items = _array_items(only_dict)
-                return cast(dict[str, Any], items) if isinstance(items, dict) else None
+                return items if isinstance(items, dict) else None
             if (
                 only_dict.get("properties")
                 or only_dict.get("oneOf")

@@ -280,6 +280,8 @@ def _emit_router(
         parts.append("")
 
     for function_name, child in _own_commands(node):
+        if child.cmd_spec is None:
+            continue
         description = (child.cmd_spec.get("description") or "").strip()
         fetcher = fetchers_by_command.get(child.full_path)
         if fetcher is not None:
