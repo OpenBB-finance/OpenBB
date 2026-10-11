@@ -1102,6 +1102,14 @@
         {
           "tag": "CurrentCommercialPapersIssuedAndCurrentPortionOfNoncurrentCommercialPapersIssued",
           "namespace": "ifrs-full"
+        },
+        {
+          "tag": "NotesAndLoansPayable",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "OtherShortTermBorrowings",
+          "namespace": "us-gaap"
         }
       ]
     },
@@ -1143,6 +1151,14 @@
         {
           "tag": "CurrentPortionOfLongtermBorrowings",
           "namespace": "ifrs-full"
+        },
+        {
+          "tag": "LongTermDebtCurrentMaturities",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "DebtCurrent",
+          "namespace": "us-gaap"
         }
       ]
     },
@@ -3646,6 +3662,14 @@
         {
           "tag": "ShortTermDebtCurrent",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "NotesAndLoansPayable",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "OtherShortTermBorrowings",
+          "namespace": "us-gaap"
         }
       ]
     },
@@ -3674,6 +3698,14 @@
         },
         {
           "tag": "CurrentPortionOfLongTermDebt",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "LongTermDebtCurrentMaturities",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "DebtCurrent",
           "namespace": "us-gaap"
         }
       ]
@@ -5924,6 +5956,14 @@
         {
           "tag": "CurrentCommercialPapersIssuedAndCurrentPortionOfNoncurrentCommercialPapersIssued",
           "namespace": "ifrs-full"
+        },
+        {
+          "tag": "NotesAndLoansPayable",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "OtherShortTermBorrowings",
+          "namespace": "us-gaap"
         }
       ]
     },
@@ -5965,6 +6005,14 @@
         {
           "tag": "CurrentPortionOfLongtermBorrowings",
           "namespace": "ifrs-full"
+        },
+        {
+          "tag": "LongTermDebtCurrentMaturities",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "DebtCurrent",
+          "namespace": "us-gaap"
         }
       ]
     },
@@ -8400,6 +8448,14 @@
         {
           "tag": "CurrentPortionOfNoncurrentBorrowings",
           "namespace": "ifrs-full"
+        },
+        {
+          "tag": "NotesAndLoansPayable",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "OtherShortTermBorrowings",
+          "namespace": "us-gaap"
         }
       ]
     },
@@ -8428,6 +8484,14 @@
         },
         {
           "tag": "CurrentPortionOfLongTermDebt",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "LongTermDebtCurrentMaturities",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "DebtCurrent",
           "namespace": "us-gaap"
         }
       ]
