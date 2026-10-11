@@ -110,14 +110,17 @@ class ClientSession(aiohttp.ClientSession):
         """Send request."""
         import zlib
 
-        kwargs["headers"] = kwargs.get(
-            "headers",
-            # Default headers, makes sure we accept gzip
-            {
-                "Accept": "application/json",
-                "Accept-Encoding": "gzip, deflate",
-                "Connection": "keep-alive",
-            },
+        kwargs["headers"] = CIMultiDict(
+            kwargs.get(
+                "headers",
+                # Default headers, makes sure we accept gzip
+                {
+                    "Accept": "application/json",
+                    "Accept-Encoding": "gzip, deflate",
+                    "Connection": "keep-alive",
+                },
+            )
+            or {}
         )
 
         if kwargs["headers"].get("User-Agent", None) is None:
