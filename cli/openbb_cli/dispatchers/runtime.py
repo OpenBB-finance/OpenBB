@@ -108,14 +108,29 @@ async def _batch_loop(
 ) -> int:
     """Core async loop for ``run_batch``."""
     sem = asyncio.Semaphore(concurrency)
-    in_flight: set[asyncio.Task[Response]] = set()
+    in_flight: set[asyncio.Task[None]] = set()
     write_lock = asyncio.Lock()
     failures = 0
+    output_errors: list[BaseException] = []
 
-    async def _drain(task: asyncio.Task[Response]) -> None:
+    def completed(task: asyncio.Task[None]) -> None:
+        in_flight.discard(task)
+        if not task.cancelled():
+            error = task.exception()
+            if error is not None:
+                output_errors.append(error)
+
+    async def _drain(request: Request) -> None:
         nonlocal failures
         try:
-            response = await task
+            try:
+                response = await _run_one(dispatcher, request)
+            except Exception as exc:  # noqa: BLE001
+                response = Response(
+                    id=request.id,
+                    ok=False,
+                    error=ResponseError(type=type(exc).__name__, message=str(exc)),
+                )
         finally:
             sem.release()
         async with write_lock:
@@ -153,13 +168,14 @@ async def _batch_loop(
             continue
 
         await sem.acquire()
-        task = asyncio.create_task(_run_one(dispatcher, request))
+        task = asyncio.create_task(_drain(request))
         in_flight.add(task)
-        task.add_done_callback(in_flight.discard)
-        asyncio.create_task(_drain(task))
+        task.add_done_callback(completed)
 
     if in_flight:
         await asyncio.gather(*in_flight, return_exceptions=True)
+    if output_errors:
+        raise output_errors[0]
     return 0 if failures == 0 else 1
 
 
