@@ -166,7 +166,16 @@ class OBBject(Tagged, Generic[T]):
             )
 
         if isinstance(self.results, DataFrame):
-            return self.results
+            if not sort_by and (index is None or index not in self.results.columns):
+                return self.results
+            df = self.results.copy()
+            if index is not None and index in df.columns:
+                df = df.set_index(index)
+            if sort_by:
+                df = df.sort_values(
+                    by=sort_by, ascending=ascending if ascending is not None else True
+                )
+            return df
 
         if self.results is None or not self.results:
             raise OpenBBError("Results not found.")
