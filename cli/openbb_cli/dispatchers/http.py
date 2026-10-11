@@ -774,9 +774,10 @@ class HttpDispatcher:
             elif loc == "body":
                 body[name] = value
             else:
+                out_value = value
                 if name in delimiters and isinstance(value, (list, tuple)):
-                    value = delimiters[name].join(str(v) for v in value)
-                query[name] = value
+                    out_value = delimiters[name].join(str(v) for v in value)
+                query[name] = out_value
         return query, body, headers
 
     async def _invoke_auth_hook(

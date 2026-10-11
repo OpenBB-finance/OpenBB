@@ -15,8 +15,8 @@ from openbb_cli.codegen.pydantic_gen import (
     class_name_from,
     consolidate_imports,
     generate_class,
-    render_function_docstring,
     query_field_name,
+    render_function_docstring,
 )
 
 _PATH_TEMPLATE_RE = re.compile(r"\{([^}]+)\}")
@@ -341,6 +341,11 @@ def _unwrap_schema_envelopes(schema: Any) -> dict[str, Any]:
         return _unwrap_schema_envelopes(combinator_target)
     if _is_scalar_schema(typed):
         return _wrap_scalar_as_value(typed)
+    return _unwrap_object_schema(typed)
+
+
+def _unwrap_object_schema(typed: dict[str, Any]) -> dict[str, Any]:
+    """Resolve the row schema for an object schema that has ``properties``."""
     props = typed.get("properties")
     if not isinstance(props, dict) or not props:
         return typed
@@ -374,10 +379,13 @@ def _merge_prop_schemas(a: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
             "enum": [*a["enum"], *[e for e in b["enum"] if e not in a["enum"]]],
         }
         return merged
+
     # An enum in one variant and the plain type in another: the plain type admits both.
-    strip = lambda s: {
-        k: v for k, v in s.items() if k not in ("enum", "example", "description")
-    }  # noqa: E731
+    def strip(s):
+        return {
+            k: v for k, v in s.items() if k not in ("enum", "example", "description")
+        }
+
     if strip(a) == strip(b):
         return {k: v for k, v in a.items() if k != "enum"}
     variants: list[dict[str, Any]] = []

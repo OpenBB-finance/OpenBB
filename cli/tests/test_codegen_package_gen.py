@@ -677,8 +677,8 @@ def test_root_router_module_never_collides_with_a_namespace_router():
             },
         },
     }
-    from pathlib import Path
     import tempfile
+    from pathlib import Path
 
     with tempfile.TemporaryDirectory() as tmp:
         pkgs = pkg.generate_packages(
