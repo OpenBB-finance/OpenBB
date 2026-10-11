@@ -408,18 +408,9 @@ def test_show_chart_no_fig():
         co.to_dataframe(index=None)
 
 
-def test_to_dict_list_orient_removes_index_key():
-    co: OBBject = OBBject(results=[{"a": 1}])
-
-    with pytest.MonkeyPatch.context() as m:
-        m.setattr(
-            OBBject,
-            "to_dataframe",
-            lambda self, index=None: pd.DataFrame({"index": [1], "a": [2]}),
-        )
-        out = co.to_dict(orient="list")
-
-    assert "index" not in out
+def test_to_dict_list_orient_preserves_index_column():
+    co: OBBject = OBBject(results=pd.DataFrame({"index": [1], "a": [2]}))
+    assert co.to_dict(orient="list") == {"index": [1], "a": [2]}
 
 
 def test_to_df_alias_calls_to_dataframe():

@@ -324,9 +324,6 @@ class OBBject(Tagged, Generic[T]):
             df = df.T
         results: dict | list = df.to_dict(orient=orient)
 
-        if isinstance(results, dict) and orient == "list" and "index" in results:
-            del results["index"]
-
         return results
 
     def to_llm(self) -> str:
