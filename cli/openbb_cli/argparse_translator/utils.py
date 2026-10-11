@@ -17,22 +17,28 @@ def in_group(parser: ArgumentParser, argument_name: str, group_title: str) -> bo
 def remove_argument(parser: ArgumentParser, argument_name: str) -> list[str | None]:
     """Remove an argument from an ArgumentParser."""
     groups_w_arg = []
-
-    for action in parser._actions:
-        opts = action.option_strings
-        if (opts and opts[0] == argument_name) or action.dest == argument_name:
-            parser._remove_action(action)
-            break
-
+    action = next(
+        (
+            action
+            for action in parser._actions
+            if argument_name in action.option_strings or action.dest == argument_name
+        ),
+        None,
+    )
+    if action is None:
+        return groups_w_arg
+    parser._remove_action(action)
     for action_group in parser._action_groups:
-        for action in action_group._group_actions:
-            opts = action.option_strings
-            if (opts and opts[0] == argument_name) or action.dest == argument_name:
-                action_group._group_actions.remove(action)
-                groups_w_arg.append(action_group.title)
-
-    parser._option_string_actions.pop(f"--{argument_name}", None)
-
+        if action in action_group._group_actions:
+            action_group._group_actions.remove(action)
+            groups_w_arg.append(action_group.title)
+    for option in action.option_strings:
+        parser._option_string_actions.pop(option, None)
+    for group in list(parser._mutually_exclusive_groups):
+        if action in group._group_actions:
+            group._group_actions.remove(action)
+        if not group._group_actions:
+            parser._mutually_exclusive_groups.remove(group)
     return groups_w_arg
 
 
