@@ -4,6 +4,7 @@ import asyncio
 import atexit
 import contextlib
 import inspect
+import io
 import json
 import os
 import signal
@@ -353,7 +354,12 @@ class OBBStream:
                 else serialized
             )
             return
-        if isinstance(serialized, (bytes, bytearray)):
+        if isinstance(sink, (io.BufferedIOBase, io.RawIOBase)) or "b" in getattr(
+            sink, "mode", ""
+        ):
+            if isinstance(serialized, str):
+                serialized = serialized.encode("utf-8")
+        elif isinstance(serialized, (bytes, bytearray)):
             serialized = bytes(serialized).decode("utf-8", errors="replace")
         sink.write(serialized)
         if hasattr(sink, "flush"):
