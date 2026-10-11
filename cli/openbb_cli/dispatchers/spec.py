@@ -5,7 +5,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
+import tempfile
 from datetime import datetime, timezone
 from importlib.metadata import (
     PackageNotFoundError,
@@ -382,7 +384,25 @@ def _content_hash(spec_doc: dict[str, Any]) -> str:
 def write_spec(path: str | Path, spec_doc: dict[str, Any]) -> None:
     """Write the spec doc to ``path`` as compact JSON, stamped with its SHA-256."""
     spec_doc["content_sha256"] = _content_hash(spec_doc)
-    Path(path).write_text(json.dumps(spec_doc, separators=(",", ":")))
+    target = Path(path)
+    staged: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=target.parent,
+            prefix=f".{target.name}.",
+            suffix=".tmp",
+            delete=False,
+        ) as stream:
+            staged = Path(stream.name)
+            json.dump(spec_doc, stream, separators=(",", ":"))
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(staged, target)
+    finally:
+        if staged is not None:
+            staged.unlink(missing_ok=True)
 
 
 class _CommandParameter(BaseModel):
