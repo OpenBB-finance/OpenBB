@@ -32,6 +32,8 @@ def _to_dataframe(data: Any) -> pd.DataFrame | None:
     if isinstance(data, pd.Series):
         return data.to_frame()
     if isinstance(data, dict):
+        if data and all(pd.api.types.is_scalar(value) for value in data.values()):
+            return pd.DataFrame([data])
         return pd.DataFrame.from_dict(data, orient="columns")
     if isinstance(data, (list, tuple)):
         return pd.DataFrame(list(data))

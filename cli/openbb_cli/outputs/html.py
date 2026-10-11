@@ -81,7 +81,10 @@ class HtmlOutput:
         elif isinstance(data, pd.Series):
             df = data.to_frame()
         elif isinstance(data, dict):
-            df = pd.DataFrame.from_dict(data, orient="columns")
+            if data and all(pd.api.types.is_scalar(value) for value in data.values()):
+                df = pd.DataFrame([data])
+            else:
+                df = pd.DataFrame.from_dict(data, orient="columns")
         elif isinstance(data, (list, tuple)):
             df = pd.DataFrame(data)
         else:
