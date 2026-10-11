@@ -184,8 +184,7 @@ class _HttpSSESource:
                 resp.raise_for_status()
                 self._consume_headers(resp.headers)
                 async for line in resp.aiter_lines():
-                    if line:
-                        yield line + "\n"
+                    yield line + "\n"
 
 
 _NUMERIC_RESPONSE_TYPES: frozenset[str] = frozenset(
