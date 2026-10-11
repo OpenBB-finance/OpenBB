@@ -76,22 +76,16 @@ def get_querystring(items: dict, exclude: list[str]) -> str:
     str
         The querystring.
     """
-    for key in exclude:
-        items.pop(key, None)
+    from urllib.parse import urlencode
 
-    query_items = []
-    for key, value in items.items():
-        if value is None:
-            continue
-        if isinstance(value, list):
-            for item in value:
-                query_items.append(f"{key}={item}")
-        else:
-            query_items.append(f"{key}={value}")
-
-    querystring = "&".join(query_items)
-
-    return f"{querystring}" if querystring else ""
+    return urlencode(
+        {
+            key: value
+            for key, value in items.items()
+            if key not in exclude and value is not None
+        },
+        doseq=True,
+    )
 
 
 def get_python_request_settings() -> dict:
