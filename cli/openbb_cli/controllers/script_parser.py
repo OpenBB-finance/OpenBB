@@ -201,7 +201,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
             foreach_loop_found = False
 
         else:
-            if re.search(r"foreach", line, re.IGNORECASE):
+            if re.match(r"^foreach\s+", line, re.IGNORECASE):
                 foreach_loop_found = True
 
             pattern = r"(?<!\$)(\$(\w+)(\[[^\]]*\])?)(?=(?:[^\]]*\]*))"
@@ -350,7 +350,7 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
     varused_inside = False
     for line in lines_with_vars_replaced:
         match = re.search(
-            r"foreach \$\$([A-Za-z\_]+) in ([A-Za-z0-9,-.]+)", line, re.IGNORECASE
+            r"^foreach \$\$([A-Za-z\_]+) in ([A-Za-z0-9,-.]+)", line, re.IGNORECASE
         )
         if match:
             varname = match.group(1)
