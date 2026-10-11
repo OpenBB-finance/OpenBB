@@ -8,6 +8,7 @@ import json
 import re
 import warnings
 from datetime import datetime, timezone
+from decimal import Decimal, InvalidOperation
 from time import perf_counter_ns
 from typing import Any
 
@@ -347,10 +348,14 @@ def _coerce_response_value(value: Any, type_name: str, fmt: str) -> Any:
         return value
     if type_name in _NUMERIC_RESPONSE_TYPES:
         try:
-            num = float(value)
-        except ValueError:
+            num = Decimal(value)
+        except InvalidOperation:
             return value
-        return int(num) if num.is_integer() else num
+        return (
+            (int(num) if num == num.to_integral_value() else float(num))
+            if num.is_finite() and num.adjusted() <= 308
+            else value
+        )
     if type_name == "integer":
         try:
             return int(value)

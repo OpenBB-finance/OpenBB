@@ -10,6 +10,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
+from decimal import Decimal, InvalidOperation
 from pathlib import Path
 from typing import Any
 
@@ -34,13 +35,15 @@ def _coerce_choices_to_type(values: list[Any], data_type: str) -> list[Any]:
         coerced: list[Any] = []
         for v in values:
             try:
-                num = float(v)
-            except (TypeError, ValueError):
+                num = Decimal(str(v))
+            except InvalidOperation:
                 continue
-            if num.is_integer():
+            if not num.is_finite() or num.adjusted() > 308:
+                continue
+            if num == num.to_integral_value():
                 coerced.append(int(num))
             else:
-                coerced.append(num)
+                coerced.append(float(num))
         return coerced
     if data_type == "checkbox":
         coerced_bool: list[Any] = []
