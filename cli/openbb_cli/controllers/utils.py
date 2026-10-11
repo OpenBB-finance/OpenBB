@@ -340,8 +340,10 @@ def parse_and_split_input(an_input: str, custom_filters: list) -> list[str]:
             return list(filter(None, commands))
         matching_placeholders = [tag for tag in placeholders if tag in command]
         if len(matching_placeholders) > 0:
+            restored = command
             for tag in matching_placeholders:
-                commands[command_num] = command.replace(tag, placeholders[tag])
+                restored = restored.replace(tag, placeholders[tag])
+            commands[command_num] = restored
     return list(filter(None, commands))
 
 
