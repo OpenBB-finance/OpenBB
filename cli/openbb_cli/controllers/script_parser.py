@@ -50,9 +50,7 @@ def is_reset(command: str) -> bool:
     bool
         Whether the command is a reset command.
     """
-    if "reset" in command:
-        return True
-    return command in ("r", "r\n")
+    return command.strip() in ("reset", "r")
 
 
 def match_and_return_openbb_keyword_date(keyword: str) -> str:  # noqa: PLR0911
