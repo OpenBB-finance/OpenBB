@@ -134,6 +134,30 @@ def match_and_return_openbb_keyword_date(keyword: str) -> str:  # noqa: PLR0911
     return ""
 
 
+def _strip_routine_comment(line: str) -> str:
+    """Remove comments while preserving quoted hashes and URL fragments."""
+    quote = None
+    escaped = False
+    for position, character in enumerate(line):
+        if escaped:
+            escaped = False
+            continue
+        if character == "\\" and quote != "'":
+            escaped = True
+        elif character in ("'", '"'):
+            if quote == character:
+                quote = None
+            elif quote is None:
+                quote = character
+        elif (
+            character == "#"
+            and quote is None
+            and (position == 0 or line[position - 1].isspace())
+        ):
+            return line[:position].rstrip()
+    return line
+
+
 def parse_openbb_script(  # noqa: PLR0911,PLR0912
     raw_lines: list[str],
     script_inputs: list[str] | None = None,
@@ -156,11 +180,8 @@ def parse_openbb_script(  # noqa: PLR0911,PLR0912
     if script_inputs:
         ROUTINE_VARS["$ARGV"] = script_inputs
 
-    raw_lines = [
-        x.strip()
-        for x in raw_lines
-        if (not is_reset(x)) and ("#" not in x) and x.strip()
-    ]
+    raw_lines = [_strip_routine_comment(line).strip() for line in raw_lines]
+    raw_lines = [line for line in raw_lines if line and not is_reset(line)]
 
     lines_without_declarations = list()
     for line in raw_lines:
