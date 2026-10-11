@@ -131,7 +131,13 @@ class ClientSession(aiohttp.ClientSession):
         encoding = response.headers.get("Content-Encoding", "")
         if encoding in ("gzip", "deflate") and not self.auto_decompress:
             response_body = await response.read()
-            wbits = 16 + zlib.MAX_WBITS if encoding == "gzip" else -zlib.MAX_WBITS
-            response._body = zlib.decompress(response_body, wbits)
+            if encoding == "gzip":
+                response._body = zlib.decompress(response_body, 16 + zlib.MAX_WBITS)
+            else:
+                try:
+                    response._body = zlib.decompress(response_body)
+                except zlib.error:
+                    # Some servers send raw DEFLATE instead of the zlib envelope.
+                    response._body = zlib.decompress(response_body, -zlib.MAX_WBITS)
 
         return response  # type: ignore
