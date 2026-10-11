@@ -148,6 +148,7 @@ def _normalize_parameter(
         "help": param.get("description") or schema.get("description"),
         "providers": providers,
         "json_arg": json_arg,
+        **({"format": schema["format"]} if schema.get("format") else {}),
     }
 
 
@@ -537,7 +538,11 @@ def _add_normalized_parameter(
     if (
         py_type is str
         and not is_socrata_range_param
-        and _looks_like_datetime_param(p["name"], p.get("help"))
+        and p.get("format") != "date"
+        and (
+            p.get("format") == "date-time"
+            or _looks_like_datetime_param(p["name"], p.get("help"))
+        )
     ):
         kwargs["type"] = _coerce_iso_datetime
     else:
