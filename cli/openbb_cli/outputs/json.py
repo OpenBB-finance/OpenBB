@@ -11,7 +11,9 @@ import pandas as pd
 
 def _to_serializable(data: Any) -> Any:
     if hasattr(data, "model_dump"):
-        return data.model_dump(exclude_unset=True, exclude_none=True).get("results")
+        return _to_serializable(
+            data.model_dump(exclude_unset=True, exclude_none=True).get("results")
+        )
     if isinstance(data, pd.DataFrame):
         return data.to_dict(orient="records")
     if isinstance(data, pd.Series):
