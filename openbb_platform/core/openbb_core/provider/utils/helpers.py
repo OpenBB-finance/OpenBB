@@ -387,8 +387,10 @@ async def amake_request(
         lambda r, _: asyncio.ensure_future(r.json())
     )
 
-    with_session = kwargs.pop("with_session", "session" in kwargs)
-    session = kwargs.pop("session", await get_async_requests_session(**kwargs))
+    with_session = kwargs.pop("with_session", kwargs.get("session") is not None)
+    session = kwargs.pop("session", None)
+    if session is None:
+        session = await get_async_requests_session(**kwargs)
 
     try:
         response = await session.request(method, url, **kwargs)
@@ -425,7 +427,10 @@ async def amake_requests(
     Union[dict, list[dict]]
         Response json
     """
-    session = kwargs.pop("session", await get_async_requests_session(**kwargs))
+    session = kwargs.pop("session", None)
+    owns_session = session is None
+    if owns_session:
+        session = await get_async_requests_session(**kwargs)
     ret_exceptions = kwargs.pop("return_exceptions", False)
     kwargs["response_callback"] = response_callback
     urls = urls if isinstance(urls, list) else [urls]
@@ -467,7 +472,8 @@ async def amake_requests(
         return results
 
     finally:
-        await session.close()
+        if owns_session:
+            await session.close()
 
 
 def combine_certificates(cert: str, bundle: str | None = None) -> str:
