@@ -438,8 +438,9 @@ def extract_response_schemas(
 
 def _resolve_schema(schema: dict[str, Any]) -> tuple[type, list[Any], bool]:
     """Resolve an OpenAPI parameter schema to ``(py_type, choices, is_list)``."""
-    if "anyOf" in schema:
-        non_null = [s for s in schema["anyOf"] if s.get("type") != "null"]
+    if "anyOf" in schema or "oneOf" in schema:
+        members = schema.get("anyOf", schema.get("oneOf", []))
+        non_null = [s for s in members if s.get("type") != "null"]
         if not non_null:
             return (str, [], False)
         if len(non_null) == 1:
@@ -455,6 +456,18 @@ def _resolve_schema(schema: dict[str, Any]) -> tuple[type, list[Any], bool]:
             for v in s.get("enum", []):
                 if v not in choices:
                     choices.append(v)
+        if "oneOf" in schema:
+            resolved = [_resolve_schema(member) for member in non_null]
+            common_type = resolved[0][0]
+            if all(item[0] is common_type for item in resolved):
+                choices = []
+                for _, member_choices, _ in resolved:
+                    for value in member_choices:
+                        if value not in choices:
+                            choices.append(value)
+                if any(not member_choices for _, member_choices, _ in resolved):
+                    choices = []
+                return (common_type, choices, is_list)
         return (str, choices, is_list)
 
     schema_type = schema.get("type", "string")
@@ -487,7 +500,7 @@ def _is_json_arg(schema: dict[str, Any]) -> bool:
         return isinstance(items, dict) and _is_json_arg(items)
     return any(
         isinstance(member, dict) and _is_json_arg(member)
-        for member in schema.get("anyOf", []) or []
+        for member in (schema.get("anyOf", []) or []) + (schema.get("oneOf", []) or [])
     )
 
 
