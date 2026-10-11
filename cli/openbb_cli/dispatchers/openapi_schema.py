@@ -98,14 +98,12 @@ _OPENAPI_RESERVED_SCHEMA_KEYS = frozenset(
 
 def resolve_ref(spec: dict[str, Any], ref: str) -> dict[str, Any]:
     """Resolve a local OpenAPI ``$ref`` JSON pointer against ``spec``."""
-    if not ref.startswith("#/"):
+    if not ref.startswith("#"):
         return {}
-    node: Any = spec
-    for raw_part in ref[2:].split("/"):
-        part = raw_part.replace("~1", "/").replace("~0", "~")
-        if not isinstance(node, dict) or part not in node:
-            return {}
-        node = node[part]
+    try:
+        node = _resolve_json_pointer(spec, ref[1:])
+    except (KeyError, IndexError, ValueError):
+        return {}
     return node if isinstance(node, dict) else {}
 
 
@@ -874,6 +872,8 @@ def _resolve_json_pointer(document: Any, fragment: str) -> Any:
         if isinstance(node, dict):
             node = node[part]
         elif isinstance(node, list):
+            if not re.fullmatch(r"0|[1-9][0-9]*", part):
+                raise ValueError(f"Invalid OpenAPI array reference index: {part}")
             node = node[int(part)]
         else:
             raise ValueError(f"Invalid OpenAPI reference fragment: #{fragment}")
