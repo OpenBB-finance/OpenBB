@@ -209,7 +209,13 @@ class OBBject(Tagged, Generic[T]):
                 sort_columns = False
 
             # List[Dict]
-            elif isinstance(res, list) and len(res) == 1 and isinstance(res[0], dict):
+            elif (
+                isinstance(res, list)
+                and len(res) == 1
+                and isinstance(res[0], dict)
+                and res[0]
+                and all(isinstance(value, (dict, list)) for value in res[0].values())
+            ):
                 r = res[0]
                 dict_of_df = {}
 
