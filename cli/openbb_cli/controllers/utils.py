@@ -740,7 +740,7 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
         index_is_date = True
 
     for col, dtype in df.dtypes.items():
-        if dtype.kind == "M" and hasattr(df.index.dtype, "tz") and dtype.tz is not None:
+        if dtype.kind == "M" and getattr(dtype, "tz", None) is not None:
             date_cols.append(col)
 
     for col in date_cols:
