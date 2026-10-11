@@ -12,9 +12,7 @@ from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.utils.errors import EmptyDataError, UnauthorizedError
 
 
-def _make_request(
-    query_params: dict | None = None, body: bytes = b""
-) -> MagicMock:
+def _make_request(query_params: dict | None = None, body: bytes = b"") -> MagicMock:
     req = MagicMock()
     req.query_params = query_params or {}
     req.body = AsyncMock(return_value=body)
@@ -120,7 +118,9 @@ async def test_validation_handler_missing_query_param_returns_422(monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_validation_query_params_model_bound_to_body_is_not_query_scoped(monkeypatch):
+async def test_validation_query_params_model_bound_to_body_is_not_query_scoped(
+    monkeypatch,
+):
     monkeypatch.setattr(
         "openbb_core.api.exception_handlers.Env", type("E", (), {"DEBUG_MODE": False})
     )

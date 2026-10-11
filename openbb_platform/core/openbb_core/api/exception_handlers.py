@@ -60,7 +60,9 @@ class ExceptionHandlers:
         )
 
     @staticmethod
-    async def validation(request: Request, error: ValidationError | ResponseValidationError):
+    async def validation(
+        request: Request, error: ValidationError | ResponseValidationError
+    ):
         """Exception handler for ValidationError."""
         # Some validation is performed at Fetcher level.
         # So we check if the validation error comes from a QueryParams class.
@@ -80,10 +82,20 @@ class ExceptionHandlers:
                 detail=detail,
             )
         try:
-            errors = error.errors(include_url=False) if hasattr(error, "errors") else error.errors
+            errors = (
+                error.errors(include_url=False)
+                if hasattr(error, "errors")
+                else error.errors
+            )
         except Exception:
             errors = error.errors if hasattr(error, "errors") else error
-        if "QueryParams" in error.title and not await request.body():
+        query_params = request.query_params
+        query_errors = all(
+            loc in query_params or err.get("type") == "missing"
+            for err in errors  # ty: ignore[not-iterable]
+            for loc in err.get("loc", ())
+        )
+        if "QueryParams" in error.title and not await request.body() and query_errors:
             detail = [
                 {
                     **{k: v for k, v in err.items() if k != "ctx"},
