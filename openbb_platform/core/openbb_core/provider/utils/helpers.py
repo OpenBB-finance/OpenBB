@@ -6,7 +6,7 @@ from collections.abc import Awaitable, Callable
 from datetime import date, datetime, timedelta, timezone
 from difflib import SequenceMatcher
 from functools import partial
-from inspect import iscoroutinefunction
+from inspect import isawaitable, iscoroutinefunction
 from typing import (
     TYPE_CHECKING,
     Literal,
@@ -590,10 +590,10 @@ async def maybe_coroutine(
     func: Callable[P, T | Awaitable[T]], /, *args: P.args, **kwargs: P.kwargs
 ) -> T:
     """Check if a function is a coroutine and run it accordingly."""
-    if not iscoroutinefunction(func):
-        return cast(T, func(*args, **kwargs))
-
-    return await func(*args, **kwargs)
+    result = func(*args, **kwargs)
+    if isawaitable(result):
+        return await result
+    return result
 
 
 def run_async(
