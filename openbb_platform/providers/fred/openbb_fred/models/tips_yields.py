@@ -28,11 +28,11 @@ SERIES_PERCENT_COLUMN: dict[str, Any] = {
 class FredTipsYieldsQueryParams(UseCacheQueryParams, TipsYieldsQueryParams):
     """FRED TIPS Yields Query."""
 
-    maturity: Literal["5", "10", "20", "30"] | None = Field(
+    maturity: Literal["10", "20", "30"] | None = Field(
         default=None,
-        description="The maturity of the security in years - 5, 10, 20, 30 - defaults to all."
+        description="The maturity of the security in years - 10, 20, 30 - defaults to all."
         + " Note that the maturity is the tenor of the security, not the time to maturity.",
-        json_schema_extra={"choices": ["5", "10", "20", "30"]},
+        json_schema_extra={"choices": ["10", "20", "30"]},
     )
     frequency: (
         Literal[
@@ -203,8 +203,6 @@ class FredTipsYieldsFetcher(
                 for i in ids
                 if i.rsplit("DTP", maxsplit=1)[-1].startswith(str(query.maturity))
             ]
-        if not ids:
-            raise EmptyDataError("No TIPS series are published for this maturity.")
         due_map = ids_df.set_index("series_id")["due"].dt.date.to_dict()
         title_map = (
             ids_df.set_index("series_id")["title"]
@@ -235,9 +233,6 @@ class FredTipsYieldsFetcher(
         except Exception as e:
             message = str(e) or f"FRED request failed ({type(e).__name__})."
             raise OpenBBError(message) from e
-
-        if df.empty or "date" not in df.columns:
-            raise EmptyDataError("The request was returned empty.")
 
         for k, v in title_map.items():
             if k in meta:
