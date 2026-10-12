@@ -281,163 +281,51 @@ def _discount_for(
     return memo[key]
 
 
-def _median_without(ordered: list[float], removed: list[float]) -> float | None:
-    """statistics.median of a sorted list after removing values that are in it, or None."""
-    from bisect import bisect_left
+def _pair_curve(
+    fx_records: Iterable[dict], trade: dict, curve_date: dateType, memo: dict
+) -> dict:
+    """Return the pair's forward curve for the day, built once and shared by its prints."""
+    from openbb_cftc.utils.fx import extract_fx_observations
+    from openbb_cftc.utils.fx_vol import ndf_forward_curve
 
-    if not removed:
-        if not ordered:
-            return None
-        n = len(ordered)
-        mid = n // 2
-        return ordered[mid] if n % 2 else (ordered[mid - 1] + ordered[mid]) / 2
-
-    gone = sorted(bisect_left(ordered, value) for value in removed)
-
-    for i in range(1, len(gone)):  # equal values: take successive slots
-        if gone[i] <= gone[i - 1]:
-            gone[i] = gone[i - 1] + 1
-
-    n = len(ordered) - len(gone)
-
-    if n <= 0:
-        return None
-
-    def at(rank: int) -> float:
-        index = rank
-        for slot in gone:
-            if slot <= index:
-                index += 1
-        return ordered[index]
-
-    mid = n // 2
-    return at(mid) if n % 2 else (at(mid - 1) + at(mid)) / 2
-
-
-def _pair_view(fx_records: Iterable[dict], trade: dict, curve_date: dateType, memo: dict) -> dict:
-    """A pair's curve observations, prepared once per day for leave-one-out pricing.
-
-    fx_market prices each print from its peers (the pair's other prints).
-    Re-extracting every peer per print is quadratic in a busy pair's day. The
-    extraction's only cross-record input is its median anchor, and leaving out
-    one print leaves one of a few possible anchors, so each anchor's oriented,
-    carry-checked observations are built once and each print only adjusts the
-    medians its own observation touches.
-    """
-    from openbb_cftc.utils.fx import _fx_observation, resolve_pair
-
-    key = f"fx-view:{trade['pair']}"
+    key = f"fx-curve:{trade['pair']}:{curve_date.isoformat()}"
 
     if key not in memo:
-        _, spec = resolve_pair(trade["pair"])
-        candidates = []
-        by_id: dict[str, list[int]] = {}
-
-        for record in _pair_subset(fx_records, trade, memo):
-            if is_package_leg(record):
-                continue
-            observation = _fx_observation(record, curve_date, spec, CURVE_MIN_NOTIONAL)
-            if observation is not None:
-                ident = (record.get("Dissemination Identifier") or "").strip()
-                by_id.setdefault(ident, []).append(len(candidates))
-                candidates.append((record, observation))
-
+        records = _pair_subset(fx_records, trade, memo)
+        observations = extract_fx_observations(
+            records,
+            pair=trade["pair"],
+            trade_date=curve_date,
+            min_notional=CURVE_MIN_NOTIONAL,
+        )
+        spot, forward = ndf_forward_curve(
+            records, trade["pair"], curve_date, min_notional=CURVE_MIN_NOTIONAL
+        )
         memo[key] = {
-            "candidates": candidates,
-            "by_id": by_id,
-            "rates": sorted(observation["rate"] for _, observation in candidates),
-            "anchors": {},
+            "nodes": len({o["days"] for o in observations if o["days"] > 2}),
+            "near": [o["rate"] for o in observations if o["days"] <= 9],
+            "spot": spot,
+            "forward": forward,
         }
 
     return memo[key]
 
 
-def _anchored(view: dict, anchor: float) -> dict:
-    """Every candidate oriented and carry-checked against one anchor, grouped by day."""
-    from math import log
-
-    from openbb_cftc.utils.fx import _stated_rate, carry_bound
-
-    if anchor not in view["anchors"]:
-        kept: list[tuple[int, float] | None] = []
-        by_day: dict[int, list[float]] = {}
-
-        for record, observation in view["candidates"]:
-            stated = _stated_rate(record, anchor)
-            rate = stated if stated is not None else observation["rate"]
-            if abs(log(rate / anchor)) <= carry_bound(observation["days"]):
-                kept.append((observation["days"], rate))
-                by_day.setdefault(observation["days"], []).append(rate)
-            else:
-                kept.append(None)
-
-        for rates in by_day.values():
-            rates.sort()
-
-        view["anchors"][anchor] = {"kept": kept, "by_day": by_day, "medians": {}, "near": {}}
-
-    return view["anchors"][anchor]
-
-
-def _peer_curve(fx_records: Iterable[dict], trade: dict, curve_date: dateType, memo: dict) -> dict:
-    """The peer curve fx_market needs: extract_fx_observations over the pair minus the trade's own print."""
-    view = _pair_view(fx_records, trade, curve_date, memo)
-    own = view["by_id"].get(trade["dissemination_identifier"], [])
-    anchor = _median_without(view["rates"], [view["candidates"][i][1]["rate"] for i in own])
-
-    key = (trade["pair"], anchor, tuple(own))
-
-    if anchor is None:
-        return {"nodes": [], "spot": None, "cip_near": None, "key": key}
-
-    anchored = _anchored(view, anchor)
-    removed: dict[int, list[float]] = {}
-
-    for i in own:
-        if anchored["kept"][i] is not None:
-            days, rate = anchored["kept"][i]
-            removed.setdefault(days, []).append(rate)
-
-    nodes = []
-    for days in sorted(anchored["by_day"]):
-        if days <= 2:
-            continue
-        out = removed.get(days, [])
-        if not out and days in anchored["medians"]:
-            median = anchored["medians"][days]
-        else:
-            median = _median_without(anchored["by_day"][days], out)
-            if not out:
-                anchored["medians"][days] = median
-        if median is not None:
-            nodes.append((days, median))
-
-    def near(low: int) -> float | None:
-        if low not in anchored["near"]:
-            anchored["near"][low] = sorted(
-                r for d, rs in anchored["by_day"].items() if low <= d <= 9 for r in rs
-            )
-        out = [r for d, rs in removed.items() if low <= d <= 9 for r in rs]
-        return _median_without(anchored["near"][low], out)
-
-    spot = near(3) if any(3 <= d <= 9 for d, _ in nodes) else (nodes[0][1] if nodes else None)
-    return {"nodes": nodes, "spot": spot, "cip_near": near(0), "key": key}
-
-
 def _cip_market(
-    near_spot: float | None,
+    near: list[float],
     rates_records: Iterable[dict],
     trade: dict,
     curve_date: dateType,
     min_trades: int,
     memo: dict,
-    key: tuple | None = None,
 ) -> dict | None:
     """Both legs' curves and a covered-interest-parity forward, when prints are sparse."""
-    if near_spot is None:
+    from statistics import median
+
+    if not near:
         return None
 
-    spot = near_spot
+    spot = median(near)
 
     if spot <= 0.0:
         return None
@@ -453,51 +341,20 @@ def _cip_market(
     def forward(years: float, _s=spot, _b=df_base, _q=df_quote) -> float:
         return _s * _b(years) / _q(years)
 
-    return {"spot": spot, "forward": forward, "df_base": df_base, "df_quote": df_quote, "key": key}
+    return {"spot": spot, "forward": forward, "df_base": df_base, "df_quote": df_quote}
 
 
-def fx_market(
-    fx_records: Iterable[dict],
+def _curve_market(
+    spot: float,
+    forward: Callable[[float], float],
     rates_records: Iterable[dict],
     trade: dict,
     curve_date: dateType,
-    min_trades: int = 1,
-    memo: dict | None = None,
+    min_trades: int,
+    memo: dict,
 ) -> dict | None:
-    """Spot, forward interpolator and both legs' discount curves for a pair, or None."""
-    from bisect import bisect_right
-
+    """Both legs' discount curves around an observed forward curve."""
     from openbb_cftc.utils.fx_vol import implied_df
-
-    memo = {} if memo is None else memo
-    curve = _peer_curve(fx_records, trade, curve_date, memo)
-    nodes = curve["nodes"]
-    key = (*curve["key"], min_trades)
-
-    if len(nodes) < MIN_FORWARD_NODES:
-        return _cip_market(curve["cip_near"], rates_records, trade, curve_date, min_trades, memo, key)
-
-    spot = curve["spot"]
-    days = [node[0] for node in nodes]
-
-    def forward(years: float, _nodes=nodes, _days=days) -> float:
-        target = years * 365.0
-
-        if target <= _days[0]:
-            return _nodes[0][1]
-
-        if target >= _days[-1]:
-            return _nodes[-1][1]
-
-        upper = bisect_right(_days, target)
-        day_low, rate_low = _nodes[upper - 1]
-        day_high, rate_high = _nodes[upper]
-        weight = (target - day_low) / (day_high - day_low)
-
-        return rate_low + weight * (rate_high - rate_low)
-
-    if spot is None or spot <= 0.0:
-        return _cip_market(curve["cip_near"], rates_records, trade, curve_date, min_trades, memo, key)
 
     df_base = _discount_for(rates_records, trade["base"], curve_date, min_trades, memo)
 
@@ -516,8 +373,47 @@ def fx_market(
 
         df_base = _base_df
 
-    # key: equal keys mean equal markets (same pair, anchor and left-out prints).
-    return {"spot": spot, "forward": forward, "df_base": df_base, "df_quote": df_quote, "key": key}
+    return {"spot": spot, "forward": forward, "df_base": df_base, "df_quote": df_quote}
+
+
+def fx_market(
+    fx_records: Iterable[dict],
+    rates_records: Iterable[dict],
+    trade: dict,
+    curve_date: dateType,
+    min_trades: int = 1,
+    memo: dict | None = None,
+) -> dict | None:
+    """Spot, forward interpolator and both legs' discount curves for a pair, or None."""
+    memo = {} if memo is None else memo
+    key = f"fx-market:{trade['pair']}:{curve_date.isoformat()}:{min_trades}"
+
+    if key in memo:
+        return memo[key]
+
+    curve = _pair_curve(fx_records, trade, curve_date, memo)
+    spot, forward = curve["spot"], curve["forward"]
+
+    if (
+        curve["nodes"] < MIN_FORWARD_NODES
+        or spot is None
+        or forward is None
+        or spot <= 0.0
+    ):
+        market = _cip_market(
+            curve["near"], rates_records, trade, curve_date, min_trades, memo
+        )
+    else:
+        market = _curve_market(
+            spot, forward, rates_records, trade, curve_date, min_trades, memo
+        )
+
+    if market is not None:
+        market["key"] = key
+
+    memo[key] = market
+
+    return market
 
 
 def value_fx_forward(trade: dict, market: dict) -> dict:
@@ -554,13 +450,10 @@ def option_vol(
         return None
 
     memo = {} if memo is None else memo
-    # The priced options depend only on the market and the family, and option
-    # prints never enter the forward curve, so every option print of a pair
-    # shares one market. Price the family once per market, not once per print.
-    cache = ("fx-optvol", market["key"], family) if market.get("key") else None
+    key = f"fx-options:{market['key']}:{family}" if market.get("key") else None
 
-    if cache is not None and cache in memo:
-        priced = memo[cache]
+    if key is not None and key in memo:
+        priced = memo[key]
     else:
         options = extract_vanilla_options(
             _pair_subset(fx_records, trade, memo),
@@ -573,8 +466,9 @@ def option_vol(
         priced = price_options(
             options, market["spot"], market["df_quote"], market["df_base"]
         )
-        if cache is not None:
-            memo[cache] = priced
+
+        if key is not None:
+            memo[key] = priced
 
     if not priced:
         return None
