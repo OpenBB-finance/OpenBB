@@ -11,7 +11,7 @@ from contextlib import asynccontextmanager, closing
 from datetime import date
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from pandas import DataFrame
@@ -1203,6 +1203,20 @@ class TestCacheLoop:
         # Kept, not closed: closing it in the child could undo the parent's work.
         assert inherited == [stores]
         stores.close.assert_not_called()
+
+    def test_a_forked_child_is_set_to_forget_the_loop(self):
+        """Where processes fork, a child is told to start over when it is born."""
+        register = MagicMock()
+
+        with patch.object(helpers, "os", SimpleNamespace(register_at_fork=register)):
+            helpers._forget_after_fork()
+
+        register.assert_called_once_with(after_in_child=helpers._forget_cache_loop)
+
+    def test_a_platform_that_cannot_fork_has_nothing_to_set(self):
+        """Windows has no ``os.register_at_fork``, and has no forked children either."""
+        with patch.object(helpers, "os", SimpleNamespace()):
+            helpers._forget_after_fork()
 
     @pytest.mark.skipif(not hasattr(os, "fork"), reason="needs os.fork")
     def test_a_forked_child_can_make_a_cached_request(self, cache_file, server):

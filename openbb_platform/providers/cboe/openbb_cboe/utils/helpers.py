@@ -483,8 +483,13 @@ def _forget_cache_loop() -> None:
     _stores = None
 
 
-if hasattr(os, "register_at_fork"):
-    os.register_at_fork(after_in_child=_forget_cache_loop)
+def _forget_after_fork() -> None:
+    """Have a forked child start over, on the platforms that can fork."""
+    if hasattr(os, "register_at_fork"):
+        os.register_at_fork(after_in_child=_forget_cache_loop)
+
+
+_forget_after_fork()
 
 
 async def get_cboe_data(url: str, use_cache: bool = True, **kwargs) -> Any:
