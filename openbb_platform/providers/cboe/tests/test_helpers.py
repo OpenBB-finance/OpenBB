@@ -1443,6 +1443,55 @@ class TestWriteAheadLogging:
             reader.execute("ROLLBACK")
             reader.close()
 
+    def test_each_statement_is_committed_as_it_runs(self, cache_file):
+        """The connection must not hold a transaction open between statements."""
+
+        async def isolation_level():
+            stores = helpers._new_backend()
+
+            try:
+                async with stores.responses.get_connection() as connection:
+                    return connection.isolation_level
+            finally:
+                await stores.close()
+
+        assert asyncio.run(isolation_level()) is None
+
+    def test_a_write_cancelled_before_its_commit_leaves_no_lock(self, cache_file):
+        """Another process can write at once, whatever became of the write.
+
+        A write is an ``INSERT`` and then, after the event loop has had a turn, a
+        ``COMMIT``. Cancelled in between, it used to leave the write lock held.
+        """
+
+        async def scenario():
+            stores = helpers._new_backend()
+
+            try:
+                reached = asyncio.Event()
+
+                async def commit_never_arrives(connection):
+                    reached.set()
+                    await asyncio.sleep(30)
+
+                with patch("aiosqlite.Connection.commit", commit_never_arrives):
+                    write = asyncio.create_task(stores.responses.write("key", "item"))
+                    await asyncio.wait_for(reached.wait(), timeout=10)
+                    write.cancel()
+
+                    with pytest.raises(asyncio.CancelledError):
+                        await write
+
+                with closing(
+                    sqlite3.connect(cache_file / "cboe.sqlite", timeout=0)
+                ) as another_process:
+                    another_process.execute("BEGIN IMMEDIATE")
+                    another_process.execute("ROLLBACK")
+            finally:
+                await stores.close()
+
+        asyncio.run(scenario())
+
     def test_a_file_that_cannot_be_switched_still_works(self, caplog):
         """A file that stays in its default mode is a slower cache, not a failure."""
 

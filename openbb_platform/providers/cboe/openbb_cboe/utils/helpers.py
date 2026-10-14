@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import os
+import sqlite3
 import threading
 from contextlib import asynccontextmanager
 from datetime import (
@@ -275,11 +276,30 @@ async def _use_wal(stores: Any) -> None:
         _logger.warning("The Cboe response cache is staying in %s mode", row)
 
 
+class _AutocommitConnection(sqlite3.Connection):
+    """A connection that commits each statement as it runs.
+
+    By default a write opens a transaction, takes the file's write lock, and only
+    gives it up when a second call, made after the event loop has had its turn,
+    commits it. Other processes wait out that gap, however long a busy machine
+    makes it, and a write cancelled inside it leaves the lock held until
+    something else commits.
+
+    The mode has to be set by the thread the connection lives on, and the library
+    drops ``isolation_level=None`` along with every other ``None`` argument, so it
+    is set here, where the library hands a connection ``factory`` its arguments.
+    """
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+        self.isolation_level = None
+
+
 def _new_backend() -> Any:
     """Build the SQLite stores of the response cache."""
     from aiohttp_client_cache import SQLiteBackend
 
-    return SQLiteBackend(cache_path(), autoclose=False)
+    return SQLiteBackend(cache_path(), autoclose=False, factory=_AutocommitConnection)
 
 
 async def _sweep_file() -> None:
