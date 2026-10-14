@@ -12,6 +12,8 @@ import json
 import logging
 import sys
 import threading
+import traceback
+from pathlib import Path
 
 from openbb_cboe.utils import helpers
 
@@ -40,7 +42,12 @@ async def request(number, turn):
 
         succeeded += 1
     except Exception as error:  # noqa: BLE001
-        failures[f"{type(error).__name__}: {error}"] += 1
+        frames = traceback.extract_tb(error.__traceback__)[-4:]
+        where = " <- ".join(
+            f"{Path(frame.filename).name}:{frame.lineno} {frame.name}"
+            for frame in reversed(frames)
+        )
+        failures[f"{type(error).__name__}: {error} (at {where})"] += 1
 
 
 def work(thread):
