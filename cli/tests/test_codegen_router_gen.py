@@ -365,3 +365,45 @@ def test_generate_routers_mixes_namespaces_and_root_commands():
     assert "async def ipos(" in out.routers[0].source
     assert len(out.root_commands) == 1
     assert "async def eod(" in out.root_commands[0]
+
+
+def test_generate_routers_command_that_is_also_a_namespace_lives_in_its_own_router():
+    """``/alerts`` (command) with ``/alerts/active`` (child) must not shadow the namespace."""
+    tree = nt.build_namespace_tree(
+        {
+            "alerts": {"providers": ["wx"], "description": "A specific alert."},
+            "alerts.active": {"providers": ["wx"], "description": "Active."},
+            "alerts.active.count": {"providers": ["wx"], "description": "Count."},
+        }
+    )
+    fetchers = {
+        path: _Fetcher(
+            module_name=path.replace(".", "_"),
+            fetcher_class="F",
+            model_name=rg._model_name_for(path),
+        )
+        for path in ("alerts", "alerts.active", "alerts.active.count")
+    }
+    out = rg.generate_routers(
+        tree,
+        package_name="pkg",
+        provider_name="wx",
+        fetchers_by_command=fetchers,
+        post_commands_by_command={},
+    )
+
+    by_module = {r.module_name: r for r in out.routers}
+    # Not mounted on the root router, where it would shadow ``alerts``.
+    assert out.root_commands == []
+    # Mounted on its own namespace router alongside the sub-router include.
+    assert 'model="Alerts")' in by_module["alerts"].source
+    assert "async def alerts(" in by_module["alerts"].source
+    assert (
+        'include_router(_active_router, prefix="/active")' in by_module["alerts"].source
+    )
+    # Nested namespace+command follows the same rule and no longer collides with its include.
+    assert "async def active(" not in by_module["alerts"].source
+    assert "async def active(" in by_module["alerts_active"].source
+    assert "async def count(" in by_module["alerts_active"].source
+    for r in out.routers:
+        ast.parse(r.source)
