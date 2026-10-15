@@ -7,6 +7,7 @@ import sqlite3
 import subprocess
 import sys
 import threading
+import time
 from contextlib import asynccontextmanager, closing
 from datetime import date
 from pathlib import Path
@@ -804,9 +805,10 @@ class _Cursor:
 class _Database:
     """Stand in for the aiosqlite connection: it reports a size and logs what it is told."""
 
-    def __init__(self, size=0, page_size=1):
+    def __init__(self, size=0, page_size=1, unused_pages=0):
         self.size = size
         self.page_size = page_size
+        self.unused_pages = unused_pages
         self.statements: list = []
 
     async def execute(self, statement):
@@ -815,6 +817,7 @@ class _Database:
         answers = {
             "PRAGMA page_count": (self.size // self.page_size,),
             "PRAGMA page_size": (self.page_size,),
+            "PRAGMA freelist_count": (self.unused_pages,),
             "PRAGMA journal_mode=WAL": ("wal",),
         }
 
@@ -872,7 +875,7 @@ class TestResponseCache:
 
     def test_a_file_over_the_limit_drops_its_oldest(self):
         """What the sweep leaves over the limit is trimmed by the overshoot."""
-        database = _Database(size=1000)
+        database = _Database(size=1000, unused_pages=1)
         dropped: list = []
 
         async def bulk_delete(keys):
@@ -915,11 +918,23 @@ class TestResponseCache:
 
     def test_a_vacuum_checkpoints_the_log(self):
         """Vacuumed pages only reach the disk, and free its space, once checkpointed."""
-        database = _Database()
+        database = _Database(unused_pages=3)
 
         asyncio.run(helpers._vacuum(_stores(database)))
 
-        assert database.statements == ["VACUUM", "PRAGMA wal_checkpoint(TRUNCATE)"]
+        assert database.statements == [
+            "PRAGMA freelist_count",
+            "VACUUM",
+            "PRAGMA wal_checkpoint(TRUNCATE)",
+        ]
+
+    def test_a_vacuum_with_nothing_to_give_back_does_not_run(self):
+        """Every process sweeps as it starts, and a vacuum rewrites the whole file."""
+        database = _Database(unused_pages=0)
+
+        asyncio.run(helpers._vacuum(_stores(database)))
+
+        assert database.statements == ["PRAGMA freelist_count"]
 
 
 class TestCacheLifecycle:
@@ -1016,6 +1031,39 @@ class TestCacheLifecycle:
         with self._stores(built):
             asyncio.run(scenario())
 
+        built[0].close.assert_awaited_once()
+
+    def test_a_close_is_not_lost_when_the_request_is_cancelled_again(self, cache_file):
+        """Ending the loop on a request that is closing must not leave the cache open.
+
+        ``asyncio.run`` cancels what is left when its main coroutine returns. A close
+        handed to a task that had not yet begun was lost with it, and the
+        connection, and its thread, stayed open.
+        """
+        built: list = []
+
+        async def scenario():
+            inside = asyncio.Event()
+
+            async def hold():
+                async with helpers.cache_backend():
+                    inside.set()
+                    await asyncio.sleep(30)
+
+            task = asyncio.create_task(hold())
+            await asyncio.wait_for(inside.wait(), timeout=10)
+            task.cancel()
+            # Returns at once: the request has not yet reached its close.
+
+        with self._stores(built):
+            asyncio.run(scenario())
+
+            deadline = time.monotonic() + 10
+
+            while helpers._stores is not None and time.monotonic() < deadline:
+                time.sleep(0.01)
+
+        assert helpers._stores is None
         built[0].close.assert_awaited_once()
 
     def test_the_file_is_swept_once_and_before_anything_opens_it(self, cache_file):
@@ -1263,12 +1311,15 @@ class TestSharedAcrossEventLoops:
     def test_threads_with_their_own_loops_share_one_cache(self, cache_file, server):
         """Concurrent callers all succeed, and what one fetched the others reuse."""
         threads, rounds, per_loop = 4, 4, 3
+        # What is under test is that callers succeed, not how fast, so the limit is
+        # for a caller that is stuck. A runner with a slow disk is not one.
+        patience = 60
 
         def wave(label):
             barrier = threading.Barrier(threads)
 
             async def burst():
-                barrier.wait(10)
+                barrier.wait(patience)
 
                 return await asyncio.wait_for(
                     asyncio.gather(
@@ -1277,13 +1328,13 @@ class TestSharedAcrossEventLoops:
                             for n in range(per_loop)
                         )
                     ),
-                    timeout=10,
+                    timeout=patience,
                 )
 
             workers = [_on_a_thread(burst) for _ in range(threads)]
 
             for worker, _ in workers:
-                worker.join(30)
+                worker.join(patience * 2)
 
             return [outcome for _, outcome in workers]
 
@@ -1456,6 +1507,21 @@ class TestWriteAheadLogging:
                 await stores.close()
 
         assert asyncio.run(isolation_level()) is None
+
+    def test_a_commit_does_not_wait_for_the_disk(self, cache_file):
+        """A commit that waits for the disk holds the write lock for as long as it takes."""
+        normal = 1
+
+        async def synchronous():
+            stores = helpers._new_backend()
+
+            try:
+                async with stores.responses.get_connection() as connection:
+                    return await helpers._pragma(connection, "PRAGMA synchronous")
+            finally:
+                await stores.close()
+
+        assert asyncio.run(synchronous()) == (normal,)
 
     def test_a_write_cancelled_before_its_commit_leaves_no_lock(self, cache_file):
         """Another process can write at once, whatever became of the write.

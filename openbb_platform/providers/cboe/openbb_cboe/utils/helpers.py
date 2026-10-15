@@ -240,8 +240,17 @@ async def _sweep(backend: Any) -> None:
 
 
 async def _vacuum(backend: Any) -> None:
-    """Give back the pages the deleted responses were held in."""
+    """Give back the pages the deleted responses were held in, if there are any.
+
+    A ``VACUUM`` rewrites the whole file while holding it, and every process
+    sweeps as it starts, so one that has nothing to give back must not run it.
+    """
     async with backend.responses.get_connection(commit=True) as connection:
+        (unused,) = await _pragma(connection, "PRAGMA freelist_count")
+
+        if not unused:
+            return
+
         await connection.execute("VACUUM")
         # In write-ahead mode the vacuumed file reaches the disk, and gives its
         # space back, only when the log is checkpointed.
@@ -276,30 +285,38 @@ async def _use_wal(stores: Any) -> None:
         _logger.warning("The Cboe response cache is staying in %s mode", row)
 
 
-class _AutocommitConnection(sqlite3.Connection):
-    """A connection that commits each statement as it runs.
+class _CacheConnection(sqlite3.Connection):
+    """A connection set up for a cache that many processes share.
 
-    By default a write opens a transaction, takes the file's write lock, and only
-    gives it up when a second call, made after the event loop has had its turn,
-    commits it. Other processes wait out that gap, however long a busy machine
-    makes it, and a write cancelled inside it leaves the lock held until
-    something else commits.
+    It commits each statement as it runs. By default a write opens a transaction,
+    takes the file's write lock, and only gives it up when a second call, made
+    after the event loop has had its turn, commits it. Other processes wait out
+    that gap, however long a busy machine makes it, and a write cancelled inside
+    it leaves the lock held until something else commits.
 
-    The mode has to be set by the thread the connection lives on, and the library
-    drops ``isolation_level=None`` along with every other ``None`` argument, so it
-    is set here, where the library hands a connection ``factory`` its arguments.
+    It does not wait for the disk after each commit either (``synchronous`` is
+    ``NORMAL``). A commit that waits holds the write lock for as long as the disk
+    takes, which on a slow one is long enough for every other process to give up
+    on the lock; what the wait buys is surviving a power cut, and a response that
+    is lost is fetched again.
+
+    Both have to be set by the thread the connection lives on, and the library
+    drops ``isolation_level=None`` along with every other ``None`` argument, so
+    they are set here, where the library hands a connection ``factory`` its
+    arguments.
     """
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.isolation_level = None
+        self.execute("PRAGMA synchronous = NORMAL")
 
 
 def _new_backend() -> Any:
     """Build the SQLite stores of the response cache."""
     from aiohttp_client_cache import SQLiteBackend
 
-    return SQLiteBackend(cache_path(), autoclose=False, factory=_AutocommitConnection)
+    return SQLiteBackend(cache_path(), autoclose=False, factory=_CacheConnection)
 
 
 async def _sweep_file() -> None:
@@ -459,7 +476,7 @@ async def cache_backend():
     """
     global _cache_users  # noqa: PLW0603
 
-    from asyncio import shield
+    from asyncio import run_coroutine_threadsafe, shield, wrap_future
 
     from openbb_cboe.utils.shared_cache import SharedCache
 
@@ -480,7 +497,11 @@ async def cache_backend():
         with _cache_lock:
             _cache_users -= 1
 
-        await shield(_on_cache_loop(_close()))
+        # Handed to the cache loop here and now, not by a task that could be
+        # cancelled, or whose loop could end, before it ever started: a close
+        # that is lost leaves the connection, and its thread, open for good.
+        closing = run_coroutine_threadsafe(_close(), _get_cache_loop())
+        await shield(wrap_future(closing))
 
 
 def _forget_cache_loop() -> None:
