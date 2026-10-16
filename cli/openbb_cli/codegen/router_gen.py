@@ -127,7 +127,7 @@ def generate_routers(
                 collected=out,
                 is_top_level=True,
             )
-        if top_node.cmd_spec is None:
+        if top_node.cmd_spec is None or top_node.is_namespace:
             continue
         function_name = _safe_segment(top_name)
         description = (top_node.cmd_spec.get("description") or "").strip()
@@ -153,6 +153,23 @@ def generate_routers(
             out.root_commands.append(
                 f'router.command(methods=["POST"])(_{post.function_name})\n'
             )
+    return out
+
+
+def _own_commands(node: NamespaceNode) -> list[tuple[str, NamespaceNode]]:
+    """Return ``(function_name, node)`` for every command a router module hosts.
+
+    Leaf children mount on their parent's router. A node that is both a
+    command and a namespace (e.g. ``/alerts`` and ``/alerts/{id}`` alongside
+    ``/alerts/active``) mounts its command on its *own* router, named after
+    itself; mounting it on the parent would shadow the namespace.
+    """
+    out: list[tuple[str, NamespaceNode]] = []
+    if node.is_command and node.is_namespace:
+        out.append((_safe_segment(node.name), node))
+    for child_name, child in sorted(node.children.items()):
+        if child.is_command and not child.is_namespace:
+            out.append((_safe_segment(child_name), child))
     return out
 
 
@@ -206,8 +223,7 @@ def _emit_router(
     has_stream = any(
         (fetcher := fetchers_by_command.get(child.full_path)) is not None
         and fetcher.is_streaming
-        for child in node.children.values()
-        if child.is_command and child.cmd_spec is not None
+        for _, child in _own_commands(node)
     )
     if has_stream:
         parts.append("from openbb_core.app.model.stream import OBBStream")
@@ -228,15 +244,13 @@ def _emit_router(
         sub_imports.append((sub_module, _safe_segment(sub_name), sub_node.full_path))
 
     post_imports: list[tuple[str, str]] = []
-    for child in node.children.values():
-        if child.is_command and child.cmd_spec is not None:
-            post = post_commands_by_command.get(child.full_path)
-            if post is not None:
-                post_module = (
-                    f"{package_name}.providers.{provider_name}.models."
-                    f"{post.module_name}"
-                )
-                post_imports.append((post_module, post.function_name))
+    for _, child in _own_commands(node):
+        post = post_commands_by_command.get(child.full_path)
+        if post is not None:
+            post_module = (
+                f"{package_name}.providers.{provider_name}.models.{post.module_name}"
+            )
+            post_imports.append((post_module, post.function_name))
 
     if post_imports:
         parts.append("")
@@ -265,10 +279,9 @@ def _emit_router(
     if sub_imports:
         parts.append("")
 
-    for child_name, child in sorted(node.children.items()):
-        if not child.is_command or child.cmd_spec is None:
+    for function_name, child in _own_commands(node):
+        if child.cmd_spec is None:
             continue
-        function_name = _safe_segment(child_name)
         description = (child.cmd_spec.get("description") or "").strip()
         fetcher = fetchers_by_command.get(child.full_path)
         if fetcher is not None:
