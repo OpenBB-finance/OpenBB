@@ -59,12 +59,15 @@ class GeneratedRouters:
 def _safe_segment(name: str) -> str:
     """Lower-case + replace non-alphanumerics with underscores.
 
-    A result that starts with a digit or is a Python keyword gets a leading
-    underscore so it stays a valid function and module identifier.
+    A result that starts with a digit gets a leading underscore and a Python
+    keyword gets a trailing one (as pydantic_gen does for field names), so it
+    stays a valid function and module identifier.
     """
     cleaned = (re.sub(r"[^0-9a-zA-Z]+", "_", name).strip("_") or "ns").lower()
-    if cleaned[0].isdigit() or keyword.iskeyword(cleaned):
+    if cleaned[0].isdigit():
         cleaned = f"_{cleaned}"
+    elif keyword.iskeyword(cleaned):
+        cleaned = f"{cleaned}_"
     return cleaned
 
 

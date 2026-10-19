@@ -409,10 +409,10 @@ def test_generate_routers_command_that_is_also_a_namespace_lives_in_its_own_rout
         ast.parse(r.source)
 
 
-def test_safe_segment_prefixes_digit_and_keyword_names():
+def test_safe_segment_prefixes_digits_and_suffixes_keywords():
     assert rg._safe_segment("24hr") == "_24hr"
-    assert rg._safe_segment("class") == "_class"
-    assert rg._safe_segment("Return") == "_return"
+    assert rg._safe_segment("class") == "class_"
+    assert rg._safe_segment("Return") == "return_"
 
 
 def test_generate_routers_digit_and_keyword_commands_are_valid_python():
@@ -443,6 +443,6 @@ def test_generate_routers_digit_and_keyword_commands_are_valid_python():
         ast.parse(router.source)
     for block in out.root_commands:
         ast.parse(block)
-    assert "async def _24hr(" in "".join(r.source for r in out.routers) + "".join(
-        out.root_commands
-    )
+    generated = "".join(r.source for r in out.routers) + "".join(out.root_commands)
+    assert "async def _24hr(" in generated
+    assert "async def class_(" in generated
