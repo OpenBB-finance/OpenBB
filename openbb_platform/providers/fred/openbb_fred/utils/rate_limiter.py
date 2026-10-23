@@ -1,19 +1,4 @@
-"""Process-wide FRED API rate limiter, in-memory cache, and request helper.
-
-Every FRED API request in this provider should be routed through `fred_get`.
-The helper provides:
-
-* A global minimum-interval throttle (default 600 ms ≈ 100 req/min), well
-  below FRED's 120 req/min ceiling.
-* Auto-retry on HTTP 429 with `Retry-After` / exponential backoff, so
-  transient throttling does not surface as an error.
-* An in-memory TTL LRU cache so that repeated identical requests (typical
-  when a user refreshes or re-opens widgets) reuse the prior response.
-* Single-flight de-duplication: concurrent callers asking for the same URL
-  share a single in-flight request instead of fanning out duplicates.
-"""
-
-# pylint: disable=import-outside-toplevel
+"""Process-wide FRED API rate limiter, in-memory cache, and request helper."""
 
 from __future__ import annotations
 
@@ -83,15 +68,13 @@ class _RateLimitedResponse(Exception):
 
 def _cache_key(url: str) -> str:
     """Build a cache key from a URL, stripping the API key."""
-    return _API_KEY_RE.sub(r"\1api_key=__redacted__", url)
+    from openbb_fred.utils.cache import redact
+
+    return redact(url)
 
 
 def _cache_get(key: str) -> Any:
-    """Return a cached value if present and not expired, else None.
-
-    Returns a deep copy so downstream mutation of dicts / lists does not
-    corrupt subsequent cache hits.
-    """
+    """Return a cached value if present and not expired, else None."""
     if CACHE_TTL_SECONDS <= 0 or CACHE_MAX_ENTRIES <= 0:
         return None
     with _cache_lock:
@@ -127,7 +110,7 @@ def cache_clear() -> None:
 
 async def acquire() -> None:
     """Enforce a minimum gap between successive FRED API requests."""
-    global _last_request_at  # noqa: PLW0603  # pylint: disable=global-statement
+    global _last_request_at  # noqa: PLW0603
     while True:
         with _throttle_lock:
             now = time.monotonic()
@@ -217,11 +200,7 @@ async def fred_get(
     use_cache: bool = True,
     **kwargs: Any,
 ) -> Any:
-    """Throttled, retrying, cached GET wrapper around `amake_request` for FRED.
-
-    Concurrent calls for the same URL share a single in-flight request so
-    duplicates collapse into one upstream API call.
-    """
+    """Throttled, retrying, cached GET wrapper around `amake_request` for FRED."""
     retries = MAX_RETRIES if max_retries is None else max_retries
     cache_key = _cache_key(url) if use_cache else None
 
@@ -229,6 +208,14 @@ async def fred_get(
         cached = _cache_get(cache_key)
         if cached is not None:
             return cached
+
+        from openbb_fred.utils.cache import disk_get
+
+        stored = await disk_get(url)
+
+        if stored is not None:
+            _cache_set(cache_key, stored)
+            return copy.deepcopy(stored)
 
     inflight_key: tuple[int, str] | None = None
     future: asyncio.Future | None = None
@@ -263,6 +250,7 @@ async def fred_get(
     except BaseException as exc:
         if future is not None and owner and not future.done():
             future.set_exception(exc)
+            future.exception()
         raise
     finally:
         if inflight_key is not None and owner:
@@ -270,7 +258,10 @@ async def fred_get(
                 _inflight.pop(inflight_key, None)
 
     if cache_key is not None and _is_cacheable(result):
+        from openbb_fred.utils.cache import disk_set
+
         _cache_set(cache_key, result)
+        await disk_set(url, result)
 
     if future is not None and owner and not future.done():
         future.set_result(result)
@@ -286,30 +277,47 @@ async def fred_get_many(
     use_cache: bool = True,
     **kwargs: Any,
 ) -> list[Any]:
-    """Issue many FRED requests under the global rate limit and cache."""
-    tasks = [
-        fred_get(
-            url,
-            response_callback=response_callback,
-            use_cache=use_cache,
-            **kwargs,
-        )
-        for url in urls
-    ]
-    results = await asyncio.gather(*tasks, return_exceptions=True)
+    """Issue many FRED requests under the global rate limit and cache.
 
-    cleaned: list[Any] = []
-    first_error: Exception | None = None
-    for result in results:
-        if isinstance(result, Exception):
-            if return_exceptions:
-                cleaned.append(result)
-            elif first_error is None:
-                first_error = result
-            continue
-        cleaned.append(result)
+    Parameters
+    ----------
+    urls : list[str]
+        The request URLs.
+    response_callback : Callable or None
+        A reader for the raw response, used in place of the JSON decoder.
+    return_exceptions : bool
+        Whether a failed request is returned in place rather than raised.
+    use_cache : bool
+        Whether to read and write the response cache.
+    **kwargs : Any
+        Any further arguments the transport accepts.
 
-    if first_error is not None and not cleaned:
-        raise first_error
+    Returns
+    -------
+    list[Any]
+        One entry per URL, in the order asked for.
 
-    return cleaned
+    Raises
+    ------
+    Exception
+        The first failure, unless ``return_exceptions`` is set.
+    """
+    results = await asyncio.gather(
+        *(
+            fred_get(
+                url,
+                response_callback=response_callback,
+                use_cache=use_cache,
+                **kwargs,
+            )
+            for url in urls
+        ),
+        return_exceptions=True,
+    )
+
+    if not return_exceptions:
+        for result in results:
+            if isinstance(result, BaseException):
+                raise result
+
+    return list(results)

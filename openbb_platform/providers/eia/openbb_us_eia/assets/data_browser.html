@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EIA Data Browser</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --panel: #f6f7f9;
+    --panel-hover: #eef0f3;
+    --border: #e2e5ea;
+    --text: #1a1d21;
+    --muted: #626873;
+    --accent: #0b6db3;
+    --chip: #e7eef5;
+  }
+  html[data-theme="dark"] {
+    --bg: #14171c;
+    --panel: #1c2027;
+    --panel-hover: #232833;
+    --border: #2b313b;
+    --text: #e7eaee;
+    --muted: #98a0ac;
+    --accent: #4aa3df;
+    --chip: #263140;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; background: var(--bg); color: var(--text); }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, sans-serif;
+    font-size: 13.5px;
+  }
+  .site-bar {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 12px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+  }
+  .home-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 3px 10px;
+    font: 600 11.5px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    cursor: pointer;
+  }
+  .home-btn:hover { border-color: var(--accent); background: var(--panel-hover); }
+
+  .frame {
+    border: 0;
+    width: 100%;
+    height: calc(100vh - 30px);
+    display: block;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .frame.ready { opacity: 1; }
+
+  .maps { display: flex; height: 100vh; }
+  .side {
+    width: 320px;
+    min-width: 240px;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    background: var(--panel);
+  }
+  .side .search { padding: 10px; border-bottom: 1px solid var(--border); }
+  .side .search input {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+    outline: none;
+  }
+  .side .search input:focus { border-color: var(--accent); }
+  .side .items { flex: 1; overflow-y: auto; padding: 6px; }
+  .group-tab { color: var(--muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; margin: 12px 6px 2px; }
+  .group-sec { color: var(--accent); font-size: 11.5px; font-weight: 600; margin: 8px 6px 3px; }
+  .map-item {
+    padding: 7px 9px;
+    border-radius: 7px;
+    cursor: pointer;
+    margin: 1px 0;
+  }
+  .map-item:hover { background: var(--panel-hover); }
+  .map-item.active { background: var(--chip); }
+  .map-item .t { font-size: 12.5px; font-weight: 500; }
+  .map-item .d { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .main-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .main-head .title { font-weight: 600; font-size: 14.5px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .main-head .chip { background: var(--chip); color: var(--muted); border-radius: 6px; padding: 2px 8px; font-size: 11.5px; white-space: nowrap; }
+  .main-head a { color: var(--accent); font-size: 12.5px; text-decoration: none; white-space: nowrap; }
+  .main-head a:hover { text-decoration: underline; }
+  .doc { flex: 1; overflow: auto; min-height: 0; }
+  .pdf-wrap { padding: 12px; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  .pdf-wrap canvas {
+    display: block;
+    width: 100%;
+    max-width: 1400px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: #fff;
+  }
+  .site-loading {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    z-index: 5;
+  }
+  .doc-status { color: var(--muted); padding: 32px 0; text-align: center; }
+  .doc-status a { color: var(--accent); }
+  .empty { color: var(--muted); padding: 40px; text-align: center; }
+  * { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+
+  .pdf-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(0, 0, 0, 0.62);
+    display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  .pdf-overlay.open { display: flex; }
+  .pdf-dialog {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+    width: 100%; max-width: 1000px; height: 92vh;
+    display: flex; flex-direction: column; overflow: hidden;
+    box-shadow: 0 14px 44px rgba(0, 0, 0, 0.45);
+  }
+  .pdf-bar {
+    display: flex; align-items: center; gap: 16px;
+    padding: 8px 12px; border-bottom: 1px solid var(--border);
+    background: var(--panel); font-size: 13px;
+  }
+  .pdf-grp { display: flex; align-items: center; gap: 6px; }
+  .pdf-bar button {
+    background: var(--panel-hover); color: var(--text); border: 1px solid var(--border);
+    border-radius: 6px; height: 28px; min-width: 30px; padding: 0 9px;
+    cursor: pointer; font-size: 14px; line-height: 1;
+  }
+  .pdf-bar button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+  .pdf-bar button:disabled { opacity: 0.4; cursor: default; }
+  .pdf-page, .pdf-zoom {
+    min-width: 62px; text-align: center; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .pdf-dl { margin-left: auto; color: var(--accent); text-decoration: none; font-weight: 600; }
+  .pdf-dl:hover { text-decoration: underline; }
+  .pdf-body {
+    flex: 1; min-height: 0; overflow: auto; padding: 16px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .pdf-body canvas { background: #fff; box-shadow: 0 1px 8px rgba(0, 0, 0, 0.35); max-width: 100%; }
+  .pdf-status { padding: 40px 16px; text-align: center; color: var(--muted); }
+  .pdf-status a { color: var(--accent); }
+</style>
+</head>
+<body>
+<script id="browser-data" type="application/json">__EIA_BROWSER_DATA__</script>
+<script>
+  (function () {
+    var DATA = JSON.parse(document.getElementById("browser-data").textContent);
+    var DARK = DATA.theme !== "light";
+    document.documentElement.setAttribute("data-theme", DARK ? "dark" : "light");
+
+    openbbProtocol();
+
+    if (DATA.mode === "site") {
+      renderSite();
+    } else {
+      renderMaps();
+    }
+
+    function openbbProtocol() {
+      var target = window.top || window.parent;
+      if (!target || target === window) return;
+
+      var isMaps = DATA.mode === "maps";
+      var widgetId = "eia_" + DATA.browser + "_table";
+      var manifests = [
+        {
+          widgetId: widgetId,
+          name: isMaps
+            ? "EIA Oil & Natural Gas Maps"
+            : "EIA " + DATA.label + " Browser Table",
+          description: DATA.description,
+          category: "EIA",
+          subCategory: "Data Browsers",
+          dataType: "table",
+        },
+      ];
+      var authHeaders = {};
+
+      function publish(rows) {
+        target.postMessage(
+          {
+            type: "openbb-data",
+            widgetId: widgetId,
+            dataType: "table",
+            data: rows,
+          },
+          "*"
+        );
+      }
+
+      function parseParams(msg) {
+        if (!msg) return {};
+        if (msg.params && typeof msg.params === "object") return msg.params;
+        if (msg.paramName) {
+          var single = {};
+          single[msg.paramName] = msg.value;
+          return single;
+        }
+        return {};
+      }
+
+      function asBool(value) {
+        if (typeof value === "boolean") return value;
+        if (typeof value === "number") return value !== 0;
+        if (typeof value === "string") {
+          var v = value.toLowerCase();
+          return v === "true" || v === "1" || v === "yes";
+        }
+        return false;
+      }
+
+      function themedUrl(rawUrl, theme) {
+        try {
+          var u = new URL(rawUrl, window.location.origin);
+          u.searchParams.set("obb_theme", theme === "light" ? "light" : "dark");
+          return u.toString();
+        } catch (e) {
+          return rawUrl;
+        }
+      }
+
+      function applyTheme(theme) {
+        var mode = theme === "light" ? "light" : "dark";
+        DATA.theme = mode;
+        document.documentElement.setAttribute("data-theme", mode);
+        var frame = window.__eiaFrame;
+        if (!frame) return;
+        frame.src = themedUrl(frame.src || DATA.src, mode);
+      }
+
+      function sendData() {
+        publish(Array.isArray(window.__eiaTable) ? window.__eiaTable : []);
+      }
+
+      window.__eiaPublish = function (rows) {
+        window.__eiaTable = rows;
+        publish(rows);
+      };
+
+      window.addEventListener("message", function (event) {
+        var msg = event.data;
+        if (!msg || !msg.type) return;
+        if (msg.type === "openbb-request") {
+          if (msg.widgetId === null || msg.widgetId === widgetId) sendData();
+        } else if (msg.type === "openbb-params-update") {
+          var params = parseParams(msg);
+          if (params.theme !== undefined) applyTheme(params.theme);
+          if (params.raw !== undefined && asBool(params.raw)) {
+            sendData();
+          }
+        } else if (msg.type === "openbb-auth") {
+          authHeaders = msg.headers && typeof msg.headers === "object" ? msg.headers : {};
+          window.__eiaPendingAuth = authHeaders;
+          if (typeof window.__eiaSetAuth === "function") window.__eiaSetAuth(authHeaders);
+        }
+      });
+
+      target.postMessage(
+        { type: "openbb-connect", widgets: manifests, params: [] },
+        "*"
+      );
+    }
+
+    function renderSite() {
+      var bar = document.createElement("div");
+      bar.className = "site-bar";
+      document.body.appendChild(bar);
+
+      var status = document.createElement("div");
+      status.className = "site-loading";
+      status.textContent = "Loading EIA data browser…";
+      document.body.appendChild(status);
+
+      var authHeaders = {};
+      var storeKey = function () {
+        return "eia:view:" + DATA.browser + ":" + (DATA.user || "");
+      };
+      function saved() {
+        try {
+          var v = window.localStorage.getItem(storeKey());
+          return v ? JSON.parse(v) : null;
+        } catch (e) {
+          return null;
+        }
+      }
+      function remember(nav) {
+        try { window.localStorage.setItem(storeKey(), JSON.stringify(nav)); } catch (e) {}
+      }
+      function forwardAuth() {
+        if (!frame || !frame.contentWindow) return;
+        frame.contentWindow.postMessage({ type: "openbb-auth", headers: authHeaders }, "*");
+      }
+
+      function restoredSrc() {
+        var nav = saved();
+        if (!nav || !nav.pathname || nav.pathname.indexOf("/eia_proxy/") < 0) return DATA.src;
+        try {
+          var base = new URL(DATA.src);
+          var params = new URLSearchParams(base.search);
+          new URLSearchParams(nav.search || "").forEach(function (v, k) {
+            if (k.indexOf("obb_") !== 0) params.set(k, v);
+          });
+          var q = params.toString();
+          return base.origin + nav.pathname + (q ? "?" + q : "") + (nav.hash || "");
+        } catch (e) {
+          return DATA.src;
+        }
+      }
+
+      function reportView(nav) {
+        try {
+          if (!DATA.path || !DATA.proxy) return;
+          var tail = nav.pathname.split("/eia_proxy/")[1];
+          if (!tail) return;
+          var view = tail + (nav.search || "") + (nav.hash || "");
+          var url =
+            DATA.proxy.replace(/\/eia_proxy$/, "/eia_view") +
+            "?obb_browser=" + encodeURIComponent(DATA.path) +
+            (DATA.user ? "&obb_user=" + encodeURIComponent(DATA.user) : "") +
+            "&obb_view=" + encodeURIComponent(view) +
+            "&obb_seq=" + String(Date.now());
+          var hasAuth = Object.keys(authHeaders || {}).length > 0;
+          if (!hasAuth && navigator.sendBeacon) {
+            navigator.sendBeacon(url);
+          } else {
+            fetch(url, { method: "POST", headers: authHeaders }).catch(function () {});
+          }
+        } catch (e) {}
+      }
+
+      var frame = document.createElement("iframe");
+      frame.className = "frame";
+      frame.src = restoredSrc();
+      frame.setAttribute("referrerpolicy", "same-origin");
+      frame.setAttribute("allow", "fullscreen");
+      window.__eiaFrame = frame;
+
+      function goHome() {
+        try { window.localStorage.removeItem(storeKey()); } catch (e) {}
+        try {
+          var u = new URL(DATA.home);
+          reportView({ pathname: u.pathname, search: u.search, hash: u.hash });
+        } catch (e) {}
+        frame.classList.remove("ready");
+        revealed = false;
+        frame.src = "about:blank";
+        requestAnimationFrame(function () { frame.src = DATA.home; });
+      }
+      window.__eiaGoHome = goHome;
+
+      var home = document.createElement("button");
+      home.className = "home-btn";
+      home.type = "button";
+      home.title = "Reset " + DATA.label + " to its default view";
+      home.innerHTML = "&#8962; Home";
+      home.addEventListener("click", goHome);
+      bar.appendChild(home);
+
+      var revealed = false;
+      function nudge() {
+        // The grids compute their canvas from the frame's size; on a fast
+        // (cached) restore they lay out before the frame is visible and paint
+        // an empty viewport. A resize once it is shown makes them repaint.
+        try {
+          var w = frame.contentWindow;
+          if (!w) return;
+          [0, 150, 400, 900].forEach(function (delay) {
+            setTimeout(function () {
+              try { w.dispatchEvent(new Event("resize")); } catch (e) {}
+            }, delay);
+          });
+        } catch (e) {}
+      }
+      function ready() {
+        if (revealed) return;
+        revealed = true;
+        status.remove();
+        frame.classList.add("ready");
+        nudge();
+      }
+      setTimeout(ready, 20000);
+      frame.addEventListener("load", ready);
+      frame.addEventListener("load", forwardAuth);
+
+      window.__eiaSetAuth = function (headers) {
+        authHeaders = headers && typeof headers === "object" ? headers : {};
+        forwardAuth();
+      };
+      if (window.__eiaPendingAuth && typeof window.__eiaPendingAuth === "object") {
+        window.__eiaSetAuth(window.__eiaPendingAuth);
+      }
+
+      window.addEventListener("message", function (event) {
+        if (event.source !== frame.contentWindow) return;
+        var msg = event.data;
+        if (!msg) return;
+        if (msg.type === "eia:ready") ready();
+        else if (msg.type === "eia:pdf" && msg.src) openPdfModal(msg.src);
+        else if (msg.type === "eia:nav" && msg.pathname) {
+          var nav = {
+            pathname: msg.pathname,
+            search: msg.search || "",
+            hash: msg.hash || "",
+          };
+          remember(nav);
+          reportView(nav);
+          window.__eiaTable = null;
+        } else if (msg.type === "eia:table" && msg.rows && msg.rows.length) {
+          if (window.__eiaPublish) window.__eiaPublish(msg.rows);
+          else window.__eiaTable = msg.rows;
+          if (revealed) nudge();
+        }
+      });
+
+      document.body.appendChild(frame);
+    }
+
+    function esc(s) {
+      var d = document.createElement("div");
+      d.textContent = s == null ? "" : String(s);
+      return d.innerHTML;
+    }
+
+    var PDFJS_BASE = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/";
+    var pdfjsPromise = null;
+    function loadPdfjs() {
+      if (!pdfjsPromise) {
+        pdfjsPromise = import(PDFJS_BASE + "pdf.min.mjs").then(function (lib) {
+          lib.GlobalWorkerOptions.workerSrc = PDFJS_BASE + "pdf.worker.min.mjs";
+          return lib;
+        }).catch(function (err) {
+          pdfjsPromise = null;
+          throw err;
+        });
+      }
+      return pdfjsPromise;
+    }
+
+    var pdfModal = null;
+    function openPdfModal(src) {
+      if (!pdfModal) pdfModal = buildPdfModal();
+      pdfModal.open(src);
+    }
+
+    function buildPdfModal() {
+      var overlay = document.createElement("div");
+      overlay.className = "pdf-overlay";
+      overlay.innerHTML =
+        '<div class="pdf-dialog">' +
+        '<div class="pdf-bar">' +
+        '<div class="pdf-grp"><button class="pdf-prev" title="Previous page" disabled>&#9664;</button>' +
+        '<span class="pdf-page">&ndash; / &ndash;</span>' +
+        '<button class="pdf-next" title="Next page" disabled>&#9654;</button></div>' +
+        '<div class="pdf-grp"><button class="pdf-out" title="Zoom out" disabled>&minus;</button>' +
+        '<span class="pdf-zoom">&ndash;</span>' +
+        '<button class="pdf-in" title="Zoom in" disabled>+</button>' +
+        '<button class="pdf-fit" title="Fit width" disabled>Fit</button></div>' +
+        '<a class="pdf-dl" target="_blank" rel="noopener">Open in new tab &#8599;</a>' +
+        '<button class="pdf-close" title="Close">&times;</button>' +
+        "</div>" +
+        '<div class="pdf-body"><div class="pdf-status">Loading document&hellip;</div></div>' +
+        "</div>";
+      document.body.appendChild(overlay);
+
+      var body = overlay.querySelector(".pdf-body");
+      var pageEl = overlay.querySelector(".pdf-page");
+      var zoomEl = overlay.querySelector(".pdf-zoom");
+      var dlEl = overlay.querySelector(".pdf-dl");
+      var btnPrev = overlay.querySelector(".pdf-prev");
+      var btnNext = overlay.querySelector(".pdf-next");
+      var btnIn = overlay.querySelector(".pdf-in");
+      var btnOut = overlay.querySelector(".pdf-out");
+      var btnFit = overlay.querySelector(".pdf-fit");
+      var doc = null, pageNum = 1, zoom = null, lastScale = 1, token = 0, rendering = false;
+
+      function render() {
+        if (!doc || rendering) return;
+        rendering = true;
+        var my = token;
+        doc.getPage(pageNum).then(function (page) {
+          if (my !== token) { rendering = false; return null; }
+          var dpr = Math.min(window.devicePixelRatio || 1, 2);
+          var natural = page.getViewport({ scale: 1 });
+          var scale = zoom === null ? (body.clientWidth - 40) / natural.width : zoom;
+          scale = Math.max(0.2, Math.min(scale, 5));
+          lastScale = scale;
+          var vp = page.getViewport({ scale: scale * dpr });
+          var canvas = document.createElement("canvas");
+          canvas.width = vp.width;
+          canvas.height = vp.height;
+          canvas.style.width = vp.width / dpr + "px";
+          canvas.style.height = vp.height / dpr + "px";
+          return page.render({ canvasContext: canvas.getContext("2d"), viewport: vp }).promise.then(function () {
+            if (my !== token) { rendering = false; return; }
+            body.innerHTML = "";
+            body.appendChild(canvas);
+            body.scrollTop = 0;
+            pageEl.textContent = pageNum + " / " + doc.numPages;
+            zoomEl.textContent = Math.round(scale * 100) + "%";
+            btnPrev.disabled = pageNum <= 1;
+            btnNext.disabled = pageNum >= doc.numPages;
+            rendering = false;
+          });
+        }).catch(function () { rendering = false; });
+      }
+
+      function close() {
+        token += 1;
+        overlay.classList.remove("open");
+        body.innerHTML = "";
+        doc = null;
+      }
+
+      btnPrev.addEventListener("click", function () { if (pageNum > 1) { pageNum -= 1; render(); } });
+      btnNext.addEventListener("click", function () { if (doc && pageNum < doc.numPages) { pageNum += 1; render(); } });
+      btnIn.addEventListener("click", function () { zoom = lastScale * 1.25; render(); });
+      btnOut.addEventListener("click", function () { zoom = lastScale * 0.8; render(); });
+      btnFit.addEventListener("click", function () { zoom = null; render(); });
+      overlay.querySelector(".pdf-close").addEventListener("click", close);
+      overlay.addEventListener("click", function (e) { if (e.target === overlay) close(); });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && overlay.classList.contains("open")) close();
+      });
+      window.addEventListener("resize", function () { if (zoom === null) render(); });
+
+      function open(src) {
+        token += 1;
+        var my = token;
+        pageNum = 1;
+        zoom = null;
+        doc = null;
+        dlEl.href = src;
+        [btnPrev, btnNext, btnIn, btnOut, btnFit].forEach(function (b) { b.disabled = true; });
+        body.innerHTML = '<div class="pdf-status">Loading document&hellip;</div>';
+        overlay.classList.add("open");
+        Promise.all([
+          loadPdfjs(),
+          fetch(src, { credentials: "same-origin" }).then(function (r) {
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return r.arrayBuffer();
+          }),
+        ]).then(function (loaded) {
+          if (my !== token) return null;
+          return loaded[0].getDocument({ data: loaded[1] }).promise.then(function (pdf) {
+            if (my !== token) return null;
+            doc = pdf;
+            [btnIn, btnOut, btnFit].forEach(function (b) { b.disabled = false; });
+            render();
+          });
+        }).catch(function () {
+          if (my !== token) return;
+          body.innerHTML =
+            '<div class="pdf-status">Unable to render this document here. ' +
+            '<a href="' + esc(src) + '" target="_blank" rel="noopener">Open in a new tab &#8599;</a></div>';
+        });
+      }
+
+      return { open: open };
+    }
+
+    function renderMaps() {
+      var root = document.createElement("div");
+      root.className = "maps";
+      root.innerHTML =
+        '<div class="side">' +
+        '<div class="search"><input id="q" type="search" placeholder="Filter maps…" /></div>' +
+        '<div class="items" id="items"></div>' +
+        "</div>" +
+        '<div class="main">' +
+        '<div class="main-head" id="head" style="display:none">' +
+        '<span class="title" id="h-title"></span>' +
+        '<span class="chip" id="h-date"></span>' +
+        '<a id="h-open" target="_blank" rel="noopener">Open PDF ↗</a>' +
+        "</div>" +
+        '<div class="doc" id="doc"><div class="empty">Select a map to view it.</div></div>' +
+        "</div>";
+      document.body.appendChild(root);
+
+      var itemsEl = document.getElementById("items");
+      var docEl = document.getElementById("doc");
+      var openToken = 0;
+      var activeEl = null;
+
+      function buildList(filter) {
+        itemsEl.innerHTML = "";
+        var lastTab = null;
+        var lastSec = null;
+        var shown = 0;
+        DATA.maps.forEach(function (m) {
+          var hay = (m.title + " " + m.section + " " + m.tab).toLowerCase();
+          if (filter && hay.indexOf(filter) === -1) return;
+          if (m.tab !== lastTab) {
+            lastTab = m.tab;
+            lastSec = null;
+            var tabEl = document.createElement("div");
+            tabEl.className = "group-tab";
+            tabEl.textContent = m.tab;
+            itemsEl.appendChild(tabEl);
+          }
+          if (m.section !== lastSec) {
+            lastSec = m.section;
+            var secEl = document.createElement("div");
+            secEl.className = "group-sec";
+            secEl.textContent = m.section;
+            itemsEl.appendChild(secEl);
+          }
+          var el = document.createElement("div");
+          el.className = "map-item";
+          el.innerHTML = '<div class="t">' + esc(m.title) + '</div><div class="d">' + esc(m.date) + "</div>";
+          el.addEventListener("click", function () { select(m, el); });
+          itemsEl.appendChild(el);
+          shown += 1;
+        });
+        if (!shown) {
+          itemsEl.innerHTML = '<div class="empty">No maps match.</div>';
+        }
+      }
+
+      function select(m, el) {
+        if (activeEl) activeEl.classList.remove("active");
+        activeEl = el;
+        if (el) el.classList.add("active");
+        openToken += 1;
+        var token = openToken;
+        document.getElementById("head").style.display = "flex";
+        document.getElementById("h-title").textContent = m.title;
+        document.getElementById("h-date").textContent = m.date || "";
+        document.getElementById("h-date").style.display = m.date ? "" : "none";
+        document.getElementById("h-open").href = "https://www.eia.gov" + (m.pdf || m.image);
+        docEl.innerHTML = "";
+        var wrap = document.createElement("div");
+        wrap.className = "pdf-wrap";
+        wrap.innerHTML = '<div class="doc-status">Downloading document…</div>';
+        docEl.appendChild(wrap);
+        var src = DATA.proxy + (m.pdf || m.image);
+        if (!m.pdf) {
+          var img = document.createElement("img");
+          img.src = src;
+          img.style.maxWidth = "100%";
+          wrap.innerHTML = "";
+          wrap.appendChild(img);
+          return;
+        }
+        Promise.all([
+          loadPdfjs(),
+          fetch(src, { credentials: "same-origin" }).then(function (r) {
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return r.arrayBuffer();
+          }),
+        ]).then(function (loaded) {
+          if (token !== openToken) return null;
+          return loaded[0].getDocument({ data: loaded[1] }).promise.then(function (pdf) {
+            if (token !== openToken) return null;
+            wrap.innerHTML = "";
+            var dpr = Math.min(window.devicePixelRatio || 1, 2);
+            var width = Math.max((docEl.getBoundingClientRect().width || 820) - 26, 480);
+
+            function renderPage(num) {
+              if (token !== openToken || num > pdf.numPages) return null;
+              return pdf.getPage(num).then(function (page) {
+                if (token !== openToken) return null;
+                var scale = width / page.getViewport({ scale: 1 }).width;
+                var viewport = page.getViewport({ scale: scale * dpr });
+                var canvas = document.createElement("canvas");
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                wrap.appendChild(canvas);
+                return page.render({
+                  canvasContext: canvas.getContext("2d"),
+                  viewport: viewport,
+                }).promise.then(function () {
+                  return renderPage(num + 1);
+                });
+              });
+            }
+            return renderPage(1);
+          });
+        }).catch(function () {
+          if (token !== openToken) return;
+          wrap.innerHTML =
+            '<div class="doc-status">Unable to render the document here. ' +
+            '<a href="https://www.eia.gov' + esc(m.pdf) + '" target="_blank" rel="noopener">Open it in a new tab ↗</a></div>';
+        });
+      }
+
+      document.getElementById("q").addEventListener("input", function (e) {
+        buildList(e.target.value.trim().toLowerCase());
+      });
+      buildList("");
+      requestAnimationFrame(function () {
+        var first = itemsEl.querySelector(".map-item");
+        if (first) first.click();
+      });
+    }
+  })();
+</script>
+</body>
+</html>

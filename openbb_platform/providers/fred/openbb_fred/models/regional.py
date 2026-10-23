@@ -1,7 +1,5 @@
 """FRED Regional Data Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import datetime
 from typing import Any, Literal
 
@@ -15,8 +13,10 @@ from openbb_core.provider.standard_models.fred_series import (
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, model_validator
 
+from openbb_fred.utils.query import UseCacheQueryParams
 
-class FredRegionalQueryParams(SeriesQueryParams):
+
+class FredRegionalQueryParams(UseCacheQueryParams, SeriesQueryParams):
     """FRED Regional Data Query Params."""
 
     __alias_dict__ = {
@@ -218,41 +218,32 @@ class FredRegionalDataFetcher(
         **kwargs: Any,
     ) -> dict:
         """Extract the raw data."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_core.provider.utils.helpers import get_querystring
+        from openbb_fred.utils.api import GEO_ROOT_URL, build_url
         from openbb_fred.utils.rate_limiter import fred_get
 
         api_key = credentials.get("fred_api_key") if credentials else ""
-        season = query.season.upper()
+        params = query.model_dump(exclude_none=True)
+        params.pop("use_cache", None)
+        params.pop("limit", None)
+        params.pop("end_date", None)
+        params.pop("is_series_group", None)
+
         if query.is_series_group:
-            base_url = "https://api.stlouisfed.org/geofred/regional/data?"
-            url = (
-                base_url
-                + get_querystring(
-                    query.model_dump(),
-                    ["limit", "season", "end_date", "is_series_group"],
-                )
-                + f"&season={season}&file_type=json&api_key={api_key}"
-            )
+            params["season"] = query.season.upper()
+            url = build_url("regional/data", api_key, root=GEO_ROOT_URL, **params)
         else:
-            base_url = "https://api.stlouisfed.org/geofred/series/data?"
-            url = (
-                base_url
-                + f"series_id={query.symbol}&"
-                + get_querystring(
-                    query.model_dump(),
-                    [
-                        "limit",
-                        "end_date",
-                        "region_type",
-                        "season",
-                        "units",
-                        "is_series_group",
-                    ],
-                )
-                + f"&file_type=json&api_key={api_key}"
+            for key in ("region_type", "season", "units"):
+                params.pop(key, None)
+
+            url = build_url(
+                "series/data",
+                api_key,
+                root=GEO_ROOT_URL,
+                series_id=query.symbol,
+                **params,
             )
-        return await fred_get(url)  # type: ignore
+
+        return await fred_get(url, use_cache=query.use_cache)
 
     @staticmethod
     def transform_data(
@@ -264,7 +255,7 @@ class FredRegionalDataFetcher(
         results: list[FredRegionalData] = []
         if data.get("meta") is None:
             raise EmptyDataError()
-        meta = {k: v for k, v in data.get("meta").items() if k not in ["data"]}  # type: ignore
+        meta = {k: v for k, v in (data.get("meta") or {}).items() if k != "data"}
         _data = data["meta"]["data"]
         keys = list(_data.keys())
         units = data["meta"].get("units")

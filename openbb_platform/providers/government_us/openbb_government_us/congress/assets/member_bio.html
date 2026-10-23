@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Congressional Member Info</title>
+<style>
+  :root {
+    --rep: #c0392b;
+    --dem: #2563c9;
+    --ind: #6b7280;
+    --yea: #27ae60;
+    --nay: #c0392b;
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1116;
+    --panel: #1b1f27;
+    --text: #e6e8eb;
+    --muted: #9aa4b2;
+    --border: #2c333f;
+  }
+  :root[data-theme="light"] {
+    --bg: #ffffff;
+    --panel: #f5f7fa;
+    --text: #1b1f27;
+    --muted: #5a6473;
+    --border: #e2e6ea;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 13px;
+  }
+  body { overflow-y: auto; }
+  #page { padding: 14px; display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 620px) {
+    #page { grid-template-columns: 220px minmax(0, 1fr); align-items: start; }
+  }
+  .identity { display: flex; flex-direction: column; gap: 10px; }
+  .photo {
+    width: 100%;
+    max-width: 200px;
+    aspect-ratio: 225 / 275;
+    object-fit: cover;
+    border-radius: 10px;
+    border-top: 3px solid var(--accent, var(--ind));
+    background: var(--panel);
+  }
+  .photo.initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+  .name { font-size: 18px; font-weight: 700; line-height: 1.25; }
+  .badge {
+    display: inline-block;
+    margin-left: 7px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: var(--accent, var(--ind));
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    vertical-align: middle;
+  }
+  .sub { color: var(--muted); margin-top: 3px; }
+  .facts { color: var(--muted); font-size: 12px; margin-top: 6px; line-height: 1.5; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 2px 9px;
+    color: var(--muted);
+    font-size: 12px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  a.chip:hover { color: var(--text); border-color: var(--accent, var(--ind)); }
+  section { margin-bottom: 16px; }
+  h4 {
+    margin: 0 0 7px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .vote-bar {
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--nay);
+    margin-bottom: 6px;
+  }
+  .vote-bar span { display: block; height: 100%; background: var(--yea); }
+  .vote-line { font-variant-numeric: tabular-nums; }
+  .vote-yea { color: var(--yea); font-weight: 600; }
+  .vote-nay { color: var(--nay); font-weight: 600; }
+  .rows { display: flex; flex-direction: column; gap: 1px; }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 9px;
+    background: var(--panel);
+    border-radius: 6px;
+  }
+  .row .lead { min-width: 0; }
+  .row .sub-item { color: var(--muted); font-size: 12px; }
+  .row .trail { color: var(--muted); font-size: 12px; white-space: nowrap; }
+  .row .trail.is-lead { color: var(--text); font-weight: 600; }
+  .years { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .muted { color: var(--muted); }
+</style>
+</head>
+<body>
+<div id="page"></div>
+<script id="widget-data" type="application/json">__WIDGET_DATA__</script>
+<script>
+(function () {
+  var DATA = JSON.parse(document.getElementById("widget-data").textContent);
+  var COMMITTEES_WIDGET = "uscongress_member_committees_table";
+  var TERMS_WIDGET = "uscongress_member_terms_table";
+  var PROFILE_WIDGET = "uscongress_member_profile";
+  var MANIFESTS = [
+    {
+      widgetId: COMMITTEES_WIDGET,
+      name: "Member Committee Assignments",
+      description: "Committees and subcommittees the member sits on.",
+      category: "Government",
+      subCategory: "Congress",
+      dataType: "table"
+    },
+    {
+      widgetId: TERMS_WIDGET,
+      name: "Member Term History",
+      description: "Every term the member has served, newest first.",
+      category: "Government",
+      subCategory: "Congress",
+      dataType: "table"
+    },
+    {
+      widgetId: PROFILE_WIDGET,
+      name: "Member Profile Summary",
+      description: "Identity, contact, and career voting record.",
+      category: "Government",
+      subCategory: "Congress",
+      dataType: "markdown"
+    }
+  ];
+  var PARTY_VAR = {
+    Republican: "var(--rep)",
+    Democrat: "var(--dem)",
+    Independent: "var(--ind)"
+  };
+
+  var target = window.top || window.parent;
+  var embedded = !!target && target !== window;
+  var authHeaders = {};
+  var page = document.getElementById("page");
+  var bioguideId = DATA.bioguide_id;
+
+  applyTheme(DATA.theme);
+  render();
+
+  window.addEventListener("message", onMessage);
+  if (embedded) {
+    target.postMessage(
+      { type: "openbb-connect", widgets: MANIFESTS },
+      "*"
+    );
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute(
+      "data-theme",
+      theme === "light" ? "light" : "dark"
+    );
+  }
+
+  function el(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined && text !== null && text !== "") node.textContent = text;
+    return node;
+  }
+
+  function safeUrl(url) {
+    return /^https?:\/\//i.test(url || "") ? url : "";
+  }
+
+  function initials(name) {
+    return name
+      .split(/\s+/)
+      .slice(0, 2)
+      .map(function (part) { return part.charAt(0); })
+      .join("")
+      .toUpperCase();
+  }
+
+  function chip(label, url) {
+    var href = safeUrl(url);
+    if (!href) return el("span", "chip", label);
+    var link = el("a", "chip", label);
+    link.href = href;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    return link;
+  }
+
+  function section(title, body) {
+    var node = document.createElement("section");
+    node.appendChild(el("h4", null, title));
+    node.appendChild(body);
+    return node;
+  }
+
+  function rowsBox(items) {
+    var box = el("div", "rows");
+    items.forEach(function (item) { box.appendChild(item); });
+    return box;
+  }
+
+  function renderIdentity() {
+    var column = el("div", "identity");
+    column.style.setProperty("--accent", PARTY_VAR[DATA.party] || "var(--ind)");
+
+    var photo = safeUrl(DATA.photo_url);
+    if (photo) {
+      var image = el("img", "photo");
+      image.src = photo;
+      image.alt = DATA.name;
+      column.appendChild(image);
+    } else {
+      column.appendChild(el("div", "photo initials", initials(DATA.name)));
+    }
+
+    var identity = document.createElement("div");
+    var name = el("div", "name", DATA.name);
+    if (DATA.party_letter) name.appendChild(el("span", "badge", DATA.party_letter));
+    identity.appendChild(name);
+
+    var sub = [DATA.role, DATA.location, DATA.party].filter(Boolean).join(" · ");
+    if (sub) identity.appendChild(el("div", "sub", sub));
+
+    var facts = [];
+    if (DATA.birthday) {
+      facts.push("Born " + DATA.birthday + (DATA.age ? " (Age " + DATA.age + ")" : ""));
+    }
+    if (DATA.gender) facts.push(DATA.gender);
+    if (facts.length) identity.appendChild(el("div", "facts", facts.join(" · ")));
+    column.appendChild(identity);
+
+    var contact = DATA.contact || {};
+    var chips = el("div", "chips");
+    if (safeUrl(contact.website)) chips.appendChild(chip("Website", contact.website));
+    if (safeUrl(contact.contact_form)) chips.appendChild(chip("Contact", contact.contact_form));
+    if (contact.phone) chips.appendChild(chip(contact.phone));
+    if (contact.office) chips.appendChild(chip(contact.office));
+    if (chips.childNodes.length) column.appendChild(chips);
+
+    return column;
+  }
+
+  function renderVoting() {
+    var voting = DATA.voting || {};
+    if (!voting.total) {
+      return section(
+        "Voting Record",
+        el("div", "muted", "No On-Passage roll-call votes on record.")
+      );
+    }
+    var body = document.createElement("div");
+    var bar = el("div", "vote-bar");
+    var fill = document.createElement("span");
+    fill.style.width = (100 * voting.yea) / voting.total + "%";
+    bar.appendChild(fill);
+    body.appendChild(bar);
+
+    var line = el("div", "vote-line");
+    line.appendChild(el("span", "vote-yea", voting.yea + " Yea"));
+    line.appendChild(document.createTextNode(" · "));
+    line.appendChild(el("span", "vote-nay", voting.nay + " Nay"));
+    if (voting.yea_pct !== null && voting.yea_pct !== undefined) {
+      line.appendChild(document.createTextNode(" · "));
+      line.appendChild(el("b", null, voting.yea_pct + "% Yea"));
+    }
+    body.appendChild(line);
+    return section("Voting Record — On Passage (career)", body);
+  }
+
+  function renderCommittees() {
+    var committees = DATA.committees || [];
+    if (!committees.length) return null;
+    return section(
+      "Committee Assignments",
+      rowsBox(
+        committees.map(function (item) {
+          var row = el("div", "row");
+          var lead = el("div", "lead");
+          lead.appendChild(el("div", null, item.committee));
+          if (item.is_subcommittee) {
+            lead.appendChild(el("div", "sub-item", "Subcommittee"));
+          }
+          row.appendChild(lead);
+          var title = el("div", "trail", item.title);
+          if (item.title && item.title.toLowerCase() !== "member") {
+            title.classList.add("is-lead");
+          }
+          row.appendChild(title);
+          return row;
+        })
+      )
+    );
+  }
+
+  function serviceBlocks() {
+    var blocks = [];
+    (DATA.terms || []).forEach(function (term) {
+      var label = [term.role, term.location, term.party].filter(Boolean).join(" · ");
+      var current = blocks[blocks.length - 1];
+      if (current && current.label === label) {
+        current.start = term.start;
+        current.terms += 1;
+        return;
+      }
+      blocks.push({ label: label, start: term.start, end: term.end, terms: 1 });
+    });
+    return blocks;
+  }
+
+  function renderTerms() {
+    var blocks = serviceBlocks();
+    if (!blocks.length) return null;
+    return section(
+      "Term History",
+      rowsBox(
+        blocks.map(function (block) {
+          var row = el("div", "row");
+          var lead = el("div", "lead");
+          lead.appendChild(el("span", "years", block.start + " – " + block.end));
+          if (block.terms > 1) {
+            lead.appendChild(el("div", "sub-item", block.terms + " terms"));
+          }
+          row.appendChild(lead);
+          row.appendChild(el("div", "trail", block.label));
+          return row;
+        })
+      )
+    );
+  }
+
+  function renderLinks(title, entries) {
+    if (!entries || !entries.length) return null;
+    var chips = el("div", "chips");
+    entries.forEach(function (entry) { chips.appendChild(chip(entry.label, entry.url)); });
+    return section(title, chips);
+  }
+
+  function render() {
+    page.textContent = "";
+    page.appendChild(renderIdentity());
+
+    var detail = document.createElement("div");
+    [
+      renderVoting(),
+      renderCommittees(),
+      renderTerms(),
+      renderLinks("Links", DATA.links),
+      renderLinks("Social", DATA.social)
+    ].forEach(function (node) {
+      if (node) detail.appendChild(node);
+    });
+    page.appendChild(detail);
+  }
+
+  function dataUrl() {
+    var url = new URL("member_info_data", window.location.href);
+    url.searchParams.set("bioguide_id", bioguideId);
+    return url.toString();
+  }
+
+  function reload() {
+    fetch(dataUrl(), { headers: authHeaders })
+      .then(function (response) {
+        return response.ok ? response.json() : null;
+      })
+      .then(function (payload) {
+        if (!payload) return;
+        var theme = DATA.theme;
+        DATA = payload;
+        DATA.theme = theme;
+        render();
+        publishAll();
+      })
+      .catch(function () {});
+  }
+
+  function profileMarkdown() {
+    var voting = DATA.voting || {};
+    var contact = DATA.contact || {};
+    var lines = ["## " + DATA.name, ""];
+    var sub = [DATA.role, DATA.location, DATA.party].filter(Boolean).join(" · ");
+    if (sub) lines.push(sub, "");
+    if (DATA.birthday) {
+      lines.push(
+        "**Born:** " + DATA.birthday + (DATA.age ? " (Age " + DATA.age + ")" : ""),
+        ""
+      );
+    }
+    if (voting.total) {
+      lines.push(
+        "**On-Passage votes:** " +
+          voting.yea +
+          " Yea · " +
+          voting.nay +
+          " Nay · " +
+          voting.yea_pct +
+          "% Yea",
+        ""
+      );
+    }
+    if (safeUrl(contact.website)) {
+      lines.push("[Official website](" + contact.website + ")", "");
+    }
+    (DATA.links || []).forEach(function (link) {
+      lines.push("- [" + link.label + "](" + link.url + ")");
+    });
+    return lines.join("\n");
+  }
+
+  function publish(widgetId, dataType, data) {
+    if (!embedded) return;
+    target.postMessage(
+      { type: "openbb-data", widgetId: widgetId, dataType: dataType, data: data },
+      "*"
+    );
+  }
+
+  function publishCommittees() {
+    publish(COMMITTEES_WIDGET, "table", DATA.committees || []);
+  }
+
+  function publishTerms() {
+    publish(TERMS_WIDGET, "table", DATA.terms || []);
+  }
+
+  function publishProfile() {
+    publish(PROFILE_WIDGET, "markdown", profileMarkdown());
+  }
+
+  function publishAll() {
+    publishCommittees();
+    publishTerms();
+    publishProfile();
+  }
+
+  function parseParams(msg) {
+    if (msg.params && typeof msg.params === "object") return msg.params;
+    if (msg.paramName) {
+      var single = {};
+      single[msg.paramName] = msg.value;
+      return single;
+    }
+    return {};
+  }
+
+  function onMessage(event) {
+    var msg = event.data;
+    if (!msg || !msg.type) return;
+    if (msg.type === "openbb-request") {
+      if (msg.widgetId === null || msg.widgetId === undefined) publishAll();
+      else if (msg.widgetId === COMMITTEES_WIDGET) publishCommittees();
+      else if (msg.widgetId === TERMS_WIDGET) publishTerms();
+      else if (msg.widgetId === PROFILE_WIDGET) publishProfile();
+    } else if (msg.type === "openbb-params-update") {
+      var incoming = parseParams(msg);
+      if (incoming.theme !== undefined) applyTheme(incoming.theme);
+      if (incoming.bioguide_id && incoming.bioguide_id !== bioguideId) {
+        bioguideId = incoming.bioguide_id;
+        reload();
+      }
+    } else if (msg.type === "openbb-auth") {
+      authHeaders =
+        msg.headers && typeof msg.headers === "object" ? msg.headers : {};
+      reload();
+    }
+  }
+})();
+</script>
+</body>
+</html>

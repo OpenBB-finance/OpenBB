@@ -1,15 +1,28 @@
 """Settings model."""
 
+import os
 from enum import Enum
 from typing import Any, Literal
+from zoneinfo import available_timezones
 
 from dotenv import dotenv_values, set_key
-from openbb_cli.config.constants import AVAILABLE_FLAIRS, ENV_FILE_SETTINGS
 from openbb_core.app.version import get_package_version
 from pydantic import BaseModel, ConfigDict, Field, model_validator
-from pytz import all_timezones
+
+all_timezones = sorted(available_timezones())
+
+from openbb_cli.config.constants import AVAILABLE_FLAIRS, ENV_FILE_SETTINGS
 
 VERSION = get_package_version("openbb-cli")
+
+
+class OutputMode(str, Enum):
+    """Output mode for displaying results."""
+
+    rich = "rich"
+    json = "json"
+    tsv = "tsv"
+    html = "html"
 
 
 class SettingGroups(Enum):
@@ -22,22 +35,14 @@ class SettingGroups(Enum):
 class Settings(BaseModel):
     """Settings model."""
 
-    # Platform CLI version
     VERSION: str = VERSION
 
-    # DEVELOPMENT FLAGS
     TEST_MODE: bool = False
     DEBUG_MODE: bool = False
     DEV_BACKEND: bool = False
 
-    # OPENBB
-    HUB_URL: str = "https://my.openbb.co"
-    BASE_URL: str = "https://payments.openbb.co"
-
-    # GENERAL
     PREVIOUS_USE: bool = False
 
-    # FEATURE FLAGS
     FILE_OVERWRITE: bool = Field(
         default=False,
         description="whether to overwrite Excel files if they already exists",
@@ -55,11 +60,19 @@ class Settings(BaseModel):
         },
     )
     USE_INTERACTIVE_DF: bool = Field(
-        default=True,
-        description="display tables in interactive window",
+        default=False,
+        description="display tables in interactive window (when available)",
         json_schema_extra={
             "command": "interactive",
             "group": SettingGroups.feature_flags.value,
+        },
+    )
+    OUTPUT_MODE: Literal["rich", "json", "tsv", "html"] = Field(
+        default="tsv",
+        description="output display mode (rich=terminal table, json=JSON, tsv=DataFrame string, html=browser)",
+        json_schema_extra={
+            "command": "output",
+            "group": SettingGroups.preferences.value,
         },
     )
     USE_CLEAR_AFTER_CMD: bool = Field(
@@ -119,8 +132,7 @@ class Settings(BaseModel):
         },
     )
 
-    # PREFERENCES
-    TIMEZONE: Literal[tuple(all_timezones)] = Field(  # type: ignore[valid-type]
+    TIMEZONE: Literal[tuple(all_timezones)] = Field(  # ty: ignore[invalid-type-form]
         default="America/New_York",
         description="pick timezone",
         json_schema_extra={
@@ -128,7 +140,7 @@ class Settings(BaseModel):
             "group": SettingGroups.preferences.value,
         },
     )
-    FLAIR: Literal[tuple(AVAILABLE_FLAIRS)] = Field(  # type: ignore[valid-type]
+    FLAIR: Literal[tuple(AVAILABLE_FLAIRS)] = Field(  # ty: ignore[invalid-type-form]
         default=":openbb",
         description="choose flair icon",
         json_schema_extra={
@@ -162,7 +174,7 @@ class Settings(BaseModel):
     )
     ALLOWED_NUMBER_OF_ROWS: int = Field(
         default=20,
-        description="number of rows to show (when not using interactive tables).",
+        description="number of rows to show in rich table mode (does not apply to json/stdio/html modes)",
         json_schema_extra={
             "command": "n_rows",
             "group": SettingGroups.preferences.value,
@@ -170,7 +182,7 @@ class Settings(BaseModel):
     )
     ALLOWED_NUMBER_OF_COLUMNS: int = Field(
         default=5,
-        description="number of columns to show (when not using interactive tables).",
+        description="number of columns to show in rich table mode (does not apply to json/stdio/html modes)",
         json_schema_extra={
             "command": "n_cols",
             "group": SettingGroups.preferences.value,
@@ -188,9 +200,18 @@ class Settings(BaseModel):
     @model_validator(mode="before")
     @classmethod
     def from_env(cls, values: dict) -> dict:
-        """Load settings from .env."""
+        """Load settings from the persisted dotfile and ``OPENBB_*`` env vars.
+
+        Precedence (lowest to highest): the persisted ``.cli.env`` dotfile,
+        then ``OPENBB_*`` process env vars — which also carries TOML
+        ``[settings]`` values promoted into the environment by
+        ``apply_settings_to_env`` — then explicit constructor values.
+        """
         settings = {}
         settings.update(dotenv_values(ENV_FILE_SETTINGS))
+        settings.update(
+            {k: v for k, v in os.environ.items() if k.startswith("OPENBB_")}
+        )
         settings.update(values)
         filtered = {k.replace("OPENBB_", ""): v for k, v in settings.items()}
         return filtered

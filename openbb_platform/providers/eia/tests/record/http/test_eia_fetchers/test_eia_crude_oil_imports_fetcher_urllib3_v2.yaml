@@ -1,0 +1,65 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/crude-oil-imports/data/?api_key=MOCK_API_KEY&data%5B0%5D=quantity&end=2009-01&facets%5BdestinationId%5D%5B%5D=PP_5&facets%5BdestinationId%5D%5B%5D=RP_5&facets%5BdestinationType%5D%5B%5D=PP&facets%5BgradeId%5D%5B%5D=LSO&facets%5BoriginId%5D%5B%5D=CTY_AE&facets%5BoriginType%5D%5B%5D=CTY&frequency=monthly&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2009-01
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY-MM","frequency":"monthly","data":[{"period":"2009-01","originId":"CTY_AE","originName":"United
+        Arab Emirates","originType":"CTY","originTypeName":"Country","destinationId":"PP_5","destinationName":"PADD5
+        (West Coast)","destinationType":"PP","destinationTypeName":"Port PADD","gradeId":"LSO","gradeName":"Light
+        Sour","quantity":"643","quantity-units":"thousand barrels"}],"description":"Crude
+        oil imports by country to destination, \r\n        includes type, grade, quantity.  Source:
+        EIA-814  Interactive data \r\n        product:  www.eia.gov\/petroleum\/imports\/companylevel\/"},"request":{"command":"\/v2\/crude-oil-imports\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"monthly","data":["quantity"],"facets":{"originId":["CTY_AE"],"originType":["CTY"],"destinationId":["RP_5","PP_5"],"destinationType":["PP"],"gradeId":["LSO"]},"start":"2009-01","end":"2009-01","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '1'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 02:59:20 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 02:59:20 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '1077'
+    status:
+      code: 200
+      message: OK
+version: 1

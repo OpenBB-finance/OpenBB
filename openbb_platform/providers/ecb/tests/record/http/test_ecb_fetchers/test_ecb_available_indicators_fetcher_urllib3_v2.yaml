@@ -1,0 +1,76 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+    method: GET
+    uri: https://data-api.ecb.europa.eu/service/data/EXR/A.USD...?detail=serieskeysonly&format=jsondata
+  response:
+    body:
+      string: "{\n    \"header\": {\n        \"id\": \"20b2cef4-d355-430e-9ae0-040cd74e1f08\",\n
+        \       \"test\": false,\n        \"prepared\": \"2026-06-25T05:42:50.363+02:00\",\n
+        \       \"sender\": {\n            \"id\": \"ECB\"\n        }\n    },\n    \"dataSets\":
+        [\n        {\n            \"action\": \"Replace\",\n            \"validFrom\":
+        \"2026-06-25T05:42:50.363+02:00\",\n            \"series\": {\n                \"0:0:0:0:0\":
+        {\n                },\n                \"0:0:0:0:1\": {\n                }\n
+        \           }\n        }\n    ],\n    \"structure\": {\n        \"links\":
+        [\n            {\n                \"title\": \"Exchange Rates\",\n                \"rel\":
+        \"dataflow\",\n                \"href\": \"https://data-api.ecb.europa.eu:443/service/dataflow/ECB/EXR/1.0\"\n
+        \           }\n        ],\n        \"name\": \"Exchange Rates\",\n        \"dimensions\":
+        {\n            \"series\": [\n                {\n                    \"id\":
+        \"FREQ\",\n                    \"name\": \"Frequency\",\n                    \"values\":
+        [\n                        {\n                            \"id\": \"A\",\n
+        \                           \"name\": \"Annual\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"CURRENCY\",\n                    \"name\": \"Currency\",\n                    \"values\":
+        [\n                        {\n                            \"id\": \"USD\",\n
+        \                           \"name\": \"US dollar\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"CURRENCY_DENOM\",\n                    \"name\": \"Currency denominator\",\n
+        \                   \"values\": [\n                        {\n                            \"id\":
+        \"EUR\",\n                            \"name\": \"Euro\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"EXR_TYPE\",\n                    \"name\": \"Exchange rate type\",\n                    \"values\":
+        [\n                        {\n                            \"id\": \"SP00\",\n
+        \                           \"name\": \"Spot\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"EXR_SUFFIX\",\n                    \"name\": \"Series variation - EXR context\",\n
+        \                   \"values\": [\n                        {\n                            \"id\":
+        \"A\",\n                            \"name\": \"Average\"\n                        },\n
+        \                       {\n                            \"id\": \"E\",\n                            \"name\":
+        \"End-of-period\"\n                        }\n                    ]\n                }\n
+        \           ]\n        }\n    }\n}"
+    headers:
+      Cache-Control:
+      - max-age=30
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment;filename=data.json
+      Content-Type:
+      - application/vnd.sdmx.data+json;version=1.0.0-wd
+      Date:
+      - Thu, 25 Jun 2026 03:42:50 GMT
+      Expires:
+      - Thu, 25 Jun 2026 03:43:20 GMT
+      Last-Modified:
+      - Wed, 28 Jan 2026 10:56:22 GMT
+      Server:
+      - myracloud
+      Strict-Transport-Security:
+      - max-age=31536000 ; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

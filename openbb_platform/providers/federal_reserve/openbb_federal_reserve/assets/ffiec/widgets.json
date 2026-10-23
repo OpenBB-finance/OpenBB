@@ -1,0 +1,5511 @@
+{
+  "ffiec_institutions_federal_reserve_obb": {
+    "name": "FFIEC NIC Institution Search",
+    "description": "Search the FFIEC National Information Center directory of financial institutions by name, ticker, or RSSD identifier. Click an RSSD to drive the Call Report, UBPR, financial-statement, and structure widgets.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ffiec_institutions_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_institutions"
+    },
+    "params": [
+      {
+        "label": "Name",
+        "description": "Case-insensitive substring to match against institution names.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "name"
+      },
+      {
+        "label": "RSSD ID",
+        "description": "Filter to a specific institution by its RSSD identifier.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": false,
+        "paramName": "rssd_id"
+      },
+      {
+        "label": "Ticker",
+        "description": "Find the parent holding company by its stock ticker.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "ticker"
+      },
+      {
+        "label": "Status",
+        "description": "Which NIC institution attributes file to search.",
+        "optional": true,
+        "type": "text",
+        "value": "active",
+        "show": true,
+        "options": [
+          {
+            "label": "Active institutions",
+            "value": "active"
+          },
+          {
+            "label": "Branches",
+            "value": "branches"
+          },
+          {
+            "label": "Closed institutions",
+            "value": "closed"
+          }
+        ],
+        "paramName": "status"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "institutions",
+    "runButton": true,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": false,
+        "columnsDefs": [
+          {
+            "field": "rssd_id",
+            "formatterFn": "none",
+            "headerName": "RSSD ID",
+            "headerTooltip": "The institution's RSSD identifier.",
+            "cellDataType": "text",
+            "pinned": "left",
+            "renderFn": "cellOnClick",
+            "renderFnParams": {
+              "actionType": "groupBy",
+              "groupBy": {
+                "paramName": "rssd_id"
+              }
+            }
+          },
+          {
+            "field": "legal_name",
+            "formatterFn": null,
+            "headerName": "Legal Name",
+            "headerTooltip": "The legal name.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "short_name",
+            "formatterFn": null,
+            "headerName": "Short Name",
+            "headerTooltip": "The short name.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "entity_type_description",
+            "formatterFn": null,
+            "headerName": "Entity Type",
+            "headerTooltip": "The human-readable NIC entity type.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "charter_type",
+            "formatterFn": null,
+            "headerName": "Charter Type",
+            "headerTooltip": "The NIC charter type.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "organization_type",
+            "formatterFn": null,
+            "headerName": "Organization Type",
+            "headerTooltip": "The legal structure of the organization.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "primary_federal_regulator",
+            "formatterFn": null,
+            "headerName": "Primary Federal Regulator",
+            "headerTooltip": "The primary federal regulator of the institution.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "is_bank_holding_company",
+            "formatterFn": null,
+            "headerName": "Bank Holding Company",
+            "headerTooltip": "Whether the institution is a bank holding company.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "is_financial_holding_company",
+            "formatterFn": null,
+            "headerName": "Financial Holding Company",
+            "headerTooltip": "Whether the institution is a financial holding company.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "city",
+            "formatterFn": null,
+            "headerName": "City",
+            "headerTooltip": "The city.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "state",
+            "formatterFn": null,
+            "headerName": "State",
+            "headerTooltip": "The state abbreviation.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "country",
+            "formatterFn": null,
+            "headerName": "Country",
+            "headerTooltip": "The country.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "established_date",
+            "formatterFn": null,
+            "headerName": "Established Date",
+            "headerTooltip": "The date the entity opened or otherwise came into existence.",
+            "cellDataType": "date"
+          },
+          {
+            "field": "fdic_cert",
+            "formatterFn": null,
+            "headerName": "FDIC Cert",
+            "headerTooltip": "The FDIC certificate number.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "occ_id",
+            "formatterFn": null,
+            "headerName": "OCC ID",
+            "headerTooltip": "The OCC charter identifier.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "lei",
+            "formatterFn": null,
+            "headerName": "LEI",
+            "headerTooltip": "The Legal Entity Identifier (LEI).",
+            "cellDataType": "text"
+          },
+          {
+            "field": "url",
+            "formatterFn": null,
+            "headerName": "URL",
+            "headerTooltip": "The institution's website.",
+            "cellDataType": "text"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC"
+  },
+  "ffiec_call_report_federal_reserve_obb": {
+    "name": "FFIEC Call Report (Condition & Income)",
+    "description": "A commercial bank's FFIEC Call Report (Consolidated Reports of Condition and Income) by ticker, RSSD, or FDIC certificate.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ffiec_call_report_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_call_report"
+    },
+    "params": [
+      {
+        "label": "Symbol",
+        "description": "The bank's stock ticker; resolved to the subsidiary bank that files the Call Report (not its parent holding company).",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "symbol"
+      },
+      {
+        "label": "RSSD ID",
+        "description": "The bank's RSSD identifier (the Call Report IDRSSD).",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "rssd_id"
+      },
+      {
+        "label": "FDIC Cert",
+        "description": "The bank's FDIC certificate number (alternative to `rssd_id`).",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "fdic_cert"
+      },
+      {
+        "label": "Date",
+        "description": "The reporting period end date; defaults to the latest filed. Call Reports are filed quarterly.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "date"
+      },
+      {
+        "label": "Period Type",
+        "description": "Limit to 'instant' items (balance-sheet, point-in-time) or 'duration' items (income-statement flows).",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "period_type"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "call_report",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The reporting period end date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "rssd_id",
+            "formatterFn": "none",
+            "headerName": "RSSD ID",
+            "headerTooltip": "The bank's RSSD identifier (IDRSSD).",
+            "cellDataType": "text"
+          },
+          {
+            "field": "name",
+            "formatterFn": null,
+            "headerName": "Name",
+            "headerTooltip": "The bank's name.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "order",
+            "formatterFn": null,
+            "headerName": "Order",
+            "headerTooltip": "The line item's position in report order.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "section",
+            "formatterFn": null,
+            "headerName": "Section",
+            "headerTooltip": "The Call Report schedule the item appears on.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "parent",
+            "formatterFn": null,
+            "headerName": "Parent",
+            "headerTooltip": "The parent line item in the report hierarchy.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "level",
+            "formatterFn": null,
+            "headerName": "Level",
+            "headerTooltip": "The item's depth in the report hierarchy.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "label",
+            "formatterFn": null,
+            "headerName": "Line Item",
+            "headerTooltip": "The line item caption.",
+            "cellDataType": "text",
+            "pinned": "left"
+          },
+          {
+            "field": "mdrm",
+            "formatterFn": null,
+            "headerName": "Mdrm",
+            "headerTooltip": "The MDRM mnemonic for the concept.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "value",
+            "formatterFn": null,
+            "headerName": "Value",
+            "headerTooltip": "The reported value.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "unit",
+            "formatterFn": null,
+            "headerName": "Unit",
+            "headerTooltip": "The unit of measure (e.g. USD thousands, rate).",
+            "cellDataType": "text"
+          },
+          {
+            "field": "decimals",
+            "formatterFn": null,
+            "headerName": "Decimals",
+            "headerTooltip": "The reported precision, as filed in the XBRL.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "period_type",
+            "formatterFn": null,
+            "headerName": "Period Type",
+            "headerTooltip": "Whether the concept is an instant or a duration.",
+            "cellDataType": "text"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC"
+  },
+  "ffiec_ubpr_federal_reserve_obb": {
+    "name": "FFIEC Uniform Bank Performance Report (UBPR)",
+    "description": "The Uniform Bank Performance Report (UBPR) is an analytical tool created for bank supervisory, examination, and management purposes. In a concise format, it shows the impact of management decisions and economic conditions on a bank's performance and balance-sheet composition. The performance and composition data contained in the report can be used as an aid in evaluating the adequacy of earnings, liquidity, capital, asset and liability management, and growth management. Bankers and examiners alike can use this report to further their understanding of a bank's financial condition, and through such understanding, perform their duties more effectively.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ffiec_ubpr_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_ubpr"
+    },
+    "params": [
+      {
+        "label": "Symbol",
+        "description": "The bank's stock ticker, resolved to its parent RSSD identifier.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "symbol"
+      },
+      {
+        "label": "RSSD ID",
+        "description": "The bank's RSSD identifier (the UBPR ID RSSD).",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "rssd_id"
+      },
+      {
+        "label": "Section",
+        "description": "The UBPR report section (page) to return.",
+        "optional": true,
+        "type": "text",
+        "value": "Summary Ratios",
+        "show": true,
+        "paramName": "section",
+        "options": [
+          {
+            "label": "Summary Ratios",
+            "value": "Summary Ratios"
+          },
+          {
+            "label": "Income Statement $",
+            "value": "Income Statement $"
+          },
+          {
+            "label": "QTR Income Statement $",
+            "value": "QTR Income Statement $"
+          },
+          {
+            "label": "Noninterest Income and Expenses",
+            "value": "Noninterest Income and Expenses"
+          },
+          {
+            "label": "Asset Yields and Funding Costs",
+            "value": "Asset Yields and Funding Costs"
+          },
+          {
+            "label": "Balance Sheet $",
+            "value": "Balance Sheet $"
+          },
+          {
+            "label": "Off Balance Sheet Items",
+            "value": "Off Balance Sheet Items"
+          },
+          {
+            "label": "Derivative Instruments",
+            "value": "Derivative Instruments"
+          },
+          {
+            "label": "Derivative Analysis",
+            "value": "Derivative Analysis"
+          },
+          {
+            "label": "Balance Sheet %",
+            "value": "Balance Sheet %"
+          },
+          {
+            "label": "Allowance & Loan Mix-a",
+            "value": "Allowance & Loan Mix-a"
+          },
+          {
+            "label": "Allowance & Loan Mix-b",
+            "value": "Allowance & Loan Mix-b"
+          },
+          {
+            "label": "Concentrations of Credit",
+            "value": "Concentrations of Credit"
+          },
+          {
+            "label": "PD, Nonacc & Rest Loans-a",
+            "value": "PD, Nonacc & Rest Loans-a"
+          },
+          {
+            "label": "PD, Nonacc & Rest Loans-b",
+            "value": "PD, Nonacc & Rest Loans-b"
+          },
+          {
+            "label": "Interest Rate Risk-a",
+            "value": "Interest Rate Risk-a"
+          },
+          {
+            "label": "Interest Rate Risk-b",
+            "value": "Interest Rate Risk-b"
+          },
+          {
+            "label": "Liquidity & Funding",
+            "value": "Liquidity & Funding"
+          },
+          {
+            "label": "Liquidity & Inv Portfolio",
+            "value": "Liquidity & Inv Portfolio"
+          },
+          {
+            "label": "Capital Analysis-a",
+            "value": "Capital Analysis-a"
+          },
+          {
+            "label": "Capital Analysis-b",
+            "value": "Capital Analysis-b"
+          },
+          {
+            "label": "Capital Analysis-c",
+            "value": "Capital Analysis-c"
+          },
+          {
+            "label": "Income Statement 1-Qtr-Ann",
+            "value": "Income Statement 1-Qtr-Ann"
+          },
+          {
+            "label": "Securitization & Asset Sale-a",
+            "value": "Securitization & Asset Sale-a"
+          },
+          {
+            "label": "Securitization & Asset Sale-b",
+            "value": "Securitization & Asset Sale-b"
+          },
+          {
+            "label": "Securitization & Asset Sale-c",
+            "value": "Securitization & Asset Sale-c"
+          },
+          {
+            "label": "Fiduciary Services-a",
+            "value": "Fiduciary Services-a"
+          },
+          {
+            "label": "Fiduciary Services-b",
+            "value": "Fiduciary Services-b"
+          }
+        ]
+      },
+      {
+        "label": "All Periods",
+        "description": "Return every reported period as the bank's own time series; the peer-group and percentile columns are omitted.",
+        "optional": true,
+        "type": "boolean",
+        "value": false,
+        "show": true,
+        "paramName": "all_periods"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "ubpr",
+    "runButton": false,
+    "gridData": {
+      "w": 50,
+      "h": 25
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "label",
+            "formatterFn": null,
+            "headerName": "Line Item",
+            "headerTooltip": "The line item, indented by the report hierarchy.",
+            "cellDataType": "text",
+            "pinned": "left",
+            "width": 360,
+            "renderFn": "hoverCard",
+            "renderFnParams": {
+              "hoverCard": {
+                "cellField": "label",
+                "markdown": "{narrative}"
+              }
+            }
+          },
+          {
+            "field": "is_header",
+            "formatterFn": null,
+            "headerName": "Is Header",
+            "headerTooltip": "Whether the row is a section or sub-section header.",
+            "cellDataType": "text",
+            "hide": true
+          },
+          {
+            "field": "narrative",
+            "formatterFn": null,
+            "headerName": "Narrative",
+            "headerTooltip": "The Interactive User's Guide definition of the line item, where one is published.",
+            "cellDataType": "text",
+            "hide": true
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC"
+  },
+  "ffiec_executive_summary_federal_reserve_obb": {
+    "name": "FFIEC Executive Summary Report (ESR)",
+    "description": "This report is intended for Bank Executives and Board Members to easily see the trend of an institution's key ratios.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ffiec_executive_summary_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_executive_summary"
+    },
+    "params": [
+      {
+        "label": "Symbol",
+        "description": "The bank's stock ticker, resolved to its parent RSSD identifier.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "symbol"
+      },
+      {
+        "label": "RSSD ID",
+        "description": "The bank's RSSD identifier (the UBPR ID RSSD).",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "rssd_id"
+      },
+      {
+        "label": "All Periods",
+        "description": "Return every reported period instead of only the most recent five.",
+        "optional": true,
+        "type": "boolean",
+        "value": false,
+        "show": true,
+        "paramName": "all_periods"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "executive_summary",
+    "runButton": false,
+    "gridData": {
+      "w": 50,
+      "h": 25
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "label",
+            "formatterFn": null,
+            "headerName": "Line Item",
+            "headerTooltip": "The line item, indented by the report hierarchy.",
+            "cellDataType": "text",
+            "pinned": "left",
+            "width": 360,
+            "renderFn": "hoverCard",
+            "renderFnParams": {
+              "hoverCard": {
+                "cellField": "label",
+                "markdown": "{narrative}"
+              }
+            }
+          },
+          {
+            "field": "is_header",
+            "formatterFn": null,
+            "headerName": "Is Header",
+            "headerTooltip": "Whether the row is a section or sub-section header.",
+            "cellDataType": "text",
+            "hide": true
+          },
+          {
+            "field": "narrative",
+            "formatterFn": null,
+            "headerName": "Narrative",
+            "headerTooltip": "The FFIEC Interactive User's Guide definition of the line item's concept, when available.",
+            "cellDataType": "text",
+            "hide": true
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC"
+  },
+  "ffiec_custom_peer_group_federal_reserve_obb": {
+    "name": "FFIEC UBPR Custom Peer Group (CPG)",
+    "description": "Similar to the UBPR this report is an analytical tool created for bank supervisory, examination, and management purposes. In a concise format, it shows the impact of management decisions and economic conditions on a bank's performance and balance-sheet composition, evaluated against a user-defined custom peer group.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ffiec_custom_peer_group_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_custom_peer_group"
+    },
+    "params": [
+      {
+        "label": "Symbol",
+        "description": "The target bank's stock ticker, resolved to its parent RSSD identifier.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "symbol"
+      },
+      {
+        "label": "RSSD ID",
+        "description": "The target bank's RSSD identifier (the UBPR ID RSSD).",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "rssd_id"
+      },
+      {
+        "label": "Peers",
+        "description": "Comma-separated RSSD identifiers forming the custom peer group; the target bank may be included.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "peers"
+      },
+      {
+        "label": "Section",
+        "description": "The UBPR report section (page) to return.",
+        "optional": true,
+        "type": "text",
+        "value": "Summary Ratios",
+        "show": true,
+        "paramName": "section",
+        "options": [
+          {
+            "label": "Summary Ratios",
+            "value": "Summary Ratios"
+          },
+          {
+            "label": "Income Statement $",
+            "value": "Income Statement $"
+          },
+          {
+            "label": "QTR Income Statement $",
+            "value": "QTR Income Statement $"
+          },
+          {
+            "label": "Noninterest Income and Expenses",
+            "value": "Noninterest Income and Expenses"
+          },
+          {
+            "label": "Asset Yields and Funding Costs",
+            "value": "Asset Yields and Funding Costs"
+          },
+          {
+            "label": "Balance Sheet $",
+            "value": "Balance Sheet $"
+          },
+          {
+            "label": "Off Balance Sheet Items",
+            "value": "Off Balance Sheet Items"
+          },
+          {
+            "label": "Derivative Instruments",
+            "value": "Derivative Instruments"
+          },
+          {
+            "label": "Derivative Analysis",
+            "value": "Derivative Analysis"
+          },
+          {
+            "label": "Balance Sheet %",
+            "value": "Balance Sheet %"
+          },
+          {
+            "label": "Allowance & Loan Mix-a",
+            "value": "Allowance & Loan Mix-a"
+          },
+          {
+            "label": "Allowance & Loan Mix-b",
+            "value": "Allowance & Loan Mix-b"
+          },
+          {
+            "label": "Concentrations of Credit",
+            "value": "Concentrations of Credit"
+          },
+          {
+            "label": "PD, Nonacc & Rest Loans-a",
+            "value": "PD, Nonacc & Rest Loans-a"
+          },
+          {
+            "label": "PD, Nonacc & Rest Loans-b",
+            "value": "PD, Nonacc & Rest Loans-b"
+          },
+          {
+            "label": "Interest Rate Risk-a",
+            "value": "Interest Rate Risk-a"
+          },
+          {
+            "label": "Interest Rate Risk-b",
+            "value": "Interest Rate Risk-b"
+          },
+          {
+            "label": "Liquidity & Funding",
+            "value": "Liquidity & Funding"
+          },
+          {
+            "label": "Liquidity & Inv Portfolio",
+            "value": "Liquidity & Inv Portfolio"
+          },
+          {
+            "label": "Capital Analysis-a",
+            "value": "Capital Analysis-a"
+          },
+          {
+            "label": "Capital Analysis-b",
+            "value": "Capital Analysis-b"
+          },
+          {
+            "label": "Capital Analysis-c",
+            "value": "Capital Analysis-c"
+          },
+          {
+            "label": "Income Statement 1-Qtr-Ann",
+            "value": "Income Statement 1-Qtr-Ann"
+          },
+          {
+            "label": "Securitization & Asset Sale-a",
+            "value": "Securitization & Asset Sale-a"
+          },
+          {
+            "label": "Securitization & Asset Sale-b",
+            "value": "Securitization & Asset Sale-b"
+          },
+          {
+            "label": "Securitization & Asset Sale-c",
+            "value": "Securitization & Asset Sale-c"
+          },
+          {
+            "label": "Fiduciary Services-a",
+            "value": "Fiduciary Services-a"
+          },
+          {
+            "label": "Fiduciary Services-b",
+            "value": "Fiduciary Services-b"
+          }
+        ]
+      },
+      {
+        "label": "All Periods",
+        "description": "Return every reported period as the bank's own time series.",
+        "optional": true,
+        "type": "boolean",
+        "value": false,
+        "show": true,
+        "paramName": "all_periods"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "custom_peer_group",
+    "runButton": false,
+    "gridData": {
+      "w": 50,
+      "h": 25
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "label",
+            "formatterFn": null,
+            "headerName": "Line Item",
+            "headerTooltip": "The line item, indented by the report hierarchy.",
+            "cellDataType": "text",
+            "pinned": "left",
+            "width": 360,
+            "renderFn": "hoverCard",
+            "renderFnParams": {
+              "hoverCard": {
+                "cellField": "label",
+                "markdown": "{narrative}"
+              }
+            }
+          },
+          {
+            "field": "is_header",
+            "formatterFn": null,
+            "headerName": "Is Header",
+            "headerTooltip": "Whether the row is a section or sub-section header.",
+            "cellDataType": "text",
+            "hide": true
+          },
+          {
+            "field": "narrative",
+            "formatterFn": null,
+            "headerName": "Narrative",
+            "headerTooltip": "The MDRM definition of the line item's concept, where available.",
+            "cellDataType": "text",
+            "hide": true
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC"
+  },
+  "ffiec_peer_group_average_federal_reserve_obb": {
+    "name": "FFIEC UBPR Peer Group Average Report",
+    "description": "This report displays all UBPR ratios averaged by peer group in UBPR format. All peer groups are available.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ffiec_peer_group_average_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_peer_group_average"
+    },
+    "params": [
+      {
+        "label": "Peer Group",
+        "description": "The UBPR peer-group name; the default groups the largest insured commercial banks (assets greater than $100 billion).",
+        "optional": true,
+        "type": "text",
+        "value": "1",
+        "show": true,
+        "paramName": "peer_group",
+        "options": [
+          {
+            "label": "1 -- Insured commercial banks having assets greater than $100 billion",
+            "value": "1"
+          },
+          {
+            "label": "101 -- Insured savings banks having assets greater than $1 billion",
+            "value": "101"
+          },
+          {
+            "label": "101M -- Mutually-owned insured savings banks having assets greater than $1 billion",
+            "value": "101M"
+          },
+          {
+            "label": "101S -- Stock-owned insured savings banks having assets greater than $1 billion",
+            "value": "101S"
+          },
+          {
+            "label": "102 -- Insured savings banks having assets between $300 million and $1 billion",
+            "value": "102"
+          },
+          {
+            "label": "102M -- Mutually-owned insured savings banks having assets between $300 million and $1 billion",
+            "value": "102M"
+          },
+          {
+            "label": "102S -- Stock-owned insured savings banks having assets between $300 million and $1 billion",
+            "value": "102S"
+          },
+          {
+            "label": "103 -- Insured savings banks having assets between $100 million and $300 million",
+            "value": "103"
+          },
+          {
+            "label": "103M -- Mutually-owned insured savings banks having assets between $100 million and $300 million",
+            "value": "103M"
+          },
+          {
+            "label": "103S -- Stock-owned insured savings banks having assets between $100 million and $300 million",
+            "value": "103S"
+          },
+          {
+            "label": "104 -- Insured savings banks having assets less than $100 million",
+            "value": "104"
+          },
+          {
+            "label": "104M -- Mutually-owned insured savings banks having assets less than $100 million",
+            "value": "104M"
+          },
+          {
+            "label": "104S -- Stock-owned insured savings banks having assets less than $100 million",
+            "value": "104S"
+          },
+          {
+            "label": "2 -- Insured commercial banks having assets between $10 billion and $100 billion",
+            "value": "2"
+          },
+          {
+            "label": "201 -- Credit card specialty banks having assets greater than $ 3 billion",
+            "value": "201"
+          },
+          {
+            "label": "202 -- Credit card specialty banks having assets between $1 billion and $3 billion",
+            "value": "202"
+          },
+          {
+            "label": "2022 -- Denovo banks opened in 2022 having assets less than $750 million",
+            "value": "2022"
+          },
+          {
+            "label": "2023 -- Denovo banks opened in 2023 having assets less than $750 million",
+            "value": "2023"
+          },
+          {
+            "label": "2024 -- Denovo banks opened in 2024 having assets less than $750 million",
+            "value": "2024"
+          },
+          {
+            "label": "2025 -- Denovo banks opened in 2025 having assets less than $750 million",
+            "value": "2025"
+          },
+          {
+            "label": "2026 -- Denovo banks opened in 2026 having assets less than $750 million",
+            "value": "2026"
+          },
+          {
+            "label": "203 -- Credit card specialty banks having assets less than $1 billion",
+            "value": "203"
+          },
+          {
+            "label": "3 -- Insured commercial banks having assets between $3 billion and $10 billion",
+            "value": "3"
+          },
+          {
+            "label": "301 -- Bankers banks",
+            "value": "301"
+          },
+          {
+            "label": "4 -- Insured commercial banks having assets between $1 billion and $3 billion",
+            "value": "4"
+          },
+          {
+            "label": "401 -- All Non-insured Non-deposit Trust Companies",
+            "value": "401"
+          },
+          {
+            "label": "5 -- Insured commercial banks having assets between $300 million and $1 billion",
+            "value": "5"
+          },
+          {
+            "label": "6 -- Insured commercial banks having assets between $100 million and $300 million",
+            "value": "6"
+          },
+          {
+            "label": "7 -- Insured commercial banks having assets between $50 million and $100 million",
+            "value": "7"
+          },
+          {
+            "label": "8 -- Insured commercial banks having assets less than $50 million",
+            "value": "8"
+          },
+          {
+            "label": "AKCOM -- All Insured Commercial Banks in Alaska",
+            "value": "AKCOM"
+          },
+          {
+            "label": "AKSVG -- All Insured Savings Banks in Alaska",
+            "value": "AKSVG"
+          },
+          {
+            "label": "ALCOM -- All Insured Commercial Banks in Alabama",
+            "value": "ALCOM"
+          },
+          {
+            "label": "ALSVG -- All Insured Savings Banks in Alabama",
+            "value": "ALSVG"
+          },
+          {
+            "label": "ARCOM -- All Insured Commercial Banks in Arkansas",
+            "value": "ARCOM"
+          },
+          {
+            "label": "ARSVG -- All Insured Savings Banks in Arkansas",
+            "value": "ARSVG"
+          },
+          {
+            "label": "AZCOM -- All Insured Commercial Banks in Arizona",
+            "value": "AZCOM"
+          },
+          {
+            "label": "AZNDT -- All Non-insured Non-deposit Trust Companies in Arizona",
+            "value": "AZNDT"
+          },
+          {
+            "label": "AZSVG -- All Insured Savings Banks in Arizona",
+            "value": "AZSVG"
+          },
+          {
+            "label": "BKR -- Bankers banks",
+            "value": "BKR"
+          },
+          {
+            "label": "CABKR -- All Bankers Banks in California",
+            "value": "CABKR"
+          },
+          {
+            "label": "CACOM -- All Insured Commercial Banks in California",
+            "value": "CACOM"
+          },
+          {
+            "label": "CANDT -- All Non-insured Non-deposit Trust Companies in California",
+            "value": "CANDT"
+          },
+          {
+            "label": "CASVG -- All Insured Savings Banks in California",
+            "value": "CASVG"
+          },
+          {
+            "label": "COBKR -- All Bankers Banks in Colorado",
+            "value": "COBKR"
+          },
+          {
+            "label": "COCOM -- All Insured Commercial Banks in Colorado",
+            "value": "COCOM"
+          },
+          {
+            "label": "COM -- All insured commercial banks",
+            "value": "COM"
+          },
+          {
+            "label": "COSVG -- All Insured Savings Banks in Colorado",
+            "value": "COSVG"
+          },
+          {
+            "label": "CRC -- All credit card specialty banks",
+            "value": "CRC"
+          },
+          {
+            "label": "CTCOM -- All Insured Commercial Banks in Connecticut",
+            "value": "CTCOM"
+          },
+          {
+            "label": "CTSVG -- All Insured Savings Banks in Connecticut",
+            "value": "CTSVG"
+          },
+          {
+            "label": "DCCOM -- All Insured Commercial Banks in District of Columbia",
+            "value": "DCCOM"
+          },
+          {
+            "label": "DECOM -- All Insured Commercial Banks in Delaware",
+            "value": "DECOM"
+          },
+          {
+            "label": "DECRC -- All Credit Card Specialty Banks in Delaware",
+            "value": "DECRC"
+          },
+          {
+            "label": "DENDT -- All Non-insured Non-deposit Trust Companies in Delaware",
+            "value": "DENDT"
+          },
+          {
+            "label": "DESVG -- All Insured Savings Banks in Delaware",
+            "value": "DESVG"
+          },
+          {
+            "label": "FLCOM -- All Insured Commercial Banks in Florida",
+            "value": "FLCOM"
+          },
+          {
+            "label": "FLCRC -- All Credit Card Specialty Banks in Florida",
+            "value": "FLCRC"
+          },
+          {
+            "label": "FLNDT -- All Non-insured Non-deposit Trust Companies in Florida",
+            "value": "FLNDT"
+          },
+          {
+            "label": "FLSVG -- All Insured Savings Banks in Florida",
+            "value": "FLSVG"
+          },
+          {
+            "label": "FMCOM -- All Insured Commercial Banks in Micronesia",
+            "value": "FMCOM"
+          },
+          {
+            "label": "GACOM -- All Insured Commercial Banks in Georgia",
+            "value": "GACOM"
+          },
+          {
+            "label": "GANDT -- All Non-insured Non-deposit Trust Companies in Georgia",
+            "value": "GANDT"
+          },
+          {
+            "label": "GASVG -- All Insured Savings Banks in Georgia",
+            "value": "GASVG"
+          },
+          {
+            "label": "GUCOM -- All Insured Commercial Banks in Guam",
+            "value": "GUCOM"
+          },
+          {
+            "label": "HICOM -- All Insured Commercial Banks in Hawaii",
+            "value": "HICOM"
+          },
+          {
+            "label": "IACOM -- All Insured Commercial Banks in Iowa",
+            "value": "IACOM"
+          },
+          {
+            "label": "IANDT -- All Non-insured Non-deposit Trust Companies in Iowa",
+            "value": "IANDT"
+          },
+          {
+            "label": "IASVG -- All Insured Savings Banks in Iowa",
+            "value": "IASVG"
+          },
+          {
+            "label": "IDCOM -- All Insured Commercial Banks in Idaho",
+            "value": "IDCOM"
+          },
+          {
+            "label": "IDSVG -- All Insured Savings Banks in Idaho",
+            "value": "IDSVG"
+          },
+          {
+            "label": "ILCOM -- All Insured Commercial Banks in Illinois",
+            "value": "ILCOM"
+          },
+          {
+            "label": "ILNDT -- All Non-insured Non-deposit Trust Companies in Illinois",
+            "value": "ILNDT"
+          },
+          {
+            "label": "ILSVG -- All Insured Savings Banks in Illinois",
+            "value": "ILSVG"
+          },
+          {
+            "label": "INCOM -- All Insured Commercial Banks in Indiana",
+            "value": "INCOM"
+          },
+          {
+            "label": "INNDT -- All Non-insured Non-deposit Trust Companies in Indiana",
+            "value": "INNDT"
+          },
+          {
+            "label": "INSVG -- All Insured Savings Banks in Indiana",
+            "value": "INSVG"
+          },
+          {
+            "label": "KSBKR -- All Bankers Banks in Kansas",
+            "value": "KSBKR"
+          },
+          {
+            "label": "KSCOM -- All Insured Commercial Banks in Kansas",
+            "value": "KSCOM"
+          },
+          {
+            "label": "KSSVG -- All Insured Savings Banks in Kansas",
+            "value": "KSSVG"
+          },
+          {
+            "label": "KYBKR -- All Bankers Banks in Kentucky",
+            "value": "KYBKR"
+          },
+          {
+            "label": "KYCOM -- All Insured Commercial Banks in Kentucky",
+            "value": "KYCOM"
+          },
+          {
+            "label": "KYSVG -- All Insured Savings Banks in Kentucky",
+            "value": "KYSVG"
+          },
+          {
+            "label": "LABKR -- All Bankers Banks in Louisiana",
+            "value": "LABKR"
+          },
+          {
+            "label": "LACOM -- All Insured Commercial Banks in Louisiana",
+            "value": "LACOM"
+          },
+          {
+            "label": "LASVG -- All Insured Savings Banks in Louisiana",
+            "value": "LASVG"
+          },
+          {
+            "label": "MACOM -- All Insured Commercial Banks in Massachusetts",
+            "value": "MACOM"
+          },
+          {
+            "label": "MANDT -- All Non-insured Non-deposit Trust Companies in Massachusetts",
+            "value": "MANDT"
+          },
+          {
+            "label": "MASVG -- All Insured Savings Banks in Massachusetts",
+            "value": "MASVG"
+          },
+          {
+            "label": "MDCOM -- All Insured Commercial Banks in Maryland",
+            "value": "MDCOM"
+          },
+          {
+            "label": "MDSVG -- All Insured Savings Banks in Maryland",
+            "value": "MDSVG"
+          },
+          {
+            "label": "MECOM -- All Insured Commercial Banks in Maine",
+            "value": "MECOM"
+          },
+          {
+            "label": "MESVG -- All Insured Savings Banks in Maine",
+            "value": "MESVG"
+          },
+          {
+            "label": "MICOM -- All Insured Commercial Banks in Michigan",
+            "value": "MICOM"
+          },
+          {
+            "label": "MINDT -- All Non-insured Non-deposit Trust Companies in Michigan",
+            "value": "MINDT"
+          },
+          {
+            "label": "MISVG -- All Insured Savings Banks in Michigan",
+            "value": "MISVG"
+          },
+          {
+            "label": "MNBKR -- All Bankers Banks in Minnesota",
+            "value": "MNBKR"
+          },
+          {
+            "label": "MNCOM -- All Insured Commercial Banks in Minnesota",
+            "value": "MNCOM"
+          },
+          {
+            "label": "MNNDT -- All Non-insured Non-deposit Trust Companies in Minnesota",
+            "value": "MNNDT"
+          },
+          {
+            "label": "MNSVG -- All Insured Savings Banks in Minnesota",
+            "value": "MNSVG"
+          },
+          {
+            "label": "MOBKR -- All Bankers Banks in Missouri",
+            "value": "MOBKR"
+          },
+          {
+            "label": "MOCOM -- All Insured Commercial Banks in Missouri",
+            "value": "MOCOM"
+          },
+          {
+            "label": "MONDT -- All Non-insured Non-deposit Trust Companies in Missouri",
+            "value": "MONDT"
+          },
+          {
+            "label": "MOSVG -- All Insured Savings Banks in Missouri",
+            "value": "MOSVG"
+          },
+          {
+            "label": "MSCOM -- All Insured Commercial Banks in Mississippi",
+            "value": "MSCOM"
+          },
+          {
+            "label": "MSSVG -- All Insured Savings Banks in Mississippi",
+            "value": "MSSVG"
+          },
+          {
+            "label": "MTCOM -- All Insured Commercial Banks in Montana",
+            "value": "MTCOM"
+          },
+          {
+            "label": "MTSVG -- All Insured Savings Banks in Montana",
+            "value": "MTSVG"
+          },
+          {
+            "label": "NATIONAL -- All banks in nation",
+            "value": "NATIONAL"
+          },
+          {
+            "label": "NCCOM -- All Insured Commercial Banks in North Carolina",
+            "value": "NCCOM"
+          },
+          {
+            "label": "NCNDT -- All Non-insured Non-deposit Trust Companies in North Carolina",
+            "value": "NCNDT"
+          },
+          {
+            "label": "NCSVG -- All Insured Savings Banks in North Carolina",
+            "value": "NCSVG"
+          },
+          {
+            "label": "NDCOM -- All Insured Commercial Banks in North Dakota",
+            "value": "NDCOM"
+          },
+          {
+            "label": "NDSVG -- All Insured Savings Banks in North Dakota",
+            "value": "NDSVG"
+          },
+          {
+            "label": "NDT -- All Non-insured Non-deposit Trust Companies",
+            "value": "NDT"
+          },
+          {
+            "label": "NECOM -- All Insured Commercial Banks in Nebraska",
+            "value": "NECOM"
+          },
+          {
+            "label": "NESVG -- All Insured Savings Banks in Nebraska",
+            "value": "NESVG"
+          },
+          {
+            "label": "NHCOM -- All Insured Commercial Banks in New Hampshire",
+            "value": "NHCOM"
+          },
+          {
+            "label": "NHSVG -- All Insured Savings Banks in New Hampshire",
+            "value": "NHSVG"
+          },
+          {
+            "label": "NJCOM -- All Insured Commercial Banks in New Jersey",
+            "value": "NJCOM"
+          },
+          {
+            "label": "NJSVG -- All Insured Savings Banks in New Jersey",
+            "value": "NJSVG"
+          },
+          {
+            "label": "NMCOM -- All Insured Commercial Banks in New Mexico",
+            "value": "NMCOM"
+          },
+          {
+            "label": "NMSVG -- All Insured Savings Banks in New Mexico",
+            "value": "NMSVG"
+          },
+          {
+            "label": "NVCOM -- All Insured Commercial Banks in Nevada",
+            "value": "NVCOM"
+          },
+          {
+            "label": "NVCRC -- All Credit Card Specialty Banks in Nevada",
+            "value": "NVCRC"
+          },
+          {
+            "label": "NVNDT -- All Non-insured Non-deposit Trust Companies in Nevada",
+            "value": "NVNDT"
+          },
+          {
+            "label": "NVSVG -- All Insured Savings Banks in Nevada",
+            "value": "NVSVG"
+          },
+          {
+            "label": "NYCOM -- All Insured Commercial Banks in New York",
+            "value": "NYCOM"
+          },
+          {
+            "label": "NYNDT -- All Non-insured Non-deposit Trust Companies in New York",
+            "value": "NYNDT"
+          },
+          {
+            "label": "NYSVG -- All Insured Savings Banks in New York",
+            "value": "NYSVG"
+          },
+          {
+            "label": "OHCOM -- All Insured Commercial Banks in Ohio",
+            "value": "OHCOM"
+          },
+          {
+            "label": "OHNDT -- All Non-insured Non-deposit Trust Companies in Ohio",
+            "value": "OHNDT"
+          },
+          {
+            "label": "OHSVG -- All Insured Savings Banks in Ohio",
+            "value": "OHSVG"
+          },
+          {
+            "label": "OKBKR -- All Bankers Banks in Oklahoma",
+            "value": "OKBKR"
+          },
+          {
+            "label": "OKCOM -- All Insured Commercial Banks in Oklahoma",
+            "value": "OKCOM"
+          },
+          {
+            "label": "OKCRC -- All Credit Card Specialty Banks in Oklahoma",
+            "value": "OKCRC"
+          },
+          {
+            "label": "OKNDT -- All Non-insured Non-deposit Trust Companies in Oklahoma",
+            "value": "OKNDT"
+          },
+          {
+            "label": "OKSVG -- All Insured Savings Banks in Oklahoma",
+            "value": "OKSVG"
+          },
+          {
+            "label": "ORCOM -- All Insured Commercial Banks in Oregon",
+            "value": "ORCOM"
+          },
+          {
+            "label": "ORNDT -- All Non-insured Non-deposit Trust Companies in Oregon",
+            "value": "ORNDT"
+          },
+          {
+            "label": "ORSVG -- All Insured Savings Banks in Oregon",
+            "value": "ORSVG"
+          },
+          {
+            "label": "PABKR -- All Bankers Banks in Pennsylvania",
+            "value": "PABKR"
+          },
+          {
+            "label": "PACOM -- All Insured Commercial Banks in Pennsylvania",
+            "value": "PACOM"
+          },
+          {
+            "label": "PANDT -- All Non-insured Non-deposit Trust Companies in Pennsylvania",
+            "value": "PANDT"
+          },
+          {
+            "label": "PASVG -- All Insured Savings Banks in Pennsylvania",
+            "value": "PASVG"
+          },
+          {
+            "label": "PRCOM -- All Insured Commercial Banks in Puerto Rico",
+            "value": "PRCOM"
+          },
+          {
+            "label": "RICOM -- All Insured Commercial Banks in Rhode Island",
+            "value": "RICOM"
+          },
+          {
+            "label": "RISVG -- All Insured Savings Banks in Rhode Island",
+            "value": "RISVG"
+          },
+          {
+            "label": "SCCOM -- All Insured Commercial Banks in South Carolina",
+            "value": "SCCOM"
+          },
+          {
+            "label": "SCSVG -- All Insured Savings Banks in South Carolina",
+            "value": "SCSVG"
+          },
+          {
+            "label": "SDCOM -- All Insured Commercial Banks in South Dakota",
+            "value": "SDCOM"
+          },
+          {
+            "label": "SDNDT -- All Non-insured Non-deposit Trust Companies in South Dakota",
+            "value": "SDNDT"
+          },
+          {
+            "label": "SDSVG -- All Insured Savings Banks in South Dakota",
+            "value": "SDSVG"
+          },
+          {
+            "label": "SVG -- All insured savings banks",
+            "value": "SVG"
+          },
+          {
+            "label": "TNCOM -- All Insured Commercial Banks in Tennessee",
+            "value": "TNCOM"
+          },
+          {
+            "label": "TNSVG -- All Insured Savings Banks in Tennessee",
+            "value": "TNSVG"
+          },
+          {
+            "label": "TRST301 -- Trust Assets in excess of $100 billion",
+            "value": "TRST301"
+          },
+          {
+            "label": "TRST302 -- Trust Assets between $10 billion and $100 billion",
+            "value": "TRST302"
+          },
+          {
+            "label": "TRST303 -- Trust Assets between $1 billion and $10 billion",
+            "value": "TRST303"
+          },
+          {
+            "label": "TRST304 -- Trust Assets between $250 million and $1 billion",
+            "value": "TRST304"
+          },
+          {
+            "label": "TRST305 -- Trust Assets less than $250 million",
+            "value": "TRST305"
+          },
+          {
+            "label": "TXBKR -- All Bankers Banks in Texas",
+            "value": "TXBKR"
+          },
+          {
+            "label": "TXCOM -- All Insured Commercial Banks in Texas",
+            "value": "TXCOM"
+          },
+          {
+            "label": "TXNDT -- All Non-insured Non-deposit Trust Companies in Texas",
+            "value": "TXNDT"
+          },
+          {
+            "label": "TXSVG -- All Insured Savings Banks in Texas",
+            "value": "TXSVG"
+          },
+          {
+            "label": "UTCOM -- All Insured Commercial Banks in Utah",
+            "value": "UTCOM"
+          },
+          {
+            "label": "UTCRC -- All Credit Card Specialty Banks in Utah",
+            "value": "UTCRC"
+          },
+          {
+            "label": "UTNDT -- All Non-insured Non-deposit Trust Companies in Utah",
+            "value": "UTNDT"
+          },
+          {
+            "label": "VABKR -- All Bankers Banks in Virginia",
+            "value": "VABKR"
+          },
+          {
+            "label": "VACOM -- All Insured Commercial Banks in Virginia",
+            "value": "VACOM"
+          },
+          {
+            "label": "VACRC -- All Credit Card Specialty Banks in Virginia",
+            "value": "VACRC"
+          },
+          {
+            "label": "VANDT -- All Non-insured Non-deposit Trust Companies in Virginia",
+            "value": "VANDT"
+          },
+          {
+            "label": "VASVG -- All Insured Savings Banks in Virginia",
+            "value": "VASVG"
+          },
+          {
+            "label": "VICOM -- All Insured Commercial Banks in Virgin Islands",
+            "value": "VICOM"
+          },
+          {
+            "label": "VTCOM -- All Insured Commercial Banks in Vermont",
+            "value": "VTCOM"
+          },
+          {
+            "label": "VTSVG -- All Insured Savings Banks in Vermont",
+            "value": "VTSVG"
+          },
+          {
+            "label": "WACOM -- All Insured Commercial Banks in Washington",
+            "value": "WACOM"
+          },
+          {
+            "label": "WASVG -- All Insured Savings Banks in Washington",
+            "value": "WASVG"
+          },
+          {
+            "label": "WIBKR -- All Bankers Banks in Wisconsin",
+            "value": "WIBKR"
+          },
+          {
+            "label": "WICOM -- All Insured Commercial Banks in Wisconsin",
+            "value": "WICOM"
+          },
+          {
+            "label": "WINDT -- All Non-insured Non-deposit Trust Companies in Wisconsin",
+            "value": "WINDT"
+          },
+          {
+            "label": "WISVG -- All Insured Savings Banks in Wisconsin",
+            "value": "WISVG"
+          },
+          {
+            "label": "WVCOM -- All Insured Commercial Banks in West Virginia",
+            "value": "WVCOM"
+          },
+          {
+            "label": "WVNDT -- All Non-insured Non-deposit Trust Companies in West Virginia",
+            "value": "WVNDT"
+          },
+          {
+            "label": "WVSVG -- All Insured Savings Banks in West Virginia",
+            "value": "WVSVG"
+          },
+          {
+            "label": "WYCOM -- All Insured Commercial Banks in Wyoming",
+            "value": "WYCOM"
+          },
+          {
+            "label": "WYSVG -- All Insured Savings Banks in Wyoming",
+            "value": "WYSVG"
+          }
+        ]
+      },
+      {
+        "label": "Section",
+        "description": "The Peer Group Average Report section (page) to return.",
+        "optional": true,
+        "type": "text",
+        "value": "Summary Ratios",
+        "show": true,
+        "paramName": "section",
+        "options": [
+          {
+            "label": "Summary Ratios",
+            "value": "Summary Ratios"
+          },
+          {
+            "label": "Noninterest Income and Expenses",
+            "value": "Noninterest Income and Expenses"
+          },
+          {
+            "label": "Asset Yields and Funding Costs",
+            "value": "Asset Yields and Funding Costs"
+          },
+          {
+            "label": "Off Balance Sheet Items",
+            "value": "Off Balance Sheet Items"
+          },
+          {
+            "label": "Derivative Analysis",
+            "value": "Derivative Analysis"
+          },
+          {
+            "label": "Balance Sheet %",
+            "value": "Balance Sheet %"
+          },
+          {
+            "label": "Allowance & Loan Mix-a",
+            "value": "Allowance & Loan Mix-a"
+          },
+          {
+            "label": "Allowance & Loan Mix-b",
+            "value": "Allowance & Loan Mix-b"
+          },
+          {
+            "label": "Concentrations of Credit",
+            "value": "Concentrations of Credit"
+          },
+          {
+            "label": "PD, Nonacc & Rest Loans-a",
+            "value": "PD, Nonacc & Rest Loans-a"
+          },
+          {
+            "label": "PD, Nonacc & Rest Loans-b",
+            "value": "PD, Nonacc & Rest Loans-b"
+          },
+          {
+            "label": "Interest Rate Risk-a",
+            "value": "Interest Rate Risk-a"
+          },
+          {
+            "label": "Interest Rate Risk-b",
+            "value": "Interest Rate Risk-b"
+          },
+          {
+            "label": "Liquidity & Funding",
+            "value": "Liquidity & Funding"
+          },
+          {
+            "label": "Liquidity & Inv Portfolio",
+            "value": "Liquidity & Inv Portfolio"
+          },
+          {
+            "label": "Capital Analysis-a",
+            "value": "Capital Analysis-a"
+          },
+          {
+            "label": "Income Statement 1-Qtr-Ann",
+            "value": "Income Statement 1-Qtr-Ann"
+          },
+          {
+            "label": "Fiduciary Services-a",
+            "value": "Fiduciary Services-a"
+          }
+        ]
+      },
+      {
+        "label": "All Periods",
+        "description": "Return every reported period instead of only the most recent five.",
+        "optional": true,
+        "type": "boolean",
+        "value": false,
+        "show": true,
+        "paramName": "all_periods"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "peer_group_average",
+    "runButton": false,
+    "gridData": {
+      "w": 50,
+      "h": 25
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "label",
+            "formatterFn": null,
+            "headerName": "Line Item",
+            "headerTooltip": "The line item, indented by the report hierarchy.",
+            "cellDataType": "text",
+            "pinned": "left",
+            "width": 360,
+            "renderFn": "hoverCard",
+            "renderFnParams": {
+              "hoverCard": {
+                "cellField": "label",
+                "markdown": "{narrative}"
+              }
+            }
+          },
+          {
+            "field": "is_header",
+            "formatterFn": null,
+            "headerName": "Is Header",
+            "headerTooltip": "Whether the row is a section or sub-section header.",
+            "cellDataType": "text",
+            "hide": true
+          },
+          {
+            "field": "narrative",
+            "formatterFn": null,
+            "headerName": "Narrative",
+            "headerTooltip": "The MDRM definition of the line item, when available.",
+            "cellDataType": "text",
+            "hide": true
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC"
+  },
+  "ffiec_peer_group_bank_federal_reserve_obb": {
+    "name": "FFIEC UBPR Peer Group Bank Report",
+    "description": "Displays the Uniform Bank Performance Report (UBPR) for every bank in a peer group side by side, so a bank's section line items can be compared directly against its peers for the latest reporting period.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ffiec_peer_group_bank_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_peer_group_bank"
+    },
+    "params": [
+      {
+        "label": "Symbol",
+        "description": "The bank's stock ticker, resolved to its parent RSSD identifier.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "symbol"
+      },
+      {
+        "label": "RSSD ID",
+        "description": "The bank's RSSD identifier; its UBPR peer group drives the report.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "rssd_id"
+      },
+      {
+        "label": "Section",
+        "description": "The UBPR report section (page) to return.",
+        "optional": true,
+        "type": "text",
+        "value": "Summary Ratios",
+        "show": true,
+        "paramName": "section",
+        "options": [
+          {
+            "label": "Summary Ratios",
+            "value": "Summary Ratios"
+          },
+          {
+            "label": "Income Statement $",
+            "value": "Income Statement $"
+          },
+          {
+            "label": "QTR Income Statement $",
+            "value": "QTR Income Statement $"
+          },
+          {
+            "label": "Noninterest Income and Expenses",
+            "value": "Noninterest Income and Expenses"
+          },
+          {
+            "label": "Asset Yields and Funding Costs",
+            "value": "Asset Yields and Funding Costs"
+          },
+          {
+            "label": "Balance Sheet $",
+            "value": "Balance Sheet $"
+          },
+          {
+            "label": "Off Balance Sheet Items",
+            "value": "Off Balance Sheet Items"
+          },
+          {
+            "label": "Derivative Instruments",
+            "value": "Derivative Instruments"
+          },
+          {
+            "label": "Derivative Analysis",
+            "value": "Derivative Analysis"
+          },
+          {
+            "label": "Balance Sheet %",
+            "value": "Balance Sheet %"
+          },
+          {
+            "label": "Allowance & Loan Mix-a",
+            "value": "Allowance & Loan Mix-a"
+          },
+          {
+            "label": "Allowance & Loan Mix-b",
+            "value": "Allowance & Loan Mix-b"
+          },
+          {
+            "label": "Concentrations of Credit",
+            "value": "Concentrations of Credit"
+          },
+          {
+            "label": "PD, Nonacc & Rest Loans-a",
+            "value": "PD, Nonacc & Rest Loans-a"
+          },
+          {
+            "label": "PD, Nonacc & Rest Loans-b",
+            "value": "PD, Nonacc & Rest Loans-b"
+          },
+          {
+            "label": "Interest Rate Risk-a",
+            "value": "Interest Rate Risk-a"
+          },
+          {
+            "label": "Interest Rate Risk-b",
+            "value": "Interest Rate Risk-b"
+          },
+          {
+            "label": "Liquidity & Funding",
+            "value": "Liquidity & Funding"
+          },
+          {
+            "label": "Liquidity & Inv Portfolio",
+            "value": "Liquidity & Inv Portfolio"
+          },
+          {
+            "label": "Capital Analysis-a",
+            "value": "Capital Analysis-a"
+          },
+          {
+            "label": "Capital Analysis-b",
+            "value": "Capital Analysis-b"
+          },
+          {
+            "label": "Capital Analysis-c",
+            "value": "Capital Analysis-c"
+          },
+          {
+            "label": "Income Statement 1-Qtr-Ann",
+            "value": "Income Statement 1-Qtr-Ann"
+          },
+          {
+            "label": "Securitization & Asset Sale-a",
+            "value": "Securitization & Asset Sale-a"
+          },
+          {
+            "label": "Securitization & Asset Sale-b",
+            "value": "Securitization & Asset Sale-b"
+          },
+          {
+            "label": "Securitization & Asset Sale-c",
+            "value": "Securitization & Asset Sale-c"
+          },
+          {
+            "label": "Fiduciary Services-a",
+            "value": "Fiduciary Services-a"
+          },
+          {
+            "label": "Fiduciary Services-b",
+            "value": "Fiduciary Services-b"
+          }
+        ]
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "peer_group_bank",
+    "runButton": false,
+    "gridData": {
+      "w": 50,
+      "h": 25
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "label",
+            "formatterFn": null,
+            "headerName": "Line Item",
+            "headerTooltip": "The line item, indented by the report hierarchy.",
+            "cellDataType": "text",
+            "pinned": "left",
+            "width": 360,
+            "renderFn": "hoverCard",
+            "renderFnParams": {
+              "hoverCard": {
+                "cellField": "label",
+                "markdown": "{narrative}"
+              }
+            }
+          },
+          {
+            "field": "is_header",
+            "formatterFn": null,
+            "headerName": "Is Header",
+            "headerTooltip": "Whether the row is a section or sub-section header.",
+            "cellDataType": "text",
+            "hide": true
+          },
+          {
+            "field": "narrative",
+            "formatterFn": null,
+            "headerName": "Narrative",
+            "headerTooltip": "The UBPR User's Guide definition of the line item, shown in a hover card.",
+            "cellDataType": "text",
+            "hide": true
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC"
+  },
+  "ffiec_peer_group_distribution_federal_reserve_obb": {
+    "name": "FFIEC UBPR Peer Group Average Distribution",
+    "description": "This report provides a distribution or range of values for all ratios that appear in the UBPR by peer group. The report can provide valuable insight into the population of banks that are used to calculate the peer average data that appears in the UBPR.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ffiec_peer_group_distribution_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_peer_group_distribution"
+    },
+    "params": [
+      {
+        "label": "Peer Group",
+        "description": "The UBPR peer-group name (e.g. '1', 'NATIONAL', 'ALCOM').",
+        "optional": true,
+        "type": "text",
+        "value": "1",
+        "show": true,
+        "paramName": "peer_group",
+        "options": [
+          {
+            "label": "1 -- Insured commercial banks having assets greater than $100 billion",
+            "value": "1"
+          },
+          {
+            "label": "101 -- Insured savings banks having assets greater than $1 billion",
+            "value": "101"
+          },
+          {
+            "label": "101M -- Mutually-owned insured savings banks having assets greater than $1 billion",
+            "value": "101M"
+          },
+          {
+            "label": "101S -- Stock-owned insured savings banks having assets greater than $1 billion",
+            "value": "101S"
+          },
+          {
+            "label": "102 -- Insured savings banks having assets between $300 million and $1 billion",
+            "value": "102"
+          },
+          {
+            "label": "102M -- Mutually-owned insured savings banks having assets between $300 million and $1 billion",
+            "value": "102M"
+          },
+          {
+            "label": "102S -- Stock-owned insured savings banks having assets between $300 million and $1 billion",
+            "value": "102S"
+          },
+          {
+            "label": "103 -- Insured savings banks having assets between $100 million and $300 million",
+            "value": "103"
+          },
+          {
+            "label": "103M -- Mutually-owned insured savings banks having assets between $100 million and $300 million",
+            "value": "103M"
+          },
+          {
+            "label": "103S -- Stock-owned insured savings banks having assets between $100 million and $300 million",
+            "value": "103S"
+          },
+          {
+            "label": "104 -- Insured savings banks having assets less than $100 million",
+            "value": "104"
+          },
+          {
+            "label": "104M -- Mutually-owned insured savings banks having assets less than $100 million",
+            "value": "104M"
+          },
+          {
+            "label": "104S -- Stock-owned insured savings banks having assets less than $100 million",
+            "value": "104S"
+          },
+          {
+            "label": "2 -- Insured commercial banks having assets between $10 billion and $100 billion",
+            "value": "2"
+          },
+          {
+            "label": "201 -- Credit card specialty banks having assets greater than $ 3 billion",
+            "value": "201"
+          },
+          {
+            "label": "202 -- Credit card specialty banks having assets between $1 billion and $3 billion",
+            "value": "202"
+          },
+          {
+            "label": "2022 -- Denovo banks opened in 2022 having assets less than $750 million",
+            "value": "2022"
+          },
+          {
+            "label": "2023 -- Denovo banks opened in 2023 having assets less than $750 million",
+            "value": "2023"
+          },
+          {
+            "label": "2024 -- Denovo banks opened in 2024 having assets less than $750 million",
+            "value": "2024"
+          },
+          {
+            "label": "2025 -- Denovo banks opened in 2025 having assets less than $750 million",
+            "value": "2025"
+          },
+          {
+            "label": "2026 -- Denovo banks opened in 2026 having assets less than $750 million",
+            "value": "2026"
+          },
+          {
+            "label": "203 -- Credit card specialty banks having assets less than $1 billion",
+            "value": "203"
+          },
+          {
+            "label": "3 -- Insured commercial banks having assets between $3 billion and $10 billion",
+            "value": "3"
+          },
+          {
+            "label": "301 -- Bankers banks",
+            "value": "301"
+          },
+          {
+            "label": "4 -- Insured commercial banks having assets between $1 billion and $3 billion",
+            "value": "4"
+          },
+          {
+            "label": "401 -- All Non-insured Non-deposit Trust Companies",
+            "value": "401"
+          },
+          {
+            "label": "5 -- Insured commercial banks having assets between $300 million and $1 billion",
+            "value": "5"
+          },
+          {
+            "label": "6 -- Insured commercial banks having assets between $100 million and $300 million",
+            "value": "6"
+          },
+          {
+            "label": "7 -- Insured commercial banks having assets between $50 million and $100 million",
+            "value": "7"
+          },
+          {
+            "label": "8 -- Insured commercial banks having assets less than $50 million",
+            "value": "8"
+          },
+          {
+            "label": "AKCOM -- All Insured Commercial Banks in Alaska",
+            "value": "AKCOM"
+          },
+          {
+            "label": "AKSVG -- All Insured Savings Banks in Alaska",
+            "value": "AKSVG"
+          },
+          {
+            "label": "ALCOM -- All Insured Commercial Banks in Alabama",
+            "value": "ALCOM"
+          },
+          {
+            "label": "ALSVG -- All Insured Savings Banks in Alabama",
+            "value": "ALSVG"
+          },
+          {
+            "label": "ARCOM -- All Insured Commercial Banks in Arkansas",
+            "value": "ARCOM"
+          },
+          {
+            "label": "ARSVG -- All Insured Savings Banks in Arkansas",
+            "value": "ARSVG"
+          },
+          {
+            "label": "AZCOM -- All Insured Commercial Banks in Arizona",
+            "value": "AZCOM"
+          },
+          {
+            "label": "AZNDT -- All Non-insured Non-deposit Trust Companies in Arizona",
+            "value": "AZNDT"
+          },
+          {
+            "label": "AZSVG -- All Insured Savings Banks in Arizona",
+            "value": "AZSVG"
+          },
+          {
+            "label": "BKR -- Bankers banks",
+            "value": "BKR"
+          },
+          {
+            "label": "CABKR -- All Bankers Banks in California",
+            "value": "CABKR"
+          },
+          {
+            "label": "CACOM -- All Insured Commercial Banks in California",
+            "value": "CACOM"
+          },
+          {
+            "label": "CANDT -- All Non-insured Non-deposit Trust Companies in California",
+            "value": "CANDT"
+          },
+          {
+            "label": "CASVG -- All Insured Savings Banks in California",
+            "value": "CASVG"
+          },
+          {
+            "label": "COBKR -- All Bankers Banks in Colorado",
+            "value": "COBKR"
+          },
+          {
+            "label": "COCOM -- All Insured Commercial Banks in Colorado",
+            "value": "COCOM"
+          },
+          {
+            "label": "COM -- All insured commercial banks",
+            "value": "COM"
+          },
+          {
+            "label": "COSVG -- All Insured Savings Banks in Colorado",
+            "value": "COSVG"
+          },
+          {
+            "label": "CRC -- All credit card specialty banks",
+            "value": "CRC"
+          },
+          {
+            "label": "CTCOM -- All Insured Commercial Banks in Connecticut",
+            "value": "CTCOM"
+          },
+          {
+            "label": "CTSVG -- All Insured Savings Banks in Connecticut",
+            "value": "CTSVG"
+          },
+          {
+            "label": "DCCOM -- All Insured Commercial Banks in District of Columbia",
+            "value": "DCCOM"
+          },
+          {
+            "label": "DECOM -- All Insured Commercial Banks in Delaware",
+            "value": "DECOM"
+          },
+          {
+            "label": "DECRC -- All Credit Card Specialty Banks in Delaware",
+            "value": "DECRC"
+          },
+          {
+            "label": "DENDT -- All Non-insured Non-deposit Trust Companies in Delaware",
+            "value": "DENDT"
+          },
+          {
+            "label": "DESVG -- All Insured Savings Banks in Delaware",
+            "value": "DESVG"
+          },
+          {
+            "label": "FLCOM -- All Insured Commercial Banks in Florida",
+            "value": "FLCOM"
+          },
+          {
+            "label": "FLCRC -- All Credit Card Specialty Banks in Florida",
+            "value": "FLCRC"
+          },
+          {
+            "label": "FLNDT -- All Non-insured Non-deposit Trust Companies in Florida",
+            "value": "FLNDT"
+          },
+          {
+            "label": "FLSVG -- All Insured Savings Banks in Florida",
+            "value": "FLSVG"
+          },
+          {
+            "label": "FMCOM -- All Insured Commercial Banks in Micronesia",
+            "value": "FMCOM"
+          },
+          {
+            "label": "GACOM -- All Insured Commercial Banks in Georgia",
+            "value": "GACOM"
+          },
+          {
+            "label": "GANDT -- All Non-insured Non-deposit Trust Companies in Georgia",
+            "value": "GANDT"
+          },
+          {
+            "label": "GASVG -- All Insured Savings Banks in Georgia",
+            "value": "GASVG"
+          },
+          {
+            "label": "GUCOM -- All Insured Commercial Banks in Guam",
+            "value": "GUCOM"
+          },
+          {
+            "label": "HICOM -- All Insured Commercial Banks in Hawaii",
+            "value": "HICOM"
+          },
+          {
+            "label": "IACOM -- All Insured Commercial Banks in Iowa",
+            "value": "IACOM"
+          },
+          {
+            "label": "IANDT -- All Non-insured Non-deposit Trust Companies in Iowa",
+            "value": "IANDT"
+          },
+          {
+            "label": "IASVG -- All Insured Savings Banks in Iowa",
+            "value": "IASVG"
+          },
+          {
+            "label": "IDCOM -- All Insured Commercial Banks in Idaho",
+            "value": "IDCOM"
+          },
+          {
+            "label": "IDSVG -- All Insured Savings Banks in Idaho",
+            "value": "IDSVG"
+          },
+          {
+            "label": "ILCOM -- All Insured Commercial Banks in Illinois",
+            "value": "ILCOM"
+          },
+          {
+            "label": "ILNDT -- All Non-insured Non-deposit Trust Companies in Illinois",
+            "value": "ILNDT"
+          },
+          {
+            "label": "ILSVG -- All Insured Savings Banks in Illinois",
+            "value": "ILSVG"
+          },
+          {
+            "label": "INCOM -- All Insured Commercial Banks in Indiana",
+            "value": "INCOM"
+          },
+          {
+            "label": "INNDT -- All Non-insured Non-deposit Trust Companies in Indiana",
+            "value": "INNDT"
+          },
+          {
+            "label": "INSVG -- All Insured Savings Banks in Indiana",
+            "value": "INSVG"
+          },
+          {
+            "label": "KSBKR -- All Bankers Banks in Kansas",
+            "value": "KSBKR"
+          },
+          {
+            "label": "KSCOM -- All Insured Commercial Banks in Kansas",
+            "value": "KSCOM"
+          },
+          {
+            "label": "KSSVG -- All Insured Savings Banks in Kansas",
+            "value": "KSSVG"
+          },
+          {
+            "label": "KYBKR -- All Bankers Banks in Kentucky",
+            "value": "KYBKR"
+          },
+          {
+            "label": "KYCOM -- All Insured Commercial Banks in Kentucky",
+            "value": "KYCOM"
+          },
+          {
+            "label": "KYSVG -- All Insured Savings Banks in Kentucky",
+            "value": "KYSVG"
+          },
+          {
+            "label": "LABKR -- All Bankers Banks in Louisiana",
+            "value": "LABKR"
+          },
+          {
+            "label": "LACOM -- All Insured Commercial Banks in Louisiana",
+            "value": "LACOM"
+          },
+          {
+            "label": "LASVG -- All Insured Savings Banks in Louisiana",
+            "value": "LASVG"
+          },
+          {
+            "label": "MACOM -- All Insured Commercial Banks in Massachusetts",
+            "value": "MACOM"
+          },
+          {
+            "label": "MANDT -- All Non-insured Non-deposit Trust Companies in Massachusetts",
+            "value": "MANDT"
+          },
+          {
+            "label": "MASVG -- All Insured Savings Banks in Massachusetts",
+            "value": "MASVG"
+          },
+          {
+            "label": "MDCOM -- All Insured Commercial Banks in Maryland",
+            "value": "MDCOM"
+          },
+          {
+            "label": "MDSVG -- All Insured Savings Banks in Maryland",
+            "value": "MDSVG"
+          },
+          {
+            "label": "MECOM -- All Insured Commercial Banks in Maine",
+            "value": "MECOM"
+          },
+          {
+            "label": "MESVG -- All Insured Savings Banks in Maine",
+            "value": "MESVG"
+          },
+          {
+            "label": "MICOM -- All Insured Commercial Banks in Michigan",
+            "value": "MICOM"
+          },
+          {
+            "label": "MINDT -- All Non-insured Non-deposit Trust Companies in Michigan",
+            "value": "MINDT"
+          },
+          {
+            "label": "MISVG -- All Insured Savings Banks in Michigan",
+            "value": "MISVG"
+          },
+          {
+            "label": "MNBKR -- All Bankers Banks in Minnesota",
+            "value": "MNBKR"
+          },
+          {
+            "label": "MNCOM -- All Insured Commercial Banks in Minnesota",
+            "value": "MNCOM"
+          },
+          {
+            "label": "MNNDT -- All Non-insured Non-deposit Trust Companies in Minnesota",
+            "value": "MNNDT"
+          },
+          {
+            "label": "MNSVG -- All Insured Savings Banks in Minnesota",
+            "value": "MNSVG"
+          },
+          {
+            "label": "MOBKR -- All Bankers Banks in Missouri",
+            "value": "MOBKR"
+          },
+          {
+            "label": "MOCOM -- All Insured Commercial Banks in Missouri",
+            "value": "MOCOM"
+          },
+          {
+            "label": "MONDT -- All Non-insured Non-deposit Trust Companies in Missouri",
+            "value": "MONDT"
+          },
+          {
+            "label": "MOSVG -- All Insured Savings Banks in Missouri",
+            "value": "MOSVG"
+          },
+          {
+            "label": "MSCOM -- All Insured Commercial Banks in Mississippi",
+            "value": "MSCOM"
+          },
+          {
+            "label": "MSSVG -- All Insured Savings Banks in Mississippi",
+            "value": "MSSVG"
+          },
+          {
+            "label": "MTCOM -- All Insured Commercial Banks in Montana",
+            "value": "MTCOM"
+          },
+          {
+            "label": "MTSVG -- All Insured Savings Banks in Montana",
+            "value": "MTSVG"
+          },
+          {
+            "label": "NATIONAL -- All banks in nation",
+            "value": "NATIONAL"
+          },
+          {
+            "label": "NCCOM -- All Insured Commercial Banks in North Carolina",
+            "value": "NCCOM"
+          },
+          {
+            "label": "NCNDT -- All Non-insured Non-deposit Trust Companies in North Carolina",
+            "value": "NCNDT"
+          },
+          {
+            "label": "NCSVG -- All Insured Savings Banks in North Carolina",
+            "value": "NCSVG"
+          },
+          {
+            "label": "NDCOM -- All Insured Commercial Banks in North Dakota",
+            "value": "NDCOM"
+          },
+          {
+            "label": "NDSVG -- All Insured Savings Banks in North Dakota",
+            "value": "NDSVG"
+          },
+          {
+            "label": "NDT -- All Non-insured Non-deposit Trust Companies",
+            "value": "NDT"
+          },
+          {
+            "label": "NECOM -- All Insured Commercial Banks in Nebraska",
+            "value": "NECOM"
+          },
+          {
+            "label": "NESVG -- All Insured Savings Banks in Nebraska",
+            "value": "NESVG"
+          },
+          {
+            "label": "NHCOM -- All Insured Commercial Banks in New Hampshire",
+            "value": "NHCOM"
+          },
+          {
+            "label": "NHSVG -- All Insured Savings Banks in New Hampshire",
+            "value": "NHSVG"
+          },
+          {
+            "label": "NJCOM -- All Insured Commercial Banks in New Jersey",
+            "value": "NJCOM"
+          },
+          {
+            "label": "NJSVG -- All Insured Savings Banks in New Jersey",
+            "value": "NJSVG"
+          },
+          {
+            "label": "NMCOM -- All Insured Commercial Banks in New Mexico",
+            "value": "NMCOM"
+          },
+          {
+            "label": "NMSVG -- All Insured Savings Banks in New Mexico",
+            "value": "NMSVG"
+          },
+          {
+            "label": "NVCOM -- All Insured Commercial Banks in Nevada",
+            "value": "NVCOM"
+          },
+          {
+            "label": "NVCRC -- All Credit Card Specialty Banks in Nevada",
+            "value": "NVCRC"
+          },
+          {
+            "label": "NVNDT -- All Non-insured Non-deposit Trust Companies in Nevada",
+            "value": "NVNDT"
+          },
+          {
+            "label": "NVSVG -- All Insured Savings Banks in Nevada",
+            "value": "NVSVG"
+          },
+          {
+            "label": "NYCOM -- All Insured Commercial Banks in New York",
+            "value": "NYCOM"
+          },
+          {
+            "label": "NYNDT -- All Non-insured Non-deposit Trust Companies in New York",
+            "value": "NYNDT"
+          },
+          {
+            "label": "NYSVG -- All Insured Savings Banks in New York",
+            "value": "NYSVG"
+          },
+          {
+            "label": "OHCOM -- All Insured Commercial Banks in Ohio",
+            "value": "OHCOM"
+          },
+          {
+            "label": "OHNDT -- All Non-insured Non-deposit Trust Companies in Ohio",
+            "value": "OHNDT"
+          },
+          {
+            "label": "OHSVG -- All Insured Savings Banks in Ohio",
+            "value": "OHSVG"
+          },
+          {
+            "label": "OKBKR -- All Bankers Banks in Oklahoma",
+            "value": "OKBKR"
+          },
+          {
+            "label": "OKCOM -- All Insured Commercial Banks in Oklahoma",
+            "value": "OKCOM"
+          },
+          {
+            "label": "OKCRC -- All Credit Card Specialty Banks in Oklahoma",
+            "value": "OKCRC"
+          },
+          {
+            "label": "OKNDT -- All Non-insured Non-deposit Trust Companies in Oklahoma",
+            "value": "OKNDT"
+          },
+          {
+            "label": "OKSVG -- All Insured Savings Banks in Oklahoma",
+            "value": "OKSVG"
+          },
+          {
+            "label": "ORCOM -- All Insured Commercial Banks in Oregon",
+            "value": "ORCOM"
+          },
+          {
+            "label": "ORNDT -- All Non-insured Non-deposit Trust Companies in Oregon",
+            "value": "ORNDT"
+          },
+          {
+            "label": "ORSVG -- All Insured Savings Banks in Oregon",
+            "value": "ORSVG"
+          },
+          {
+            "label": "PABKR -- All Bankers Banks in Pennsylvania",
+            "value": "PABKR"
+          },
+          {
+            "label": "PACOM -- All Insured Commercial Banks in Pennsylvania",
+            "value": "PACOM"
+          },
+          {
+            "label": "PANDT -- All Non-insured Non-deposit Trust Companies in Pennsylvania",
+            "value": "PANDT"
+          },
+          {
+            "label": "PASVG -- All Insured Savings Banks in Pennsylvania",
+            "value": "PASVG"
+          },
+          {
+            "label": "PRCOM -- All Insured Commercial Banks in Puerto Rico",
+            "value": "PRCOM"
+          },
+          {
+            "label": "RICOM -- All Insured Commercial Banks in Rhode Island",
+            "value": "RICOM"
+          },
+          {
+            "label": "RISVG -- All Insured Savings Banks in Rhode Island",
+            "value": "RISVG"
+          },
+          {
+            "label": "SCCOM -- All Insured Commercial Banks in South Carolina",
+            "value": "SCCOM"
+          },
+          {
+            "label": "SCSVG -- All Insured Savings Banks in South Carolina",
+            "value": "SCSVG"
+          },
+          {
+            "label": "SDCOM -- All Insured Commercial Banks in South Dakota",
+            "value": "SDCOM"
+          },
+          {
+            "label": "SDNDT -- All Non-insured Non-deposit Trust Companies in South Dakota",
+            "value": "SDNDT"
+          },
+          {
+            "label": "SDSVG -- All Insured Savings Banks in South Dakota",
+            "value": "SDSVG"
+          },
+          {
+            "label": "SVG -- All insured savings banks",
+            "value": "SVG"
+          },
+          {
+            "label": "TNCOM -- All Insured Commercial Banks in Tennessee",
+            "value": "TNCOM"
+          },
+          {
+            "label": "TNSVG -- All Insured Savings Banks in Tennessee",
+            "value": "TNSVG"
+          },
+          {
+            "label": "TRST301 -- Trust Assets in excess of $100 billion",
+            "value": "TRST301"
+          },
+          {
+            "label": "TRST302 -- Trust Assets between $10 billion and $100 billion",
+            "value": "TRST302"
+          },
+          {
+            "label": "TRST303 -- Trust Assets between $1 billion and $10 billion",
+            "value": "TRST303"
+          },
+          {
+            "label": "TRST304 -- Trust Assets between $250 million and $1 billion",
+            "value": "TRST304"
+          },
+          {
+            "label": "TRST305 -- Trust Assets less than $250 million",
+            "value": "TRST305"
+          },
+          {
+            "label": "TXBKR -- All Bankers Banks in Texas",
+            "value": "TXBKR"
+          },
+          {
+            "label": "TXCOM -- All Insured Commercial Banks in Texas",
+            "value": "TXCOM"
+          },
+          {
+            "label": "TXNDT -- All Non-insured Non-deposit Trust Companies in Texas",
+            "value": "TXNDT"
+          },
+          {
+            "label": "TXSVG -- All Insured Savings Banks in Texas",
+            "value": "TXSVG"
+          },
+          {
+            "label": "UTCOM -- All Insured Commercial Banks in Utah",
+            "value": "UTCOM"
+          },
+          {
+            "label": "UTCRC -- All Credit Card Specialty Banks in Utah",
+            "value": "UTCRC"
+          },
+          {
+            "label": "UTNDT -- All Non-insured Non-deposit Trust Companies in Utah",
+            "value": "UTNDT"
+          },
+          {
+            "label": "VABKR -- All Bankers Banks in Virginia",
+            "value": "VABKR"
+          },
+          {
+            "label": "VACOM -- All Insured Commercial Banks in Virginia",
+            "value": "VACOM"
+          },
+          {
+            "label": "VACRC -- All Credit Card Specialty Banks in Virginia",
+            "value": "VACRC"
+          },
+          {
+            "label": "VANDT -- All Non-insured Non-deposit Trust Companies in Virginia",
+            "value": "VANDT"
+          },
+          {
+            "label": "VASVG -- All Insured Savings Banks in Virginia",
+            "value": "VASVG"
+          },
+          {
+            "label": "VICOM -- All Insured Commercial Banks in Virgin Islands",
+            "value": "VICOM"
+          },
+          {
+            "label": "VTCOM -- All Insured Commercial Banks in Vermont",
+            "value": "VTCOM"
+          },
+          {
+            "label": "VTSVG -- All Insured Savings Banks in Vermont",
+            "value": "VTSVG"
+          },
+          {
+            "label": "WACOM -- All Insured Commercial Banks in Washington",
+            "value": "WACOM"
+          },
+          {
+            "label": "WASVG -- All Insured Savings Banks in Washington",
+            "value": "WASVG"
+          },
+          {
+            "label": "WIBKR -- All Bankers Banks in Wisconsin",
+            "value": "WIBKR"
+          },
+          {
+            "label": "WICOM -- All Insured Commercial Banks in Wisconsin",
+            "value": "WICOM"
+          },
+          {
+            "label": "WINDT -- All Non-insured Non-deposit Trust Companies in Wisconsin",
+            "value": "WINDT"
+          },
+          {
+            "label": "WISVG -- All Insured Savings Banks in Wisconsin",
+            "value": "WISVG"
+          },
+          {
+            "label": "WVCOM -- All Insured Commercial Banks in West Virginia",
+            "value": "WVCOM"
+          },
+          {
+            "label": "WVNDT -- All Non-insured Non-deposit Trust Companies in West Virginia",
+            "value": "WVNDT"
+          },
+          {
+            "label": "WVSVG -- All Insured Savings Banks in West Virginia",
+            "value": "WVSVG"
+          },
+          {
+            "label": "WYCOM -- All Insured Commercial Banks in Wyoming",
+            "value": "WYCOM"
+          },
+          {
+            "label": "WYSVG -- All Insured Savings Banks in Wyoming",
+            "value": "WYSVG"
+          }
+        ]
+      },
+      {
+        "label": "Section",
+        "description": "The report page (section) to return.",
+        "optional": true,
+        "type": "text",
+        "value": "Summary Ratios",
+        "show": true,
+        "paramName": "section",
+        "options": [
+          {
+            "label": "Summary Ratios",
+            "value": "Summary Ratios"
+          },
+          {
+            "label": "Noninterest Income and Expenses",
+            "value": "Noninterest Income and Expenses"
+          },
+          {
+            "label": "Asset Yields and Funding Costs",
+            "value": "Asset Yields and Funding Costs"
+          },
+          {
+            "label": "Off Balance Sheet Items",
+            "value": "Off Balance Sheet Items"
+          },
+          {
+            "label": "Derivative Analysis",
+            "value": "Derivative Analysis"
+          },
+          {
+            "label": "Balance Sheet %",
+            "value": "Balance Sheet %"
+          },
+          {
+            "label": "Allowance & Loan Mix-a",
+            "value": "Allowance & Loan Mix-a"
+          },
+          {
+            "label": "Allowance & Loan Mix-b",
+            "value": "Allowance & Loan Mix-b"
+          },
+          {
+            "label": "Concentrations of Credit",
+            "value": "Concentrations of Credit"
+          },
+          {
+            "label": "PD, Nonacc & Rest Loans-a",
+            "value": "PD, Nonacc & Rest Loans-a"
+          },
+          {
+            "label": "PD, Nonacc & Rest Loans-b",
+            "value": "PD, Nonacc & Rest Loans-b"
+          },
+          {
+            "label": "Interest Rate Risk-a",
+            "value": "Interest Rate Risk-a"
+          },
+          {
+            "label": "Interest Rate Risk-b",
+            "value": "Interest Rate Risk-b"
+          },
+          {
+            "label": "Liquidity & Funding",
+            "value": "Liquidity & Funding"
+          },
+          {
+            "label": "Liquidity & Inv Portfolio",
+            "value": "Liquidity & Inv Portfolio"
+          },
+          {
+            "label": "Capital Analysis-a",
+            "value": "Capital Analysis-a"
+          },
+          {
+            "label": "Income Statement 1-Qtr-Ann",
+            "value": "Income Statement 1-Qtr-Ann"
+          },
+          {
+            "label": "Fiduciary Services-a",
+            "value": "Fiduciary Services-a"
+          }
+        ]
+      },
+      {
+        "label": "Period",
+        "description": "The reporting period end date (YYYY-MM-DD); defaults to latest.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "period"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "peer_group_distribution",
+    "runButton": false,
+    "gridData": {
+      "w": 50,
+      "h": 25
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "label",
+            "formatterFn": null,
+            "headerName": "Line Item",
+            "headerTooltip": "The line item, indented by the report hierarchy.",
+            "cellDataType": "text",
+            "pinned": "left",
+            "width": 360,
+            "renderFn": "hoverCard",
+            "renderFnParams": {
+              "hoverCard": {
+                "cellField": "label",
+                "markdown": "{narrative}"
+              }
+            }
+          },
+          {
+            "field": "is_header",
+            "formatterFn": null,
+            "headerName": "Is Header",
+            "headerTooltip": "Whether the row is a section or sub-section header.",
+            "cellDataType": "text",
+            "hide": true
+          },
+          {
+            "field": "narrative",
+            "formatterFn": null,
+            "headerName": "Narrative",
+            "headerTooltip": "The Interactive User's Guide definition of the line item's concept, when available.",
+            "cellDataType": "text",
+            "hide": true
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC"
+  },
+  "ffiec_state_average_federal_reserve_obb": {
+    "name": "FFIEC UBPR State Average Report",
+    "description": "This report provides summary UBPR ratio data and selected aggregate information averaged by state. A further breakdown of average statistical data is provided by asset size. The information is provided for all states and territories in UBPR format.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ffiec_state_average_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_state_average"
+    },
+    "params": [
+      {
+        "label": "State",
+        "description": "The two-letter state (or territory) code to average.",
+        "optional": true,
+        "type": "text",
+        "value": "SD",
+        "show": true,
+        "paramName": "state",
+        "options": [
+          {
+            "label": "Alabama",
+            "value": "AL"
+          },
+          {
+            "label": "Alaska",
+            "value": "AK"
+          },
+          {
+            "label": "American Samoa",
+            "value": "AS"
+          },
+          {
+            "label": "Arizona",
+            "value": "AZ"
+          },
+          {
+            "label": "Arkansas",
+            "value": "AR"
+          },
+          {
+            "label": "California",
+            "value": "CA"
+          },
+          {
+            "label": "Colorado",
+            "value": "CO"
+          },
+          {
+            "label": "Connecticut",
+            "value": "CT"
+          },
+          {
+            "label": "Delaware",
+            "value": "DE"
+          },
+          {
+            "label": "District of Columbia",
+            "value": "DC"
+          },
+          {
+            "label": "Florida",
+            "value": "FL"
+          },
+          {
+            "label": "Georgia",
+            "value": "GA"
+          },
+          {
+            "label": "Guam",
+            "value": "GU"
+          },
+          {
+            "label": "Hawaii",
+            "value": "HI"
+          },
+          {
+            "label": "Idaho",
+            "value": "ID"
+          },
+          {
+            "label": "Illinois",
+            "value": "IL"
+          },
+          {
+            "label": "Indiana",
+            "value": "IN"
+          },
+          {
+            "label": "Iowa",
+            "value": "IA"
+          },
+          {
+            "label": "Kansas",
+            "value": "KS"
+          },
+          {
+            "label": "Kentucky",
+            "value": "KY"
+          },
+          {
+            "label": "Louisiana",
+            "value": "LA"
+          },
+          {
+            "label": "Maine",
+            "value": "ME"
+          },
+          {
+            "label": "Maryland",
+            "value": "MD"
+          },
+          {
+            "label": "Massachusetts",
+            "value": "MA"
+          },
+          {
+            "label": "Michigan",
+            "value": "MI"
+          },
+          {
+            "label": "Micronesia",
+            "value": "FM"
+          },
+          {
+            "label": "Minnesota",
+            "value": "MN"
+          },
+          {
+            "label": "Mississippi",
+            "value": "MS"
+          },
+          {
+            "label": "Missouri",
+            "value": "MO"
+          },
+          {
+            "label": "Montana",
+            "value": "MT"
+          },
+          {
+            "label": "Nebraska",
+            "value": "NE"
+          },
+          {
+            "label": "Nevada",
+            "value": "NV"
+          },
+          {
+            "label": "New Hampshire",
+            "value": "NH"
+          },
+          {
+            "label": "New Jersey",
+            "value": "NJ"
+          },
+          {
+            "label": "New Mexico",
+            "value": "NM"
+          },
+          {
+            "label": "New York",
+            "value": "NY"
+          },
+          {
+            "label": "North Carolina",
+            "value": "NC"
+          },
+          {
+            "label": "North Dakota",
+            "value": "ND"
+          },
+          {
+            "label": "Ohio",
+            "value": "OH"
+          },
+          {
+            "label": "Oklahoma",
+            "value": "OK"
+          },
+          {
+            "label": "Oregon",
+            "value": "OR"
+          },
+          {
+            "label": "Pennsylvania",
+            "value": "PA"
+          },
+          {
+            "label": "Puerto Rico",
+            "value": "PR"
+          },
+          {
+            "label": "Rhode Island",
+            "value": "RI"
+          },
+          {
+            "label": "South Carolina",
+            "value": "SC"
+          },
+          {
+            "label": "South Dakota",
+            "value": "SD"
+          },
+          {
+            "label": "Tennessee",
+            "value": "TN"
+          },
+          {
+            "label": "Texas",
+            "value": "TX"
+          },
+          {
+            "label": "Utah",
+            "value": "UT"
+          },
+          {
+            "label": "Vermont",
+            "value": "VT"
+          },
+          {
+            "label": "Virgin Islands",
+            "value": "VI"
+          },
+          {
+            "label": "Virginia",
+            "value": "VA"
+          },
+          {
+            "label": "Washington",
+            "value": "WA"
+          },
+          {
+            "label": "West Virginia",
+            "value": "WV"
+          },
+          {
+            "label": "Wisconsin",
+            "value": "WI"
+          },
+          {
+            "label": "Wyoming",
+            "value": "WY"
+          }
+        ]
+      },
+      {
+        "label": "Group Type",
+        "description": "The institution peer group to average across the state.",
+        "optional": true,
+        "type": "text",
+        "value": "commercial",
+        "show": true,
+        "paramName": "group_type",
+        "options": [
+          {
+            "label": "Commercial",
+            "value": "commercial"
+          },
+          {
+            "label": "Savings",
+            "value": "savings"
+          }
+        ]
+      },
+      {
+        "label": "Section",
+        "description": "The UBPR State Average report section (page) to return.",
+        "optional": true,
+        "type": "text",
+        "value": "Summary Ratios",
+        "show": true,
+        "paramName": "section",
+        "options": [
+          {
+            "label": "Summary Ratios",
+            "value": "Summary Ratios"
+          },
+          {
+            "label": "Noninterest Income and Expenses",
+            "value": "Noninterest Income and Expenses"
+          },
+          {
+            "label": "Asset Yields and Funding Costs",
+            "value": "Asset Yields and Funding Costs"
+          },
+          {
+            "label": "Off Balance Sheet Items",
+            "value": "Off Balance Sheet Items"
+          },
+          {
+            "label": "Derivative Analysis",
+            "value": "Derivative Analysis"
+          },
+          {
+            "label": "Balance Sheet %",
+            "value": "Balance Sheet %"
+          },
+          {
+            "label": "Allowance & Loan Mix-a",
+            "value": "Allowance & Loan Mix-a"
+          },
+          {
+            "label": "Allowance & Loan Mix-b",
+            "value": "Allowance & Loan Mix-b"
+          },
+          {
+            "label": "Concentrations of Credit",
+            "value": "Concentrations of Credit"
+          },
+          {
+            "label": "PD, Nonacc & Rest Loans-a",
+            "value": "PD, Nonacc & Rest Loans-a"
+          },
+          {
+            "label": "PD, Nonacc & Rest Loans-b",
+            "value": "PD, Nonacc & Rest Loans-b"
+          },
+          {
+            "label": "Interest Rate Risk-a",
+            "value": "Interest Rate Risk-a"
+          },
+          {
+            "label": "Interest Rate Risk-b",
+            "value": "Interest Rate Risk-b"
+          },
+          {
+            "label": "Liquidity & Funding",
+            "value": "Liquidity & Funding"
+          },
+          {
+            "label": "Liquidity & Inv Portfolio",
+            "value": "Liquidity & Inv Portfolio"
+          },
+          {
+            "label": "Capital Analysis-a",
+            "value": "Capital Analysis-a"
+          },
+          {
+            "label": "Income Statement 1-Qtr-Ann",
+            "value": "Income Statement 1-Qtr-Ann"
+          },
+          {
+            "label": "Fiduciary Services-a",
+            "value": "Fiduciary Services-a"
+          }
+        ]
+      },
+      {
+        "label": "All Periods",
+        "description": "Return every reported period instead of only the most recent five.",
+        "optional": true,
+        "type": "boolean",
+        "value": false,
+        "show": true,
+        "paramName": "all_periods"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "state_average",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 25
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "label",
+            "formatterFn": null,
+            "headerName": "Line Item",
+            "headerTooltip": "The line item, indented by the report hierarchy.",
+            "cellDataType": "text",
+            "pinned": "left",
+            "width": 360,
+            "renderFn": "hoverCard",
+            "renderFnParams": {
+              "hoverCard": {
+                "cellField": "label",
+                "markdown": "{narrative}"
+              }
+            }
+          },
+          {
+            "field": "is_header",
+            "formatterFn": null,
+            "headerName": "Is Header",
+            "headerTooltip": "Whether the row is a section or sub-section header.",
+            "cellDataType": "text",
+            "hide": true
+          },
+          {
+            "field": "narrative",
+            "formatterFn": null,
+            "headerName": "Narrative",
+            "headerTooltip": "The MDRM definition of the line item, when available.",
+            "cellDataType": "text",
+            "hide": true
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC"
+  },
+  "ffiec_list_of_banks_peer_group_federal_reserve_obb": {
+    "name": "FFIEC List of Banks in Peer Group",
+    "description": "This report provides a list of banks by peer group. The list includes core information such as location, assets and net income.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ffiec_list_of_banks_peer_group_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_list_of_banks_peer_group"
+    },
+    "params": [
+      {
+        "label": "Peer Group",
+        "description": "The UBPR peer-group name (e.g. '1', 'NATIONAL', 'ALCOM').",
+        "optional": true,
+        "type": "text",
+        "value": "1",
+        "show": true,
+        "paramName": "peer_group",
+        "options": [
+          {
+            "label": "1 -- Insured commercial banks having assets greater than $100 billion",
+            "value": "1"
+          },
+          {
+            "label": "101 -- Insured savings banks having assets greater than $1 billion",
+            "value": "101"
+          },
+          {
+            "label": "101M -- Mutually-owned insured savings banks having assets greater than $1 billion",
+            "value": "101M"
+          },
+          {
+            "label": "101S -- Stock-owned insured savings banks having assets greater than $1 billion",
+            "value": "101S"
+          },
+          {
+            "label": "102 -- Insured savings banks having assets between $300 million and $1 billion",
+            "value": "102"
+          },
+          {
+            "label": "102M -- Mutually-owned insured savings banks having assets between $300 million and $1 billion",
+            "value": "102M"
+          },
+          {
+            "label": "102S -- Stock-owned insured savings banks having assets between $300 million and $1 billion",
+            "value": "102S"
+          },
+          {
+            "label": "103 -- Insured savings banks having assets between $100 million and $300 million",
+            "value": "103"
+          },
+          {
+            "label": "103M -- Mutually-owned insured savings banks having assets between $100 million and $300 million",
+            "value": "103M"
+          },
+          {
+            "label": "103S -- Stock-owned insured savings banks having assets between $100 million and $300 million",
+            "value": "103S"
+          },
+          {
+            "label": "104 -- Insured savings banks having assets less than $100 million",
+            "value": "104"
+          },
+          {
+            "label": "104M -- Mutually-owned insured savings banks having assets less than $100 million",
+            "value": "104M"
+          },
+          {
+            "label": "104S -- Stock-owned insured savings banks having assets less than $100 million",
+            "value": "104S"
+          },
+          {
+            "label": "2 -- Insured commercial banks having assets between $10 billion and $100 billion",
+            "value": "2"
+          },
+          {
+            "label": "201 -- Credit card specialty banks having assets greater than $ 3 billion",
+            "value": "201"
+          },
+          {
+            "label": "202 -- Credit card specialty banks having assets between $1 billion and $3 billion",
+            "value": "202"
+          },
+          {
+            "label": "2022 -- Denovo banks opened in 2022 having assets less than $750 million",
+            "value": "2022"
+          },
+          {
+            "label": "2023 -- Denovo banks opened in 2023 having assets less than $750 million",
+            "value": "2023"
+          },
+          {
+            "label": "2024 -- Denovo banks opened in 2024 having assets less than $750 million",
+            "value": "2024"
+          },
+          {
+            "label": "2025 -- Denovo banks opened in 2025 having assets less than $750 million",
+            "value": "2025"
+          },
+          {
+            "label": "2026 -- Denovo banks opened in 2026 having assets less than $750 million",
+            "value": "2026"
+          },
+          {
+            "label": "203 -- Credit card specialty banks having assets less than $1 billion",
+            "value": "203"
+          },
+          {
+            "label": "3 -- Insured commercial banks having assets between $3 billion and $10 billion",
+            "value": "3"
+          },
+          {
+            "label": "301 -- Bankers banks",
+            "value": "301"
+          },
+          {
+            "label": "4 -- Insured commercial banks having assets between $1 billion and $3 billion",
+            "value": "4"
+          },
+          {
+            "label": "401 -- All Non-insured Non-deposit Trust Companies",
+            "value": "401"
+          },
+          {
+            "label": "5 -- Insured commercial banks having assets between $300 million and $1 billion",
+            "value": "5"
+          },
+          {
+            "label": "6 -- Insured commercial banks having assets between $100 million and $300 million",
+            "value": "6"
+          },
+          {
+            "label": "7 -- Insured commercial banks having assets between $50 million and $100 million",
+            "value": "7"
+          },
+          {
+            "label": "8 -- Insured commercial banks having assets less than $50 million",
+            "value": "8"
+          },
+          {
+            "label": "AKCOM -- All Insured Commercial Banks in Alaska",
+            "value": "AKCOM"
+          },
+          {
+            "label": "AKSVG -- All Insured Savings Banks in Alaska",
+            "value": "AKSVG"
+          },
+          {
+            "label": "ALCOM -- All Insured Commercial Banks in Alabama",
+            "value": "ALCOM"
+          },
+          {
+            "label": "ALSVG -- All Insured Savings Banks in Alabama",
+            "value": "ALSVG"
+          },
+          {
+            "label": "ARCOM -- All Insured Commercial Banks in Arkansas",
+            "value": "ARCOM"
+          },
+          {
+            "label": "ARSVG -- All Insured Savings Banks in Arkansas",
+            "value": "ARSVG"
+          },
+          {
+            "label": "AZCOM -- All Insured Commercial Banks in Arizona",
+            "value": "AZCOM"
+          },
+          {
+            "label": "AZNDT -- All Non-insured Non-deposit Trust Companies in Arizona",
+            "value": "AZNDT"
+          },
+          {
+            "label": "AZSVG -- All Insured Savings Banks in Arizona",
+            "value": "AZSVG"
+          },
+          {
+            "label": "BKR -- Bankers banks",
+            "value": "BKR"
+          },
+          {
+            "label": "CABKR -- All Bankers Banks in California",
+            "value": "CABKR"
+          },
+          {
+            "label": "CACOM -- All Insured Commercial Banks in California",
+            "value": "CACOM"
+          },
+          {
+            "label": "CANDT -- All Non-insured Non-deposit Trust Companies in California",
+            "value": "CANDT"
+          },
+          {
+            "label": "CASVG -- All Insured Savings Banks in California",
+            "value": "CASVG"
+          },
+          {
+            "label": "COBKR -- All Bankers Banks in Colorado",
+            "value": "COBKR"
+          },
+          {
+            "label": "COCOM -- All Insured Commercial Banks in Colorado",
+            "value": "COCOM"
+          },
+          {
+            "label": "COM -- All insured commercial banks",
+            "value": "COM"
+          },
+          {
+            "label": "COSVG -- All Insured Savings Banks in Colorado",
+            "value": "COSVG"
+          },
+          {
+            "label": "CRC -- All credit card specialty banks",
+            "value": "CRC"
+          },
+          {
+            "label": "CTCOM -- All Insured Commercial Banks in Connecticut",
+            "value": "CTCOM"
+          },
+          {
+            "label": "CTSVG -- All Insured Savings Banks in Connecticut",
+            "value": "CTSVG"
+          },
+          {
+            "label": "DCCOM -- All Insured Commercial Banks in District of Columbia",
+            "value": "DCCOM"
+          },
+          {
+            "label": "DECOM -- All Insured Commercial Banks in Delaware",
+            "value": "DECOM"
+          },
+          {
+            "label": "DECRC -- All Credit Card Specialty Banks in Delaware",
+            "value": "DECRC"
+          },
+          {
+            "label": "DENDT -- All Non-insured Non-deposit Trust Companies in Delaware",
+            "value": "DENDT"
+          },
+          {
+            "label": "DESVG -- All Insured Savings Banks in Delaware",
+            "value": "DESVG"
+          },
+          {
+            "label": "FLCOM -- All Insured Commercial Banks in Florida",
+            "value": "FLCOM"
+          },
+          {
+            "label": "FLCRC -- All Credit Card Specialty Banks in Florida",
+            "value": "FLCRC"
+          },
+          {
+            "label": "FLNDT -- All Non-insured Non-deposit Trust Companies in Florida",
+            "value": "FLNDT"
+          },
+          {
+            "label": "FLSVG -- All Insured Savings Banks in Florida",
+            "value": "FLSVG"
+          },
+          {
+            "label": "FMCOM -- All Insured Commercial Banks in Micronesia",
+            "value": "FMCOM"
+          },
+          {
+            "label": "GACOM -- All Insured Commercial Banks in Georgia",
+            "value": "GACOM"
+          },
+          {
+            "label": "GANDT -- All Non-insured Non-deposit Trust Companies in Georgia",
+            "value": "GANDT"
+          },
+          {
+            "label": "GASVG -- All Insured Savings Banks in Georgia",
+            "value": "GASVG"
+          },
+          {
+            "label": "GUCOM -- All Insured Commercial Banks in Guam",
+            "value": "GUCOM"
+          },
+          {
+            "label": "HICOM -- All Insured Commercial Banks in Hawaii",
+            "value": "HICOM"
+          },
+          {
+            "label": "IACOM -- All Insured Commercial Banks in Iowa",
+            "value": "IACOM"
+          },
+          {
+            "label": "IANDT -- All Non-insured Non-deposit Trust Companies in Iowa",
+            "value": "IANDT"
+          },
+          {
+            "label": "IASVG -- All Insured Savings Banks in Iowa",
+            "value": "IASVG"
+          },
+          {
+            "label": "IDCOM -- All Insured Commercial Banks in Idaho",
+            "value": "IDCOM"
+          },
+          {
+            "label": "IDSVG -- All Insured Savings Banks in Idaho",
+            "value": "IDSVG"
+          },
+          {
+            "label": "ILCOM -- All Insured Commercial Banks in Illinois",
+            "value": "ILCOM"
+          },
+          {
+            "label": "ILNDT -- All Non-insured Non-deposit Trust Companies in Illinois",
+            "value": "ILNDT"
+          },
+          {
+            "label": "ILSVG -- All Insured Savings Banks in Illinois",
+            "value": "ILSVG"
+          },
+          {
+            "label": "INCOM -- All Insured Commercial Banks in Indiana",
+            "value": "INCOM"
+          },
+          {
+            "label": "INNDT -- All Non-insured Non-deposit Trust Companies in Indiana",
+            "value": "INNDT"
+          },
+          {
+            "label": "INSVG -- All Insured Savings Banks in Indiana",
+            "value": "INSVG"
+          },
+          {
+            "label": "KSBKR -- All Bankers Banks in Kansas",
+            "value": "KSBKR"
+          },
+          {
+            "label": "KSCOM -- All Insured Commercial Banks in Kansas",
+            "value": "KSCOM"
+          },
+          {
+            "label": "KSSVG -- All Insured Savings Banks in Kansas",
+            "value": "KSSVG"
+          },
+          {
+            "label": "KYBKR -- All Bankers Banks in Kentucky",
+            "value": "KYBKR"
+          },
+          {
+            "label": "KYCOM -- All Insured Commercial Banks in Kentucky",
+            "value": "KYCOM"
+          },
+          {
+            "label": "KYSVG -- All Insured Savings Banks in Kentucky",
+            "value": "KYSVG"
+          },
+          {
+            "label": "LABKR -- All Bankers Banks in Louisiana",
+            "value": "LABKR"
+          },
+          {
+            "label": "LACOM -- All Insured Commercial Banks in Louisiana",
+            "value": "LACOM"
+          },
+          {
+            "label": "LASVG -- All Insured Savings Banks in Louisiana",
+            "value": "LASVG"
+          },
+          {
+            "label": "MACOM -- All Insured Commercial Banks in Massachusetts",
+            "value": "MACOM"
+          },
+          {
+            "label": "MANDT -- All Non-insured Non-deposit Trust Companies in Massachusetts",
+            "value": "MANDT"
+          },
+          {
+            "label": "MASVG -- All Insured Savings Banks in Massachusetts",
+            "value": "MASVG"
+          },
+          {
+            "label": "MDCOM -- All Insured Commercial Banks in Maryland",
+            "value": "MDCOM"
+          },
+          {
+            "label": "MDSVG -- All Insured Savings Banks in Maryland",
+            "value": "MDSVG"
+          },
+          {
+            "label": "MECOM -- All Insured Commercial Banks in Maine",
+            "value": "MECOM"
+          },
+          {
+            "label": "MESVG -- All Insured Savings Banks in Maine",
+            "value": "MESVG"
+          },
+          {
+            "label": "MICOM -- All Insured Commercial Banks in Michigan",
+            "value": "MICOM"
+          },
+          {
+            "label": "MINDT -- All Non-insured Non-deposit Trust Companies in Michigan",
+            "value": "MINDT"
+          },
+          {
+            "label": "MISVG -- All Insured Savings Banks in Michigan",
+            "value": "MISVG"
+          },
+          {
+            "label": "MNBKR -- All Bankers Banks in Minnesota",
+            "value": "MNBKR"
+          },
+          {
+            "label": "MNCOM -- All Insured Commercial Banks in Minnesota",
+            "value": "MNCOM"
+          },
+          {
+            "label": "MNNDT -- All Non-insured Non-deposit Trust Companies in Minnesota",
+            "value": "MNNDT"
+          },
+          {
+            "label": "MNSVG -- All Insured Savings Banks in Minnesota",
+            "value": "MNSVG"
+          },
+          {
+            "label": "MOBKR -- All Bankers Banks in Missouri",
+            "value": "MOBKR"
+          },
+          {
+            "label": "MOCOM -- All Insured Commercial Banks in Missouri",
+            "value": "MOCOM"
+          },
+          {
+            "label": "MONDT -- All Non-insured Non-deposit Trust Companies in Missouri",
+            "value": "MONDT"
+          },
+          {
+            "label": "MOSVG -- All Insured Savings Banks in Missouri",
+            "value": "MOSVG"
+          },
+          {
+            "label": "MSCOM -- All Insured Commercial Banks in Mississippi",
+            "value": "MSCOM"
+          },
+          {
+            "label": "MSSVG -- All Insured Savings Banks in Mississippi",
+            "value": "MSSVG"
+          },
+          {
+            "label": "MTCOM -- All Insured Commercial Banks in Montana",
+            "value": "MTCOM"
+          },
+          {
+            "label": "MTSVG -- All Insured Savings Banks in Montana",
+            "value": "MTSVG"
+          },
+          {
+            "label": "NATIONAL -- All banks in nation",
+            "value": "NATIONAL"
+          },
+          {
+            "label": "NCCOM -- All Insured Commercial Banks in North Carolina",
+            "value": "NCCOM"
+          },
+          {
+            "label": "NCNDT -- All Non-insured Non-deposit Trust Companies in North Carolina",
+            "value": "NCNDT"
+          },
+          {
+            "label": "NCSVG -- All Insured Savings Banks in North Carolina",
+            "value": "NCSVG"
+          },
+          {
+            "label": "NDCOM -- All Insured Commercial Banks in North Dakota",
+            "value": "NDCOM"
+          },
+          {
+            "label": "NDSVG -- All Insured Savings Banks in North Dakota",
+            "value": "NDSVG"
+          },
+          {
+            "label": "NDT -- All Non-insured Non-deposit Trust Companies",
+            "value": "NDT"
+          },
+          {
+            "label": "NECOM -- All Insured Commercial Banks in Nebraska",
+            "value": "NECOM"
+          },
+          {
+            "label": "NESVG -- All Insured Savings Banks in Nebraska",
+            "value": "NESVG"
+          },
+          {
+            "label": "NHCOM -- All Insured Commercial Banks in New Hampshire",
+            "value": "NHCOM"
+          },
+          {
+            "label": "NHSVG -- All Insured Savings Banks in New Hampshire",
+            "value": "NHSVG"
+          },
+          {
+            "label": "NJCOM -- All Insured Commercial Banks in New Jersey",
+            "value": "NJCOM"
+          },
+          {
+            "label": "NJSVG -- All Insured Savings Banks in New Jersey",
+            "value": "NJSVG"
+          },
+          {
+            "label": "NMCOM -- All Insured Commercial Banks in New Mexico",
+            "value": "NMCOM"
+          },
+          {
+            "label": "NMSVG -- All Insured Savings Banks in New Mexico",
+            "value": "NMSVG"
+          },
+          {
+            "label": "NVCOM -- All Insured Commercial Banks in Nevada",
+            "value": "NVCOM"
+          },
+          {
+            "label": "NVCRC -- All Credit Card Specialty Banks in Nevada",
+            "value": "NVCRC"
+          },
+          {
+            "label": "NVNDT -- All Non-insured Non-deposit Trust Companies in Nevada",
+            "value": "NVNDT"
+          },
+          {
+            "label": "NVSVG -- All Insured Savings Banks in Nevada",
+            "value": "NVSVG"
+          },
+          {
+            "label": "NYCOM -- All Insured Commercial Banks in New York",
+            "value": "NYCOM"
+          },
+          {
+            "label": "NYNDT -- All Non-insured Non-deposit Trust Companies in New York",
+            "value": "NYNDT"
+          },
+          {
+            "label": "NYSVG -- All Insured Savings Banks in New York",
+            "value": "NYSVG"
+          },
+          {
+            "label": "OHCOM -- All Insured Commercial Banks in Ohio",
+            "value": "OHCOM"
+          },
+          {
+            "label": "OHNDT -- All Non-insured Non-deposit Trust Companies in Ohio",
+            "value": "OHNDT"
+          },
+          {
+            "label": "OHSVG -- All Insured Savings Banks in Ohio",
+            "value": "OHSVG"
+          },
+          {
+            "label": "OKBKR -- All Bankers Banks in Oklahoma",
+            "value": "OKBKR"
+          },
+          {
+            "label": "OKCOM -- All Insured Commercial Banks in Oklahoma",
+            "value": "OKCOM"
+          },
+          {
+            "label": "OKCRC -- All Credit Card Specialty Banks in Oklahoma",
+            "value": "OKCRC"
+          },
+          {
+            "label": "OKNDT -- All Non-insured Non-deposit Trust Companies in Oklahoma",
+            "value": "OKNDT"
+          },
+          {
+            "label": "OKSVG -- All Insured Savings Banks in Oklahoma",
+            "value": "OKSVG"
+          },
+          {
+            "label": "ORCOM -- All Insured Commercial Banks in Oregon",
+            "value": "ORCOM"
+          },
+          {
+            "label": "ORNDT -- All Non-insured Non-deposit Trust Companies in Oregon",
+            "value": "ORNDT"
+          },
+          {
+            "label": "ORSVG -- All Insured Savings Banks in Oregon",
+            "value": "ORSVG"
+          },
+          {
+            "label": "PABKR -- All Bankers Banks in Pennsylvania",
+            "value": "PABKR"
+          },
+          {
+            "label": "PACOM -- All Insured Commercial Banks in Pennsylvania",
+            "value": "PACOM"
+          },
+          {
+            "label": "PANDT -- All Non-insured Non-deposit Trust Companies in Pennsylvania",
+            "value": "PANDT"
+          },
+          {
+            "label": "PASVG -- All Insured Savings Banks in Pennsylvania",
+            "value": "PASVG"
+          },
+          {
+            "label": "PRCOM -- All Insured Commercial Banks in Puerto Rico",
+            "value": "PRCOM"
+          },
+          {
+            "label": "RICOM -- All Insured Commercial Banks in Rhode Island",
+            "value": "RICOM"
+          },
+          {
+            "label": "RISVG -- All Insured Savings Banks in Rhode Island",
+            "value": "RISVG"
+          },
+          {
+            "label": "SCCOM -- All Insured Commercial Banks in South Carolina",
+            "value": "SCCOM"
+          },
+          {
+            "label": "SCSVG -- All Insured Savings Banks in South Carolina",
+            "value": "SCSVG"
+          },
+          {
+            "label": "SDCOM -- All Insured Commercial Banks in South Dakota",
+            "value": "SDCOM"
+          },
+          {
+            "label": "SDNDT -- All Non-insured Non-deposit Trust Companies in South Dakota",
+            "value": "SDNDT"
+          },
+          {
+            "label": "SDSVG -- All Insured Savings Banks in South Dakota",
+            "value": "SDSVG"
+          },
+          {
+            "label": "SVG -- All insured savings banks",
+            "value": "SVG"
+          },
+          {
+            "label": "TNCOM -- All Insured Commercial Banks in Tennessee",
+            "value": "TNCOM"
+          },
+          {
+            "label": "TNSVG -- All Insured Savings Banks in Tennessee",
+            "value": "TNSVG"
+          },
+          {
+            "label": "TRST301 -- Trust Assets in excess of $100 billion",
+            "value": "TRST301"
+          },
+          {
+            "label": "TRST302 -- Trust Assets between $10 billion and $100 billion",
+            "value": "TRST302"
+          },
+          {
+            "label": "TRST303 -- Trust Assets between $1 billion and $10 billion",
+            "value": "TRST303"
+          },
+          {
+            "label": "TRST304 -- Trust Assets between $250 million and $1 billion",
+            "value": "TRST304"
+          },
+          {
+            "label": "TRST305 -- Trust Assets less than $250 million",
+            "value": "TRST305"
+          },
+          {
+            "label": "TXBKR -- All Bankers Banks in Texas",
+            "value": "TXBKR"
+          },
+          {
+            "label": "TXCOM -- All Insured Commercial Banks in Texas",
+            "value": "TXCOM"
+          },
+          {
+            "label": "TXNDT -- All Non-insured Non-deposit Trust Companies in Texas",
+            "value": "TXNDT"
+          },
+          {
+            "label": "TXSVG -- All Insured Savings Banks in Texas",
+            "value": "TXSVG"
+          },
+          {
+            "label": "UTCOM -- All Insured Commercial Banks in Utah",
+            "value": "UTCOM"
+          },
+          {
+            "label": "UTCRC -- All Credit Card Specialty Banks in Utah",
+            "value": "UTCRC"
+          },
+          {
+            "label": "UTNDT -- All Non-insured Non-deposit Trust Companies in Utah",
+            "value": "UTNDT"
+          },
+          {
+            "label": "VABKR -- All Bankers Banks in Virginia",
+            "value": "VABKR"
+          },
+          {
+            "label": "VACOM -- All Insured Commercial Banks in Virginia",
+            "value": "VACOM"
+          },
+          {
+            "label": "VACRC -- All Credit Card Specialty Banks in Virginia",
+            "value": "VACRC"
+          },
+          {
+            "label": "VANDT -- All Non-insured Non-deposit Trust Companies in Virginia",
+            "value": "VANDT"
+          },
+          {
+            "label": "VASVG -- All Insured Savings Banks in Virginia",
+            "value": "VASVG"
+          },
+          {
+            "label": "VICOM -- All Insured Commercial Banks in Virgin Islands",
+            "value": "VICOM"
+          },
+          {
+            "label": "VTCOM -- All Insured Commercial Banks in Vermont",
+            "value": "VTCOM"
+          },
+          {
+            "label": "VTSVG -- All Insured Savings Banks in Vermont",
+            "value": "VTSVG"
+          },
+          {
+            "label": "WACOM -- All Insured Commercial Banks in Washington",
+            "value": "WACOM"
+          },
+          {
+            "label": "WASVG -- All Insured Savings Banks in Washington",
+            "value": "WASVG"
+          },
+          {
+            "label": "WIBKR -- All Bankers Banks in Wisconsin",
+            "value": "WIBKR"
+          },
+          {
+            "label": "WICOM -- All Insured Commercial Banks in Wisconsin",
+            "value": "WICOM"
+          },
+          {
+            "label": "WINDT -- All Non-insured Non-deposit Trust Companies in Wisconsin",
+            "value": "WINDT"
+          },
+          {
+            "label": "WISVG -- All Insured Savings Banks in Wisconsin",
+            "value": "WISVG"
+          },
+          {
+            "label": "WVCOM -- All Insured Commercial Banks in West Virginia",
+            "value": "WVCOM"
+          },
+          {
+            "label": "WVNDT -- All Non-insured Non-deposit Trust Companies in West Virginia",
+            "value": "WVNDT"
+          },
+          {
+            "label": "WVSVG -- All Insured Savings Banks in West Virginia",
+            "value": "WVSVG"
+          },
+          {
+            "label": "WYCOM -- All Insured Commercial Banks in Wyoming",
+            "value": "WYCOM"
+          },
+          {
+            "label": "WYSVG -- All Insured Savings Banks in Wyoming",
+            "value": "WYSVG"
+          }
+        ]
+      },
+      {
+        "label": "Date",
+        "description": "The reporting period end date; defaults to the latest cycle.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "date"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "list_of_banks_peer_group",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "rssd_id",
+            "formatterFn": null,
+            "headerName": "ID RSSD",
+            "headerTooltip": "The bank's RSSD identifier.",
+            "cellDataType": "text",
+            "pinned": "left",
+            "width": 110
+          },
+          {
+            "field": "fdic_cert",
+            "formatterFn": null,
+            "headerName": "FDIC Cert.",
+            "headerTooltip": "The bank's FDIC certificate number.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "charter_class",
+            "formatterFn": null,
+            "headerName": "Class",
+            "headerTooltip": "The bank's charter class code.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "name",
+            "formatterFn": null,
+            "headerName": "Name",
+            "headerTooltip": "The bank's legal name.",
+            "cellDataType": "text",
+            "width": 260
+          },
+          {
+            "field": "city",
+            "formatterFn": null,
+            "headerName": "City",
+            "headerTooltip": "The bank's city.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "state",
+            "formatterFn": null,
+            "headerName": "State",
+            "headerTooltip": "The bank's state abbreviation.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "state_name",
+            "formatterFn": null,
+            "headerName": "State Name",
+            "headerTooltip": "The bank's state name.",
+            "cellDataType": "text",
+            "hide": true
+          },
+          {
+            "field": "offices",
+            "formatterFn": null,
+            "headerName": "No. Offices",
+            "headerTooltip": "The bank's number of offices.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "average_assets",
+            "formatterFn": null,
+            "headerName": "Average Assets ($)",
+            "headerTooltip": "The bank's average assets, in U.S. dollars.",
+            "cellDataType": "number",
+            "sort": "desc"
+          },
+          {
+            "field": "net_income",
+            "formatterFn": null,
+            "headerName": "Net Income ($)",
+            "headerTooltip": "The bank's quarterly net income, in U.S. dollars.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "latitude",
+            "formatterFn": null,
+            "headerName": "Latitude",
+            "headerTooltip": "The bank's headquarters latitude.",
+            "cellDataType": "number",
+            "hide": true
+          },
+          {
+            "field": "longitude",
+            "formatterFn": null,
+            "headerName": "Longitude",
+            "headerTooltip": "The bank's headquarters longitude.",
+            "cellDataType": "number",
+            "hide": true
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC"
+  },
+  "ffiec_call_report_sectioned_federal_reserve_obb": {
+    "name": "FFIEC Call Report (Sectioned)",
+    "description": "A commercial bank's FFIEC Call Report rendered by schedule \u2014 line items across the five most recent quarters, in the Call Report's own section layout.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ffiec_call_report_sectioned_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_call_report_sectioned"
+    },
+    "params": [
+      {
+        "label": "Symbol",
+        "description": "The bank's stock ticker; resolved to the subsidiary bank that files the Call Report (not its parent holding company).",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "symbol"
+      },
+      {
+        "label": "RSSD ID",
+        "description": "The bank's RSSD identifier (the Call Report IDRSSD).",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "rssd_id"
+      },
+      {
+        "label": "FDIC Cert",
+        "description": "The bank's FDIC certificate number (alternative to `rssd_id`).",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "fdic_cert"
+      },
+      {
+        "label": "Section",
+        "description": "The Call Report schedule (section) to return.",
+        "optional": true,
+        "type": "text",
+        "value": "Schedule RC - Balance Sheet",
+        "show": true,
+        "paramName": "section",
+        "options": [
+          {
+            "label": "Schedule RI - Income Statement",
+            "value": "Schedule RI - Income Statement"
+          },
+          {
+            "label": "Schedule RI-A - Changes in Bank Equity Capital",
+            "value": "Schedule RI-A - Changes in Bank Equity Capital"
+          },
+          {
+            "label": "Schedule RI-B Part I - Charge-offs and Recoveries on Loans and Leases",
+            "value": "Schedule RI-B Part I - Charge-offs and Recoveries on Loans and Leases"
+          },
+          {
+            "label": "Schedule RI-B Part II - Changes in Allowances for Credit Losses",
+            "value": "Schedule RI-B Part II - Changes in Allowances for Credit Losses"
+          },
+          {
+            "label": "Schedule RI-C - Disaggregated Data on the Allowances for Credit Losses",
+            "value": "Schedule RI-C - Disaggregated Data on the Allowances for Credit Losses"
+          },
+          {
+            "label": "Schedule RI-D - Income from Foreign Offices",
+            "value": "Schedule RI-D - Income from Foreign Offices"
+          },
+          {
+            "label": "Schedule RI-E - Explanations",
+            "value": "Schedule RI-E - Explanations"
+          },
+          {
+            "label": "Schedule RC - Balance Sheet",
+            "value": "Schedule RC - Balance Sheet"
+          },
+          {
+            "label": "Schedule RC-A - Cash and Balances Due From Depository Institutions",
+            "value": "Schedule RC-A - Cash and Balances Due From Depository Institutions"
+          },
+          {
+            "label": "Schedule RC-B - Securities",
+            "value": "Schedule RC-B - Securities"
+          },
+          {
+            "label": "Schedule RC-C Part I - Loans and Leases",
+            "value": "Schedule RC-C Part I - Loans and Leases"
+          },
+          {
+            "label": "Schedule RC-C Part II - Loans to Small Businesses and Small Farms",
+            "value": "Schedule RC-C Part II - Loans to Small Businesses and Small Farms"
+          },
+          {
+            "label": "Schedule RC-D - Trading Assets and Liabilities",
+            "value": "Schedule RC-D - Trading Assets and Liabilities"
+          },
+          {
+            "label": "Schedule RC-E - Deposit Liabilities",
+            "value": "Schedule RC-E - Deposit Liabilities"
+          },
+          {
+            "label": "Schedule RC-E Part I - Deposits in Domestic Offices",
+            "value": "Schedule RC-E Part I - Deposits in Domestic Offices"
+          },
+          {
+            "label": "Schedule RC-F - Other Assets",
+            "value": "Schedule RC-F - Other Assets"
+          },
+          {
+            "label": "Schedule RC-G - Other Liabilities",
+            "value": "Schedule RC-G - Other Liabilities"
+          },
+          {
+            "label": "Schedule RC-H - Selected Balance Sheet Items for Domestic Offices",
+            "value": "Schedule RC-H - Selected Balance Sheet Items for Domestic Offices"
+          },
+          {
+            "label": "Schedule RC-I - Assets and Liabilities of IBFs",
+            "value": "Schedule RC-I - Assets and Liabilities of IBFs"
+          },
+          {
+            "label": "Schedule RC-K - Quarterly Averages",
+            "value": "Schedule RC-K - Quarterly Averages"
+          },
+          {
+            "label": "Schedule RC-L - Derivatives and Off-Balance Sheet Items",
+            "value": "Schedule RC-L - Derivatives and Off-Balance Sheet Items"
+          },
+          {
+            "label": "Schedule RC-M - Memoranda",
+            "value": "Schedule RC-M - Memoranda"
+          },
+          {
+            "label": "Schedule RC-N - Past Due and Nonaccrual Loans Leases and Other Assets",
+            "value": "Schedule RC-N - Past Due and Nonaccrual Loans Leases and Other Assets"
+          },
+          {
+            "label": "Schedule RC-O - Other Data for Deposit Insurance and FICO Assessments",
+            "value": "Schedule RC-O - Other Data for Deposit Insurance and FICO Assessments"
+          },
+          {
+            "label": "Schedule RC-P - 1-4 Family Residential Mortgage Banking Activities",
+            "value": "Schedule RC-P - 1-4 Family Residential Mortgage Banking Activities"
+          },
+          {
+            "label": "Schedule RC-Q - Assets and Liabilities Measured at Fair Value on a Recurring Basis",
+            "value": "Schedule RC-Q - Assets and Liabilities Measured at Fair Value on a Recurring Basis"
+          },
+          {
+            "label": "Schedule RC-R Part I - Regulatory Capital Components and Ratios",
+            "value": "Schedule RC-R Part I - Regulatory Capital Components and Ratios"
+          },
+          {
+            "label": "Schedule RC-R Part II - Risk-Weighted Assets",
+            "value": "Schedule RC-R Part II - Risk-Weighted Assets"
+          },
+          {
+            "label": "Schedule RC-S - Servicing Securitization and Asset Sale Activities",
+            "value": "Schedule RC-S - Servicing Securitization and Asset Sale Activities"
+          },
+          {
+            "label": "Schedule RC-T - Fiduciary and Related Services",
+            "value": "Schedule RC-T - Fiduciary and Related Services"
+          },
+          {
+            "label": "Schedule RC-V - Variable Interest Entities",
+            "value": "Schedule RC-V - Variable Interest Entities"
+          },
+          {
+            "label": "Schedule SU - Supplemental Information",
+            "value": "Schedule SU - Supplemental Information"
+          }
+        ]
+      },
+      {
+        "label": "All Periods",
+        "description": "Return every reported period instead of only the most recent five.",
+        "optional": true,
+        "type": "boolean",
+        "value": false,
+        "show": true,
+        "paramName": "all_periods"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "call_report_sectioned",
+    "runButton": false,
+    "gridData": {
+      "w": 50,
+      "h": 25
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "label",
+            "formatterFn": null,
+            "headerName": "Line Item",
+            "headerTooltip": "The line item, indented by the report hierarchy.",
+            "cellDataType": "text",
+            "pinned": "left",
+            "width": 360,
+            "renderFn": "hoverCard",
+            "renderFnParams": {
+              "hoverCard": {
+                "cellField": "label",
+                "markdown": "{narrative}"
+              }
+            }
+          },
+          {
+            "field": "is_header",
+            "formatterFn": null,
+            "headerName": "Is Header",
+            "headerTooltip": "Whether the row is a section or sub-section header.",
+            "cellDataType": "text",
+            "hide": true
+          },
+          {
+            "field": "narrative",
+            "formatterFn": null,
+            "headerName": "Narrative",
+            "headerTooltip": "The MDRM definition of the line item, shown in a hover card.",
+            "cellDataType": "text",
+            "hide": true
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC"
+  },
+  "ffiec_country_exposure_federal_reserve_obb": {
+    "name": "FFIEC E16 Country Exposure (FFIEC 009)",
+    "description": "The FFIEC E.16 Country Exposure Lending Survey (FFIEC 009) of U.S. banks' foreign claims.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ffiec_country_exposure_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_country_exposure"
+    },
+    "params": [
+      {
+        "label": "Date",
+        "description": "The report period end date; defaults to the latest release. The survey is quarterly, available ~90 days after the reporting date.",
+        "optional": true,
+        "type": "date",
+        "value": null,
+        "show": true,
+        "paramName": "date"
+      },
+      {
+        "label": "Group",
+        "description": "The reporting group: all banks, large financial institutions (LFI), or all other banks.",
+        "optional": true,
+        "type": "text",
+        "value": "all_banks",
+        "show": true,
+        "options": [
+          {
+            "label": "All Banks",
+            "value": "all_banks"
+          },
+          {
+            "label": "All Other Banks",
+            "value": "all_others"
+          },
+          {
+            "label": "Large Financial Institutions (LFI)",
+            "value": "lfi"
+          }
+        ],
+        "paramName": "group"
+      },
+      {
+        "label": "Table",
+        "description": "The survey table: 1 (ultimate-risk claims + off-balance sheet), 2 (immediate-counterparty claims + risk transfers), 3 (foreign office liabilities), 4.1/4.2 (claims by sector of obligor).",
+        "optional": true,
+        "type": "text",
+        "value": "1",
+        "show": true,
+        "options": [
+          {
+            "label": "Table 1 \u2014 Ultimate-risk claims and off-balance-sheet exposures",
+            "value": "1"
+          },
+          {
+            "label": "Table 2 \u2014 Immediate-counterparty claims and risk transfers",
+            "value": "2"
+          },
+          {
+            "label": "Table 3 \u2014 Foreign-office liabilities",
+            "value": "3"
+          },
+          {
+            "label": "Table 4.1 \u2014 Claims by sector of obligor (ultimate risk)",
+            "value": "4.1"
+          },
+          {
+            "label": "Table 4.2 \u2014 Claims by sector of obligor (immediate counterparty)",
+            "value": "4.2"
+          }
+        ],
+        "paramName": "table"
+      },
+      {
+        "label": "Country",
+        "description": "Filter to a single country (case-insensitive).",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "country"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "country_exposure",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The report period.",
+            "cellDataType": "date",
+            "sort": "desc"
+          },
+          {
+            "field": "group",
+            "formatterFn": null,
+            "headerName": "Group",
+            "headerTooltip": "The reporting group.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "table",
+            "formatterFn": null,
+            "headerName": "Table",
+            "headerTooltip": "The survey table.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "country_group",
+            "formatterFn": null,
+            "headerName": "Region",
+            "headerTooltip": "The region the country is grouped under.",
+            "cellDataType": "text",
+            "pinned": "left"
+          },
+          {
+            "field": "country",
+            "formatterFn": null,
+            "headerName": "Country",
+            "headerTooltip": "The obligor country.",
+            "cellDataType": "text",
+            "pinned": "left"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC"
+  },
+  "ffiec_large_holding_companies_federal_reserve_obb": {
+    "name": "Largest U.S. Bank Holding Companies",
+    "description": "The largest U.S. bank holding companies ranked by total consolidated assets. Click an RSSD to drive the bank-condition widgets.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ffiec_large_holding_companies_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_large_holding_companies"
+    },
+    "params": [
+      {
+        "label": "Limit",
+        "description": "Limit the number of holding companies returned.",
+        "optional": true,
+        "type": "number",
+        "value": null,
+        "show": true,
+        "paramName": "limit"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "large_holding_companies",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": false,
+        "columnsDefs": [
+          {
+            "field": "rank",
+            "formatterFn": "int",
+            "headerName": "Rank",
+            "headerTooltip": "Rank by total consolidated assets.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "rssd_id",
+            "formatterFn": "none",
+            "headerName": "RSSD ID",
+            "headerTooltip": "The holding company's RSSD identifier.",
+            "cellDataType": "text",
+            "renderFn": "cellOnClick",
+            "renderFnParams": {
+              "actionType": "groupBy",
+              "groupBy": {
+                "paramName": "rssd_id"
+              }
+            }
+          },
+          {
+            "field": "name",
+            "formatterFn": null,
+            "headerName": "Name",
+            "headerTooltip": "The holding company's legal name.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "location",
+            "formatterFn": null,
+            "headerName": "Location",
+            "headerTooltip": "The holding company's headquarters location.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "total_assets",
+            "formatterFn": "int",
+            "headerName": "Total Assets ($)",
+            "headerTooltip": "Total consolidated assets, in USD.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "date",
+            "pinned": "left",
+            "formatterFn": null,
+            "headerName": "Date",
+            "headerTooltip": "The reporting period-end date.",
+            "cellDataType": "date",
+            "sort": "desc"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC"
+  },
+  "ffiec_institution_structure_federal_reserve_obb": {
+    "name": "FFIEC NIC Institution Structure",
+    "description": "NIC ownership relationships and merger/acquisition transformation history for the selected institution (RSSD).",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ffiec_institution_structure_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_institution_structure"
+    },
+    "params": [
+      {
+        "label": "Kind",
+        "description": "Hierarchy ownership 'relationships' or merger/acquisition 'transformations'.",
+        "optional": true,
+        "type": "text",
+        "value": "relationships",
+        "show": true,
+        "options": [
+          {
+            "label": "Ownership relationships (hierarchy)",
+            "value": "relationships"
+          },
+          {
+            "label": "Transformations (mergers and acquisitions)",
+            "value": "transformations"
+          }
+        ],
+        "paramName": "kind"
+      },
+      {
+        "label": "RSSD ID",
+        "description": "Filter to records referencing this RSSD identifier.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "rssd_id"
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "institution_structure",
+    "runButton": false,
+    "gridData": {
+      "w": 40,
+      "h": 20
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": false,
+        "columnsDefs": [
+          {
+            "field": "offspring_name",
+            "formatterFn": null,
+            "headerName": "Subsidiary",
+            "headerTooltip": "The name of the offspring (owned/controlled subsidiary).",
+            "cellDataType": "text",
+            "pinned": "left"
+          },
+          {
+            "field": "parent_name",
+            "formatterFn": null,
+            "headerName": "Parent",
+            "headerTooltip": "The name of the parent (owner/controller).",
+            "cellDataType": "text",
+            "pinned": "left"
+          },
+          {
+            "field": "successor_name",
+            "formatterFn": null,
+            "headerName": "Successor",
+            "headerTooltip": "The name of the successor (survivor).",
+            "cellDataType": "text"
+          },
+          {
+            "field": "predecessor_name",
+            "formatterFn": null,
+            "headerName": "Predecessor",
+            "headerTooltip": "The name of the predecessor (non-survivor).",
+            "cellDataType": "text"
+          },
+          {
+            "field": "relationship_level",
+            "formatterFn": null,
+            "headerName": "Relationship",
+            "headerTooltip": "Whether the relationship is direct or indirect.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "control_indicator",
+            "formatterFn": null,
+            "headerName": "Control",
+            "headerTooltip": "Whether the parent controls the offspring.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "equity_indicator",
+            "formatterFn": null,
+            "headerName": "Basis of Control",
+            "headerTooltip": "The form of ownership or control.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "percent_equity",
+            "formatterFn": null,
+            "headerName": "Equity %",
+            "headerTooltip": "The parent's percent of equity voting control.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "percent_other",
+            "formatterFn": null,
+            "headerName": "Other Voting %",
+            "headerTooltip": "The parent's percent of other voting control.",
+            "cellDataType": "number"
+          },
+          {
+            "field": "percent_equity_bracket",
+            "formatterFn": null,
+            "headerName": "Equity Range",
+            "headerTooltip": "The bracketed range of the equity percent.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "regulated_indicator",
+            "formatterFn": null,
+            "headerName": "Regulated",
+            "headerTooltip": "Whether the relationship is regulated.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "reason_relationship_terminated",
+            "formatterFn": null,
+            "headerName": "Termination Reason",
+            "headerTooltip": "The reason the relationship was terminated.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "transformation_type",
+            "formatterFn": null,
+            "headerName": "Transformation",
+            "headerTooltip": "The type of merger/acquisition transformation.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "accounting_method",
+            "formatterFn": null,
+            "headerName": "Accounting Method",
+            "headerTooltip": "The accounting method used in the transformation.",
+            "cellDataType": "text"
+          },
+          {
+            "field": "relationship_established_date",
+            "formatterFn": null,
+            "headerName": "Established",
+            "headerTooltip": "The date the relationship was established.",
+            "cellDataType": "date"
+          },
+          {
+            "field": "start_date",
+            "formatterFn": null,
+            "headerName": "Start",
+            "headerTooltip": "The date the record became effective.",
+            "cellDataType": "date"
+          },
+          {
+            "field": "end_date",
+            "formatterFn": null,
+            "headerName": "End",
+            "headerTooltip": "The date the record ceased to be valid.",
+            "cellDataType": "date"
+          },
+          {
+            "field": "transformation_date",
+            "formatterFn": null,
+            "headerName": "Transformation Date",
+            "headerTooltip": "The date the transformation became effective.",
+            "cellDataType": "date"
+          },
+          {
+            "field": "offspring_rssd_id",
+            "formatterFn": "none",
+            "headerName": "Subsidiary RSSD",
+            "headerTooltip": "The RSSD identifier of the offspring (owned/controlled).",
+            "cellDataType": "text"
+          },
+          {
+            "field": "parent_rssd_id",
+            "formatterFn": "none",
+            "headerName": "Parent RSSD",
+            "headerTooltip": "The RSSD identifier of the parent (owner/controller).",
+            "cellDataType": "text"
+          },
+          {
+            "field": "successor_rssd_id",
+            "formatterFn": "none",
+            "headerName": "Successor RSSD",
+            "headerTooltip": "The RSSD identifier of the successor (survivor).",
+            "cellDataType": "text"
+          },
+          {
+            "field": "predecessor_rssd_id",
+            "formatterFn": "none",
+            "headerName": "Predecessor RSSD",
+            "headerTooltip": "The RSSD identifier of the predecessor (non-survivor).",
+            "cellDataType": "text"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC"
+  },
+  "ffiec_bhcpr_report_federal_reserve_obb": {
+    "name": "BHCPR Peer-Group Reports",
+    "description": "Bank Holding Company Performance Report (BHCPR) peer-group average PDFs. Choose a peer group and year, then select one or more quarterly reports to view.",
+    "category": "Federal Reserve",
+    "type": "multi_file_viewer",
+    "widgetId": "ffiec_bhcpr_report_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_bhcpr_report"
+    },
+    "params": [
+      {
+        "label": "Peer Group",
+        "description": "The BHCPR peer group, ranked by total consolidated assets.",
+        "optional": true,
+        "type": "text",
+        "value": "1",
+        "show": true,
+        "paramName": "peer_group",
+        "options": [
+          {
+            "label": "Peer 1 \u2014 $10B and over",
+            "value": "1"
+          },
+          {
+            "label": "Peer 2 \u2014 $3B to $10B",
+            "value": "2"
+          },
+          {
+            "label": "Peer 3 \u2014 $1B to $3B",
+            "value": "3"
+          },
+          {
+            "label": "Peer 4 \u2014 $500M to $1B",
+            "value": "4"
+          },
+          {
+            "label": "Peer 5 \u2014 under $500M",
+            "value": "5"
+          },
+          {
+            "label": "Peer 6 \u2014 under $300M (legacy)",
+            "value": "6"
+          },
+          {
+            "label": "Peer 9 \u2014 2nd tier and atypical BHCs",
+            "value": "9"
+          }
+        ]
+      },
+      {
+        "label": "Year",
+        "description": "The report year. If None, all years are returned.",
+        "optional": true,
+        "type": "number",
+        "value": null,
+        "show": true,
+        "paramName": "year",
+        "options": [
+          {
+            "label": "All Years"
+          },
+          {
+            "label": "2026",
+            "value": 2026
+          },
+          {
+            "label": "2025",
+            "value": 2025
+          },
+          {
+            "label": "2024",
+            "value": 2024
+          },
+          {
+            "label": "2023",
+            "value": 2023
+          },
+          {
+            "label": "2022",
+            "value": 2022
+          },
+          {
+            "label": "2021",
+            "value": 2021
+          },
+          {
+            "label": "2020",
+            "value": 2020
+          },
+          {
+            "label": "2019",
+            "value": 2019
+          },
+          {
+            "label": "2018",
+            "value": 2018
+          },
+          {
+            "label": "2017",
+            "value": 2017
+          },
+          {
+            "label": "2016",
+            "value": 2016
+          },
+          {
+            "label": "2015",
+            "value": 2015
+          },
+          {
+            "label": "2014",
+            "value": 2014
+          },
+          {
+            "label": "2013",
+            "value": 2013
+          },
+          {
+            "label": "2012",
+            "value": 2012
+          },
+          {
+            "label": "2011",
+            "value": 2011
+          },
+          {
+            "label": "2010",
+            "value": 2010
+          },
+          {
+            "label": "2009",
+            "value": 2009
+          },
+          {
+            "label": "2008",
+            "value": 2008
+          },
+          {
+            "label": "2007",
+            "value": 2007
+          },
+          {
+            "label": "2006",
+            "value": 2006
+          },
+          {
+            "label": "2005",
+            "value": 2005
+          },
+          {
+            "label": "2004",
+            "value": 2004
+          },
+          {
+            "label": "2003",
+            "value": 2003
+          },
+          {
+            "label": "2002",
+            "value": 2002
+          }
+        ]
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      },
+      {
+        "multiSelect": true,
+        "optionsEndpoint": "bhcpr_report_choices",
+        "optionsParams": {
+          "peer_group": "$peer_group",
+          "year": "$year"
+        },
+        "paramName": "url",
+        "roles": [
+          "fileSelector"
+        ],
+        "show": false,
+        "type": "endpoint"
+      }
+    ],
+    "endpoint": "bhcpr_report_download",
+    "runButton": false,
+    "gridData": {
+      "w": 30,
+      "h": 27
+    },
+    "data": {},
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC",
+    "refetchInterval": false
+  },
+  "ffiec_bhcpr_federal_reserve_obb": {
+    "name": "FFIEC Bank Holding Company Performance Report (BHCPR)",
+    "description": "A bank holding company's BHCPR performance data rendered in the report's own section layout, with the holding-company value, the peer-group average, and the percentile rank for the current period plus the value for each of the four prior-year periods.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ffiec_bhcpr_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_bhcpr"
+    },
+    "params": [
+      {
+        "label": "RSSD ID",
+        "description": "The reporting holding company's RSSD identifier.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "rssd_id",
+        "group": "rssd_id"
+      },
+      {
+        "label": "Section",
+        "description": "The BHCPR report section to return, by its title. When set to 'All Sections' every section is rendered.",
+        "optional": true,
+        "type": "endpoint",
+        "value": "Summary Ratios",
+        "show": true,
+        "paramName": "section",
+        "optionsEndpoint": "bhcpr_sections"
+      },
+      {
+        "label": "Period",
+        "description": "The reporting period to render, as a `YYYYMMDD` quarter-end. Defaults to the latest available. Cascades off `rssd_id`.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "period",
+        "optionsEndpoint": "bhcpr_periods",
+        "optionsParams": {
+          "rssd_id": "$rssd_id"
+        }
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "bhcpr",
+    "runButton": false,
+    "gridData": {
+      "w": 50,
+      "h": 25
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": true,
+        "columnsDefs": [
+          {
+            "field": "label",
+            "formatterFn": null,
+            "headerName": "Line Item",
+            "headerTooltip": "The line item, indented under its section or sub-header.",
+            "cellDataType": "text",
+            "pinned": "left",
+            "width": 360,
+            "renderFn": "hoverCard",
+            "renderFnParams": {
+              "hoverCard": {
+                "cellField": "label",
+                "markdown": "{narrative}"
+              }
+            }
+          },
+          {
+            "field": "is_header",
+            "formatterFn": null,
+            "headerName": "Is Header",
+            "headerTooltip": "Whether the row is a section or sub-header.",
+            "cellDataType": "text",
+            "hide": true
+          },
+          {
+            "field": "narrative",
+            "formatterFn": null,
+            "headerName": "Definition",
+            "headerTooltip": "The BHCPR User's Guide definition of the line item.",
+            "cellDataType": "text",
+            "hide": true
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC"
+  },
+  "ffiec_financial_report_federal_reserve_obb": {
+    "name": "FFIEC Regulatory Financial Report",
+    "description": "An institution's regulatory financial report (FR Y-9C, FFIEC 101, FFIEC 102, or FR Y-15) rendered in the report's own schedule layout, for the selected reporting period.",
+    "category": "Federal Reserve",
+    "type": "table",
+    "widgetId": "ffiec_financial_report_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_financial_report"
+    },
+    "params": [
+      {
+        "label": "RSSD ID",
+        "description": "The reporting institution's RSSD identifier.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "rssd_id",
+        "group": "rssd_id"
+      },
+      {
+        "label": "Report Type",
+        "description": "The regulatory report to render, by its FFIEC report code. Cascades off `rssd_id`.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "report_type",
+        "group": "report_type",
+        "optionsEndpoint": "report_types",
+        "optionsParams": {
+          "rssd_id": "$rssd_id"
+        },
+        "style": {
+          "popupWidth": 700
+        },
+        "row": 0
+      },
+      {
+        "label": "Section",
+        "description": "The report schedule to return. When omitted, every schedule is rendered. Cascades off `report_type`.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "section",
+        "optionsEndpoint": "report_sections",
+        "optionsParams": {
+          "report_type": "$report_type"
+        },
+        "style": {
+          "popupWidth": 900
+        },
+        "row": 1
+      },
+      {
+        "label": "Period",
+        "description": "The reporting period to render, as a `YYYYMMDD` quarter-end. Defaults to the latest available. Cascades off `rssd_id` and `report_type`.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "period",
+        "optionsEndpoint": "report_periods",
+        "optionsParams": {
+          "rssd_id": "$rssd_id",
+          "report_type": "$report_type"
+        },
+        "style": {
+          "popupWidth": 700
+        }
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      }
+    ],
+    "endpoint": "financial_report",
+    "runButton": false,
+    "gridData": {
+      "w": 50,
+      "h": 25
+    },
+    "data": {
+      "dataKey": "results",
+      "table": {
+        "showAll": false,
+        "columnsDefs": [
+          {
+            "field": "label",
+            "formatterFn": null,
+            "headerName": "Line Item",
+            "headerTooltip": "The line item, indented by the report hierarchy.",
+            "cellDataType": "text",
+            "pinned": "left",
+            "width": 360,
+            "renderFn": "hoverCard",
+            "renderFnParams": {
+              "hoverCard": {
+                "cellField": "label",
+                "markdown": "{narrative}"
+              }
+            }
+          },
+          {
+            "field": "is_header",
+            "formatterFn": null,
+            "headerName": "Is Header",
+            "headerTooltip": "Whether the row is a schedule or sub-section header.",
+            "cellDataType": "text",
+            "hide": true
+          },
+          {
+            "field": "narrative",
+            "formatterFn": null,
+            "headerName": "Narrative",
+            "headerTooltip": "The MDRM definition of the line item, shown in a hover card.",
+            "cellDataType": "text",
+            "hide": true
+          },
+          {
+            "field": "value",
+            "formatterFn": "int",
+            "headerName": "Value",
+            "headerTooltip": "The reported value for the selected period; dollar amounts are reported in full U.S. dollars, while rates and counts are as filed.",
+            "cellDataType": "number"
+          }
+        ],
+        "enableAdvanced": true
+      }
+    },
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC"
+  },
+  "ffiec_financial_report_pdf_federal_reserve_obb": {
+    "name": "FFIEC Filed Financial Report PDFs",
+    "description": "An institution's filed regulatory financial reports as PDFs. Select a firm and report type, then choose one or more filed periods to view.",
+    "category": "Federal Reserve",
+    "type": "multi_file_viewer",
+    "widgetId": "ffiec_financial_report_pdf_federal_reserve_obb",
+    "mcp_tool": {
+      "mcp_server": "Open Data Platform",
+      "tool_id": "ffiec_financial_report_pdf"
+    },
+    "params": [
+      {
+        "label": "RSSD ID",
+        "description": "The reporting institution's RSSD identifier.",
+        "optional": true,
+        "type": "text",
+        "value": null,
+        "show": true,
+        "paramName": "rssd_id",
+        "group": "rssd_id"
+      },
+      {
+        "label": "Report Type",
+        "description": "The regulatory report whose filed PDFs are listed, by its FFIEC report code. Cascades off `rssd_id`.",
+        "optional": true,
+        "type": "endpoint",
+        "value": null,
+        "show": true,
+        "paramName": "report_type",
+        "group": "report_type",
+        "optionsEndpoint": "report_types",
+        "optionsParams": {
+          "rssd_id": "$rssd_id"
+        }
+      },
+      {
+        "paramName": "provider",
+        "value": "federal_reserve",
+        "show": false
+      },
+      {
+        "multiSelect": true,
+        "optionsEndpoint": "financial_report_pdf_choices",
+        "optionsParams": {
+          "rssd_id": "$rssd_id",
+          "report_type": "$report_type"
+        },
+        "paramName": "url",
+        "roles": [
+          "fileSelector"
+        ],
+        "show": false,
+        "type": "endpoint"
+      }
+    ],
+    "endpoint": "financial_report_pdf_download",
+    "runButton": false,
+    "gridData": {
+      "w": 50,
+      "h": 25
+    },
+    "data": {},
+    "source": [
+      "Federal Reserve"
+    ],
+    "subCategory": "FFIEC",
+    "refetchInterval": false
+  }
+}

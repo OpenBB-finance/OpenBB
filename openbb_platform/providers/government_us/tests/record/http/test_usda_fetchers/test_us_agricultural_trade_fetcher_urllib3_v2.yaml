@@ -1,0 +1,483 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.ers.usda.gov/data-products/foreign-agricultural-trade-of-the-united-states-fatus/us-agricultural-trade-data-update
+  response:
+    body:
+      string: !!binary |
+        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
+        XMO6AAA=
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Cache-Control:
+      - must-revalidate, no-cache, private
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Language:
+      - en
+      Content-Security-Policy:
+      - 'connect-src ''self'' https://*.google-analytics.com https://api.data.gov
+        https://dap.digitalgov.gov; frame-src ''self'' https://*.ers.usda.gov https://*.tableau.com
+        https://www.google.com; img-src ''self'' https://ers.usda.gov https://ewapsdev.ers.usda.gov
+        https://ewapsbeta.ers.usda.gov http://usda.sc.omtrdc.net https://www.googletagmanager.com
+        data: w3.org/svg/2000 https://latex.codecogs.com https://www-tx.ers.usda.gov;
+        script-src ''self'' ''unsafe-inline'' https://www.googletagmanager.com https://*.google-analytics.com
+        https://*.tableau.com https://api.data.gov https://www.gstatic.com/ https://cdnjs.cloudflare.com
+        https://dap.digitalgov.gov https://www.google.com; script-src-attr ''self''
+        ''unsafe-inline''; script-src-elem ''self'' ''unsafe-inline'' https://www.googletagmanager.com
+        https://*.google-analytics.com https://*.tableau.com https://api.data.gov
+        https://www.gstatic.com https://cdnjs.cloudflare.com https://dap.digitalgov.gov
+        https://www.google.com; style-src ''self'' ''unsafe-inline'' https://*.google-analytics.com
+        https://googletagmanager.com https://cdnjs.cloudflare.com www.ers.usda.gov;
+        style-src-attr ''self'' ''unsafe-inline''; style-src-elem ''self'' ''unsafe-inline''
+        https://*.google-analytics.com https://googletagmanager.com https://api.data.gov
+        https://cdnjs.cloudflare.com www.ers.usda.gov; frame-ancestors ''self''; upgrade-insecure-requests'
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Wed, 22 Jul 2026 19:34:10 GMT
+      Expires:
+      - Sun, 19 Nov 1978 05:00:00 GMT
+      Permissions-Policy:
+      - accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(),
+        microphone=(), payment=(), usb=()
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - Apache
+      Set-Cookie:
+      - ARRAffinity=a10f44edd3f055fdca0a01e05751d7a39f07008667893c1271b222fec234413d;Path=/;HttpOnly;Secure;Domain=www.ers.usda.gov
+      - ARRAffinitySameSite=a10f44edd3f055fdca0a01e05751d7a39f07008667893c1271b222fec234413d;Path=/;HttpOnly;SameSite=None;Secure;Domain=www.ers.usda.gov
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding,Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - HIT
+      X-Drupal-Cache-Contexts:
+      - cookies:big_pipe_nojs languages layout_builder_is_active:node route session.exists
+        theme timezone url user.permissions user.roles
+      X-Drupal-Cache-Max-Age:
+      - -1 (Permanent)
+      X-Drupal-Cache-Tags:
+      - block_content:42 block_content:43 block_content:44 block_content:45 block_content:46
+        block_content:47 block_content:48 block_content:49 block_content:50 block_content:51
+        block_content:52 block_content:53 block_content:54 block_content:55 block_view
+        config:block.block.erslinks config:block.block.footersignup config:block.block.footersociallinks
+        config:block.block.navanalysiscolumn1 config:block.block.navanalysiscolumn2
+        config:block.block.navanalysiscolumn3 config:block.block.navdatacolumn1 config:block.block.navdatacolumn2
+        config:block.block.navdatacolumn3 config:block.block.navnewsroomcolumn1 config:block.block.navnewsroomcolumn2
+        config:block.block.navnewsroomcolumn3 config:block.block.navsecondarylinks
+        config:block.block.usdalinks config:block.block.uswds_ers_about config:block.block.uswds_ers_account_menu
+        config:block.block.uswds_ers_adobeanalytics config:block.block.uswds_ers_branding
+        config:block.block.uswds_ers_breadcrumbs config:block.block.uswds_ers_contactus
+        config:block.block.uswds_ers_content config:block.block.uswds_ers_covid19
+        config:block.block.uswds_ers_footer config:block.block.uswds_ers_googleanalyticsdap
+        config:block.block.uswds_ers_googleanalyticsers config:block.block.uswds_ers_googlesiteverification
+        config:block.block.uswds_ers_help config:block.block.uswds_ers_help_2 config:block.block.uswds_ers_local_actions
+        config:block.block.uswds_ers_local_tasks config:block.block.uswds_ers_loginloginlogoutmyaccount
+        config:block.block.uswds_ers_main_menu config:block.block.uswds_ers_messages
+        config:block.block.uswds_ers_newsroom config:block.block.uswds_ers_page_title
+        config:block.block.uswds_ers_pagestatusarchived config:block.block.uswds_ers_pagestatusdraft
+        config:block.block.uswds_ers_pagestatusunpublished config:block.block.uswds_ers_search
+        config:block.block.uswds_ers_sidenav_data_products config:block.block.uswds_ers_sidenav_developer
+        config:block.block.uswds_ers_sidenav_privacy config:block.block.uswds_ers_sidenav_topics
+        config:block.block.uswds_ers_sitewidealert config:block_list config:context.context.data_products_data_files
+        config:context.context.data_products_sidenav config:context.context.ers_csat_survey_invite
+        config:context.context.hero_default config:core.entity_view_display.node.data_products.default
+        config:easy_breadcrumb.settings config:filter.format.full_html config:system.site
+        config:user.role.anonymous config:workflows.workflow.cms_posting context_block_page
+        http_response local_task node:3710 node:3823 node:7112 node_view rendered
+        scheduled_transitions_for:node:3823 user:0
+      X-Drupal-Dynamic-Cache:
+      - MISS
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Generator:
+      - Drupal 10 (https://www.drupal.org)
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.ers.usda.gov/media/5029/csv-comma-separated-values-format-of-all-data.csv
+  response:
+    body:
+      string: 'Commodity,Country,Time_period,Year,US_Trade,Value_type,Units,Value,Update_version,Source_table,Data_source,Notes
+
+        Corn,World total,January-October,2025,Exports,Volume,Metric tons,67520159,January
+        update of October data,"Top 10 U.S. export markets for soybeans, corn, wheat,
+        and cotton, by volume","USDA, Economic Research Service based on data from
+        U.S. Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,October,2025,Exports,Volume,Metric tons,6564115,January update
+        of October data,"Top 10 U.S. export markets for soybeans, corn, wheat, and
+        cotton, by volume","USDA, Economic Research Service based on data from U.S.
+        Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,January-November,2025,Exports,Volume,Metric tons,74825576,January
+        update of November data,"Top 10 U.S. export markets for soybeans, corn, wheat,
+        and cotton, by volume","USDA, Economic Research Service based on data from
+        U.S. Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,November,2025,Exports,Volume,Metric tons,7305417,January
+        update of November data,"Top 10 U.S. export markets for soybeans, corn, wheat,
+        and cotton, by volume","USDA, Economic Research Service based on data from
+        U.S. Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,January-December,2025,Exports,Volume,Metric tons,81924188,February
+        update of December data,"Top 10 U.S. export markets for soybeans, corn, wheat,
+        and cotton, by volume","USDA, Economic Research Service based on data from
+        U.S. Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,December,2025,Exports,Volume,Metric tons,7098612,February
+        update of December data,"Top 10 U.S. export markets for soybeans, corn, wheat,
+        and cotton, by volume","USDA, Economic Research Service based on data from
+        U.S. Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,October-January,2025,Exports,Volume,Metric tons,20377393,March
+        update of January data,"Top 10 U.S. export markets for soybeans, corn, wheat,
+        and cotton, by volume","USDA, Economic Research Service based on data from
+        U.S. Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,October-January,2026,Exports,Volume,Metric tons,27575870,March
+        update of January data,"Top 10 U.S. export markets for soybeans, corn, wheat,
+        and cotton, by volume","USDA, Economic Research Service based on data from
+        U.S. Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,January,2025,Exports,Volume,Metric tons,6162009,March update
+        of January data,"Top 10 U.S. export markets for soybeans, corn, wheat, and
+        cotton, by volume","USDA, Economic Research Service based on data from U.S.
+        Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,January,2026,Exports,Volume,Metric tons,6607726,March update
+        of January data,"Top 10 U.S. export markets for soybeans, corn, wheat, and
+        cotton, by volume","USDA, Economic Research Service based on data from U.S.
+        Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,October-February,2025,Exports,Volume,Metric tons,26409412,April
+        update of February data,"Top 10 U.S. export markets for soybeans, corn, wheat,
+        and cotton, by volume","USDA, Economic Research Service based on data from
+        U.S. Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,October-February,2026,Exports,Volume,Metric tons,34344015,April
+        update of February data,"Top 10 U.S. export markets for soybeans, corn, wheat,
+        and cotton, by volume","USDA, Economic Research Service based on data from
+        U.S. Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,February,2025,Exports,Volume,Metric tons,6032019,April update
+        of February data,"Top 10 U.S. export markets for soybeans, corn, wheat, and
+        cotton, by volume","USDA, Economic Research Service based on data from U.S.
+        Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,February,2026,Exports,Volume,Metric tons,6768145,April update
+        of February data,"Top 10 U.S. export markets for soybeans, corn, wheat, and
+        cotton, by volume","USDA, Economic Research Service based on data from U.S.
+        Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,October-March,2025,Exports,Volume,Metric tons,33750264,May
+        update of March data,"Top 10 U.S. export markets for soybeans, corn, wheat,
+        and cotton, by volume","USDA, Economic Research Service based on data from
+        U.S. Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,October-March,2026,Exports,Volume,Metric tons,42375075,May
+        update of March data,"Top 10 U.S. export markets for soybeans, corn, wheat,
+        and cotton, by volume","USDA, Economic Research Service based on data from
+        U.S. Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,March,2025,Exports,Volume,Metric tons,7340852,May update
+        of March data,"Top 10 U.S. export markets for soybeans, corn, wheat, and cotton,
+        by volume","USDA, Economic Research Service based on data from U.S. Department
+        of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,March,2026,Exports,Volume,Metric tons,8031060,May update
+        of March data,"Top 10 U.S. export markets for soybeans, corn, wheat, and cotton,
+        by volume","USDA, Economic Research Service based on data from U.S. Department
+        of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,October-April,2025,Exports,Volume,Metric tons,41537153,June
+        update of April data,"Top 10 U.S. export markets for soybeans, corn, wheat,
+        and cotton, by volume","USDA, Economic Research Service based on data from
+        U.S. Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,October-April,2026,Exports,Volume,Metric tons,49899479,June
+        update of April data,"Top 10 U.S. export markets for soybeans, corn, wheat,
+        and cotton, by volume","USDA, Economic Research Service based on data from
+        U.S. Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,April,2025,Exports,Volume,Metric tons,7786889,June update
+        of April data,"Top 10 U.S. export markets for soybeans, corn, wheat, and cotton,
+        by volume","USDA, Economic Research Service based on data from U.S. Department
+        of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,April,2026,Exports,Volume,Metric tons,7524404,June update
+        of April data,"Top 10 U.S. export markets for soybeans, corn, wheat, and cotton,
+        by volume","USDA, Economic Research Service based on data from U.S. Department
+        of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,October-May,2025,Exports,Volume,Metric tons,49081636,July
+        update of May data,"Top 10 U.S. export markets for soybeans, corn, wheat,
+        and cotton, by volume","USDA, Economic Research Service based on data from
+        U.S. Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,October-May,2026,Exports,Volume,Metric tons,57145952,July
+        update of May data,"Top 10 U.S. export markets for soybeans, corn, wheat,
+        and cotton, by volume","USDA, Economic Research Service based on data from
+        U.S. Department of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,May,2025,Exports,Volume,Metric tons,7238409,July update of
+        May data,"Top 10 U.S. export markets for soybeans, corn, wheat, and cotton,
+        by volume","USDA, Economic Research Service based on data from U.S. Department
+        of Commerce, Bureau of the Census.",NA
+
+        Corn,World total,May,2026,Exports,Volume,Metric tons,7251661,July update of
+        May data,"Top 10 U.S. export markets for soybeans, corn, wheat, and cotton,
+        by volume","USDA, Economic Research Service based on data from U.S. Department
+        of Commerce, Bureau of the Census.",NA
+
+        '
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Cache-Control:
+      - must-revalidate, no-cache, private
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment; filename="FATUS-monthly-data.csv"
+      Content-Language:
+      - en
+      Content-Length:
+      - '7434'
+      Content-Security-Policy:
+      - 'connect-src ''self'' https://*.google-analytics.com https://api.data.gov
+        https://dap.digitalgov.gov; frame-src ''self'' https://*.ers.usda.gov https://*.tableau.com
+        https://www.google.com; img-src ''self'' https://ers.usda.gov https://ewapsdev.ers.usda.gov
+        https://ewapsbeta.ers.usda.gov http://usda.sc.omtrdc.net https://www.googletagmanager.com
+        data: w3.org/svg/2000 https://latex.codecogs.com https://www-tx.ers.usda.gov;
+        script-src ''self'' ''unsafe-inline'' https://www.googletagmanager.com https://*.google-analytics.com
+        https://*.tableau.com https://api.data.gov https://www.gstatic.com/ https://cdnjs.cloudflare.com
+        https://dap.digitalgov.gov https://www.google.com; script-src-attr ''self''
+        ''unsafe-inline''; script-src-elem ''self'' ''unsafe-inline'' https://www.googletagmanager.com
+        https://*.google-analytics.com https://*.tableau.com https://api.data.gov
+        https://www.gstatic.com https://cdnjs.cloudflare.com https://dap.digitalgov.gov
+        https://www.google.com; style-src ''self'' ''unsafe-inline'' https://*.google-analytics.com
+        https://googletagmanager.com https://cdnjs.cloudflare.com www.ers.usda.gov;
+        style-src-attr ''self'' ''unsafe-inline''; style-src-elem ''self'' ''unsafe-inline''
+        https://*.google-analytics.com https://googletagmanager.com https://api.data.gov
+        https://cdnjs.cloudflare.com www.ers.usda.gov; frame-ancestors ''self''; upgrade-insecure-requests'
+      Content-Type:
+      - text/csv; charset=UTF-8
+      Date:
+      - Wed, 22 Jul 2026 19:34:11 GMT
+      Expires:
+      - Sun, 19 Nov 1978 05:00:00 GMT
+      Permissions-Policy:
+      - accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(),
+        microphone=(), payment=(), usb=()
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Server:
+      - Apache
+      Set-Cookie:
+      - ARRAffinity=c966c7d5af1344058a798837a03f8e890bfe04d338460a23b9d8cbdb8a738fbe;Path=/;HttpOnly;Secure;Domain=www.ers.usda.gov
+      - ARRAffinitySameSite=c966c7d5af1344058a798837a03f8e890bfe04d338460a23b9d8cbdb8a738fbe;Path=/;HttpOnly;SameSite=None;Secure;Domain=www.ers.usda.gov
+      Strict-Transport-Security:
+      - max-age=31536000;
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Drupal-Cache:
+      - UNCACHEABLE (no cacheability)
+      X-Drupal-Dynamic-Cache:
+      - UNCACHEABLE (no cacheability)
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Generator:
+      - Drupal 10 (https://www.drupal.org)
+    status:
+      code: 200
+      message: OK
+version: 1

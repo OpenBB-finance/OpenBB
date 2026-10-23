@@ -52,7 +52,7 @@ jobs:
           config-file: ''
         - language: python
           build-mode: none
-          config-file: ''
+          config-file: .github/codeql/python.yml
         - language: rust
           build-mode: none
           config-file: .github/codeql/desktop-only.yml

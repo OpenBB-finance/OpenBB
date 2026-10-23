@@ -1,6 +1,5 @@
 """Primary Dealer Positioning Series IDs."""
 
-# pylint: disable=line-too-long
 # flake8: noqa
 
 FAILS_SERIES_TO_TITLE = {
@@ -109,6 +108,47 @@ POSITION_SERIES_TO_FIELD = {
         "PDPOSABS-SLB": "abs_student_loans",
         "PDPOSABS-OAB": "abs_other",
     },
+}
+
+POSITION_FIELD_TO_LABEL = {
+    "bills": "Bills (Ex-TIPS)",
+    "coupons_lte_2_years": "Coupons <=2Y",
+    "coupons_gt_2_years_lt_3_years": "Coupons 2-3Y",
+    "coupons_gt_3_years_lt_6_years": "Coupons 3-6Y",
+    "coupons_gt_6_years_lt_7_years": "Coupons 6-7Y",
+    "coupons_gt_7_years_lt_11_years": "Coupons 7-11Y",
+    "coupons_gt_11_years_lt_21_years": "Coupons 11-21Y",
+    "coupons_gt_21_years": "Coupons 21Y+",
+    "tips_lt_2_years": "TIPS <=2Y",
+    "tips_gt_2_years_lt_6_years": "TIPS 2-6Y",
+    "tips_gt_6_years_lt_11_years": "TIPS 6-11Y",
+    "tips_gt_11_years": "TIPS 11Y+",
+    "floating_rate_notes": "Floating Rate Notes",
+    "discount_notes": "Agency & GSE Discount Notes",
+    "coupons_agency": "Agency & GSE Coupons",
+    "mbs_agency_and_gse_tba": "MBS Agency & GSE TBAs",
+    "mbs_agency_and_gse_other_residential": "MBS Agency & GSE Other Residential",
+    "mbs_agency_and_gse_specified_pools": "MBS Agency & GSE Specified Pools",
+    "mbs_non_agency_residential": "MBS Non-Agency Residential",
+    "cmbs_agency_and_gse": "CMBS Agency & GSE",
+    "cmbs_non_agency": "CMBS Non-Agency",
+    "municipal_lt_13_months": "Municipal <=13M",
+    "municipal_gt_13_months_lt_5_years": "Municipal 13M-5Y",
+    "municipal_gt_5_years_lt_10_years": "Municipal 5-10Y",
+    "municipal_gt_10_years": "Municipal 10Y+",
+    "commercial_paper": "Commercial Paper",
+    "corporate_investment_grade_lt_13_months": "Corporate IG <=13M",
+    "corporate_investment_grade_gt_13_months_lt_5_years": "Corporate IG 13M-5Y",
+    "corporate_investment_grade_gt_5_years_lt_10_years": "Corporate IG 5-10Y",
+    "corporate_investment_grade_gt_10_years": "Corporate IG 10Y+",
+    "corporate_junk_lt_13_months": "Corporate HY <=13M",
+    "corporate_junk_gt_13_months_lt_5_years": "Corporate HY 13M-5Y",
+    "corporate_junk_gt_5_years_lt_10_years": "Corporate HY 5-10Y",
+    "corporate_junk_gt_10_years": "Corporate HY 10Y+",
+    "abs_autos": "ABS Autos",
+    "abs_credit_cards": "ABS Credit Cards",
+    "abs_student_loans": "ABS Student Loans",
+    "abs_other": "ABS Other",
 }
 
 POSITION_GROUPS_TO_SERIES = {

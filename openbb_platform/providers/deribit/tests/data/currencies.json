@@ -1,0 +1,162 @@
+[
+ {
+  "decimals": 6,
+  "currency": "USDT",
+  "apr": 0.0,
+  "min_withdrawal_fee": 2.0,
+  "withdrawal_fee": 2.0,
+  "coin_type": "USDT",
+  "withdrawal_priorities": [],
+  "coinbase_networks": [
+   {
+    "display_name": "Ethereum",
+    "resource_name": "networks/ethereum-mainnet"
+   }
+  ],
+  "network_fee": 3.69791145e-06,
+  "network_currency": "ETH",
+  "min_confirmations": 1,
+  "currency_long": "Tether",
+  "in_cross_collateral_pool": true,
+  "onchain_operations_precision": 6,
+  "currency_uuid": "b26327c1-9a34-51d9-b982-9b29e6012648"
+ },
+ {
+  "decimals": 6,
+  "currency": "USDE",
+  "apr": 4.75,
+  "min_withdrawal_fee": 0.0001,
+  "withdrawal_fee": 0.007617,
+  "coin_type": "USDE",
+  "withdrawal_priorities": [],
+  "network_fee": 2.9071511e-06,
+  "network_currency": "ETH",
+  "min_confirmations": 1,
+  "currency_long": "Ethena USDe",
+  "in_cross_collateral_pool": true,
+  "onchain_operations_precision": 6,
+  "currency_uuid": "e98ecced-8122-45a8-8bce-b842323af19d"
+ },
+ {
+  "decimals": 8,
+  "currency": "USDC",
+  "apr": 3.3999999999999995,
+  "min_withdrawal_fee": 5.0,
+  "withdrawal_fee": 5.0,
+  "coin_type": "USDC",
+  "withdrawal_priorities": [],
+  "coinbase_networks": [
+   {
+    "display_name": "Arbitrum",
+    "resource_name": "networks/arbitrum-mainnet"
+   },
+   {
+    "display_name": "Avalanche C-Chain",
+    "resource_name": "networks/avacchain-mainnet"
+   },
+   {
+    "display_name": "Base",
+    "resource_name": "networks/base-mainnet"
+   },
+   {
+    "display_name": "Ethereum",
+    "resource_name": "networks/ethereum-mainnet"
+   },
+   {
+    "display_name": "Optimism",
+    "resource_name": "networks/optimism-mainnet"
+   },
+   {
+    "display_name": "Polygon",
+    "resource_name": "networks/polygon-mainnet"
+   },
+   {
+    "display_name": "Solana",
+    "resource_name": "networks/solana-mainnet"
+   }
+  ],
+  "network_fee": 3.0608777e-06,
+  "network_currency": "ETH",
+  "min_confirmations": 50,
+  "currency_long": "USD Coin",
+  "in_cross_collateral_pool": true,
+  "onchain_operations_precision": 6,
+  "currency_uuid": "2b92315d-eab7-5bef-84fa-089a131333f5"
+ },
+ {
+  "decimals": 6,
+  "currency": "STETH",
+  "apr": 2.251857142857143,
+  "min_withdrawal_fee": 0.0001,
+  "withdrawal_fee": 0.0001,
+  "coin_type": "STETH",
+  "withdrawal_priorities": [],
+  "network_fee": 2.9071511e-06,
+  "network_currency": "ETH",
+  "min_confirmations": 1,
+  "currency_long": "Staked ETH",
+  "in_cross_collateral_pool": true,
+  "onchain_operations_precision": 6,
+  "currency_uuid": "997e0978-a0a0-502d-a51b-9ae33bb54a49"
+ },
+ {
+  "decimals": 6,
+  "currency": "EURR",
+  "apr": 0.0,
+  "min_withdrawal_fee": 0.0001,
+  "withdrawal_fee": 0.006177,
+  "coin_type": "EURR",
+  "withdrawal_priorities": [],
+  "network_fee": 2.71280495e-06,
+  "network_currency": "ETH",
+  "min_confirmations": 1,
+  "currency_long": "StablR Euro",
+  "in_cross_collateral_pool": false,
+  "onchain_operations_precision": 6,
+  "currency_uuid": "20d8642e-36ad-4f92-becf-a68b2b0d05ef"
+ },
+ {
+  "decimals": 6,
+  "currency": "ETH",
+  "apr": 0.0,
+  "min_withdrawal_fee": 0.001,
+  "withdrawal_fee": 0.001,
+  "coin_type": "ETH",
+  "withdrawal_priorities": [],
+  "coinbase_networks": [
+   {
+    "display_name": "Ethereum",
+    "resource_name": "networks/ethereum-mainnet"
+   }
+  ],
+  "network_fee": 1.7949723900000002e-06,
+  "network_currency": "ETH",
+  "min_confirmations": 50,
+  "currency_long": "Ethereum",
+  "in_cross_collateral_pool": true,
+  "onchain_operations_precision": 6,
+  "currency_uuid": "d85dce9b-5b73-5c3c-8978-522ce1d1c1b4"
+ },
+ {
+  "decimals": 8,
+  "currency": "BTC",
+  "apr": 0.0,
+  "min_withdrawal_fee": 1e-05,
+  "withdrawal_fee": 1e-05,
+  "coin_type": "BTC",
+  "withdrawal_priorities": [],
+  "coinbase_networks": [
+   {
+    "display_name": "Bitcoin",
+    "resource_name": "networks/bitcoin-mainnet"
+   }
+  ],
+  "network_fee": 3.072e-06,
+  "network_currency": "BTC",
+  "min_confirmations": 1,
+  "currency_long": "Bitcoin",
+  "in_cross_collateral_pool": true,
+  "onchain_operations_precision": 8,
+  "currency_uuid": "5b71fc48-3dd3-540c-809b-f8c94d0e68b5"
+ }
+]

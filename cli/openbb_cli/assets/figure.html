@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>__TITLE__</title>
+    __PLOTLYJS__
+    <style>
+        html, body, #chart {
+            height: 100%;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="chart"></div>
+    <script>
+        const figure = __FIGURE__;
+        const probe = document.createElement("span");
+        probe.style.color = (figure.layout.font || {}).color || "black";
+        document.body.appendChild(probe);
+        const [r, g, b] = getComputedStyle(probe).color.match(/\d+/g).map(Number);
+        probe.remove();
+        document.body.style.background =
+            0.2126 * r + 0.7152 * g + 0.0722 * b > 128 ? "#151518" : "#ffffff";
+        Plotly.newPlot(
+            "chart",
+            figure.data,
+            figure.layout,
+            Object.assign({ responsive: true }, figure.config || {})
+        );
+    </script>
+</body>
+</html>

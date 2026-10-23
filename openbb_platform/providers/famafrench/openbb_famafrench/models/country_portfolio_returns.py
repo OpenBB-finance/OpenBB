@@ -1,7 +1,5 @@
 """Fama-French Factors Fetcher Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import date as dateType
 from typing import Any, Literal
 
@@ -10,8 +8,9 @@ from openbb_core.provider.abstract.annotated_result import AnnotatedResult
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
-from openbb_famafrench.utils.constants import CountryPortfolios
 from pydantic import Field
+
+from openbb_famafrench.utils.constants import PERCENT_UNIT, CountryPortfolios
 
 
 class FamaFrenchCountryPortfolioReturnsQueryParams(QueryParams):
@@ -91,15 +90,12 @@ class FamaFrenchCountryPortfolioReturnsData(Data):
     )
     mkt: float | None = Field(
         default=None,
-        description="""
-        The market return (Mkt) for the first set is the value weighted average
-        of the returns for only firms with all four ratios.
-
-        The market return for the second set includes all firms with book-to-market data,
-        and Firms is the number of firms with B/M data.
-
-        Not returned if `measure` is set to 'ratios'.
-        """,
+        description="Value-weighted market return (Mkt)."
+        + " Includes only firms with all four ratios when `all_data_items_required`"
+        + " is True, otherwise all firms with book-to-market data."
+        + " Not returned if `measure` is set to 'ratios'."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
     )
     firms: int | None = Field(
         default=None,
@@ -109,79 +105,101 @@ class FamaFrenchCountryPortfolioReturnsData(Data):
     bm: float | None = Field(
         default=None,
         description="Book to Market equity ratio."
-        + " Not returned if `measure` is set to 'ratios'.",
+        + " Only returned when `measure` is set to 'ratios'."
+        + " Reported as the ratio multiplied by 100.",
         title="B/M",
     )
     be_me_high: float | None = Field(
         default=None,
         description="Book Equity to Market Equity returns for the value portfolio."
-        + " Not returned if `measure` is set to 'ratios'.",
+        + " Not returned if `measure` is set to 'ratios'."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="BE/ME High",
     )
     be_me_low: float | None = Field(
         default=None,
         description="Book Equity to Market Equity returns for the growth portfolio."
-        + " Not returned if `measure` is set to 'ratios'.",
+        + " Not returned if `measure` is set to 'ratios'."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="BE/ME Low",
     )
     ep: float | None = Field(
         default=None,
         description="Earnings to Price ratio."
-        + " Only returned when `measure` is set to 'ratios'.",
+        + " Only returned when `measure` is set to 'ratios'."
+        + " Reported as the ratio multiplied by 100.",
         title="E/P",
     )
     e_p_high: float | None = Field(
         default=None,
         description="Earnings to Price returns for the value portfolio."
-        + " Not returned if `measure` is set to 'ratios'.",
+        + " Not returned if `measure` is set to 'ratios'."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="E/P High",
     )
     e_p_low: float | None = Field(
         default=None,
         description="Earnings to Price returns for the growth portfolio."
-        + " Not returned if `measure` is set to 'ratios'.",
+        + " Not returned if `measure` is set to 'ratios'."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="E/P Low",
     )
     ce_p: float | None = Field(
         default=None,
         description="Cash Earnings to Price ratio."
-        + " Only returned when `measure` is set to 'ratios'.",
+        + " Only returned when `measure` is set to 'ratios'."
+        + " Reported as the ratio multiplied by 100.",
         title="CE/P",
     )
     ce_p_high: float | None = Field(
         default=None,
         description="Cash Earnings to Price returns for the value portfolio."
-        + " Not returned if `measure` is set to 'ratios'.",
+        + " Not returned if `measure` is set to 'ratios'."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="CE/P High",
     )
     ce_p_low: float | None = Field(
         default=None,
         description="Cash Earnings to Price returns for the growth portfolio."
-        + " Not returned if `measure` is set to 'ratios'.",
+        + " Not returned if `measure` is set to 'ratios'."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="CE/P Low",
     )
     yld: float | None = Field(
         default=None,
         description="Dividend Yield ratio."
-        + " Only returned when `measure` is set to 'ratios'.",
+        + " Only returned when `measure` is set to 'ratios'."
+        + " Reported as the ratio multiplied by 100.",
         title="Yld",
     )
     yld_high: float | None = Field(
         default=None,
         description="Dividend Yield returns for the value portfolio."
-        + " Not returned if `measure` is set to 'ratios'.",
+        + " Not returned if `measure` is set to 'ratios'."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="Yld High",
     )
     yld_low: float | None = Field(
         default=None,
         description="Dividend Yield returns for the growth portfolio."
-        + " Not returned if `measure` is set to 'ratios'.",
+        + " Not returned if `measure` is set to 'ratios'."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="Yld Low",
     )
     yld_zero: float | None = Field(
         default=None,
         description="Dividend Yield returns for firms not paying dividends."
-        + " Not returned if `measure` is set to 'ratios'.",
+        + " Not returned if `measure` is set to 'ratios'."
+        + " Values are in percent.",
+        json_schema_extra=PERCENT_UNIT,
         title="Yld Zero",
     )
 
@@ -208,7 +226,6 @@ class FamaFrenchCountryPortfolioReturnsFetcher(
         **kwargs: Any,
     ) -> tuple:
         """Extract data from the Fama-French FTP."""
-        # pylint: disable=import-outside-toplevel
         from openbb_famafrench.utils.helpers import get_international_portfolio  # noqa
         from warnings import warn
 
@@ -228,7 +245,7 @@ class FamaFrenchCountryPortfolioReturnsFetcher(
                     else query.all_data_items_required
                 ),
             )
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             raise OpenBBError(e) from e
 
     @staticmethod
@@ -238,8 +255,12 @@ class FamaFrenchCountryPortfolioReturnsFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[list[FamaFrenchCountryPortfolioReturnsData]]:
         """Transform the extracted data."""
-        # pylint: disable=import-outside-toplevel
         from pandas import MultiIndex
+
+        from openbb_famafrench.utils.missing_values import (
+            is_missing_value,
+            replace_missing_values,
+        )
 
         dfs, meta = data
 
@@ -250,19 +271,11 @@ class FamaFrenchCountryPortfolioReturnsFetcher(
             )
         returns_data = dfs[0] if isinstance(dfs, list) else dfs
 
-        # Values of -99.99  or -999 indicate no data,
-        # Drop columns that have no data.
         for col in returns_data.columns:
-            if all(returns_data[col].values == "-99.99") or all(
-                returns_data[col].values == "-999"
-            ):
+            if all(is_missing_value(value) for value in returns_data[col].values):
                 returns_data = returns_data.drop(columns=[col])
             else:
-                returns_data[col] = (
-                    returns_data[col].astype(int)
-                    if query.measure == "ratios" and col == "firms"
-                    else returns_data[col].astype(float)
-                )
+                returns_data[col] = returns_data[col].astype(float)
 
         if query.start_date:
             returns_data = returns_data[
@@ -312,7 +325,9 @@ Bloomberg for 2007 to present.
         return AnnotatedResult(
             result=[
                 FamaFrenchCountryPortfolioReturnsData(**d)
-                for d in returns_data.reset_index().to_dict(orient="records")
+                for d in replace_missing_values(
+                    returns_data.reset_index().to_dict(orient="records")
+                )
             ],
             metadata=meta[0] if isinstance(meta, list) else meta,
         )

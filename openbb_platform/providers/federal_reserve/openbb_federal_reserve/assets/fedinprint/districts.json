@@ -1,0 +1,782 @@
+{
+  "atlanta": {
+    "provider": "Federal Reserve Bank of Atlanta",
+    "series": [
+      [
+        "frb_atlanta_working_paper",
+        "FRB Atlanta Working Paper"
+      ],
+      [
+        "economic_review",
+        "Economic Review"
+      ],
+      [
+        "policy_hub",
+        "Policy Hub"
+      ],
+      [
+        "frb_atlanta_community_and_economic_development_discussion_paper",
+        "FRB Atlanta Community and Economic Development Discussion Paper"
+      ],
+      [
+        "consumer_payments_research_data_reports",
+        "Consumer Payments Research Data Reports"
+      ],
+      [
+        "workforce_currents",
+        "Workforce Currents"
+      ],
+      [
+        "frb_atlanta_cqer_working_paper",
+        "FRB Atlanta CQER Working Paper"
+      ]
+    ]
+  },
+  "boston": {
+    "provider": "Federal Reserve Bank of Boston",
+    "series": [
+      [
+        "working_papers",
+        "Working Papers"
+      ],
+      [
+        "new_england_economic_review",
+        "New England Economic Review"
+      ],
+      [
+        "communities_and_banking",
+        "Communities and Banking"
+      ],
+      [
+        "regional_review",
+        "Regional Review"
+      ],
+      [
+        "speech",
+        "Speech"
+      ],
+      [
+        "current_policy_perspectives",
+        "Current Policy Perspectives"
+      ],
+      [
+        "public_policy_discussion_paper",
+        "Public Policy Discussion Paper"
+      ],
+      [
+        "supervisory_research_and_analysis_working_papers",
+        "Supervisory Research and Analysis Working Papers"
+      ],
+      [
+        "new_england_economic_indicators",
+        "New England Economic Indicators"
+      ],
+      [
+        "fiscal_facts",
+        "Fiscal Facts"
+      ],
+      [
+        "new_england_public_policy_center_research_report",
+        "New England Public Policy Center Research Report"
+      ],
+      [
+        "research_data_report",
+        "Research Data Report"
+      ],
+      [
+        "public_policy_brief",
+        "Public Policy Brief"
+      ],
+      [
+        "new_england_public_policy_center_policy_brief",
+        "New England Public Policy Center Policy Brief"
+      ],
+      [
+        "new_england_community_developments",
+        "New England Community Developments"
+      ],
+      [
+        "public_and_community_affairs_discussion_papers",
+        "Public and Community Affairs Discussion Papers"
+      ],
+      [
+        "annual_report",
+        "Annual Report"
+      ],
+      [
+        "new_england_public_policy_center_working_paper",
+        "New England Public Policy Center Working Paper"
+      ],
+      [
+        "new_england_public_policy_center_regional_brief",
+        "New England Public Policy Center Regional Brief"
+      ],
+      [
+        "monograph",
+        "Monograph"
+      ],
+      [
+        "new_england_public_policy_center_discussion_paper",
+        "New England Public Policy Center Discussion Paper"
+      ],
+      [
+        "new_england_public_policy_center_policy_reports",
+        "New England Public Policy Center Policy Reports"
+      ],
+      [
+        "supervisory_research_and_analysis_notes",
+        "Supervisory Research and Analysis Notes"
+      ],
+      [
+        "labor_market_trends",
+        "Labor Market Trends"
+      ],
+      [
+        "research_report",
+        "Research Report"
+      ],
+      [
+        "special_report",
+        "Special Report"
+      ],
+      [
+        "new_england_public_policy_center_conference_report",
+        "New England Public Policy Center Conference Report"
+      ]
+    ]
+  },
+  "chicago": {
+    "provider": "Federal Reserve Bank of Chicago",
+    "series": [
+      [
+        "working_paper_series",
+        "Working Paper Series"
+      ],
+      [
+        "chicago_fed_letter",
+        "Chicago Fed Letter"
+      ],
+      [
+        "economic_perspectives",
+        "Economic Perspectives"
+      ],
+      [
+        "profitwise",
+        "Profitwise"
+      ],
+      [
+        "working_paper_series_macroeconomic_issues",
+        "Working Paper Series, Macroeconomic Issues"
+      ],
+      [
+        "agricultural_letter",
+        "Agricultural Letter"
+      ],
+      [
+        "working_paper_series_issues_in_financial_regulation",
+        "Working Paper Series, Issues in Financial Regulation"
+      ],
+      [
+        "speech",
+        "Speech"
+      ],
+      [
+        "working_paper_series_regional_economic_issues",
+        "Working Paper Series, Regional Economic Issues"
+      ],
+      [
+        "risk_perspectives",
+        "Risk Perspectives"
+      ],
+      [
+        "policy_discussion_paper_series",
+        "Policy Discussion Paper Series"
+      ],
+      [
+        "annual_report",
+        "Annual Report"
+      ]
+    ]
+  },
+  "cleveland": {
+    "provider": "Federal Reserve Bank of Cleveland",
+    "series": [
+      [
+        "economic_commentary",
+        "Economic Commentary"
+      ],
+      [
+        "working_papers_old_series",
+        "Working Papers (Old Series)"
+      ],
+      [
+        "working_papers",
+        "Working Papers"
+      ],
+      [
+        "economic_review",
+        "Economic Review"
+      ],
+      [
+        "proceedings",
+        "Proceedings"
+      ],
+      [
+        "speech",
+        "Speech"
+      ],
+      [
+        "forefront",
+        "Forefront"
+      ],
+      [
+        "policy_discussion_papers",
+        "Policy Discussion Papers"
+      ],
+      [
+        "annual_report",
+        "Annual Report"
+      ],
+      [
+        "community_development_publications",
+        "Community Development Publications"
+      ],
+      [
+        "community_reinvestment_forum",
+        "Community Reinvestment Forum"
+      ],
+      [
+        "community_reinvestment_report",
+        "Community Reinvestment Report"
+      ],
+      [
+        "financial_services_working_paper",
+        "Financial Services working paper"
+      ],
+      [
+        "cleveland_fed_regional_policy_report",
+        "Cleveland Fed Regional Policy Report"
+      ]
+    ]
+  },
+  "dallas": {
+    "provider": "Federal Reserve Bank of Dallas",
+    "series": [
+      [
+        "working_papers",
+        "Working Papers"
+      ],
+      [
+        "globalization_institute_working_papers",
+        "Globalization Institute Working Papers"
+      ],
+      [
+        "economic_and_financial_policy_review",
+        "Economic and Financial Policy Review"
+      ],
+      [
+        "economic_letter",
+        "Economic Letter"
+      ],
+      [
+        "banking_and_community_perspectives",
+        "Banking and Community Perspectives"
+      ],
+      [
+        "houston_business",
+        "Houston Business"
+      ],
+      [
+        "proceedings",
+        "Proceedings"
+      ],
+      [
+        "monograph",
+        "Monograph"
+      ],
+      [
+        "financial_industry_studies_working_paper",
+        "Financial Industry Studies Working Paper"
+      ],
+      [
+        "annual_report",
+        "Annual Report"
+      ],
+      [
+        "annual_report_globalization_and_monetary_policy_institute",
+        "Annual Report, Globalization and Monetary Policy Institute"
+      ],
+      [
+        "center_for_latin_america_working_papers",
+        "Center for Latin America Working Papers"
+      ],
+      [
+        "economic_insights",
+        "Economic Insights"
+      ],
+      [
+        "staff_papers",
+        "Staff Papers"
+      ],
+      [
+        "financial_insights",
+        "Financial Insights"
+      ],
+      [
+        "business_frontier",
+        "Business Frontier"
+      ],
+      [
+        "perspectives",
+        "Perspectives"
+      ],
+      [
+        "crossroads",
+        "Crossroads"
+      ],
+      [
+        "vista",
+        "Vista"
+      ],
+      [
+        "occasional_papers",
+        "Occasional Papers"
+      ],
+      [
+        "community_outlook",
+        "Community Outlook"
+      ],
+      [
+        "community_outlook_survey",
+        "Community Outlook Survey"
+      ]
+    ]
+  },
+  "kc": {
+    "provider": "Federal Reserve Bank of Kansas City",
+    "series": [
+      [
+        "economic_review",
+        "Economic Review"
+      ],
+      [
+        "proceedings_economic_policy_symposium_jackson_hole",
+        "Proceedings - Economic Policy Symposium - Jackson Hole"
+      ],
+      [
+        "research_working_paper",
+        "Research Working Paper"
+      ],
+      [
+        "proceedings_rural_and_agricultural_conferences",
+        "Proceedings – Rural and Agricultural Conferences"
+      ],
+      [
+        "main_street_economist",
+        "Main Street Economist"
+      ],
+      [
+        "ten",
+        "TEN"
+      ],
+      [
+        "macro_bulletin",
+        "Macro Bulletin"
+      ],
+      [
+        "payments_system_research_briefing",
+        "Payments System Research Briefing"
+      ],
+      [
+        "proceedings_payments_system_research_conferences",
+        "Proceedings – Payments System Research Conferences"
+      ],
+      [
+        "financial_industry_perspectives",
+        "Financial Industry Perspectives"
+      ],
+      [
+        "regional_economic_digest",
+        "Regional Economic Digest"
+      ],
+      [
+        "monograph",
+        "Monograph"
+      ],
+      [
+        "payments_system_research_working_paper",
+        "Payments System Research Working Paper"
+      ],
+      [
+        "midwest_economist",
+        "Midwest Economist"
+      ],
+      [
+        "community_affairs_research_working_paper",
+        "Community Affairs Research Working Paper"
+      ],
+      [
+        "technical_briefings",
+        "Technical Briefings"
+      ],
+      [
+        "regional_research_working_paper",
+        "Regional Research Working Paper"
+      ],
+      [
+        "community_reinvestment",
+        "Community Reinvestment"
+      ],
+      [
+        "policy_perspectives",
+        "Policy Perspectives"
+      ]
+    ]
+  },
+  "minneapolis": {
+    "provider": "Federal Reserve Bank of Minneapolis",
+    "series": [
+      [
+        "staff_report",
+        "Staff Report"
+      ],
+      [
+        "working_papers",
+        "Working Papers"
+      ],
+      [
+        "quarterly_review",
+        "Quarterly Review"
+      ],
+      [
+        "speech",
+        "Speech"
+      ],
+      [
+        "discussion_paper_institute_for_empirical_macroeconomics",
+        "Discussion Paper / Institute for Empirical Macroeconomics"
+      ],
+      [
+        "opportunity_and_inclusive_growth_institute_working_papers",
+        "Opportunity and Inclusive Growth Institute Working Papers"
+      ],
+      [
+        "economic_policy_paper",
+        "Economic Policy Paper"
+      ],
+      [
+        "annual_report",
+        "Annual Report"
+      ],
+      [
+        "community_affairs_report",
+        "Community Affairs Report"
+      ],
+      [
+        "center_for_indian_country_development_series",
+        "Center for Indian Country Development series"
+      ]
+    ]
+  },
+  "ny": {
+    "provider": "Federal Reserve Bank of New York",
+    "series": [
+      [
+        "staff_reports",
+        "Staff Reports"
+      ],
+      [
+        "speech",
+        "Speech"
+      ],
+      [
+        "economic_policy_review",
+        "Economic Policy Review"
+      ],
+      [
+        "research_paper",
+        "Research Paper"
+      ],
+      [
+        "current_issues_in_economics_and_finance",
+        "Current Issues in Economics and Finance"
+      ],
+      [
+        "quarterly_review",
+        "Quarterly Review"
+      ],
+      [
+        "the_regional_economy_of_upstate_new_york",
+        "The Regional Economy of Upstate New York"
+      ],
+      [
+        "annual_report_domestic_open_market_operations",
+        "Annual Report Domestic Open Market Operations"
+      ],
+      [
+        "upstate_new_york_regional_review",
+        "Upstate New York Regional Review"
+      ],
+      [
+        "upstate_new_york_at_a_glance",
+        "Upstate New York At-a-Glance"
+      ]
+    ]
+  },
+  "philadelphia": {
+    "provider": "Federal Reserve Bank of Philadelphia",
+    "series": [
+      [
+        "working_papers",
+        "Working Papers"
+      ],
+      [
+        "business_review",
+        "Business Review"
+      ],
+      [
+        "speech",
+        "Speech"
+      ],
+      [
+        "consumer_finance_institute_discussion_papers",
+        "Consumer Finance Institute discussion papers"
+      ],
+      [
+        "economic_insights",
+        "Economic Insights"
+      ],
+      [
+        "consumer_finance_institute_research_briefs_and_special_reports",
+        "Consumer Finance Institute Research Briefs and Special Reports"
+      ],
+      [
+        "research_rap_special_report",
+        "Research Rap Special Report"
+      ],
+      [
+        "community_affairs_discussion_paper",
+        "Community Affairs Discussion Paper"
+      ],
+      [
+        "banking_trends",
+        "Banking Trends"
+      ],
+      [
+        "regional_spotlight",
+        "Regional Spotlight"
+      ],
+      [
+        "cascade_focus",
+        "Cascade Focus"
+      ],
+      [
+        "research_brief",
+        "Research Brief"
+      ],
+      [
+        "consumer_finance_institute_conference_summaries",
+        "Consumer Finance Institute conference summaries"
+      ],
+      [
+        "monograph",
+        "Monograph"
+      ],
+      [
+        "beyond_the_numbers",
+        "Beyond the Numbers"
+      ],
+      [
+        "banking_policy_review",
+        "Banking Policy Review"
+      ]
+    ]
+  },
+  "richmond": {
+    "provider": "Federal Reserve Bank of Richmond",
+    "series": [
+      [
+        "econ_focus",
+        "Econ Focus"
+      ],
+      [
+        "working_paper",
+        "Working Paper"
+      ],
+      [
+        "economic_quarterly",
+        "Economic Quarterly"
+      ],
+      [
+        "economic_review",
+        "Economic Review"
+      ],
+      [
+        "monograph",
+        "Monograph"
+      ],
+      [
+        "annual_report",
+        "Annual Report"
+      ],
+      [
+        "research_digest",
+        "Research Digest"
+      ]
+    ]
+  },
+  "sf": {
+    "provider": "Federal Reserve Bank of San Francisco",
+    "series": [
+      [
+        "frbsf_economic_letter",
+        "FRBSF Economic Letter"
+      ],
+      [
+        "working_paper_series",
+        "Working Paper Series"
+      ],
+      [
+        "proceedings",
+        "Proceedings"
+      ],
+      [
+        "economic_review",
+        "Economic Review"
+      ],
+      [
+        "speech",
+        "Speech"
+      ],
+      [
+        "community_development_innovation_review",
+        "Community Development Innovation Review"
+      ],
+      [
+        "community_investments",
+        "Community Investments"
+      ],
+      [
+        "working_papers_in_applied_economic_theory",
+        "Working Papers in Applied Economic Theory"
+      ],
+      [
+        "pacific_basin_working_paper_series",
+        "Pacific Basin Working Paper Series"
+      ],
+      [
+        "western_economic_developments",
+        "Western economic developments"
+      ],
+      [
+        "monograph",
+        "Monograph"
+      ],
+      [
+        "community_development_working_paper",
+        "Community Development Working Paper"
+      ],
+      [
+        "asia_focus",
+        "Asia Focus"
+      ],
+      [
+        "community_development_research_brief",
+        "Community Development Research Brief"
+      ],
+      [
+        "annual_report",
+        "Annual Report"
+      ]
+    ]
+  },
+  "stl": {
+    "provider": "Federal Reserve Bank of St. Louis",
+    "series": [
+      [
+        "working_papers",
+        "Working Papers"
+      ],
+      [
+        "review",
+        "Review"
+      ],
+      [
+        "speech",
+        "Speech"
+      ],
+      [
+        "economic_synopses",
+        "Economic Synopses"
+      ],
+      [
+        "national_economic_trends",
+        "National Economic Trends"
+      ],
+      [
+        "page_one_economics_newsletter",
+        "Page One Economics Newsletter"
+      ],
+      [
+        "burgundy_books",
+        "Burgundy Books"
+      ],
+      [
+        "bridges",
+        "Bridges"
+      ],
+      [
+        "monetary_trends",
+        "Monetary Trends"
+      ],
+      [
+        "proceedings",
+        "Proceedings"
+      ],
+      [
+        "community_development_publications_and_reports",
+        "Community Development Publications and Reports"
+      ],
+      [
+        "central_banker",
+        "Central Banker"
+      ],
+      [
+        "regional_economic_development",
+        "Regional Economic Development"
+      ],
+      [
+        "inside_the_vault",
+        "Inside the Vault"
+      ],
+      [
+        "annual_report",
+        "Annual Report"
+      ],
+      [
+        "international_economic_trends",
+        "International Economic Trends"
+      ],
+      [
+        "liber8_economic_information_newsletter",
+        "Liber8 Economic Information Newsletter"
+      ],
+      [
+        "in_the_balance",
+        "In the Balance"
+      ],
+      [
+        "economic_equity_insights",
+        "Economic Equity Insights"
+      ],
+      [
+        "quarterly_debt_monitor",
+        "Quarterly Debt Monitor"
+      ],
+      [
+        "demographics_of_wealth",
+        "Demographics of Wealth"
+      ]
+    ]
+  }
+}

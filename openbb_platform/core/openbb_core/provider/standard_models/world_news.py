@@ -7,13 +7,14 @@ from datetime import (
 from typing import Any
 
 from dateutil.relativedelta import relativedelta
+from pydantic import Field, NonNegativeInt, field_validator
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, NonNegativeInt, field_validator
 
 
 class WorldNewsQueryParams(QueryParams):
@@ -36,7 +37,7 @@ class WorldNewsQueryParams(QueryParams):
 
     @field_validator("start_date", mode="before")
     @classmethod
-    def start_date_validate(cls, v) -> dateType:  # pylint: disable=E0213
+    def start_date_validate(cls, v) -> dateType:
         """Populate start date if empty."""
         if not v:
             now = datetime.now().date()
@@ -45,7 +46,7 @@ class WorldNewsQueryParams(QueryParams):
 
     @field_validator("end_date", mode="before")
     @classmethod
-    def end_date_validate(cls, v) -> dateType:  # pylint: disable=E0213
+    def end_date_validate(cls, v) -> dateType:
         """Populate end date if empty."""
         if not v:
             v = datetime.now().date()

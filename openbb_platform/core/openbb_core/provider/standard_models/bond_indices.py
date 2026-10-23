@@ -5,13 +5,14 @@ from datetime import (
 )
 from typing import Literal
 
+from pydantic import Field, field_validator
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, field_validator
 
 
 class BondIndicesQueryParams(QueryParams):
@@ -41,11 +42,13 @@ class BondIndicesQueryParams(QueryParams):
 
 
 class BondIndicesData(Data):
-    """Bond Indices Data."""
+    """Bond Indices Data.
+
+    Attributes
+    ----------
+    date : dateType
+        The observation date. Every index requested is carried as its own
+        column, named for the index it reports.
+    """
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    symbol: str | None = Field(
-        default=None,
-        description=DATA_DESCRIPTIONS.get("symbol", ""),
-    )
-    value: float = Field(description="Index values.")

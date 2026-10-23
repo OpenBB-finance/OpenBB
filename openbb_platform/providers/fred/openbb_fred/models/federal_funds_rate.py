@@ -1,8 +1,9 @@
 """FRED Federal Funds Rate Model."""
 
-# pylint: disable=unused-argument
-
-from datetime import datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Any, Literal
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -11,9 +12,28 @@ from openbb_core.provider.standard_models.federal_funds_rate import (
     FederalFundsRateData,
     FederalFundsRateQueryParams,
 )
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_fred.models.series import FredSeriesFetcher
 from pydantic import Field
+
+from openbb_fred.models.series import FredSeriesFetcher
+from openbb_fred.utils.api import unwrap_series
+from openbb_fred.utils.query import UseCacheQueryParams
+
+TIME_AXIS: dict[str, Any] = {"x-widget_config": {"chartDataType": "time"}}
+PERCENT_SERIES: dict[str, Any] = {
+    "x-unit_measurement": "percent",
+    "x-widget_config": {"chartDataType": "series"},
+}
+VOLUME_EXCLUDED_FROM_CHART: dict[str, Any] = {
+    "x-unit_measurement": "currency",
+    "x-frontend_multiply": 1e9,
+    "x-widget_config": {
+        "prefix": "$",
+        "suffix": "B",
+        "chartDataType": "excluded",
+    },
+}
 
 EFFR_SERIES_IDS = {
     "rate": "DFF",
@@ -27,7 +47,7 @@ EFFR_SERIES_IDS = {
 }
 
 
-class FredFederalFundsRateQueryParams(FederalFundsRateQueryParams):
+class FredFederalFundsRateQueryParams(UseCacheQueryParams, FederalFundsRateQueryParams):
     """FRED Federal Funds Rate Query."""
 
     frequency: (
@@ -122,6 +142,51 @@ class FredFederalFundsRateQueryParams(FederalFundsRateQueryParams):
 class FredFederalFundsRateData(FederalFundsRateData):
     """FRED Federal Funds Rate Data."""
 
+    date: dateType = Field(
+        description=DATA_DESCRIPTIONS.get("date", ""),
+        json_schema_extra=TIME_AXIS,
+    )
+    rate: float = Field(
+        description="Effective federal funds rate.",
+        json_schema_extra=PERCENT_SERIES,
+    )
+    target_range_upper: float | None = Field(
+        default=None,
+        description="Upper bound of the target range.",
+        json_schema_extra=PERCENT_SERIES,
+    )
+    target_range_lower: float | None = Field(
+        default=None,
+        description="Lower bound of the target range.",
+        json_schema_extra=PERCENT_SERIES,
+    )
+    percentile_1: float | None = Field(
+        default=None,
+        description="1st percentile of the distribution.",
+        json_schema_extra=PERCENT_SERIES,
+    )
+    percentile_25: float | None = Field(
+        default=None,
+        description="25th percentile of the distribution.",
+        json_schema_extra=PERCENT_SERIES,
+    )
+    percentile_75: float | None = Field(
+        default=None,
+        description="75th percentile of the distribution.",
+        json_schema_extra=PERCENT_SERIES,
+    )
+    percentile_99: float | None = Field(
+        default=None,
+        description="99th percentile of the distribution.",
+        json_schema_extra=PERCENT_SERIES,
+    )
+    volume: float | None = Field(
+        default=None,
+        description=DATA_DESCRIPTIONS.get("volume", "")
+        + "The notional volume of transactions (Billions of $).",
+        json_schema_extra=VOLUME_EXCLUDED_FROM_CHART,
+    )
+
 
 class FredFederalFundsRateFetcher(
     Fetcher[FredFederalFundsRateQueryParams, list[FredFederalFundsRateData]]
@@ -135,9 +200,7 @@ class FredFederalFundsRateFetcher(
         now = datetime.now().date()
         if params.get("start_date") is None:
             transformed_params["start_date"] = (
-                datetime(2016, 1, 1).date()
-                if params.get("effr_only") is False
-                else None
+                None if params.get("effr_only") else datetime(2016, 1, 1).date()
             )
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
@@ -164,15 +227,18 @@ class FredFederalFundsRateFetcher(
                     frequency=query.frequency,
                     aggregation_method=query.aggregation_method,
                     transform=query.transform,
+                    use_cache=query.use_cache,
                 ),
                 credentials,
             )
         except Exception as e:
             raise e from e
 
+        rows, metadata = unwrap_series(response)
+
         return {
-            "metadata": response.metadata,
-            "data": [d.model_dump() for d in response.result],
+            "metadata": metadata,
+            "data": [d.model_dump() for d in rows],
         }
 
     @staticmethod
@@ -180,7 +246,6 @@ class FredFederalFundsRateFetcher(
         query: FredFederalFundsRateQueryParams, data: dict, **kwargs: Any
     ) -> AnnotatedResult[list[FredFederalFundsRateData]]:
         """Transform and validate the data."""
-        # pylint: disable=import-outside-toplevel
         from pandas import DataFrame, to_datetime
 
         metadata = data.get("metadata", {})
@@ -194,11 +259,7 @@ class FredFederalFundsRateFetcher(
         df = df.set_index("date")
         df = df.rename(columns=col_map)
         for col in df.columns:
-            df[col] = (
-                df[col].astype(float) / 100
-                if col != "volume"
-                else df[col].astype(float)
-            )
+            df[col] = df[col].astype(float)
         records = df.reset_index().to_dict(orient="records")
 
         return AnnotatedResult(

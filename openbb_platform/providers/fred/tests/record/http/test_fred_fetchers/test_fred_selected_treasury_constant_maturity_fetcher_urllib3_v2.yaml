@@ -18,8 +18,6 @@ interactions:
       - max-age=0, no-cache
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
       Content-Length:
       - '1135'
       Content-Type:

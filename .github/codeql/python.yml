@@ -1,0 +1,7 @@
+name: python
+paths-ignore:
+  # Cookiecutter template sources contain Jinja placeholders ({{ ... }}, {% ... %})
+  # and are not valid Python until rendered, so CodeQL cannot parse them.
+  # The wildcard stands in for the literal "{{cookiecutter.project_tag}}" directory.
+  # The template's hooks/ are plain Python and stay in scope.
+  - 'cookiecutter/openbb_cookiecutter/template/*cookiecutter.project_tag*/**'

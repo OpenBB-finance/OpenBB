@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Literal
@@ -18,6 +19,7 @@ ALL_FORMS = ANNUAL_FORMS | QUARTERLY_FORMS | SEMI_ANNUAL_FORMS
 # duration is ~365 days is treated as an annual period. The ~365-day length —
 # not the form alone — is the discriminator; shorter 6-K periods remain interim.
 ANNUAL_PERIOD_FORMS = ANNUAL_FORMS | SEMI_ANNUAL_FORMS
+SUPERSEDED_SUFFIX = " (superseded)"
 Frequency = Literal["annual", "quarterly"]
 StatementName = Literal["income_statement", "balance_sheet", "cash_flow"]
 CompanyType = Literal["industrial", "financial", "diversified", "insurance"]
@@ -31,6 +33,28 @@ def _tolerance(*values: float | None) -> float:
     """Scale-adaptive tolerance: 0.1% of max magnitude, floored at 100k, capped at 1M."""
     scale = max((abs(v) for v in values if v is not None), default=0)
     return max(_TOLERANCE_FLOOR, min(_TOLERANCE_CAP, scale * 0.001))
+
+
+_SOURCE_TAG = re.compile(
+    r"^(?:preliminary:)?(?:ytd_derived\()?([a-z][a-z\-]*:[A-Za-z0-9_]+)"
+)
+
+
+def source_tag(source: str) -> str | None:
+    """Return the concept a value was read from, or None for a derived value."""
+    match = _SOURCE_TAG.match(source)
+
+    return match.group(1) if match else None
+
+
+class ScaledFacts(dict):
+    """Company facts with dollar and share values restated at each filer's scale."""
+
+
+class PreliminaryFacts(dict):
+    """Company facts in which only 8-K entries eligible as preliminary data keep their form."""
+
+    pit_mode: bool = False
 
 
 @dataclass(frozen=True)
@@ -66,6 +90,11 @@ class RowResult:
     sources: dict[str, str] = field(
         default_factory=dict
     )  # {date: "ns:Tag" or "imputed: ..."}
+    date_factors: dict[str, str] = field(default_factory=dict)
+
+    def factor_on(self, date: str) -> str:
+        """Factor for a period: the period override, else the schema factor."""
+        return self.date_factors.get(date, self.factor)
 
 
 @dataclass

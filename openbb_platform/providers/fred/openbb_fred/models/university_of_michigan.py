@@ -1,7 +1,5 @@
 """FRED University of Michigan Survey Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import datetime
 from typing import Any, Literal
 
@@ -12,11 +10,16 @@ from openbb_core.provider.standard_models.university_of_michigan import (
     UofMichiganQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_fred.models.series import FredSeriesFetcher
 from pydantic import Field
 
+from openbb_fred.models.series import FredSeriesFetcher
+from openbb_fred.utils.api import unwrap_series
+from openbb_fred.utils.query import UseCacheQueryParams
 
-class FredUofMichiganQueryParams(UofMichiganQueryParams):
+PERCENT_COLUMN: dict[str, Any] = {"x-unit_measurement": "percent"}
+
+
+class FredUofMichiganQueryParams(UseCacheQueryParams, UofMichiganQueryParams):
     """FRED University of Michigan Survey Query. Data from FRED is delayed by 1 month."""
 
     frequency: Literal["annual", "quarter"] | None = Field(
@@ -62,6 +65,12 @@ class FredUofMichiganQueryParams(UofMichiganQueryParams):
 class FredUofMichiganData(UofMichiganData):
     """FRED University of Michigan Survey Data."""
 
+    inflation_expectation: float | None = Field(
+        default=None,
+        description="Median expected price change next 12 months, Surveys of Consumers.",
+        json_schema_extra=PERCENT_COLUMN,
+    )
+
 
 class FredUofMichiganFetcher(
     Fetcher[FredUofMichiganQueryParams, list[FredUofMichiganData]]
@@ -77,7 +86,7 @@ class FredUofMichiganFetcher(
     async def aextract_data(
         query: FredUofMichiganQueryParams,
         credentials: dict[str, str] | None,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> dict:
         """Extract data."""
         ids = ["UMCSENT", "MICH"]
@@ -95,23 +104,25 @@ class FredUofMichiganFetcher(
                     transform=query.transform,
                     frequency=frequency,
                     aggregation_method=query.aggregation_method,
+                    use_cache=query.use_cache,
                 ),
                 credentials,
             )
         except Exception as e:
             raise e from e
 
+        rows, metadata = unwrap_series(response)
+
         return {
-            "metadata": response.metadata,
-            "data": [d.model_dump() for d in response.result],
+            "metadata": metadata,
+            "data": [d.model_dump() for d in rows],
         }
 
     @staticmethod
     def transform_data(
         query: FredUofMichiganQueryParams, data: dict, **kwargs: Any
-    ) -> list[FredUofMichiganData]:
+    ) -> AnnotatedResult[list[FredUofMichiganData]]:
         """Transform data."""
-        # pylint: disable=import-outside-toplevel
         from pandas import DataFrame
 
         df = DataFrame(data.get("data", []))
@@ -120,16 +131,10 @@ class FredUofMichiganFetcher(
                 "There was an error with the request and was returned empty."
             )
         metadata = data.get("metadata", {})
-        # Combine the legacy series with the new one.
         if "UMCSENT1" in df.columns:
             df["UMCSENT"] = df["UMCSENT"].fillna(df["UMCSENT1"])
             df = df.drop(columns=["UMCSENT1"])
             metadata.pop("UMCSENT1", None)
-
-        # Normalize the percent values.
-        df["MICH"] = df["MICH"] / 100
-        if query.transform and query.transform not in ["chg", "ch1", "log"]:
-            df["UMCSENT"] = df["UMCSENT"] / 100
 
         df = df.rename(
             columns={"UMCSENT": "consumer_sentiment", "MICH": "inflation_expectation"}

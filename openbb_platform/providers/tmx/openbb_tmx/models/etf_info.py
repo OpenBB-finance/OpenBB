@@ -38,6 +38,16 @@ class TmxEtfInfoData(EtfInfoData):
     investment_style: str | None = Field(
         description="The investment style of the ETF.", default=None
     )
+    asset_class: str | None = Field(
+        description="The asset class of the ETF.", default=None
+    )
+    region: str | None = Field(
+        description="The region the ETF invests in.", default=None
+    )
+    index_fund: str | None = Field(
+        description="Whether the ETF tracks an index or is actively managed.",
+        default=None,
+    )
     esg: bool | None = Field(
         description="Whether the ETF qualifies as an ESG fund.", default=None
     )
@@ -128,6 +138,15 @@ class TmxEtfInfoData(EtfInfoData):
         description="The dividend payment frequency of the ETF.", default=None
     )
     website: str | None = Field(description="The website of the ETF.", default=None)
+
+    @field_validator("website", mode="before", check_fields=False)
+    @classmethod
+    def url_validate(cls, v):
+        """Return the website as an absolute URL."""
+        from openbb_tmx.utils.helpers import normalize_url
+
+        return normalize_url(v)
+
     description: str | None = Field(
         description="The description of the ETF.",
         default=None,
@@ -176,8 +195,9 @@ class TmxEtfInfoFetcher(
     ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
-        from openbb_tmx.utils.helpers import get_all_etfs
         from pandas import DataFrame
+
+        from openbb_tmx.utils.helpers import get_all_etfs, purge_nulls
 
         results = []
         symbols = (
@@ -190,6 +210,9 @@ class TmxEtfInfoFetcher(
             "name",
             "fund_family",
             "investment_style",
+            "asset_class",
+            "region",
+            "index_fund",
             "esg",
             "currency",
             "unit_price",
@@ -216,14 +239,14 @@ class TmxEtfInfoFetcher(
             "investment_objectives",
         ]
 
+        published = [c for c in COLUMNS if c in _data.columns]
+
         for symbol in symbols:
             result = {}
             target = DataFrame()
-            s = (
-                symbol.replace(".TO", "").replace(".TSX", "").replace("-", ".")
-            )  # noqa: PLW2901
-            target = _data[_data["symbol"] == s][COLUMNS]
-            target = target.fillna("N/A").replace("N/A", None)
+            s = symbol.replace(".TO", "").replace(".TSX", "").replace("-", ".")  # noqa: PLW2901
+            target = _data[_data["symbol"] == s][published]
+            target = purge_nulls(target)
             if len(target) > 0:
                 result = target.reset_index(drop=True).transpose().to_dict()[0]
                 results.append(result)

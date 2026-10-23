@@ -88,40 +88,18 @@ class TmxInsiderTradingFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
-        # pylint: disable=import-outside-toplevel
-        import json  # noqa
-        from openbb_tmx.utils import gql  # noqa
-        from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent  # noqa
+        from openbb_tmx.utils import gql
+        from openbb_tmx.utils.cache import amake_gql_request
+        from openbb_tmx.utils.helpers import normalize_symbol
 
-        results: list = []
-        user_agent = get_random_agent()
-        symbol = (
-            query.symbol.upper()
-            .replace("-", ".")
-            .replace(".TO", "")
-            .replace(".TSX", "")
+        symbol = normalize_symbol(query.symbol)
+        response = await amake_gql_request(
+            "getCompanyInsidersActivities",
+            gql.COMPANY_INSIDERS,
+            {"symbol": symbol},
+            symbol=symbol,
         )
-        payload = gql.get_company_insiders_payload.copy()
-        payload["variables"]["symbol"] = symbol
-
-        url = "https://app-money.tmx.com/graphql"
-        response = await get_data_from_gql(
-            method="POST",
-            url=url,
-            data=json.dumps(payload),
-            headers={
-                "authority": "app-money.tmx.com",
-                "referer": f"https://money.tmx.com/en/quote/{symbol}",
-                "locale": "en",
-                "Content-Type": "application/json",
-                "User-Agent": user_agent,
-                "Accept": "*/*",
-            },
-            timeout=5,
-        )
-
-        if response.get("data") and response["data"].get("getCompanyInsidersActivities"):  # type: ignore
-            results = response["data"]["getCompanyInsidersActivities"]  # type: ignore
+        results = (response or {}).get("getCompanyInsidersActivities")
 
         if not results:
             raise EmptyDataError()

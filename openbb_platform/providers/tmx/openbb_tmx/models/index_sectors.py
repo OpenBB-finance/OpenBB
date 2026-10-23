@@ -53,18 +53,11 @@ class TmxIndexSectorsFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the TMX endpoint."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_tmx.utils.helpers import get_data_from_url, get_indices_backend
+        from openbb_tmx.utils.helpers import get_data_from_url
 
         url = "https://tmxinfoservices.com/files/indices/sptsx-indices.json"
 
-        data = await get_data_from_url(
-            url,
-            use_cache=query.use_cache,
-            backend=get_indices_backend(),
-        )
-
-        return data
+        return await get_data_from_url(url, use_cache=query.use_cache)
 
     @staticmethod
     def transform_data(

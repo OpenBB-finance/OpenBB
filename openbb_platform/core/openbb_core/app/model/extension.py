@@ -11,7 +11,6 @@ class Extension:
     See https://docs.openbb.co/developer/extension_types/obbject for more information.
     """
 
-    # pylint: disable=R0917
     def __init__(
         self,
         name: str,
@@ -41,7 +40,6 @@ class Extension:
         results_only : bool, optional
             Whether the extension returns only the results instead of the OBBject, by default False.
         """
-        # pylint: disable=import-outside-toplevel
         from openbb_core.app.service.system_service import SystemService
 
         self.name = name
@@ -97,7 +95,6 @@ class Extension:
     @property
     def obbject_accessor(self) -> Callable:
         """Extend an OBBject, inspired by pandas."""
-        # pylint: disable=import-outside-toplevel
 
         from openbb_core.app.model.obbject import OBBject
 

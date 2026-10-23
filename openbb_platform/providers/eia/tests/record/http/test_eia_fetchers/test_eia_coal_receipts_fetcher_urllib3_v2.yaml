@@ -1,0 +1,69 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/coal/shipments/receipts/data/?api_key=MOCK_API_KEY&data%5B0%5D=ash-content&data%5B1%5D=heat-content&data%5B2%5D=price&data%5B3%5D=quantity&data%5B4%5D=sulfur-content&end=2008&facets%5BcoalRankId%5D%5B%5D=BIT&facets%5BcoalSupplier%5D%5B%5D=TWENTY+MILE&facets%5BcontractType%5D%5B%5D=Spot-Market+Purchase&facets%5BmineBasinId%5D%5B%5D=APS&facets%5BmineCountyId%5D%5B%5D=127&facets%5BmineMSHAId%5D%5B%5D=100114&facets%5BmineStateId%5D%5B%5D=AL&facets%5BmineTypeId%5D%5B%5D=SUR&facets%5BplantId%5D%5B%5D=4143&facets%5BplantStateId%5D%5B%5D=WI&facets%5BtransportationMode%5D%5B%5D=Rail&frequency=annual&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2008
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY","frequency":"annual","data":[{"period":"2008","plantStateId":"WI","plantStateDescription":"Wisconsin","mineStateId":"AL","mineStateDescription":"Alabama","mineTypeId":"SUR","mineTypeDescription":"Surface","mineMSHAId":"100114","mineName":"CORDOVA
+        LOADING","mineBasinId":"APS","mineBasinDescription":"Appalachia Southern","mineCountyId":"127","mineCountyName":"Walker","contractType":"Spot-Market
+        Purchase","transportationMode":"Rail","coalSupplier":"TWENTY MILE","coalRankId":"BIT","coalRankDescription":"Bituminous","plantId":"4143","plantName":"Genoa","ash-content":"10.9","heat-content":"11445","price":"84.69","quantity":"37000","sulfur-content":".56","ash-content-units":"percent
+        by weight","heat-content-units":"Btu per pound","price-units":"average dollars
+        per ton","quantity-units":"tons","sulfur-content-units":"percent by weight"}],"description":"Coal
+        shipment detailed by reciepient data, including transportation type, \r\n        supplier,
+        mine, coal basin, county, state, rank, contract type, price, quantity, and
+        quality. \r\n        Source: EIA Form 7A and MSHA Form 7000-2.  Interactive
+        browser:  https:\/\/www.eia.gov\/coal\/data\/browser\/"},"request":{"command":"\/v2\/coal\/shipments\/receipts\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"annual","data":["ash-content","heat-content","price","quantity","sulfur-content"],"facets":{"plantStateId":["WI"],"mineStateId":["AL"],"mineTypeId":["SUR"],"mineMSHAId":["100114"],"mineBasinId":["APS"],"mineCountyId":["127"],"contractType":["Spot-Market
+        Purchase"],"transportationMode":["Rail"],"coalSupplier":["TWENTY MILE"],"coalRankId":["BIT"],"plantId":["4143"]},"start":"2008","end":"2008","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 02:59:18 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 02:59:18 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '1868'
+    status:
+      code: 200
+      message: OK
+version: 1

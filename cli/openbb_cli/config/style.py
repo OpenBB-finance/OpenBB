@@ -1,6 +1,5 @@
 """Chart and style helpers for Plotly."""
 
-# pylint: disable=C0302,R0902,W3301
 import json
 from pathlib import Path
 from typing import Any
@@ -13,12 +12,7 @@ console = Console()
 
 
 class Style:
-    """The class that helps with handling of style configurations.
-
-    It serves styles for 2 libraries. For `Plotly` this class serves absolute paths
-    to the .pltstyle files. For `Plotly` and `Rich` this class serves custom
-    styles as python dictionaries.
-    """
+    """Handle style configurations for Plotly and Rich."""
 
     STYLES_REPO = STYLES_DIRECTORY
 
@@ -65,15 +59,10 @@ class Style:
     def _from_directory(self, folder: Path | None) -> None:
         """Load custom styles from folder.
 
-        Parses the styles/default and styles/user folders and loads style files.
-        To be recognized files need to follow a naming convention:
-        *.pltstyle        - plotly stylesheets
-        *.richstyle.json  - rich stylesheets
-
         Parameters
         ----------
-        folder : str
-            Path to the folder containing the stylesheets
+        folder : Path
+            Path to the folder containing the stylesheets.
         """
         if not folder or not folder.exists():
             return
@@ -95,9 +84,7 @@ class Style:
         with open(file) as f:
             json_style: dict = json.load(f)
             for key, value in json_style.items():
-                json_style[key] = value.replace(
-                    " ", ""
-                )  # remove whitespaces so Rich can parse it
+                json_style[key] = value.replace(" ", "")
             return json_style
 
     @property

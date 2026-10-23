@@ -1,11 +1,14 @@
 """Plotting functions for IMF Maritime Chokepoint Information"""
 
+from __future__ import annotations
+
+from typing import Any
+
 from openbb_imf.models.port_info import ImfPortInfoData
 
 
 def plot_port_info_map(data: list[ImfPortInfoData]):
     """Plot the port information on a map showing regional geography with gradient-colored markers."""
-    # pylint: disable=import-outside-toplevel
     from numpy import nan
     from openbb_core.app.model.abstract.error import OpenBBError
     from pandas import DataFrame
@@ -33,8 +36,8 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
     min_size, max_size = 4, 10
 
     if "country" in df.columns and df["country"].nunique() == 1:
-        share_import = df["share_country_maritime_import"].fillna(0)
-        share_export = df["share_country_maritime_export"].fillna(0)
+        share_import = df["share_country_maritime_import"].astype(float).fillna(0)
+        share_export = df["share_country_maritime_export"].astype(float).fillna(0)
         df["import_export_share"] = share_import + share_export
         share_values = df["import_export_share"]
 
@@ -55,12 +58,8 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
     else:
         df["marker_size"] = min_size
 
-    if "port_full_name" in df.columns:
-        df["port_full_name"] = df["port_full_name"].fillna("Unknown Port")
-    else:
-        df["port_full_name"] = "Unknown Port"
-
     map_zoom = 2
+
     if "continent" in df.columns and df["continent"].nunique() > 1:
         map_zoom = 0
         map_center = None
@@ -78,7 +77,6 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
         port_name = row.get("port_full_name", "Unknown Port")
         html_parts.append(f"<b>{port_name}</b><br>")
 
-        # Share of Country's Maritime Traffic
         share_import = row.get("share_country_maritime_import")
         share_export = row.get("share_country_maritime_export")
 
@@ -96,7 +94,6 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
             html_parts.append("<br><b>Share of Country's Maritime Traffic</b>:<br>")
             html_parts.extend(traffic_lines_content)
 
-        # Avg Annual Vessels
         vessel_labels = [
             "Total",
             "Containers",
@@ -165,7 +162,7 @@ def plot_port_info_map(data: list[ImfPortInfoData]):
 
     fig.update_traces(hovertemplate="%{customdata[0]}<extra></extra>")
 
-    layout_map_config = {
+    layout_map_config: dict[str, Any] = {
         "style": "carto-voyager",
         "zoom": map_zoom,
     }

@@ -1,0 +1,8247 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+<title>PPI FORECASTING SEASONAL FACTORS 2026 :  U.S. Bureau of Labor Statistics</title>
+<!-- ********************** Begin META TAGS ******************************* -->
+		<!-- START include/global/head_express.stm -->
+	<script language="javascript" id="_fed_an_ua_tag" src="https://dap.digitalgov.gov/Universal-Federated-Analytics-Min.js?agency=DOL&subagency=BLS&yt=true"></script>
+	
+	<script src="/javascripts/jquery-latest.js"></script>
+	<script src="/javascripts/bls-latest.js"></script>
+	<script src="/javascripts/jquery-tools.js"></script>
+	<script src="/javascripts/jquery-migrate-1.2.1.min.js"></script>
+	
+	
+	<link rel="stylesheet" href="/assets/bootstrap/latest/bootstrap.min.css">
+	<script src="/assets/bootstrap/latest/popper.min.js"></script>
+	<script src="/assets/bootstrap/latest/bootstrap.min.js"></script>
+
+	
+	<link rel="stylesheet" type="text/css" href="/stylesheets/bls_combined.css">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/bls_content.css">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/bls_tables.css">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/jquery-tools.css">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/bls_nr.css">
+    <!--[if lt IE 9]>
+		<link href="/stylesheets/ie8-styles.css" media="all" rel="Stylesheet" type="text/css"> 
+	<![endif]-->
+	<!--[if lt IE 8]>
+		<link href="/stylesheets/ie7-styles.css" media="all" rel="Stylesheet" type="text/css"> 
+	<![endif]-->
+	<!--[if lt IE 7]>
+		<link href="/stylesheets/ie6-styles.css" media="all" rel="Stylesheet" type="text/css"> 
+		<style type="text/css">
+		body {
+			behavior:url(/stylesheets/csshover2.htc);
+		}
+		</style>			
+	<![endif]-->
+	<!--[if IE]>
+		<style type="text/css">
+		body {
+			font-size: expression(1 / (screen.deviceXDPI / 96) * 84 + '%');
+		}
+		</style>	
+	<![endif]-->
+	<noscript>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/bls_noscript.css">
+	</noscript>
+	<!-----This means that the browser will (probably) render the width of the page at the width of its own screen. ------>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!----------->
+	<meta http-equiv="x-ua-compatible" content="IE=Edge" />
+    <meta property="og:image" content="https://www.bls.gov/images/bls_emblem_2016.png" />
+	<meta property="og:image:alt" content="BLS Logo">
+	<meta name="robots" content="index, follow">
+	<meta property="og:locale" content="en_US">
+	<meta property="og:site_name" content="Bureau of Labor Statistics">
+		<style type="text/css">
+			td.gsc-table-cell-thumbnail{
+			display:none !important;
+			}
+		</style>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+	<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
+	<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
+	<link rel="manifest" href="/manifest.json" />
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+	<meta name="theme-color" content="#ffffff" />
+<!-- END include/global/head_express.stm -->
+	
+	<meta name="agency" content="BLS" />
+	<meta name="audience" content="general" />
+	<meta name="subagency" content="BLS: Prices and Living Conditions">
+<meta name="program" content="BLS: Prices and Living Conditions: Producer Price Indexes">
+<meta name="subject" content="Statistics: Producer Price Indexes">
+	<meta name="date" content="02/27/2026">
+<!-- ********************** End META TAGS ********************************* -->
+	<link rel="stylesheet" type="text/css" href="/stylesheets/bls_programs.css">
+<noscript>
+	<style>
+
+		#programs-banner.generic #program-browse{
+			display: block;
+			top: 3px;
+			width:100%;
+		}
+		#programs-banner.generic #program-browse > div{
+			display: block;
+			position: static;
+			border: none;
+			border-top: 1px solid #fff;
+			margin: 10px 0 0;
+		}
+	</style>
+</noscript>
+
+<script>
+$(document).ready(function(){
+	/* Nav, tabbable*/
+	$(".main-content #programs-banner-nav > li a").focus(function(){
+		var parentUL = $(this).parent().parent();
+		$(".focus").removeClass("focus");
+		$(this).parent().addClass("focus");
+		if(parentUL.find("span").size() == 1){
+			parentUL.parent().find("ul").parent().addClass("focus");
+		};
+	});
+	$(".main-content #programs-banner-nav a").blur(function(){
+		setTimeout(function(){if( !$(document.activeElement).parents("#programs-banner-nav").size()){$(".focus").removeClass("focus");};},100);
+	});
+	
+	$(".main-content #programs-banner-nav li").click(function(e){
+		e.stopPropagation();
+		if($(this).find("a").attr("target") == "_blank"){
+			window.open($(this).find("a").attr("href"));
+		}else{
+			window.location = $(this).find("a").attr("href");
+		}
+	});
+	$(".main-content #programs-banner-nav li a").click(function(e){
+		$(this).blur();
+		e.stopPropagation();
+		e.stopImmediatePropagation();
+	});
+	
+
+	$("#programs-banner.generic #program-browse > a").focus(function(){
+		$(this).parent().addClass("focused");
+		$("#programs-banner.generic #program-browse").hover(function(){
+			$(this).removeClass("focused");
+			$("#programs-banner.generic #program-browse *").blur();
+		});
+	});			
+	$("#programs-banner.generic #program-browse a").each(function(){
+		$(this).blur(function(){
+			setTimeout(function(){
+				if($(document.activeElement).parents("#program-browse").length < 1 ){
+					$("#programs-banner.generic #program-browse").removeClass("focused")
+				};
+			});
+		});
+	});
+
+	/*Notices Archive Page, load*/
+	$(".main-content #archive-left-side .notice-items").hide();
+	var archiveLeftShow = $(".main-content #archive-left-side .notice-items")[0];
+	$(archiveLeftShow).show();
+	var archiveRightCurrent = $(".main-content #archive-right-side a")[0];
+	$(archiveRightCurrent).addClass("current");
+	/*Notices Archive Page, fcns*/
+	$(".main-content #archive-right-side a").click(function(e){
+		e.preventDefault();
+		$(".main-content #archive-right-side a.current").removeClass("current");
+		$(this).addClass("current");
+		$(".main-content #archive-left-side .notice-items").hide();
+		$(".main-content #archive-left-side #notices-"+$(this).text()).show();
+	});	
+
+});
+</script>
+
+</head>
+<body>
+<!-- ************************ Begin HEADER ******************************** -->
+	
+
+<!-- OneColHeadBasic Begin: Name -->
+
+<!-- Header Filename: "/include/ppi/ppi_header.txt" -->
+
+<!--no_index_start-->
+
+<!-- DOL BANNER BEGIN -->
+<!-- DOL BANNER START -->
+<header > <!-- Header is closed at the end of BLS banner -->
+		<a class="skiplink" href="#startcontent">Skip to Content</a>
+
+		<div id="usa-banner-wrapper">
+<div id="usa-banner" class="bootstrap standard-width">
+	<div class="content">
+	<div class="USA-flag-link">
+	<img src="https://www.dol.gov/themes/opa_theme/img/flag-favicon-57.png" alt="U.S. flag">
+	<p>An official website of the United States government 
+	  
+	<button type="button" data-toggle="collapse" data-target="#usaBanner" aria-expanded="false" aria-controls="usaBanner">Here is how you know <span class="oi" data-glyph="chevron-bottom"></span></button>
+	</p>
+	</div>
+		<a href="https://www.dol.gov/" id="dolHolder" class="dolHolder" target="_blank"><img src="https://www.dol.gov/themes/opa_theme/img/logo-primary.svg" alt="Department of Labor Logo"/>  United States Department of Labor</a>
+	</div>
+	
+	<div class="collapse " id="usaBanner">	
+	<div class="row">
+	<div class="col-md-6">
+		<img src="https://www.dol.gov/themes/opa_theme/img/icon-dot-gov.svg" alt="Dot gov">
+
+		<p>
+			<strong>The .gov means it's official.</strong>
+			<br> Federal government websites often end in .gov or .mil. Before sharing sensitive information,
+			make sure you're on a federal government site.
+		</p>
+	</div>
+
+	<div class="col-md-6">
+	<img class="usa-banner-icon usa-media_block-img" src="https://www.dol.gov/themes/opa_theme/img/icon-https.svg" alt="Https">
+	
+		<p>
+			<strong>The site is secure.</strong>
+			<br> The
+			<strong>https://</strong> ensures that you are connecting to the official website and that any
+			information you provide is encrypted and transmitted securely.
+		</p>
+	</div>
+	</div>
+	</div>		
+</div>
+</div>
+
+
+
+<!-- DOL BANNER END -->
+
+
+<!-- DOL BANNER END -->
+<!-- BLS BANNER BEGIN -->
+
+<div id="bls-banner-wrapper">
+<div id="top"></div>
+		<div class="bootstrap standard-width">
+<div>
+  <div id="bls-banner" class="row">
+    <div id="bls-banner-emblem" class="col-sm-12 col-md-7">
+      <a href="https://www.bls.gov/">U.S. Bureau of Labor Statistics</a>
+    </div>
+    <div id="bls-banner-right" class="col-sm-12 col-md-5 d-none d-md-block">
+<div id="bls-banner-links"><a href="/schedule/news_release/">Release Calendar</a> | <a href="javascript:window.open('https://public.govdelivery.com/accounts/USDOLBLS/subscriber/new ','Popup','width=800,height=500,toolbar=no,scrollbars=yes,resizable=yes'); void('');" onclick="window.status='Subscribe'; return true" onmouseover="window.status='Subscribe'; return true" onmouseout="window.status=''; return true" id="social-email-1" title="Subscribe to BLS E-mail Updates" aria-label="Subscribe to BLS E-mail Updates">Subscribe</a></div> 
+      <div id="bls-banner-search1" class="bls-banner-search">
+        <form method="get" action="/search/query">
+		  <label for="bls-banner-search-submit1" class="invisible">Search button</label>
+          <input type="image" src="/images/buttons/search_button_blue_16.png" name="term" id="bls-banner-search-submit1" alt="BLS Search Submit" title="Submit" >
+		  <label for="bls-banner-search-input1" class="invisible">Search:</label>
+          <input name="query" type="text" id="bls-banner-search-input1" value="Search BLS.gov" title="Search Input" onclick="this.value=''; this.onclick = null;">
+
+        </form>
+      </div>
+    </div>
+    <div class="clearfloat"></div>
+  </div>
+</div>
+</div>
+</div>
+</header> <!-- Header is opened at the begining of DOL banner -->
+
+<!-- BLS BANNER END -->
+<!-- MAIN NAV BEGIN -->
+
+<div id="main-nav-wrapper">
+	<div id="main-nav-container">
+		<div>
+			<div class="bootstrap standard-width">
+<nav aria-label="top-level navigation menu" class="navbar navbar-expand-md">
+  
+  
+   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation menu">
+    <span class="navbar-toggler-icon">Menu</span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  
+
+
+<ul class="nojs navbar-nav mr-auto">
+     <li class="dropdownSearch"><div id="bls-banner-search" class="dropdown-search">
+        <form method="get" action="/search/query">
+		  <label for="bls-banner-search-submit" class="invisible">Search button</label>
+          <input type="image" src="/images/buttons/search_button_blue_20.png" name="term" id="bls-banner-search-submit" alt="BLS Search Submit" title="Submit">
+		  <label for="bls-banner-search-input" class="invisible">Search:</label>
+          <input name="query" type="text" id="bls-banner-search-input" value="Search BLS.gov" title="Search Input" onclick="this.value=''; this.onclick = null;">
+
+        </form>
+      </div>
+	
+	  <div class="bls-banner-links-mob"><a href="/schedule/news_release/">Release Calendar</a> | <a href="javascript:window.open('https://public.govdelivery.com/accounts/USDOLBLS/subscriber/new ','Popup','width=800,height=500,toolbar=no,scrollbars=yes,resizable=yes'); void('');" onclick="window.status='Subscribe'; return true" onmouseover="window.status='Subscribe'; return true" onmouseout="window.status=''; return true" id="social-email-2" title="Subscribe to BLS E-mail Updates" aria-label="Subscribe to BLS E-mail Updates">Subscribe</a></div>
+	</li>
+    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="https://www.bls.gov/" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Home <span class="circle-arrow"></span></a>
+        <div class="dropdown-menu"><!-- ********************************************** Begin Home Tab LIST ****************************************** -->
+<!-- 1st column -->
+<div class="main-nav-submenu" id="submenu-home">
+	<ul class="main-nav-submenu-inn">
+	
+		<li class="heading"><a href="/bls/about-bls.htm" aria-label="About BLS">About BLS</a></li>
+		<li><a href="/bls/history/home.htm" aria-label="BLS History">History</a></li>	
+		<li><a href="/bls/senior_staff/home.htm" aria-label="Our Leadership">Our Leadership</a></li>
+		<li><a href="/bls/bls_budget_and_performance.htm" aria-label="Budget and Performance">Budget and Performance</a></li>		
+		<li><a href="/bls/faqs.htm" aria-label="Questions and Answers">Questions and Answers</a></li>	
+		<li><a href="/bls/topicsaz.htm" aria-label="A-Z Index">A-Z Index</a></li>	
+		<li><a href="/bls/glossary.htm" aria-label="Glossary">Glossary</a></li>	
+		<li><a href="/bls/bls-speakers/" aria-label="BLS Speakers Available">BLS Speakers Available</a></li>
+		<li><a href="/errata/" aria-label="Errata">Errata</a></li>  				
+		<li><a href="/bls/contact.htm" aria-label="Contact BLS">Contact BLS</a></li>	
+
+	</ul>	
+	<!-- 2nd column -->	
+<ul class="main-nav-submenu-inn">	
+		<li class="heading"><a href="/bls/overview.htm" aria-label="Overview of BLS Statistics">Overview of BLS Statistics</a></li>
+		<li><a href="/information-guide/home.htm" aria-label="Guide to Programs & Services">Guide to Programs &amp; Services</a></li>
+		<li><a href="/bls/demographics.htm" aria-label="Demographics Data">Demographics</a></li>
+		<li><a href="/bls/industry.htm" aria-label="Statistics by Industries">Industries</a></li>
+		<li><a href="/bls/business.htm" aria-label="Statistics on Business Costs">Business Costs</a></li>
+		<li><a href="/bls/occupation.htm" aria-label="Statistics by Occupations">Occupations</a></li>
+		<li><a href="/bls/geography.htm" aria-label="Statistics by Geography">Geography</a></li>	
+	
+	</ul>
+	<!-- 3rd column -->
+	<ul class="main-nav-submenu-inn">
+		<li class="heading"><a href="/audience/" aria-label="Resources For">Resources For</a></li>
+		<li><a href="/audience/business.htm" aria-label="Resources for Business Leaders">Business Leaders</a></li>
+		<li><a href="/audience/consumers.htm" aria-label="Resources for Consumers">Consumers</a></li>
+		<li><a href="/audience/developers.htm" aria-label="Developers site">Developers</a></li>
+		<li><a href="/audience/economists.htm" aria-label="Economists or Economic Analyst">Economists</a></li>
+		<li><a href="/audience/investors.htm" aria-label="Resources for Financial Investors">Investors</a></li>
+		<li><a href="/audience/jobseekers.htm" aria-label="Resources for Jobseekers">Jobseekers</a></li>
+		<li><a href="/audience/media.htm" aria-label="Media">Media</a></li>
+		<li><a href="/audience/policy.htm" aria-label="Resources for Public Policymakers">Public Policymakers</a></li>
+		<li><a href="/audience/researcher.htm" aria-label="Researcher">Researcher</a></li>		
+		<li><a href="/audience/students.htm" aria-label="Resources for Students & Teachers">Students &amp; Teachers</a></li>
+		<li><a href="/respondents/" aria-label="Survey Respondents">Survey Respondents</a></li>
+	</ul>
+</div>
+
+<!-- ***********************************************End Home Tab LIST ******************************************** --> 
+
+</div>
+    </li>
+    <li class="nav-item dropdown active"><a class="nav-link dropdown-toggle" href="/bls/proghome.htm" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Subjects <span class="circle-arrow"></span></a>
+        <div class="dropdown-menu"><!-- ************************************* Begin SUBJECTS TAB list ****************************************** -->
+<!-- 1st column -->
+<div class="main-nav-submenu" id="submenu-programs">
+	<ul class="main-nav-submenu-inn">
+		<li class="heading"><a href="/bls/inflation.htm" aria-label="Statistics on Inflation & Prices">Inflation &amp; Prices</a></li>
+		<li><a href="/cpi/" aria-label="Consumer Price Index ">Consumer Price Index</a></li>
+		<li><a href="/ppi/" aria-label="Producer Price Indexes">Producer Price Indexes</a></li>
+		<li><a href="/mxp/" aria-label="Import/Export Price Indexes">Import/Export Price Indexes</a></li>
+		<li><a href="/bls/escalation.htm" aria-label="Contract Escalation">Contract Escalation</a></li>
+		<li><a href="/pir/" aria-label="Price Index Research">Price Index Research</a></li>
+		<li class="heading"><a href="/bls/wages.htm" aria-label="Statistics on Pay & Benefits">Pay &amp; Benefits</a></li>
+		<li><a href="/eci/" aria-label="Employment Cost Index">Employment Cost Index</a></li>
+		<li><a href="/ecec/home.htm" aria-label="Employer Costs for Employee Compensation">Employer Costs for Employee Compensation</a></li>
+						<li><a href="/oes/" aria-label="Wage Data by Occupation">Wage Data by Occupation</a></li>
+		<li><a href="/cps/earnings.htm#demographics" aria-label="Earnings by Demographics">Earnings by Demographics</a></li>
+		<li><a href="/ces/" aria-label="Earnings by Industry">Earnings by Industry</a></li>
+		<li><a href="https://www.bls.gov/cew/" aria-label="County Wages">County Wages</a></li>  <!--full path is needed since they have a folder on the data server-->
+		<li><a href="/ebs/" aria-label="Employee Benefits Survey">Benefits</a></li>
+		<li><a href="/mwe/" aria-label="Modeled Wage Estimates">Modeled Wage Estimates</a></li>		
+		<li><a href="/crp/" aria-label="Compensation Research & Program Development">Compensation Research</a></li>
+		<li><a href="/wsp/" aria-label="Strikes & Lockouts">Strikes &amp; Lockouts </a></li>
+		<li><a href="/wrp/" aria-label="Wage Records from Unemployment Insurance">Wage Records from Unemployment Insurance</a></li>
+		<li class="heading"><a href="/ors/" aria-label="Occupational Requirements Survey">Occupational Requirements</a></li>		
+	</ul>
+	<!-- 2nd column -->
+	<ul class="main-nav-submenu-inn">
+		<li class="heading"><a href="/bls/unemployment.htm" aria-label="Statistics on Unemployment">Unemployment</a></li>
+		<li><a href="/cps/" aria-label="National Unemployment Rate">National Unemployment Rate </a></li>
+		<li><a href="/lau/" aria-label="State & Local Unemployment Rates">State &amp; Local Unemployment Rates </a></li>
+		<li><a href="/ers/" aria-label="Unemployment Research">Unemployment Research</a></li>
+		<li class="heading"><a href="/bls/employment.htm" aria-label="Statistics on Employment">Employment</a></li>
+		<li><a href="/ces/" aria-label="National Employment Statistics">National Employment </a></li>
+		<li><a href="/sae/" aria-label="State & Local Employment, Hours, and Earnings">State &amp; Local Employment </a></li>
+		<li><a href="https://www.bls.gov/cew/" aria-label="County Employment">County Employment </a></li> <!--full path is needed since they have a folder on the data server-->
+		<li><a href="/cps/" aria-label="Worker Characteristics">Worker Characteristics </a></li>
+		<li><a href="/air/" aria-label="American Indian Report">American Indian Report</a></li>
+		<li><a href="/emp/" aria-label="Employment Projections">Employment Projections </a></li>
+		<li><a href="/jlt/" aria-label="Job Openings & Labor Turnover Survey">Job Openings &amp; Labor Turnover Survey </a></li>
+		<li><a href="/brs/" aria-label="Business Response Survey">Business Response Survey</a></li>
+		<li><a href="/oes/" aria-label="Employment by Occupation">Employment by Occupation </a></li>
+		<li><a href="/nls/" aria-label="Work Experience Over Time">Work Experience Over Time </a></li>
+		<li><a href="/bdm/" aria-label="Business Employment Dynamics">Business Employment Dynamics </a></li>
+		<li><a href="/fdi/" aria-label="Foreign Direct Investment">Foreign Direct Investment </a></li>
+		<li><a href="/ers/" aria-label="Employment Research and Program Development">Employment Research</a></li>
+		<li class="heading"><a href="/iif/" aria-label="Workplace Injuries, Illnesses, and Fatalities">Workplace Injuries</a></li>
+	</ul>
+	<!-- 3rd column -->
+	<ul class="main-nav-submenu-inn">
+		<li class="heading"><a href="/bls/productivity.htm" aria-label="Productivity Statistics">Productivity</a></li>
+		<li><a href="/productivity/" aria-label="Labor and Total Factor Productivity">Labor and Total Factor Productivity</a></li>
+		<li><a href="/dpr/" aria-label="Productivity Research and Program Development">Productivity Research</a></li>
+		<li class="heading"><a href="/bls/spending.htm" aria-label="Statistics on Spending & Time Use">Spending &amp; Time Use</a></li>
+		<li><a href="/cex/" aria-label="Consumer Expenditures Surveys">Consumer Expenditures </a></li>
+		<li><a href="/tus/" aria-label="How Americans Spend Time Survey">How Americans Spend Time</a></li>			
+		<li class="heading"><a href="/bls/international.htm" aria-label="International Data and Technical Cooperation">International</a></li>
+		<li><a href="/itc/" aria-label="International Technical Cooperation">International Technical Cooperation</a></li>
+		<li><a href="/mxp/" aria-label="Import/Export Price Indexes">Import/Export Price Indexes</a></li>
+		<li class="heading"><a href="/regions/" aria-label="Geographic Information">Geographic Information</a></li>
+		<li><a href="/regions/northeast/" aria-label="Northeast (Boston-New York) Information Office">Northeast (Boston-New York)</a></li>
+		<li><a href="/regions/mid-atlantic/" aria-label="Mid-Atlantic (Philadelphia) Information Office">Mid-Atlantic (Philadelphia)</a></li>
+		<li><a href="/regions/southeast/" aria-label="Southeast (Atlanta) Information Office">Southeast (Atlanta)</a></li>
+		<li><a href="/regions/midwest/" aria-label="Midwest (Chicago) Information Office">Midwest (Chicago)</a></li>
+		<li><a href="/regions/southwest/" aria-label="Southwest (Dallas) Information Office">Southwest (Dallas)</a></li>
+		<li><a href="/regions/mountain-plains/" aria-label="Mountain-Plains (Kansas City) Information Office">Mountain-Plains (Kansas City)</a></li>
+		<li><a href="/regions/west/" aria-label="West (San Francisco) Information Office">West (San Francisco)</a></li>
+	</ul>
+</div>
+<!-- **************************************End SUBJECT AREAS ******************************************** --> 
+	</div>	
+    </li>
+    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="/data/" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Data Tools <span class="circle-arrow"></span></a>
+        <div class="dropdown-menu"><!-- ******************************************** Begin DATA TOOLS LIST ****************************************** -->
+<div class="main-nav-submenu"  id="submenu-data">
+    <ul class="main-nav-submenu-inn">
+        <li class="heading"><a href="/data/tools.htm" aria-label="Data Retrieval Tools Databases, Tables & Calculators by Subject">Data Retrieval Tools</a></li>
+		<li><a href="https://data.bls.gov/toppicks?code=&survey=bls" aria-label="BLS Popular Series Top Picks">BLS Popular Series</a></li>
+		<li><a href="https://data.bls.gov/series-report" aria-label="Series Report">Series Report</a></li>
+		<li><a href="/data/home.htm" aria-label="Top Picks, One Screen, Multi-Screen, and Maps" >Top Picks, One Screen, Multi-Screen, and Maps</a></li>
+		<li><a href="https://data.bls.gov/dataQuery/search" aria-label="Data Finder">Data Finder</a></li>
+		<li><a href="/developers/home.htm" aria-label="Public Data API Programming Interface">Public Data API</a></li>
+
+    </ul>
+    <!-- 2nd column -->
+    <ul class="main-nav-submenu-inn">
+        <li class="heading"><a href="/data/apps.htm" aria-label="Charts and Applications">Charts and Applications</a></li>
+		<li><a href="/charts/home.htm" aria-label="Charts for Economic News Releases">Charts for Economic News Releases</a></li>	
+		<li><a href="/data/inflation_calculator.htm" aria-label="CPI Inflation Calculator">CPI Inflation Calculator</a></li>	
+		<li><a href="https://data.bls.gov/iirc/" aria-label="Injury and Illness Calculator">Injury and Illness Calculator</a></li>		
+		<li><a href="https://data.bls.gov/apps/compensation-comparison-matrix/home.htm" aria-label="Pay Measure Comparison">Pay Measure Comparison</a></li>
+		<li><a href="https://data.bls.gov/apps/demographic-comparison-matrix/home.htm" aria-label="Demographic Data Sources">Demographic Data Sources</a></li>
+		<li><a href="https://data.bls.gov/apps/covid-dashboard/home.htm" aria-label="COVID-19 Economic Trends">COVID-19 Economic Trends</a></li>
+		<li><a href="https://data.bls.gov/apps/industry-productivity-viewer/home.htm" aria-label="Industry Productivity Viewer" >Industry Productivity Viewer</a></li>
+		<li><a href="https://data.bls.gov/cew/apps/data_views/data_views.htm#tab=Tables" aria-label="Employment and Wages Data Viewer">Employment and Wages Data Viewer</a></li>
+		<li><a href="https://data.bls.gov/cew/apps/bls_naics/bls_naics_app.htm" aria-label="Industry Finder from the Quarterly Census of Employment and Wages">Industry Finder from the Quarterly Census of Employment and Wages</a></li>
+	
+    </ul>
+	<!-- 3rd column -->
+	<ul class="main-nav-submenu-inn">
+	    <li class="heading"><a href="/data/tables.htm" aria-label="Customized Tables">Customized Tables</a></li>
+		<li><a href="/eag/eag.us.htm" aria-label="U.S. Economy at a Glance">U.S. Economy at a Glance</a></li>
+		<li><a href="/eag/home.htm" aria-label="Regions, States & Areas at a Glance">Regions, States &amp; Areas at a Glance</a></li>
+		<li><a href="/iag/home.htm" aria-label="Industry at a Glance">Industry at a Glance</a></li>			
+		<li><a href="https://download.bls.gov/pub/time.series/" aria-label="Text Files">Text Files</a></li>
+		<li><a href="/data/#historical-tables" aria-label="Historical News Release Tables">News Release Tables</a></li>
+		
+		<li class="heading"><a href="/bls/moredata.htm" aria-label="More Sources of Data">More Sources of Data</a></li>
+		<li><a href="/rda/home.htm" aria-label="Bureau of Labor Statistics Restricted Data Access">Restricted Data Access</a></li>
+		<li><a href="/data/archived.htm" aria-label="Discontinued Databases">Discontinued Databases </a></li>
+		<li><a href="/help/hlpform1.htm" aria-label="Questions & Answers regarding Bureau of Labor Statistics website data retrieval tools">Questions &amp; Answers</a></li>
+		<li><a href="/help/notice.htm" aria-label="Special Notices">Special Notices </a></li>	
+	</ul>
+</div>
+<!-- *********************************************End DATABASES and TOOLS LIST ******************************************** --></div>
+    </li>
+    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="/opub/" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Publications <span class="circle-arrow"></span></a>
+        <div class="dropdown-menu"><!-- ********************************************** Begin PUBLICATIONS LIST ****************************************** -->
+<div class="main-nav-submenu"  id="submenu-pubs">    
+    <ul class="main-nav-submenu-inn"> 
+		<li class="heading"><a href="/opub/" aria-label="Latest Publications">Latest Publications</a></li>
+		<li><a href="/opub/ted/" aria-label="The Economics Daily">The Economics Daily</a></li>
+		<li><a href="/opub/mlr/" aria-label="Monthly Labor Review">Monthly Labor Review</a></li>
+		<li><a href="/opub/btn/" aria-label="Beyond the Numbers">Beyond the Numbers</a></li>
+		<li><a href="/spotlight/" aria-label="Spotlight on Statistics">Spotlight on Statistics</a></li>
+		<li><a href="/opub/reports" aria-label="Bureau of Labor Statistics Reports">Reports</a></li>
+		<li><a href="/video/" aria-label="Videos">Videos</a></li>
+		<li><a href="/careeroutlook/" aria-label="Career Outlook">Career Outlook</a></li>		
+    </ul>
+    <!-- 2nd column -->
+    <ul class="main-nav-submenu-inn">
+		<li><a href="/ooh/" aria-label="Occupational Outlook Handbook">Occupational Outlook Handbook</a></li>
+		<li><a href="/opub/geographic-profile/" aria-label="Geographic Profile">Geographic Profile</a></li>
+		<li><a href="/opub/hom/" aria-label="Handbook of Methods">Handbook of Methods</a></li>
+		<li><a href="/osmr/research-papers/" aria-label="Research Papers - Office of Survey Methods Research">Research Papers</a></li>
+		<li><a href="/opub/copyright-information.htm" aria-label="Copyright Information">Copyright Information</a></li>
+		<li><a href="/opub/opbinfo.htm" aria-label="Contact & Help">Contact &amp; Help </a></li>
+		<li><a href="/opub/update.htm" aria-label="Weekly Update">Weekly Update</a></li>		
+    </ul>
+</div>
+<!-- ***********************************************End PUBLICATIONS LIST ******************************************** --> </div>
+    </li>
+    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="/bls/newsrels.htm" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Economic Releases <span class="circle-arrow"></span></a>
+        <div class="dropdown-menu"><!-- ********************************************** Begin ECONOMIC RELEASES LIST ****************************************** -->
+<!-- 1st column -->
+
+<div class="main-nav-submenu" id="submenu-news">
+    <ul class="main-nav-submenu-inn">
+        <li class="heading"><a href="/bls/newsrels.htm#latest-releases" aria-label="Latest Releases">Latest Releases</a></li>
+		<li class="heading"><a href="/bls/newsrels.htm#major" aria-label="Major Economic Indicators">Major Economic Indicators</a></li>
+		<li class="heading"><a href="/schedule/news_release/" aria-label="Schedules for news Releases">Schedules for news Releases</a></li>
+		<li><a href="/schedule/" aria-label="Release Calendar By Month">By Month</a></li>
+		<li><a href="/schedule/schedule/by_prog/all_sched.htm" aria-label="Release Calendar By News Release">By News Release</a></li>
+		<li><a href="/schedule/news_release/current_year.asp" aria-label="Release Calendar Current Year">Current Year</a></li>
+		<li><a href="/bls/archived_sched.htm" aria-label="Schedules for Selected Bureau of Labor Statistics Economic News Releases for Prior Years">Prior Years</a></li>
+		<li class="heading"><a href="/bls/news-release/" aria-label="Archived News Releases">Archived News Releases</a></li>
+    </ul>
+    <!-- 2nd column -->
+    <ul class="main-nav-submenu-inn">
+        <li class="heading"><a href="/bls/newsrels.htm#OEUS" aria-label="Employment & Unemployment">Employment &amp; Unemployment</a></li>
+		<li><a href="/bls/newsrels.htm#OEUS" aria-label="Monthly">Monthly</a></li>
+		<li><a href="/bls/newsrels.htm#OEUS" aria-label="Quarterly, annual, and other">Quarterly, annual, and other</a></li>
+		<li class="heading"><a href="/bls/newsrels.htm#OPLC" aria-label="Inflation & Prices"> Inflation &amp; Prices</a></li>
+		<li class="heading"><a href="/bls/newsrels.htm#OCWC" aria-label="Pay & Benefits & Workplace Injuries">Pay &amp; Benefits &amp; Workplace Injuries</a></li>
+		<li class="heading"><a href="/bls/newsrels.htm#OPT" aria-label="Productivity & Technology">Productivity &amp; Technology</a></li>
+		<li class="heading"><a href="/bls/newsrels.htm#OEP" aria-label="Employment Projections">Employment Projections</a></li>
+		<li class="heading"><a href="/bls/newsrels.htm#NEWS" aria-label="Regional News Releases">Regional News Releases</a></li>
+    </ul>
+</div></div>
+    </li>
+    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="/k12/" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Classroom <span class="circle-arrow"></span></a>
+        <div class="dropdown-menu"><!-- ********************************************** Begin Students Tab LIST ****************************************** -->
+<div class="main-nav-submenu" id="submenu-students">
+	<ul class="main-nav-submenu-inn">
+		<li class="heading"><a href="/k12/" aria-label="K-12 Student & Teacher Resources">K-12 Student &amp; Teacher Resources</a></li>		
+        <li><a href="/k12/games/" aria-label="Games & Quizzes">Games &amp; Quizzes</a></li>
+		<li><a href="/k12/students/" aria-label="Student's Desk">Student&apos;s Desk</a></li>
+		<li><a href="/k12/teachers/" aria-label="Teacher's Desk">Teacher&apos;s Desk</a></li>
+		<li><a href="/k12/faq.htm" aria-label="Questions & Answers">Questions &amp; Answers</a></li>
+    </ul>
+</div>
+<!-- ***********************************************End Students Tab LIST ******************************************** --></div>
+    </li>
+    <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="/beta/" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Beta <span class="circle-arrow"></span></a>
+        <div class="dropdown-menu"><!-- ***********************************************Start BETA LIST ******************************************** -->
+
+<div class="main-nav-submenu" id="submenu-beta">
+  <ul class="main-nav-submenu-inn">
+    <li class="heading"><a href="/beta/redesigned-news-releases.htm" aria-label="Redesigned News Releases">Redesigned News Releases</a></li>
+  </ul>
+</div>
+<!-- ***********************************************End BETA LIST ******************************************** --></div>
+    </li>
+</ul>
+
+
+  </div>
+</nav>
+</div>
+
+		</div>
+		<div class="clearfloat"></div>
+	</div>
+</div>
+
+
+<!-- MAIN NAV END -->
+
+<!-- WRAPPER TOP BEGIN -->
+	<div id="wrapper-outer" role="main">
+		<div id="wrapper">
+			<div id="container">
+<!-- WRAPPER TOP END -->
+<!-- SUBDOMAIN TITLE TOP BEGIN -->
+
+<!-- 1COL CMS LAYOUT COL1 BEGIN -->	
+
+<div class="main-content">
+<div id="startcontent" class="hidden"></div>
+
+<!-- 1COL CMS LAYOUT COL1 END -->
+
+
+
+<!--no_index_end-->
+
+<!-- OneColHeadBasic End -->
+
+
+<!-- ************************ End HEADER ********************************** -->
+	<div id="programs-banner">
+        <div id="program-title" aria-level="1" role="heading">Producer Price Indexes</div><div id="social-search-box"><div class="article-tools-box social-media"><span class="social-media"><span>SHARE ON:</span><a href="javascript:void(0);" class="share_facebook"><img alt="share on facebook" src="/images/icons/facebook.png" title="Facebook"></a><a href="javascript:void(0);" class="share_twitter"><img alt="share on twitter" src="/images/icons/twitter.png" title="Twitter"></a><a href="javascript:void(0);" class="share_linkedin"><img alt="share on linkedin" src="/images/icons/linkedin.png" title="LinkedIn"></a></span></div><form method="get" id="search-secondary-nav-form" action="/search/query"><input type="hidden" value="https://www.bls.gov/ppi" id="search-secondary-nav-category" name="prefix"><label for="search-secondary-nav-query" class="invisible">Search Producer Price Indexes</label><input type="text" onclick="this.value=''; this.onclick = null;" value="Search Producer Price Indexes" id="search-secondary-nav-query"name="query"><input type="submit" value="Go" id="search-secondary-nav-submit" name="submit"></form></div><div class="clearfloat"></div><style>.layout-wide #dol-bar-content, .layout-wide #bls-banner, .layout-wide #main-nav-container{margin:0 !important;}.layout-wide #wrapper, .layout-wide #footer-links-wrapper{max-width:100% !important;}.layout-wide #programs-banner{width:923px !important;}div.p{font-family: Tahoma, Arial, Helvetica, sans-serif;margin: 0 0 1em 0 !important;padding: 0;font-size: 100%;color: #333;line-height: 160%;}</style>    
+    
+<div class="bootstrap standard-width">
+<nav class="navbar navbar-expand-md programsNavBar " aria-label="secondary-nav">
+  <ul class="navbar-nav" role="menu">
+			        					<li class="nav-item" role="none">
+        																						<a role="menuitem" class="nav-link home progNav" href="/ppi/" aria-label="Producer Price Index homepage">PPI Home</a>
+				</li>        							        					<li class="nav-item dropdown" role="none">
+        																						<a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle nav-link publications progNav" href="javascript:">PPI Publications</a>
+				        			        	        		<div class="dropdown-menu" role="menu">                                								<a class="dropdown-item heading" role="menuitem" href="/ppi/publications-overview.htm">Publications Overview</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/news-release/">News Releases</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/detailed-report/">Detailed Reports</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/videos/">Videos</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/publications/price-adjustment-guide-for-contracting-parties.htm">Price Adjustment Guide for Contracts</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/additional-publications/">Additional Publications</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" target="_blank" href="https://public.govdelivery.com/accounts/USDOLBLS/subscribers/new?category_id=USDOLBLS_C21">Subscriptions</a>
+								</div></li>        														        					<li class="nav-item dropdown" role="none">
+        																						<a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle nav-link data progNav" href="javascript:">PPI Data</a>
+				        			        	        		<div class="dropdown-menu" role="menu">                                								<a class="dropdown-item heading" role="menuitem" href="/ppi/data-overview.htm">Data Overview</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/databases/">Databases</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" target="_blank" href="https://www.bls.gov/charts/producer-price-index/final-demand-1-month-percent-change.htm#">Interactive Charts</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/tables/">Tables</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/data-retrieval-guide/">Data Retrieval Guide</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/input-indexes/">Input Price Indexes </a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/latest-numbers.htm">Latest Numbers</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/errata/">Data Corrections</a>
+								</div></li>        															        					<li class="nav-item dropdown" role="none">
+        																						<a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle nav-link methods progNav" href="javascript:">PPI Methods</a>
+				        			        	        		<div class="dropdown-menu" role="menu">                                								<a class="dropdown-item heading" role="menuitem" href="/ppi/methods-overview.htm">Methods Overview</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" target="_blank" href="/opub/hom/ppi/ ">Handbook of Methods</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/quality-adjustment/">Quality Adjustment</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/seasonal-adjustment/">Seasonal Adjustment</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" target="_blank" href="https://www.bls.gov/news.release/ppi.tn.htm">Technical Notes</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/fd-id/">Final Demand – Intermediate Demand Information</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/factsheets/">Industry Factsheets</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/variances/">Variances</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/methodology-reports/">Methodology Reports</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/additional-resources/">Additional Resources</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/research/">Research</a>
+								</div></li>        																		        					<li class="nav-item dropdown" role="none">
+        																						<a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle nav-link about progNav" href="javascript:">About PPI</a>
+				        			        	        		<div class="dropdown-menu" role="menu">                                								<a class="dropdown-item heading" role="menuitem" href="/ppi/about-overview.htm">About PPI Overview</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/overview.htm">Overview</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/respondents/ppi/">Information for Survey Respondents</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/faqs/questions-and-answers.htm">Questions &amp; Answers</a>
+								        			        	        		                                								<a class="dropdown-item" role="menuitem" href="/ppi/notices/">Notices</a>
+								</div></li>        												        					<li class="nav-item" role="none">
+        																						<a role="menuitem" class="nav-link contact progNav" href="/ppi/contact.htm">Contact PPI</a>
+				</li>        				  </ul>
+</nav>
+</div>
+</div>
+    
+    
+<script>
+$(document).ready(function(){
+if($("#home-highchart template").size()){
+	var highchartString = "";
+
+var sel = $("#home-highchart template code").length == 0 ? "#home-highchart template" : "#home-highchart code";
+	highchartString = $(sel).html().replace(/<[^<]*?jquery[^<]*?><\/script>/gim,"") + "</div></div>";
+	highchartString = highchartString.replace(/<\/?code>/gi,"")
+
+		$("#home-highchart").html(highchartString);
+	setTimeout(function(){
+		$("div[id^=\"chartDiv\"").each(function(i) { 
+			ctx = $(this).highcharts();  
+			
+
+		ctx.update({chart:{marginLeft:130,marginTop:80,},legend:{x:10,y:40}},true);
+
+		});
+	},100);
+}
+});
+function ucl(c){var la=[], ca=c.xAxis[0].userOptions.categories;for(i in ca){var l = labelBreak(ca[i],9);la.push(l);}c.update({xAxis:{categories:la}},true);}
+function labelBreak(s, t){var c = 0, r = "";for(i in s){if(c >= t && s[i] == " "){r+="<br>";c = -1;}else{r += s[i];}c++;}return r;}
+</script>
+		
+		<!-- Begin Main Content -->
+<table>
+<tbody>
+<tr>
+<td width="30%"><span tabindex="1"><strong>U. S. DEPARTMENT OF LABOR</strong></td>
+<td width="70%" colspan="2"><span tabindex="2"></span><strong>BUREAU OF LABOR STATISTICS</strong></td>
+</tr><tr>
+<tr>
+<td></td>
+<td width="55%"><span tabindex="3"><strong>PRODUCER PRICE INDEX SEASONAL FACTORS</strong></td>
+<td width="15%" align="right"><span tabindex="4"><strong>DATE: <span tabindex="5">02/27/26</strong></td>
+</tr><tr>
+<tr>
+<td></td>
+<td><span tabindex="6"></span><strong>FORECASTING SEASONAL FACTORS 2026</strong></td>
+<td></td>
+</tr><tr>
+</tbody>
+</table>
+
+ <table class="regular" id="fdidsf.xlsx"><caption><span class="tableTitle">FORECASTING SEASONAL FACTORS 2026</span></caption>
+        <thead>
+            <tr>
+                <th class="stubhead" rowspan="1" colspan="1" scope="col">SERIES</th>
+                <th rowspan="1" colspan="1" scope="col">Jan</th>
+                <th rowspan="1" colspan="1" scope="col">Feb</th>
+                <th rowspan="1" colspan="1" scope="col">Mar</th>
+                <th rowspan="1" colspan="1" scope="col">Apr</th>
+                <th rowspan="1" colspan="1" scope="col">May</th>
+                <th rowspan="1" colspan="1" scope="col">Jun</th>
+                <th rowspan="1" colspan="1" scope="col">Jul</th>
+                <th rowspan="1" colspan="1" scope="col">Aug</th>
+                <th rowspan="1" colspan="1" scope="col">Sep</th>
+                <th rowspan="1" colspan="1" scope="col">Oct</th>
+                <th rowspan="1" colspan="1" scope="col">Nov</th>
+                <th rowspan="1" colspan="1" scope="col">Dec</th>
+            </tr>
+            <tr></tr>
+        </thead>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 011              </span></th>
+<td>
+  101.737</td>
+<td>
+   99.984</td>
+<td>
+   98.014</td>
+<td>
+   95.662</td>
+<td>
+   95.184</td>
+<td>
+   94.831</td>
+<td>
+   98.216</td>
+<td>
+   94.971</td>
+<td>
+   95.898</td>
+<td>
+  100.585</td>
+<td>
+  115.336</td>
+<td>
+  109.242
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 0111             </span></th>
+<td>
+  106.392</td>
+<td>
+  104.293</td>
+<td>
+   95.708</td>
+<td>
+   98.835</td>
+<td>
+   96.162</td>
+<td>
+   97.961</td>
+<td>
+   94.356</td>
+<td>
+   92.431</td>
+<td>
+   96.820</td>
+<td>
+   96.032</td>
+<td>
+  111.571</td>
+<td>
+  110.000
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 011101           </span></th>
+<td>
+   96.192</td>
+<td>
+   94.928</td>
+<td>
+   90.731</td>
+<td>
+   91.786</td>
+<td>
+   96.995</td>
+<td>
+   99.674</td>
+<td>
+  104.514</td>
+<td>
+  105.694</td>
+<td>
+  113.617</td>
+<td>
+  106.068</td>
+<td>
+  105.021</td>
+<td>
+   95.010
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 0113             </span></th>
+<td>
+   97.181</td>
+<td>
+   96.773</td>
+<td>
+  100.586</td>
+<td>
+   93.642</td>
+<td>
+   94.242</td>
+<td>
+   92.222</td>
+<td>
+   99.949</td>
+<td>
+   95.436</td>
+<td>
+   92.878</td>
+<td>
+  102.610</td>
+<td>
+  128.349</td>
+<td>
+  104.864
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 011302           </span></th>
+<td>
+   97.269</td>
+<td>
+   96.606</td>
+<td>
+  104.335</td>
+<td>
+   90.153</td>
+<td>
+   91.054</td>
+<td>
+   86.814</td>
+<td>
+   93.290</td>
+<td>
+   88.760</td>
+<td>
+   89.337</td>
+<td>
+  108.760</td>
+<td>
+  142.096</td>
+<td>
+  109.874
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 011306           </span></th>
+<td>
+   94.285</td>
+<td>
+   93.706</td>
+<td>
+   97.282</td>
+<td>
+  100.857</td>
+<td>
+   99.052</td>
+<td>
+   98.303</td>
+<td>
+  109.039</td>
+<td>
+  118.395</td>
+<td>
+  110.944</td>
+<td>
+   89.021</td>
+<td>
+   93.782</td>
+<td>
+   94.778
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 012202           </span></th>
+<td>
+  101.787</td>
+<td>
+  105.811</td>
+<td>
+  102.266</td>
+<td>
+  107.754</td>
+<td>
+  105.713</td>
+<td>
+  106.363</td>
+<td>
+   96.503</td>
+<td>
+   91.909</td>
+<td>
+   91.964</td>
+<td>
+   91.727</td>
+<td>
+   97.399</td>
+<td>
+  100.797
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 012205           </span></th>
+<td>
+  102.933</td>
+<td>
+  105.813</td>
+<td>
+  103.956</td>
+<td>
+  105.609</td>
+<td>
+  107.207</td>
+<td>
+  106.715</td>
+<td>
+   91.581</td>
+<td>
+   89.006</td>
+<td>
+   92.033</td>
+<td>
+   94.942</td>
+<td>
+   99.488</td>
+<td>
+  100.494
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 0123             </span></th>
+<td>
+  100.854</td>
+<td>
+  100.775</td>
+<td>
+  100.045</td>
+<td>
+  101.035</td>
+<td>
+  100.802</td>
+<td>
+  101.622</td>
+<td>
+  101.534</td>
+<td>
+  102.518</td>
+<td>
+   97.086</td>
+<td>
+   96.394</td>
+<td>
+   97.742</td>
+<td>
+   99.279
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 012301           </span></th>
+<td>
+  100.854</td>
+<td>
+  100.775</td>
+<td>
+  100.045</td>
+<td>
+  101.035</td>
+<td>
+  100.802</td>
+<td>
+  101.622</td>
+<td>
+  101.534</td>
+<td>
+  102.518</td>
+<td>
+   97.086</td>
+<td>
+   96.394</td>
+<td>
+   97.742</td>
+<td>
+   99.279
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 013102           </span></th>
+<td>
+   88.043</td>
+<td>
+   98.656</td>
+<td>
+  103.265</td>
+<td>
+  105.297</td>
+<td>
+  105.391</td>
+<td>
+  109.689</td>
+<td>
+  108.883</td>
+<td>
+  108.210</td>
+<td>
+  102.111</td>
+<td>
+   94.786</td>
+<td>
+   88.528</td>
+<td>
+   87.369
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 013103           </span></th>
+<td>
+   99.737</td>
+<td>
+   98.410</td>
+<td>
+   97.816</td>
+<td>
+   97.468</td>
+<td>
+   97.720</td>
+<td>
+   98.208</td>
+<td>
+   99.432</td>
+<td>
+  101.476</td>
+<td>
+  102.892</td>
+<td>
+  103.432</td>
+<td>
+  102.619</td>
+<td>
+  101.129
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 013201           </span></th>
+<td>
+   80.958</td>
+<td>
+   93.037</td>
+<td>
+   98.877</td>
+<td>
+   95.406</td>
+<td>
+  104.947</td>
+<td>
+  114.412</td>
+<td>
+  120.817</td>
+<td>
+  115.702</td>
+<td>
+  102.795</td>
+<td>
+   96.544</td>
+<td>
+   92.563</td>
+<td>
+   84.350
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 013301           </span></th>
+<td>
+  106.717</td>
+<td>
+  110.608</td>
+<td>
+  108.895</td>
+<td>
+  114.971</td>
+<td>
+  105.227</td>
+<td>
+   96.431</td>
+<td>
+   94.460</td>
+<td>
+   89.737</td>
+<td>
+   92.938</td>
+<td>
+   89.540</td>
+<td>
+   92.157</td>
+<td>
+   97.836
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 014102           </span></th>
+<td>
+  101.969</td>
+<td>
+   97.540</td>
+<td>
+  102.134</td>
+<td>
+  108.549</td>
+<td>
+  109.468</td>
+<td>
+  108.116</td>
+<td>
+  103.124</td>
+<td>
+   93.245</td>
+<td>
+   93.773</td>
+<td>
+   91.307</td>
+<td>
+   92.491</td>
+<td>
+   99.088
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 0142             </span></th>
+<td>
+  100.899</td>
+<td>
+  100.044</td>
+<td>
+   99.781</td>
+<td>
+   98.253</td>
+<td>
+  100.700</td>
+<td>
+   97.388</td>
+<td>
+  102.892</td>
+<td>
+   99.725</td>
+<td>
+   99.286</td>
+<td>
+  103.449</td>
+<td>
+   99.185</td>
+<td>
+   97.954
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 014201           </span></th>
+<td>
+  100.899</td>
+<td>
+  100.044</td>
+<td>
+   99.781</td>
+<td>
+   98.253</td>
+<td>
+  100.700</td>
+<td>
+   97.388</td>
+<td>
+  102.892</td>
+<td>
+   99.725</td>
+<td>
+   99.286</td>
+<td>
+  103.449</td>
+<td>
+   99.185</td>
+<td>
+   97.954
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 016101           </span></th>
+<td>
+  100.211</td>
+<td>
+   99.170</td>
+<td>
+   97.898</td>
+<td>
+   99.610</td>
+<td>
+   98.637</td>
+<td>
+   98.553</td>
+<td>
+   97.134</td>
+<td>
+   98.357</td>
+<td>
+  101.909</td>
+<td>
+  104.319</td>
+<td>
+  103.574</td>
+<td>
+  100.703
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 018301           </span></th>
+<td>
+  100.597</td>
+<td>
+  103.166</td>
+<td>
+  101.738</td>
+<td>
+  103.267</td>
+<td>
+  104.001</td>
+<td>
+  104.159</td>
+<td>
+  101.926</td>
+<td>
+   96.334</td>
+<td>
+   95.385</td>
+<td>
+   91.866</td>
+<td>
+   99.294</td>
+<td>
+   98.799
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 021409           </span></th>
+<td>
+  100.332</td>
+<td>
+  100.849</td>
+<td>
+  100.466</td>
+<td>
+  100.230</td>
+<td>
+  100.271</td>
+<td>
+   99.814</td>
+<td>
+   99.736</td>
+<td>
+   99.683</td>
+<td>
+   99.472</td>
+<td>
+   99.608</td>
+<td>
+   99.604</td>
+<td>
+   99.919
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 022101           </span></th>
+<td>
+   99.653</td>
+<td>
+   98.345</td>
+<td>
+   98.976</td>
+<td>
+  101.696</td>
+<td>
+  101.995</td>
+<td>
+  105.585</td>
+<td>
+  101.284</td>
+<td>
+   99.052</td>
+<td>
+   98.366</td>
+<td>
+   97.846</td>
+<td>
+   99.619</td>
+<td>
+   97.862
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 022104           </span></th>
+<td>
+   97.743</td>
+<td>
+   95.359</td>
+<td>
+   97.519</td>
+<td>
+   99.615</td>
+<td>
+   99.168</td>
+<td>
+  100.561</td>
+<td>
+  101.227</td>
+<td>
+  102.200</td>
+<td>
+  103.189</td>
+<td>
+  102.457</td>
+<td>
+  100.824</td>
+<td>
+  100.327
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 022105           </span></th>
+<td>
+   96.986</td>
+<td>
+   97.320</td>
+<td>
+   98.216</td>
+<td>
+   99.501</td>
+<td>
+   99.456</td>
+<td>
+   99.882</td>
+<td>
+  102.534</td>
+<td>
+  103.130</td>
+<td>
+  103.351</td>
+<td>
+  101.718</td>
+<td>
+   99.579</td>
+<td>
+   98.446
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 022203           </span></th>
+<td>
+   94.889</td>
+<td>
+   94.893</td>
+<td>
+   98.738</td>
+<td>
+  102.401</td>
+<td>
+  104.395</td>
+<td>
+  105.790</td>
+<td>
+  103.476</td>
+<td>
+  102.798</td>
+<td>
+  105.497</td>
+<td>
+   96.589</td>
+<td>
+   95.134</td>
+<td>
+   95.535
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 022305           </span></th>
+<td>
+  102.494</td>
+<td>
+  106.449</td>
+<td>
+  110.507</td>
+<td>
+  110.883</td>
+<td>
+   92.750</td>
+<td>
+   95.108</td>
+<td>
+   96.810</td>
+<td>
+   92.851</td>
+<td>
+   95.706</td>
+<td>
+   98.985</td>
+<td>
+   98.540</td>
+<td>
+   98.806
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 0234             </span></th>
+<td>
+   99.764</td>
+<td>
+   99.864</td>
+<td>
+   99.881</td>
+<td>
+  100.171</td>
+<td>
+   99.879</td>
+<td>
+  100.011</td>
+<td>
+  100.020</td>
+<td>
+  100.071</td>
+<td>
+  100.253</td>
+<td>
+  100.238</td>
+<td>
+   99.965</td>
+<td>
+   99.878
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 023402           </span></th>
+<td>
+   99.764</td>
+<td>
+   99.864</td>
+<td>
+   99.881</td>
+<td>
+  100.174</td>
+<td>
+   99.879</td>
+<td>
+  100.008</td>
+<td>
+  100.022</td>
+<td>
+  100.069</td>
+<td>
+  100.253</td>
+<td>
+  100.239</td>
+<td>
+   99.965</td>
+<td>
+   99.877
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 0235             </span></th>
+<td>
+  101.291</td>
+<td>
+  102.275</td>
+<td>
+  101.684</td>
+<td>
+  101.264</td>
+<td>
+  100.050</td>
+<td>
+   99.467</td>
+<td>
+   99.518</td>
+<td>
+   98.987</td>
+<td>
+   98.371</td>
+<td>
+   97.712</td>
+<td>
+   98.921</td>
+<td>
+  100.504
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 023502           </span></th>
+<td>
+  101.938</td>
+<td>
+  103.259</td>
+<td>
+  102.269</td>
+<td>
+  101.936</td>
+<td>
+  100.343</td>
+<td>
+   99.531</td>
+<td>
+   99.012</td>
+<td>
+   98.352</td>
+<td>
+   97.542</td>
+<td>
+   96.892</td>
+<td>
+   98.172</td>
+<td>
+  100.816
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 024101           </span></th>
+<td>
+   99.339</td>
+<td>
+   99.785</td>
+<td>
+   99.463</td>
+<td>
+   99.105</td>
+<td>
+   99.850</td>
+<td>
+   99.392</td>
+<td>
+  100.485</td>
+<td>
+  100.966</td>
+<td>
+  100.932</td>
+<td>
+  100.661</td>
+<td>
+  100.372</td>
+<td>
+   99.606
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 026102           </span></th>
+<td>
+   99.856</td>
+<td>
+  100.262</td>
+<td>
+  100.726</td>
+<td>
+  100.756</td>
+<td>
+  100.744</td>
+<td>
+  100.379</td>
+<td>
+   99.529</td>
+<td>
+   99.569</td>
+<td>
+   99.405</td>
+<td>
+   99.535</td>
+<td>
+   99.589</td>
+<td>
+   99.851
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 026210           </span></th>
+<td>
+  101.088</td>
+<td>
+  101.591</td>
+<td>
+  100.971</td>
+<td>
+  100.405</td>
+<td>
+  100.553</td>
+<td>
+   99.863</td>
+<td>
+   99.607</td>
+<td>
+  100.148</td>
+<td>
+   99.272</td>
+<td>
+   99.027</td>
+<td>
+   98.323</td>
+<td>
+   99.060
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 0264             </span></th>
+<td>
+  100.562</td>
+<td>
+  100.328</td>
+<td>
+  100.002</td>
+<td>
+   99.873</td>
+<td>
+   99.674</td>
+<td>
+   99.920</td>
+<td>
+  100.056</td>
+<td>
+  100.080</td>
+<td>
+   99.928</td>
+<td>
+  100.142</td>
+<td>
+   99.899</td>
+<td>
+   99.550
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 026401           </span></th>
+<td>
+  100.562</td>
+<td>
+  100.328</td>
+<td>
+  100.002</td>
+<td>
+   99.873</td>
+<td>
+   99.674</td>
+<td>
+   99.920</td>
+<td>
+  100.056</td>
+<td>
+  100.080</td>
+<td>
+   99.928</td>
+<td>
+  100.142</td>
+<td>
+   99.899</td>
+<td>
+   99.550
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 029              </span></th>
+<td>
+   99.659</td>
+<td>
+  100.027</td>
+<td>
+  100.285</td>
+<td>
+  100.313</td>
+<td>
+  100.624</td>
+<td>
+  100.517</td>
+<td>
+  100.460</td>
+<td>
+  100.382</td>
+<td>
+  100.168</td>
+<td>
+   98.762</td>
+<td>
+   99.325</td>
+<td>
+   99.580
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 0293             </span></th>
+<td>
+  100.041</td>
+<td>
+  100.769</td>
+<td>
+  100.602</td>
+<td>
+  100.669</td>
+<td>
+  101.067</td>
+<td>
+  100.481</td>
+<td>
+  100.329</td>
+<td>
+   99.622</td>
+<td>
+   99.488</td>
+<td>
+   98.344</td>
+<td>
+   98.958</td>
+<td>
+   99.776
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 029301           </span></th>
+<td>
+  100.041</td>
+<td>
+  100.769</td>
+<td>
+  100.602</td>
+<td>
+  100.669</td>
+<td>
+  101.067</td>
+<td>
+  100.481</td>
+<td>
+  100.329</td>
+<td>
+   99.622</td>
+<td>
+   99.488</td>
+<td>
+   98.344</td>
+<td>
+   98.958</td>
+<td>
+   99.776
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 029403           </span></th>
+<td>
+   98.533</td>
+<td>
+   99.390</td>
+<td>
+   99.926</td>
+<td>
+  100.102</td>
+<td>
+  100.896</td>
+<td>
+  101.012</td>
+<td>
+  101.761</td>
+<td>
+  101.996</td>
+<td>
+  100.852</td>
+<td>
+   98.571</td>
+<td>
+   98.458</td>
+<td>
+   98.173
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 032601           </span></th>
+<td>
+   97.804</td>
+<td>
+   98.983</td>
+<td>
+   99.834</td>
+<td>
+  100.729</td>
+<td>
+  101.224</td>
+<td>
+  101.002</td>
+<td>
+  101.083</td>
+<td>
+  101.035</td>
+<td>
+  100.483</td>
+<td>
+   99.594</td>
+<td>
+   99.471</td>
+<td>
+   98.865
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 0337             </span></th>
+<td>
+  100.083</td>
+<td>
+   99.869</td>
+<td>
+  100.027</td>
+<td>
+  100.280</td>
+<td>
+  100.313</td>
+<td>
+  100.307</td>
+<td>
+   99.960</td>
+<td>
+   99.835</td>
+<td>
+   99.750</td>
+<td>
+   99.965</td>
+<td>
+   99.820</td>
+<td>
+   99.797
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 033703           </span></th>
+<td>
+  100.135</td>
+<td>
+   99.938</td>
+<td>
+  100.124</td>
+<td>
+  100.151</td>
+<td>
+  100.092</td>
+<td>
+  100.147</td>
+<td>
+  100.074</td>
+<td>
+   99.876</td>
+<td>
+   99.766</td>
+<td>
+  100.015</td>
+<td>
+   99.890</td>
+<td>
+   99.846
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 038104           </span></th>
+<td>
+  100.487</td>
+<td>
+  100.511</td>
+<td>
+  100.266</td>
+<td>
+  100.345</td>
+<td>
+  100.187</td>
+<td>
+  100.044</td>
+<td>
+   99.913</td>
+<td>
+   99.943</td>
+<td>
+   99.900</td>
+<td>
+   99.540</td>
+<td>
+   99.487</td>
+<td>
+   99.382
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 054              </span></th>
+<td>
+   98.290</td>
+<td>
+   98.472</td>
+<td>
+   98.784</td>
+<td>
+   98.007</td>
+<td>
+   98.101</td>
+<td>
+  103.829</td>
+<td>
+  104.096</td>
+<td>
+  104.022</td>
+<td>
+  103.555</td>
+<td>
+   98.966</td>
+<td>
+   97.155</td>
+<td>
+   96.687
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 0541             </span></th>
+<td>
+   99.279</td>
+<td>
+   98.836</td>
+<td>
+   99.276</td>
+<td>
+   98.871</td>
+<td>
+   99.210</td>
+<td>
+  103.059</td>
+<td>
+  102.602</td>
+<td>
+  102.625</td>
+<td>
+  102.050</td>
+<td>
+   98.760</td>
+<td>
+   97.947</td>
+<td>
+   97.517
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 054121           </span></th>
+<td>
+   99.279</td>
+<td>
+   98.836</td>
+<td>
+   99.276</td>
+<td>
+   98.871</td>
+<td>
+   99.210</td>
+<td>
+  103.059</td>
+<td>
+  102.602</td>
+<td>
+  102.625</td>
+<td>
+  102.050</td>
+<td>
+   98.760</td>
+<td>
+   97.947</td>
+<td>
+   97.517
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 0542             </span></th>
+<td>
+   97.530</td>
+<td>
+   97.990</td>
+<td>
+   98.503</td>
+<td>
+   97.459</td>
+<td>
+   97.469</td>
+<td>
+  105.103</td>
+<td>
+  105.164</td>
+<td>
+  104.586</td>
+<td>
+  104.548</td>
+<td>
+   99.269</td>
+<td>
+   96.472</td>
+<td>
+   95.793
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 054221           </span></th>
+<td>
+   97.532</td>
+<td>
+   97.993</td>
+<td>
+   98.500</td>
+<td>
+   97.451</td>
+<td>
+   97.487</td>
+<td>
+  105.103</td>
+<td>
+  105.163</td>
+<td>
+  104.584</td>
+<td>
+  104.545</td>
+<td>
+   99.267</td>
+<td>
+   96.470</td>
+<td>
+   95.794
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 0543             </span></th>
+<td>
+   97.943</td>
+<td>
+   99.290</td>
+<td>
+   98.073</td>
+<td>
+   96.686</td>
+<td>
+   96.159</td>
+<td>
+  103.543</td>
+<td>
+  105.590</td>
+<td>
+  105.495</td>
+<td>
+  104.878</td>
+<td>
+   99.192</td>
+<td>
+   96.523</td>
+<td>
+   96.724
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 054321           </span></th>
+<td>
+   97.935</td>
+<td>
+   99.287</td>
+<td>
+   98.071</td>
+<td>
+   96.695</td>
+<td>
+   96.161</td>
+<td>
+  103.555</td>
+<td>
+  105.592</td>
+<td>
+  105.494</td>
+<td>
+  104.876</td>
+<td>
+   99.189</td>
+<td>
+   96.519</td>
+<td>
+   96.722
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 0546             </span></th>
+<td>
+   98.733</td>
+<td>
+  100.167</td>
+<td>
+   99.799</td>
+<td>
+   99.767</td>
+<td>
+   98.216</td>
+<td>
+  103.443</td>
+<td>
+  102.272</td>
+<td>
+  101.789</td>
+<td>
+  102.190</td>
+<td>
+   98.037</td>
+<td>
+   97.922</td>
+<td>
+   97.990
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 054621           </span></th>
+<td>
+   98.733</td>
+<td>
+  100.167</td>
+<td>
+   99.799</td>
+<td>
+   99.767</td>
+<td>
+   98.216</td>
+<td>
+  103.443</td>
+<td>
+  102.272</td>
+<td>
+  101.789</td>
+<td>
+  102.190</td>
+<td>
+   98.037</td>
+<td>
+   97.922</td>
+<td>
+   97.990
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 055121           </span></th>
+<td>
+  102.152</td>
+<td>
+  102.102</td>
+<td>
+  100.853</td>
+<td>
+  101.252</td>
+<td>
+   99.193</td>
+<td>
+   99.519</td>
+<td>
+   99.222</td>
+<td>
+   99.122</td>
+<td>
+   97.924</td>
+<td>
+   97.698</td>
+<td>
+   99.804</td>
+<td>
+  100.771
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 0552             </span></th>
+<td>
+  105.971</td>
+<td>
+  105.256</td>
+<td>
+  102.297</td>
+<td>
+   98.027</td>
+<td>
+   96.152</td>
+<td>
+   97.349</td>
+<td>
+   97.354</td>
+<td>
+   97.306</td>
+<td>
+   95.811</td>
+<td>
+   96.569</td>
+<td>
+  102.484</td>
+<td>
+  104.615
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 055221           </span></th>
+<td>
+  105.971</td>
+<td>
+  105.256</td>
+<td>
+  102.297</td>
+<td>
+   98.027</td>
+<td>
+   96.152</td>
+<td>
+   97.349</td>
+<td>
+   97.354</td>
+<td>
+   97.306</td>
+<td>
+   95.811</td>
+<td>
+   96.569</td>
+<td>
+  102.484</td>
+<td>
+  104.615
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 055321           </span></th>
+<td>
+  102.931</td>
+<td>
+  103.676</td>
+<td>
+   99.617</td>
+<td>
+   95.990</td>
+<td>
+   96.057</td>
+<td>
+   96.919</td>
+<td>
+   96.523</td>
+<td>
+   99.050</td>
+<td>
+   99.170</td>
+<td>
+   99.356</td>
+<td>
+  104.535</td>
+<td>
+  105.781
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 055421           </span></th>
+<td>
+  104.960</td>
+<td>
+  102.006</td>
+<td>
+   99.030</td>
+<td>
+   96.149</td>
+<td>
+   96.209</td>
+<td>
+   97.576</td>
+<td>
+   98.115</td>
+<td>
+   99.107</td>
+<td>
+   99.861</td>
+<td>
+   99.169</td>
+<td>
+  101.660</td>
+<td>
+  105.175
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 057103           </span></th>
+<td>
+   91.035</td>
+<td>
+   96.980</td>
+<td>
+  101.561</td>
+<td>
+  105.811</td>
+<td>
+  106.488</td>
+<td>
+  105.334</td>
+<td>
+  107.366</td>
+<td>
+  105.915</td>
+<td>
+  100.549</td>
+<td>
+   97.892</td>
+<td>
+   92.930</td>
+<td>
+   87.940
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 057104           </span></th>
+<td>
+   90.691</td>
+<td>
+   97.390</td>
+<td>
+  103.548</td>
+<td>
+  107.449</td>
+<td>
+  106.870</td>
+<td>
+  104.753</td>
+<td>
+  107.123</td>
+<td>
+  106.621</td>
+<td>
+   99.688</td>
+<td>
+   97.226</td>
+<td>
+   92.781</td>
+<td>
+   85.986
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 057105           </span></th>
+<td>
+   90.474</td>
+<td>
+   98.161</td>
+<td>
+  102.736</td>
+<td>
+  107.722</td>
+<td>
+  106.043</td>
+<td>
+  104.290</td>
+<td>
+  107.608</td>
+<td>
+  106.013</td>
+<td>
+   99.738</td>
+<td>
+   97.553</td>
+<td>
+   93.935</td>
+<td>
+   85.722
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 057302           </span></th>
+<td>
+   96.343</td>
+<td>
+  104.827</td>
+<td>
+  103.241</td>
+<td>
+  101.051</td>
+<td>
+   98.831</td>
+<td>
+  101.695</td>
+<td>
+  105.841</td>
+<td>
+   99.394</td>
+<td>
+   97.934</td>
+<td>
+   98.785</td>
+<td>
+  100.011</td>
+<td>
+   92.093
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 057303           </span></th>
+<td>
+   94.884</td>
+<td>
+  100.200</td>
+<td>
+   97.296</td>
+<td>
+   98.175</td>
+<td>
+  101.717</td>
+<td>
+  101.202</td>
+<td>
+  103.906</td>
+<td>
+   98.601</td>
+<td>
+  101.212</td>
+<td>
+  104.798</td>
+<td>
+  102.266</td>
+<td>
+   95.605
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 058102           </span></th>
+<td>
+   86.896</td>
+<td>
+   91.840</td>
+<td>
+   93.662</td>
+<td>
+  102.008</td>
+<td>
+  106.985</td>
+<td>
+  109.912</td>
+<td>
+  111.490</td>
+<td>
+  109.807</td>
+<td>
+  104.229</td>
+<td>
+   97.246</td>
+<td>
+   95.345</td>
+<td>
+   90.598
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 061403           </span></th>
+<td>
+   98.572</td>
+<td>
+   98.688</td>
+<td>
+   99.040</td>
+<td>
+  100.174</td>
+<td>
+  100.276</td>
+<td>
+  101.579</td>
+<td>
+  101.894</td>
+<td>
+  100.946</td>
+<td>
+  100.385</td>
+<td>
+  100.373</td>
+<td>
+   99.760</td>
+<td>
+   98.317
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 063              </span></th>
+<td>
+  100.345</td>
+<td>
+  100.423</td>
+<td>
+  100.239</td>
+<td>
+  100.343</td>
+<td>
+  100.050</td>
+<td>
+   99.869</td>
+<td>
+   99.896</td>
+<td>
+   99.969</td>
+<td>
+   99.925</td>
+<td>
+   99.831</td>
+<td>
+   99.722</td>
+<td>
+   99.542
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 0637             </span></th>
+<td>
+  100.464</td>
+<td>
+  100.658</td>
+<td>
+  100.356</td>
+<td>
+  100.575</td>
+<td>
+  100.414</td>
+<td>
+  100.033</td>
+<td>
+  100.142</td>
+<td>
+   99.867</td>
+<td>
+   99.630</td>
+<td>
+   99.500</td>
+<td>
+   99.272</td>
+<td>
+   99.150
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 063719           </span></th>
+<td>
+  100.567</td>
+<td>
+  100.270</td>
+<td>
+  100.032</td>
+<td>
+   99.907</td>
+<td>
+   99.687</td>
+<td>
+   99.458</td>
+<td>
+   99.973</td>
+<td>
+  100.289</td>
+<td>
+  100.250</td>
+<td>
+  100.109</td>
+<td>
+   99.920</td>
+<td>
+   99.657
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 063801           </span></th>
+<td>
+  100.157</td>
+<td>
+  100.451</td>
+<td>
+  100.101</td>
+<td>
+  100.053</td>
+<td>
+   99.997</td>
+<td>
+   99.948</td>
+<td>
+  100.008</td>
+<td>
+   99.976</td>
+<td>
+   99.942</td>
+<td>
+   99.898</td>
+<td>
+   99.860</td>
+<td>
+   99.689
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 063802           </span></th>
+<td>
+  100.837</td>
+<td>
+  101.214</td>
+<td>
+  101.045</td>
+<td>
+  100.800</td>
+<td>
+  100.428</td>
+<td>
+  100.137</td>
+<td>
+   99.964</td>
+<td>
+   99.679</td>
+<td>
+   99.347</td>
+<td>
+   99.113</td>
+<td>
+   98.871</td>
+<td>
+   98.619
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 063803           </span></th>
+<td>
+  100.895</td>
+<td>
+  100.361</td>
+<td>
+  100.331</td>
+<td>
+  100.214</td>
+<td>
+  100.097</td>
+<td>
+  100.015</td>
+<td>
+   99.916</td>
+<td>
+   99.799</td>
+<td>
+   99.726</td>
+<td>
+   99.653</td>
+<td>
+   99.600</td>
+<td>
+   99.478
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 063804           </span></th>
+<td>
+   99.906</td>
+<td>
+   99.113</td>
+<td>
+   97.380</td>
+<td>
+   98.093</td>
+<td>
+   98.706</td>
+<td>
+   99.338</td>
+<td>
+  100.357</td>
+<td>
+  100.727</td>
+<td>
+  101.485</td>
+<td>
+  102.378</td>
+<td>
+  103.195</td>
+<td>
+  100.366
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 063808           </span></th>
+<td>
+  100.399</td>
+<td>
+  100.394</td>
+<td>
+  100.298</td>
+<td>
+  100.217</td>
+<td>
+  100.105</td>
+<td>
+  100.009</td>
+<td>
+   99.968</td>
+<td>
+   99.889</td>
+<td>
+   99.799</td>
+<td>
+   99.704</td>
+<td>
+   99.673</td>
+<td>
+   99.573
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 065              </span></th>
+<td>
+  100.450</td>
+<td>
+  100.223</td>
+<td>
+  101.185</td>
+<td>
+  101.160</td>
+<td>
+  100.799</td>
+<td>
+   99.930</td>
+<td>
+   98.845</td>
+<td>
+   98.572</td>
+<td>
+   98.430</td>
+<td>
+   99.562</td>
+<td>
+  100.405</td>
+<td>
+  100.674
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 0652             </span></th>
+<td>
+  101.559</td>
+<td>
+  100.411</td>
+<td>
+  101.999</td>
+<td>
+  102.040</td>
+<td>
+  101.662</td>
+<td>
+   99.068</td>
+<td>
+   96.630</td>
+<td>
+   96.199</td>
+<td>
+   97.213</td>
+<td>
+  100.171</td>
+<td>
+  101.066</td>
+<td>
+  102.395
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 065201           </span></th>
+<td>
+  104.853</td>
+<td>
+  101.411</td>
+<td>
+  102.324</td>
+<td>
+  102.784</td>
+<td>
+  102.110</td>
+<td>
+   97.295</td>
+<td>
+   94.367</td>
+<td>
+   92.906</td>
+<td>
+   93.495</td>
+<td>
+   99.018</td>
+<td>
+  101.907</td>
+<td>
+  107.769
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 065202           </span></th>
+<td>
+   98.904</td>
+<td>
+   99.620</td>
+<td>
+  101.846</td>
+<td>
+  101.635</td>
+<td>
+  102.909</td>
+<td>
+   99.928</td>
+<td>
+   97.254</td>
+<td>
+   97.951</td>
+<td>
+   99.653</td>
+<td>
+  100.956</td>
+<td>
+  101.308</td>
+<td>
+   98.552
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 066212           </span></th>
+<td>
+   97.049</td>
+<td>
+   99.466</td>
+<td>
+  100.218</td>
+<td>
+  100.578</td>
+<td>
+  100.928</td>
+<td>
+  100.731</td>
+<td>
+  101.373</td>
+<td>
+  101.216</td>
+<td>
+  100.654</td>
+<td>
+  100.343</td>
+<td>
+   99.280</td>
+<td>
+   98.036
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 067514           </span></th>
+<td>
+  100.095</td>
+<td>
+  100.543</td>
+<td>
+  100.597</td>
+<td>
+  100.446</td>
+<td>
+  100.268</td>
+<td>
+  100.218</td>
+<td>
+  100.015</td>
+<td>
+   99.818</td>
+<td>
+   99.694</td>
+<td>
+   99.595</td>
+<td>
+   99.435</td>
+<td>
+   99.346
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 067902           </span></th>
+<td>
+  100.740</td>
+<td>
+  101.873</td>
+<td>
+  101.638</td>
+<td>
+  101.142</td>
+<td>
+  100.685</td>
+<td>
+  100.249</td>
+<td>
+   99.980</td>
+<td>
+   99.534</td>
+<td>
+   99.054</td>
+<td>
+   98.661</td>
+<td>
+   98.397</td>
+<td>
+   97.951
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 071303           </span></th>
+<td>
+  100.639</td>
+<td>
+  100.589</td>
+<td>
+  100.534</td>
+<td>
+  100.350</td>
+<td>
+  100.277</td>
+<td>
+   99.990</td>
+<td>
+   99.770</td>
+<td>
+   99.667</td>
+<td>
+   99.489</td>
+<td>
+   99.222</td>
+<td>
+   99.713</td>
+<td>
+   99.723
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 081106           </span></th>
+<td>
+  101.276</td>
+<td>
+  106.479</td>
+<td>
+  108.888</td>
+<td>
+  100.955</td>
+<td>
+  101.762</td>
+<td>
+   98.417</td>
+<td>
+   96.494</td>
+<td>
+   97.733</td>
+<td>
+   96.962</td>
+<td>
+   95.954</td>
+<td>
+   96.438</td>
+<td>
+   98.643
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 082101           </span></th>
+<td>
+   99.501</td>
+<td>
+  100.107</td>
+<td>
+  100.225</td>
+<td>
+  100.355</td>
+<td>
+  100.310</td>
+<td>
+  100.251</td>
+<td>
+  100.337</td>
+<td>
+   99.905</td>
+<td>
+   99.893</td>
+<td>
+   99.903</td>
+<td>
+   99.630</td>
+<td>
+   99.561
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 084909           </span></th>
+<td>
+  100.265</td>
+<td>
+  100.065</td>
+<td>
+  100.001</td>
+<td>
+  100.511</td>
+<td>
+  100.389</td>
+<td>
+  100.353</td>
+<td>
+  100.260</td>
+<td>
+  100.385</td>
+<td>
+  100.110</td>
+<td>
+   99.633</td>
+<td>
+   98.932</td>
+<td>
+   99.106
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 086101           </span></th>
+<td>
+   99.707</td>
+<td>
+   99.840</td>
+<td>
+  100.195</td>
+<td>
+  101.121</td>
+<td>
+  100.860</td>
+<td>
+  100.873</td>
+<td>
+  100.230</td>
+<td>
+   99.931</td>
+<td>
+   99.552</td>
+<td>
+   99.364</td>
+<td>
+   99.273</td>
+<td>
+   99.052
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 091207           </span></th>
+<td>
+   94.250</td>
+<td>
+   99.801</td>
+<td>
+  105.686</td>
+<td>
+  102.456</td>
+<td>
+  107.396</td>
+<td>
+  106.100</td>
+<td>
+  101.698</td>
+<td>
+  103.597</td>
+<td>
+  101.730</td>
+<td>
+   96.024</td>
+<td>
+   89.813</td>
+<td>
+   91.119
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 101              </span></th>
+<td>
+   99.453</td>
+<td>
+   99.855</td>
+<td>
+  101.428</td>
+<td>
+  102.723</td>
+<td>
+  104.902</td>
+<td>
+  103.217</td>
+<td>
+  100.735</td>
+<td>
+   99.719</td>
+<td>
+   97.986</td>
+<td>
+   96.897</td>
+<td>
+   95.402</td>
+<td>
+   97.236
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 1012             </span></th>
+<td>
+  103.452</td>
+<td>
+  106.233</td>
+<td>
+  112.938</td>
+<td>
+  104.014</td>
+<td>
+  102.556</td>
+<td>
+   98.660</td>
+<td>
+   95.758</td>
+<td>
+   94.969</td>
+<td>
+   94.300</td>
+<td>
+   93.356</td>
+<td>
+   94.890</td>
+<td>
+   99.097
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 101211           </span></th>
+<td>
+  103.612</td>
+<td>
+  106.440</td>
+<td>
+  113.357</td>
+<td>
+  103.970</td>
+<td>
+  102.462</td>
+<td>
+   98.760</td>
+<td>
+   95.714</td>
+<td>
+   94.877</td>
+<td>
+   93.947</td>
+<td>
+   93.126</td>
+<td>
+   94.767</td>
+<td>
+   99.158
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 101213           </span></th>
+<td>
+  102.766</td>
+<td>
+  106.187</td>
+<td>
+  110.896</td>
+<td>
+  105.032</td>
+<td>
+  101.585</td>
+<td>
+   98.030</td>
+<td>
+   96.806</td>
+<td>
+   95.538</td>
+<td>
+   94.596</td>
+<td>
+   93.986</td>
+<td>
+   95.240</td>
+<td>
+   99.730
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 101504           </span></th>
+<td>
+   99.833</td>
+<td>
+  100.108</td>
+<td>
+  100.244</td>
+<td>
+  100.457</td>
+<td>
+  100.458</td>
+<td>
+  100.230</td>
+<td>
+  100.192</td>
+<td>
+   99.953</td>
+<td>
+   99.741</td>
+<td>
+   99.703</td>
+<td>
+   99.536</td>
+<td>
+   99.510
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 101702           </span></th>
+<td>
+   98.288</td>
+<td>
+   99.667</td>
+<td>
+  100.089</td>
+<td>
+  102.445</td>
+<td>
+  103.604</td>
+<td>
+  103.080</td>
+<td>
+  101.356</td>
+<td>
+  100.177</td>
+<td>
+   99.161</td>
+<td>
+   97.826</td>
+<td>
+   97.307</td>
+<td>
+   96.889
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 101704           </span></th>
+<td>
+   98.345</td>
+<td>
+   99.020</td>
+<td>
+   99.621</td>
+<td>
+   99.866</td>
+<td>
+  102.204</td>
+<td>
+  101.843</td>
+<td>
+  101.144</td>
+<td>
+  101.279</td>
+<td>
+   99.886</td>
+<td>
+   99.820</td>
+<td>
+   99.152</td>
+<td>
+   98.016
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 102302           </span></th>
+<td>
+   99.659</td>
+<td>
+  102.255</td>
+<td>
+  103.561</td>
+<td>
+  104.939</td>
+<td>
+  102.245</td>
+<td>
+  102.722</td>
+<td>
+   98.670</td>
+<td>
+   96.686</td>
+<td>
+   95.036</td>
+<td>
+   96.767</td>
+<td>
+   98.009</td>
+<td>
+   99.598
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 102402           </span></th>
+<td>
+   98.185</td>
+<td>
+  100.372</td>
+<td>
+  101.142</td>
+<td>
+  101.986</td>
+<td>
+  102.265</td>
+<td>
+  102.047</td>
+<td>
+  101.099</td>
+<td>
+   99.698</td>
+<td>
+   98.934</td>
+<td>
+   98.135</td>
+<td>
+   97.972</td>
+<td>
+   98.280
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 1028             </span></th>
+<td>
+   99.521</td>
+<td>
+   99.894</td>
+<td>
+   99.850</td>
+<td>
+  101.091</td>
+<td>
+  101.022</td>
+<td>
+  100.640</td>
+<td>
+  100.479</td>
+<td>
+  100.008</td>
+<td>
+   99.649</td>
+<td>
+   99.531</td>
+<td>
+   99.188</td>
+<td>
+   99.114
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 102802           </span></th>
+<td>
+  100.092</td>
+<td>
+  100.092</td>
+<td>
+   99.812</td>
+<td>
+  100.374</td>
+<td>
+  100.570</td>
+<td>
+  100.413</td>
+<td>
+  100.308</td>
+<td>
+  100.072</td>
+<td>
+   99.887</td>
+<td>
+   99.676</td>
+<td>
+   99.361</td>
+<td>
+   99.332
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 105              </span></th>
+<td>
+  100.274</td>
+<td>
+  100.292</td>
+<td>
+  100.340</td>
+<td>
+  100.437</td>
+<td>
+  100.588</td>
+<td>
+  100.140</td>
+<td>
+  100.271</td>
+<td>
+   99.926</td>
+<td>
+   99.678</td>
+<td>
+   99.525</td>
+<td>
+   99.341</td>
+<td>
+   99.218
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 1054             </span></th>
+<td>
+  100.771</td>
+<td>
+  100.648</td>
+<td>
+  100.339</td>
+<td>
+  100.243</td>
+<td>
+  100.294</td>
+<td>
+  100.171</td>
+<td>
+  100.199</td>
+<td>
+  100.033</td>
+<td>
+   99.635</td>
+<td>
+   99.292</td>
+<td>
+   99.218</td>
+<td>
+   99.211
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 105402           </span></th>
+<td>
+  100.772</td>
+<td>
+  100.649</td>
+<td>
+  100.340</td>
+<td>
+  100.243</td>
+<td>
+  100.294</td>
+<td>
+  100.171</td>
+<td>
+  100.199</td>
+<td>
+  100.032</td>
+<td>
+   99.634</td>
+<td>
+   99.292</td>
+<td>
+   99.217</td>
+<td>
+   99.210
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 107              </span></th>
+<td>
+   99.325</td>
+<td>
+   99.393</td>
+<td>
+  100.034</td>
+<td>
+  100.287</td>
+<td>
+  100.393</td>
+<td>
+  100.486</td>
+<td>
+  100.320</td>
+<td>
+  100.493</td>
+<td>
+  100.102</td>
+<td>
+   99.823</td>
+<td>
+   99.702</td>
+<td>
+   99.624
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 107105           </span></th>
+<td>
+   98.908</td>
+<td>
+  101.393</td>
+<td>
+  101.326</td>
+<td>
+  101.180</td>
+<td>
+  100.750</td>
+<td>
+  100.362</td>
+<td>
+   99.995</td>
+<td>
+   99.671</td>
+<td>
+   99.350</td>
+<td>
+   99.226</td>
+<td>
+   99.097</td>
+<td>
+   98.914
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 1074             </span></th>
+<td>
+   99.452</td>
+<td>
+   99.568</td>
+<td>
+  100.305</td>
+<td>
+  100.692</td>
+<td>
+  100.660</td>
+<td>
+  100.447</td>
+<td>
+  100.055</td>
+<td>
+  100.033</td>
+<td>
+   99.714</td>
+<td>
+   99.544</td>
+<td>
+   99.650</td>
+<td>
+   99.826
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 107405           </span></th>
+<td>
+   99.775</td>
+<td>
+   99.927</td>
+<td>
+  100.095</td>
+<td>
+  100.745</td>
+<td>
+  100.045</td>
+<td>
+  100.004</td>
+<td>
+   99.700</td>
+<td>
+  100.204</td>
+<td>
+   99.937</td>
+<td>
+   99.705</td>
+<td>
+   99.839</td>
+<td>
+  100.133
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 107408           </span></th>
+<td>
+   98.014</td>
+<td>
+   98.734</td>
+<td>
+  100.331</td>
+<td>
+  101.410</td>
+<td>
+  101.727</td>
+<td>
+  101.471</td>
+<td>
+  100.912</td>
+<td>
+  100.278</td>
+<td>
+   99.689</td>
+<td>
+   99.631</td>
+<td>
+   99.259</td>
+<td>
+   98.388
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 1075             </span></th>
+<td>
+   99.983</td>
+<td>
+   99.809</td>
+<td>
+   99.536</td>
+<td>
+   99.783</td>
+<td>
+   99.721</td>
+<td>
+   99.196</td>
+<td>
+  100.504</td>
+<td>
+  100.812</td>
+<td>
+  100.435</td>
+<td>
+  100.341</td>
+<td>
+   99.943</td>
+<td>
+   99.909
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 107501           </span></th>
+<td>
+   99.983</td>
+<td>
+   99.809</td>
+<td>
+   99.536</td>
+<td>
+   99.781</td>
+<td>
+   99.721</td>
+<td>
+   99.195</td>
+<td>
+  100.504</td>
+<td>
+  100.813</td>
+<td>
+  100.435</td>
+<td>
+  100.342</td>
+<td>
+   99.943</td>
+<td>
+   99.910
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 1079             </span></th>
+<td>
+   99.170</td>
+<td>
+   99.490</td>
+<td>
+  100.858</td>
+<td>
+  100.542</td>
+<td>
+  100.695</td>
+<td>
+  101.027</td>
+<td>
+  100.490</td>
+<td>
+  100.179</td>
+<td>
+   99.471</td>
+<td>
+   99.351</td>
+<td>
+   99.259</td>
+<td>
+   99.330
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 107901           </span></th>
+<td>
+   98.985</td>
+<td>
+   99.344</td>
+<td>
+  100.916</td>
+<td>
+  100.684</td>
+<td>
+  101.070</td>
+<td>
+  100.784</td>
+<td>
+  100.902</td>
+<td>
+  100.207</td>
+<td>
+   99.705</td>
+<td>
+   99.215</td>
+<td>
+   98.902</td>
+<td>
+   99.122
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 1088             </span></th>
+<td>
+   99.137</td>
+<td>
+   99.478</td>
+<td>
+   99.726</td>
+<td>
+   99.907</td>
+<td>
+  100.542</td>
+<td>
+  100.535</td>
+<td>
+  100.644</td>
+<td>
+  100.597</td>
+<td>
+  100.405</td>
+<td>
+   99.941</td>
+<td>
+   99.722</td>
+<td>
+   99.314
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 108809           </span></th>
+<td>
+   98.940</td>
+<td>
+   98.859</td>
+<td>
+   99.995</td>
+<td>
+   99.929</td>
+<td>
+  100.771</td>
+<td>
+  100.734</td>
+<td>
+  100.966</td>
+<td>
+  100.952</td>
+<td>
+  100.552</td>
+<td>
+   99.892</td>
+<td>
+   99.438</td>
+<td>
+   98.917
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 113              </span></th>
+<td>
+   99.969</td>
+<td>
+  100.139</td>
+<td>
+  100.194</td>
+<td>
+  100.272</td>
+<td>
+  100.367</td>
+<td>
+  100.241</td>
+<td>
+  100.113</td>
+<td>
+   99.952</td>
+<td>
+   99.771</td>
+<td>
+   99.839</td>
+<td>
+   99.579</td>
+<td>
+   99.573
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 113304           </span></th>
+<td>
+  100.991</td>
+<td>
+  100.694</td>
+<td>
+  100.435</td>
+<td>
+  100.245</td>
+<td>
+  100.072</td>
+<td>
+  100.246</td>
+<td>
+  100.255</td>
+<td>
+   99.962</td>
+<td>
+   99.699</td>
+<td>
+   99.418</td>
+<td>
+   99.172</td>
+<td>
+   98.916
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 1134             </span></th>
+<td>
+   99.406</td>
+<td>
+   99.338</td>
+<td>
+   99.272</td>
+<td>
+  100.113</td>
+<td>
+  101.154</td>
+<td>
+  100.766</td>
+<td>
+  100.653</td>
+<td>
+  100.537</td>
+<td>
+  100.195</td>
+<td>
+   99.730</td>
+<td>
+   99.371</td>
+<td>
+   99.436
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 113407           </span></th>
+<td>
+   99.695</td>
+<td>
+   99.688</td>
+<td>
+   99.561</td>
+<td>
+  100.264</td>
+<td>
+  100.653</td>
+<td>
+  100.407</td>
+<td>
+  100.423</td>
+<td>
+  100.361</td>
+<td>
+  100.068</td>
+<td>
+   99.703</td>
+<td>
+   99.575</td>
+<td>
+   99.623
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 113409           </span></th>
+<td>
+   98.602</td>
+<td>
+   97.740</td>
+<td>
+   98.718</td>
+<td>
+   99.553</td>
+<td>
+  102.034</td>
+<td>
+  101.776</td>
+<td>
+  101.449</td>
+<td>
+  101.171</td>
+<td>
+  100.731</td>
+<td>
+   99.931</td>
+<td>
+   99.003</td>
+<td>
+   99.259
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 1136             </span></th>
+<td>
+  100.442</td>
+<td>
+  100.176</td>
+<td>
+  100.613</td>
+<td>
+  100.464</td>
+<td>
+  100.670</td>
+<td>
+  100.542</td>
+<td>
+  100.082</td>
+<td>
+   99.698</td>
+<td>
+   99.695</td>
+<td>
+   99.308</td>
+<td>
+   99.151</td>
+<td>
+   99.093
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 113603           </span></th>
+<td>
+  100.839</td>
+<td>
+  100.857</td>
+<td>
+  100.717</td>
+<td>
+  100.368</td>
+<td>
+  100.107</td>
+<td>
+  100.676</td>
+<td>
+  100.304</td>
+<td>
+   99.878</td>
+<td>
+   99.508</td>
+<td>
+   99.101</td>
+<td>
+   98.766</td>
+<td>
+   98.801
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 113720           </span></th>
+<td>
+  100.259</td>
+<td>
+  100.220</td>
+<td>
+  100.112</td>
+<td>
+  100.077</td>
+<td>
+  100.101</td>
+<td>
+   99.994</td>
+<td>
+  100.041</td>
+<td>
+   99.984</td>
+<td>
+   99.883</td>
+<td>
+   99.828</td>
+<td>
+   99.768</td>
+<td>
+   99.724
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 114              </span></th>
+<td>
+   99.994</td>
+<td>
+   99.942</td>
+<td>
+   99.828</td>
+<td>
+  100.238</td>
+<td>
+  100.326</td>
+<td>
+  100.221</td>
+<td>
+  100.188</td>
+<td>
+  100.055</td>
+<td>
+  100.092</td>
+<td>
+  100.041</td>
+<td>
+   99.680</td>
+<td>
+   99.448
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 114102           </span></th>
+<td>
+  100.589</td>
+<td>
+  100.110</td>
+<td>
+   99.992</td>
+<td>
+  100.026</td>
+<td>
+  100.175</td>
+<td>
+  100.272</td>
+<td>
+  101.001</td>
+<td>
+  100.626</td>
+<td>
+  100.007</td>
+<td>
+   99.539</td>
+<td>
+   98.930</td>
+<td>
+   98.727
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 114113           </span></th>
+<td>
+  103.085</td>
+<td>
+  102.959</td>
+<td>
+  102.934</td>
+<td>
+  102.332</td>
+<td>
+  101.808</td>
+<td>
+  100.783</td>
+<td>
+   99.870</td>
+<td>
+   98.726</td>
+<td>
+   97.632</td>
+<td>
+   96.714</td>
+<td>
+   96.326</td>
+<td>
+   95.774
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 114302           </span></th>
+<td>
+  100.170</td>
+<td>
+  100.565</td>
+<td>
+  100.293</td>
+<td>
+  100.459</td>
+<td>
+  100.455</td>
+<td>
+  100.446</td>
+<td>
+  100.152</td>
+<td>
+   99.929</td>
+<td>
+   99.692</td>
+<td>
+   99.337</td>
+<td>
+   99.201</td>
+<td>
+   99.290
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 1148             </span></th>
+<td>
+   99.344</td>
+<td>
+   99.816</td>
+<td>
+   99.744</td>
+<td>
+  100.443</td>
+<td>
+  100.711</td>
+<td>
+  100.605</td>
+<td>
+  100.570</td>
+<td>
+  100.494</td>
+<td>
+   99.938</td>
+<td>
+   99.868</td>
+<td>
+   99.462</td>
+<td>
+   99.098
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 114802           </span></th>
+<td>
+   98.425</td>
+<td>
+   99.554</td>
+<td>
+   99.842</td>
+<td>
+  100.277</td>
+<td>
+  100.846</td>
+<td>
+  100.596</td>
+<td>
+  100.908</td>
+<td>
+  101.597</td>
+<td>
+  100.659</td>
+<td>
+   99.685</td>
+<td>
+   99.225</td>
+<td>
+   98.496
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 114807           </span></th>
+<td>
+   99.206</td>
+<td>
+   99.343</td>
+<td>
+   99.880</td>
+<td>
+  100.811</td>
+<td>
+  101.339</td>
+<td>
+  101.073</td>
+<td>
+  100.269</td>
+<td>
+  100.334</td>
+<td>
+   99.952</td>
+<td>
+   99.685</td>
+<td>
+   99.268</td>
+<td>
+   98.888
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 114809           </span></th>
+<td>
+   99.259</td>
+<td>
+   99.451</td>
+<td>
+   99.850</td>
+<td>
+  100.632</td>
+<td>
+  100.615</td>
+<td>
+  100.895</td>
+<td>
+  100.565</td>
+<td>
+  100.473</td>
+<td>
+  100.295</td>
+<td>
+   99.574</td>
+<td>
+   99.322</td>
+<td>
+   99.086
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 1149             </span></th>
+<td>
+   99.828</td>
+<td>
+   99.806</td>
+<td>
+  100.156</td>
+<td>
+  100.176</td>
+<td>
+  100.335</td>
+<td>
+  100.327</td>
+<td>
+  100.239</td>
+<td>
+  100.113</td>
+<td>
+   99.961</td>
+<td>
+   99.934</td>
+<td>
+   99.630</td>
+<td>
+   99.508
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 114911           </span></th>
+<td>
+   99.801</td>
+<td>
+  100.076</td>
+<td>
+  100.365</td>
+<td>
+  100.330</td>
+<td>
+  100.454</td>
+<td>
+  100.148</td>
+<td>
+  100.320</td>
+<td>
+  100.203</td>
+<td>
+   99.931</td>
+<td>
+   99.643</td>
+<td>
+   99.558</td>
+<td>
+   99.181
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 116606           </span></th>
+<td>
+   99.781</td>
+<td>
+  100.059</td>
+<td>
+   99.993</td>
+<td>
+  100.357</td>
+<td>
+  100.391</td>
+<td>
+  100.271</td>
+<td>
+   99.978</td>
+<td>
+  100.108</td>
+<td>
+   99.959</td>
+<td>
+   99.855</td>
+<td>
+   99.650</td>
+<td>
+   99.598
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 1176             </span></th>
+<td>
+  100.761</td>
+<td>
+  100.599</td>
+<td>
+  100.339</td>
+<td>
+  100.470</td>
+<td>
+  100.354</td>
+<td>
+  100.107</td>
+<td>
+   99.907</td>
+<td>
+   99.648</td>
+<td>
+   99.675</td>
+<td>
+   99.539</td>
+<td>
+   99.383</td>
+<td>
+   99.154
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 117606           </span></th>
+<td>
+  101.120</td>
+<td>
+  100.987</td>
+<td>
+  100.756</td>
+<td>
+  100.805</td>
+<td>
+  100.745</td>
+<td>
+  100.518</td>
+<td>
+  100.139</td>
+<td>
+   99.753</td>
+<td>
+   99.423</td>
+<td>
+   98.988</td>
+<td>
+   98.553</td>
+<td>
+   98.012
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 117856           </span></th>
+<td>
+   99.872</td>
+<td>
+   99.890</td>
+<td>
+   99.876</td>
+<td>
+   99.728</td>
+<td>
+   99.882</td>
+<td>
+   99.835</td>
+<td>
+  100.525</td>
+<td>
+  100.346</td>
+<td>
+  100.196</td>
+<td>
+  100.019</td>
+<td>
+   99.857</td>
+<td>
+   99.802
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 117905           </span></th>
+<td>
+  100.034</td>
+<td>
+  100.130</td>
+<td>
+  100.069</td>
+<td>
+   99.968</td>
+<td>
+   99.985</td>
+<td>
+   99.871</td>
+<td>
+  100.165</td>
+<td>
+  100.145</td>
+<td>
+  100.000</td>
+<td>
+   99.956</td>
+<td>
+   99.897</td>
+<td>
+   99.784
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 118201           </span></th>
+<td>
+  100.387</td>
+<td>
+  100.186</td>
+<td>
+  100.214</td>
+<td>
+  100.153</td>
+<td>
+  100.120</td>
+<td>
+  100.265</td>
+<td>
+   99.989</td>
+<td>
+   99.725</td>
+<td>
+   99.499</td>
+<td>
+   99.786</td>
+<td>
+   99.902</td>
+<td>
+   99.774
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 1185             </span></th>
+<td>
+  101.043</td>
+<td>
+  100.447</td>
+<td>
+  100.181</td>
+<td>
+  101.165</td>
+<td>
+  100.757</td>
+<td>
+  100.203</td>
+<td>
+   99.915</td>
+<td>
+   99.368</td>
+<td>
+   98.925</td>
+<td>
+   98.781</td>
+<td>
+   99.298</td>
+<td>
+   99.928
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 118501           </span></th>
+<td>
+  100.790</td>
+<td>
+  100.513</td>
+<td>
+  100.109</td>
+<td>
+  101.376</td>
+<td>
+  100.741</td>
+<td>
+  100.220</td>
+<td>
+   99.855</td>
+<td>
+   99.402</td>
+<td>
+   98.829</td>
+<td>
+   99.046</td>
+<td>
+   98.963</td>
+<td>
+  100.148
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 1186             </span></th>
+<td>
+  100.273</td>
+<td>
+  100.922</td>
+<td>
+  100.564</td>
+<td>
+  100.480</td>
+<td>
+  100.416</td>
+<td>
+  100.275</td>
+<td>
+   99.821</td>
+<td>
+   99.762</td>
+<td>
+   99.416</td>
+<td>
+   99.487</td>
+<td>
+   99.506</td>
+<td>
+   99.112
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 118603           </span></th>
+<td>
+  100.341</td>
+<td>
+  100.996</td>
+<td>
+  100.592</td>
+<td>
+  100.557</td>
+<td>
+  100.558</td>
+<td>
+  100.364</td>
+<td>
+   99.960</td>
+<td>
+   99.634</td>
+<td>
+   99.455</td>
+<td>
+   99.329</td>
+<td>
+   99.220</td>
+<td>
+   99.030
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 119104           </span></th>
+<td>
+  100.646</td>
+<td>
+  100.993</td>
+<td>
+  100.523</td>
+<td>
+  100.562</td>
+<td>
+  100.317</td>
+<td>
+  100.717</td>
+<td>
+  100.191</td>
+<td>
+   99.699</td>
+<td>
+   99.314</td>
+<td>
+   99.023</td>
+<td>
+   99.008</td>
+<td>
+   98.996
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 119413           </span></th>
+<td>
+  100.432</td>
+<td>
+  100.302</td>
+<td>
+   99.887</td>
+<td>
+  100.484</td>
+<td>
+  100.509</td>
+<td>
+  100.248</td>
+<td>
+  100.060</td>
+<td>
+   99.746</td>
+<td>
+   99.599</td>
+<td>
+   99.791</td>
+<td>
+   99.534</td>
+<td>
+   99.420
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 132101           </span></th>
+<td>
+  101.037</td>
+<td>
+  100.968</td>
+<td>
+  100.735</td>
+<td>
+  100.589</td>
+<td>
+  100.495</td>
+<td>
+  100.508</td>
+<td>
+  100.279</td>
+<td>
+  100.016</td>
+<td>
+   99.556</td>
+<td>
+   99.137</td>
+<td>
+   98.637</td>
+<td>
+   98.043
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 1322             </span></th>
+<td>
+  100.555</td>
+<td>
+  100.259</td>
+<td>
+  100.457</td>
+<td>
+  100.506</td>
+<td>
+  100.541</td>
+<td>
+  100.244</td>
+<td>
+  100.225</td>
+<td>
+  100.074</td>
+<td>
+   99.924</td>
+<td>
+   99.472</td>
+<td>
+   99.060</td>
+<td>
+   98.729
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 132201           </span></th>
+<td>
+  100.555</td>
+<td>
+  100.259</td>
+<td>
+  100.457</td>
+<td>
+  100.506</td>
+<td>
+  100.541</td>
+<td>
+  100.244</td>
+<td>
+  100.225</td>
+<td>
+  100.074</td>
+<td>
+   99.924</td>
+<td>
+   99.472</td>
+<td>
+   99.060</td>
+<td>
+   98.729
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 1331             </span></th>
+<td>
+  100.529</td>
+<td>
+  100.669</td>
+<td>
+  100.750</td>
+<td>
+  100.825</td>
+<td>
+  100.473</td>
+<td>
+  100.174</td>
+<td>
+   99.900</td>
+<td>
+   99.788</td>
+<td>
+   99.539</td>
+<td>
+   99.364</td>
+<td>
+   99.112</td>
+<td>
+   98.933
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 133141           </span></th>
+<td>
+  100.421</td>
+<td>
+  100.328</td>
+<td>
+  100.860</td>
+<td>
+  101.014</td>
+<td>
+  100.698</td>
+<td>
+  100.410</td>
+<td>
+  100.053</td>
+<td>
+   99.733</td>
+<td>
+   99.461</td>
+<td>
+   99.233</td>
+<td>
+   98.989</td>
+<td>
+   98.844
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 133301           </span></th>
+<td>
+  100.232</td>
+<td>
+  100.420</td>
+<td>
+  100.407</td>
+<td>
+  100.303</td>
+<td>
+  100.307</td>
+<td>
+   99.799</td>
+<td>
+   99.765</td>
+<td>
+  100.085</td>
+<td>
+   99.993</td>
+<td>
+   99.697</td>
+<td>
+   99.678</td>
+<td>
+   99.327
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 1334             </span></th>
+<td>
+  100.120</td>
+<td>
+  100.151</td>
+<td>
+  100.205</td>
+<td>
+  100.133</td>
+<td>
+  100.108</td>
+<td>
+  100.195</td>
+<td>
+  100.137</td>
+<td>
+  100.026</td>
+<td>
+  100.024</td>
+<td>
+   99.779</td>
+<td>
+   99.627</td>
+<td>
+   99.526
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 133401           </span></th>
+<td>
+  100.120</td>
+<td>
+  100.151</td>
+<td>
+  100.205</td>
+<td>
+  100.133</td>
+<td>
+  100.108</td>
+<td>
+  100.195</td>
+<td>
+  100.137</td>
+<td>
+  100.026</td>
+<td>
+  100.024</td>
+<td>
+   99.779</td>
+<td>
+   99.627</td>
+<td>
+   99.526
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 1345             </span></th>
+<td>
+   98.781</td>
+<td>
+   98.372</td>
+<td>
+  102.000</td>
+<td>
+  101.646</td>
+<td>
+  101.177</td>
+<td>
+  100.764</td>
+<td>
+  100.335</td>
+<td>
+   99.892</td>
+<td>
+   99.608</td>
+<td>
+   99.289</td>
+<td>
+   99.158</td>
+<td>
+   98.977
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 134501           </span></th>
+<td>
+   98.781</td>
+<td>
+   98.372</td>
+<td>
+  102.000</td>
+<td>
+  101.646</td>
+<td>
+  101.177</td>
+<td>
+  100.764</td>
+<td>
+  100.335</td>
+<td>
+   99.892</td>
+<td>
+   99.608</td>
+<td>
+   99.289</td>
+<td>
+   99.158</td>
+<td>
+   98.977
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 138              </span></th>
+<td>
+  101.327</td>
+<td>
+  101.557</td>
+<td>
+  101.109</td>
+<td>
+  100.393</td>
+<td>
+  100.208</td>
+<td>
+   99.891</td>
+<td>
+   99.897</td>
+<td>
+  100.049</td>
+<td>
+   99.072</td>
+<td>
+   99.042</td>
+<td>
+   98.668</td>
+<td>
+   98.779
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 1381             </span></th>
+<td>
+  101.327</td>
+<td>
+  101.557</td>
+<td>
+  101.109</td>
+<td>
+  100.393</td>
+<td>
+  100.208</td>
+<td>
+   99.891</td>
+<td>
+   99.897</td>
+<td>
+  100.049</td>
+<td>
+   99.072</td>
+<td>
+   99.042</td>
+<td>
+   98.668</td>
+<td>
+   98.779
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 138101           </span></th>
+<td>
+  101.327</td>
+<td>
+  101.557</td>
+<td>
+  101.109</td>
+<td>
+  100.393</td>
+<td>
+  100.208</td>
+<td>
+   99.891</td>
+<td>
+   99.897</td>
+<td>
+  100.049</td>
+<td>
+   99.072</td>
+<td>
+   99.042</td>
+<td>
+   98.668</td>
+<td>
+   98.779
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 139              </span></th>
+<td>
+  101.910</td>
+<td>
+  102.473</td>
+<td>
+  102.352</td>
+<td>
+  100.014</td>
+<td>
+   99.559</td>
+<td>
+   99.542</td>
+<td>
+   99.511</td>
+<td>
+   99.377</td>
+<td>
+   99.071</td>
+<td>
+   98.941</td>
+<td>
+   98.618</td>
+<td>
+   98.482
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 1394             </span></th>
+<td>
+  105.396</td>
+<td>
+  105.824</td>
+<td>
+  105.361</td>
+<td>
+   99.394</td>
+<td>
+   98.222</td>
+<td>
+   98.426</td>
+<td>
+   98.550</td>
+<td>
+   98.421</td>
+<td>
+   97.881</td>
+<td>
+   97.789</td>
+<td>
+   97.324</td>
+<td>
+   97.190
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 139401           </span></th>
+<td>
+  105.396</td>
+<td>
+  105.824</td>
+<td>
+  105.361</td>
+<td>
+   99.394</td>
+<td>
+   98.222</td>
+<td>
+   98.426</td>
+<td>
+   98.550</td>
+<td>
+   98.421</td>
+<td>
+   97.881</td>
+<td>
+   97.789</td>
+<td>
+   97.324</td>
+<td>
+   97.190
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 141101           </span></th>
+<td>
+  100.454</td>
+<td>
+  100.342</td>
+<td>
+   99.908</td>
+<td>
+   99.870</td>
+<td>
+   99.884</td>
+<td>
+   99.687</td>
+<td>
+   99.546</td>
+<td>
+   99.496</td>
+<td>
+   99.443</td>
+<td>
+  100.441</td>
+<td>
+  100.503</td>
+<td>
+  100.429
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 141105           </span></th>
+<td>
+  100.471</td>
+<td>
+  100.482</td>
+<td>
+  100.245</td>
+<td>
+  100.024</td>
+<td>
+   99.791</td>
+<td>
+   99.765</td>
+<td>
+   99.644</td>
+<td>
+   99.457</td>
+<td>
+   99.174</td>
+<td>
+  100.140</td>
+<td>
+  100.268</td>
+<td>
+  100.506
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 1412             </span></th>
+<td>
+   99.974</td>
+<td>
+   99.854</td>
+<td>
+   99.943</td>
+<td>
+  100.061</td>
+<td>
+  100.113</td>
+<td>
+  100.096</td>
+<td>
+  100.157</td>
+<td>
+  100.100</td>
+<td>
+  100.036</td>
+<td>
+   99.958</td>
+<td>
+   99.920</td>
+<td>
+   99.795
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 141205           </span></th>
+<td>
+   99.975</td>
+<td>
+   99.855</td>
+<td>
+   99.945</td>
+<td>
+  100.058</td>
+<td>
+  100.112</td>
+<td>
+  100.094</td>
+<td>
+  100.148</td>
+<td>
+  100.099</td>
+<td>
+  100.054</td>
+<td>
+   99.958</td>
+<td>
+   99.918</td>
+<td>
+   99.795
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 142102           </span></th>
+<td>
+   99.907</td>
+<td>
+  100.104</td>
+<td>
+  100.154</td>
+<td>
+  100.190</td>
+<td>
+  100.246</td>
+<td>
+  100.221</td>
+<td>
+  100.150</td>
+<td>
+  100.045</td>
+<td>
+   99.911</td>
+<td>
+   99.789</td>
+<td>
+   99.613</td>
+<td>
+   99.669
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 1423             </span></th>
+<td>
+  100.179</td>
+<td>
+  100.426</td>
+<td>
+  100.270</td>
+<td>
+  100.258</td>
+<td>
+  100.147</td>
+<td>
+  100.067</td>
+<td>
+   99.934</td>
+<td>
+   99.900</td>
+<td>
+   99.788</td>
+<td>
+   99.650</td>
+<td>
+   99.612</td>
+<td>
+   99.737
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 142301           </span></th>
+<td>
+  100.179</td>
+<td>
+  100.426</td>
+<td>
+  100.270</td>
+<td>
+  100.258</td>
+<td>
+  100.147</td>
+<td>
+  100.067</td>
+<td>
+   99.934</td>
+<td>
+   99.900</td>
+<td>
+   99.788</td>
+<td>
+   99.650</td>
+<td>
+   99.612</td>
+<td>
+   99.737
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 142501           </span></th>
+<td>
+  100.120</td>
+<td>
+  100.198</td>
+<td>
+  100.128</td>
+<td>
+  100.107</td>
+<td>
+  100.073</td>
+<td>
+  100.047</td>
+<td>
+   99.971</td>
+<td>
+   99.962</td>
+<td>
+   99.935</td>
+<td>
+   99.896</td>
+<td>
+   99.847</td>
+<td>
+   99.718
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 143              </span></th>
+<td>
+  100.091</td>
+<td>
+   99.899</td>
+<td>
+   99.907</td>
+<td>
+   99.813</td>
+<td>
+   99.876</td>
+<td>
+   99.991</td>
+<td>
+  100.285</td>
+<td>
+  100.092</td>
+<td>
+  100.097</td>
+<td>
+  100.067</td>
+<td>
+   99.971</td>
+<td>
+   99.900
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 1432             </span></th>
+<td>
+   99.960</td>
+<td>
+   99.793</td>
+<td>
+   99.712</td>
+<td>
+   99.663</td>
+<td>
+   99.531</td>
+<td>
+   99.890</td>
+<td>
+  100.511</td>
+<td>
+  100.383</td>
+<td>
+  100.339</td>
+<td>
+  100.257</td>
+<td>
+  100.070</td>
+<td>
+   99.868
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 143201           </span></th>
+<td>
+   99.932</td>
+<td>
+   99.731</td>
+<td>
+   99.621</td>
+<td>
+   99.546</td>
+<td>
+   99.417</td>
+<td>
+   99.741</td>
+<td>
+  100.410</td>
+<td>
+  100.357</td>
+<td>
+  100.550</td>
+<td>
+  100.458</td>
+<td>
+  100.211</td>
+<td>
+  100.004
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 143203           </span></th>
+<td>
+   99.832</td>
+<td>
+   99.629</td>
+<td>
+   99.671</td>
+<td>
+   99.282</td>
+<td>
+   99.015</td>
+<td>
+  100.534</td>
+<td>
+  100.703</td>
+<td>
+  100.521</td>
+<td>
+  100.342</td>
+<td>
+  100.348</td>
+<td>
+  100.129</td>
+<td>
+   99.974
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 155              </span></th>
+<td>
+   99.380</td>
+<td>
+   99.494</td>
+<td>
+   99.722</td>
+<td>
+  100.716</td>
+<td>
+  100.938</td>
+<td>
+  100.974</td>
+<td>
+  100.828</td>
+<td>
+  100.028</td>
+<td>
+   99.543</td>
+<td>
+   99.380</td>
+<td>
+   99.425</td>
+<td>
+   99.641
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 1553             </span></th>
+<td>
+   99.381</td>
+<td>
+   99.493</td>
+<td>
+   99.722</td>
+<td>
+  100.717</td>
+<td>
+  100.938</td>
+<td>
+  100.972</td>
+<td>
+  100.830</td>
+<td>
+  100.027</td>
+<td>
+   99.544</td>
+<td>
+   99.379</td>
+<td>
+   99.425</td>
+<td>
+   99.641
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 155303           </span></th>
+<td>
+   99.381</td>
+<td>
+   99.494</td>
+<td>
+   99.723</td>
+<td>
+  100.716</td>
+<td>
+  100.939</td>
+<td>
+  100.972</td>
+<td>
+  100.829</td>
+<td>
+  100.027</td>
+<td>
+   99.544</td>
+<td>
+   99.379</td>
+<td>
+   99.424</td>
+<td>
+   99.640
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 156201           </span></th>
+<td>
+  100.489</td>
+<td>
+  100.335</td>
+<td>
+  100.209</td>
+<td>
+  100.069</td>
+<td>
+  100.162</td>
+<td>
+  100.004</td>
+<td>
+   99.910</td>
+<td>
+   99.837</td>
+<td>
+   99.698</td>
+<td>
+   99.804</td>
+<td>
+   99.811</td>
+<td>
+   99.672
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 1564             </span></th>
+<td>
+   99.489</td>
+<td>
+  100.514</td>
+<td>
+  100.296</td>
+<td>
+  100.099</td>
+<td>
+  100.031</td>
+<td>
+  100.399</td>
+<td>
+  100.508</td>
+<td>
+  100.229</td>
+<td>
+   99.851</td>
+<td>
+   99.695</td>
+<td>
+   99.175</td>
+<td>
+   99.720
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 156401           </span></th>
+<td>
+   99.489</td>
+<td>
+  100.514</td>
+<td>
+  100.296</td>
+<td>
+  100.099</td>
+<td>
+  100.031</td>
+<td>
+  100.399</td>
+<td>
+  100.508</td>
+<td>
+  100.229</td>
+<td>
+   99.851</td>
+<td>
+   99.695</td>
+<td>
+   99.175</td>
+<td>
+   99.720
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 159              </span></th>
+<td>
+   99.943</td>
+<td>
+   99.827</td>
+<td>
+  100.094</td>
+<td>
+  100.088</td>
+<td>
+  100.434</td>
+<td>
+  100.203</td>
+<td>
+  100.129</td>
+<td>
+  100.173</td>
+<td>
+   99.925</td>
+<td>
+   99.948</td>
+<td>
+   99.593</td>
+<td>
+   99.670
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 1591             </span></th>
+<td>
+  101.132</td>
+<td>
+  100.872</td>
+<td>
+  100.540</td>
+<td>
+  100.306</td>
+<td>
+  100.061</td>
+<td>
+   99.782</td>
+<td>
+   99.601</td>
+<td>
+   99.490</td>
+<td>
+   98.707</td>
+<td>
+   99.794</td>
+<td>
+   99.839</td>
+<td>
+   99.876
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 159101           </span></th>
+<td>
+  101.132</td>
+<td>
+  100.872</td>
+<td>
+  100.540</td>
+<td>
+  100.306</td>
+<td>
+  100.061</td>
+<td>
+   99.782</td>
+<td>
+   99.601</td>
+<td>
+   99.490</td>
+<td>
+   98.707</td>
+<td>
+   99.794</td>
+<td>
+   99.839</td>
+<td>
+   99.876
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 159F11           </span></th>
+<td>
+  105.367</td>
+<td>
+  101.228</td>
+<td>
+  101.886</td>
+<td>
+   99.519</td>
+<td>
+   96.322</td>
+<td>
+   93.828</td>
+<td>
+   97.264</td>
+<td>
+   98.831</td>
+<td>
+  100.290</td>
+<td>
+  100.523</td>
+<td>
+  101.883</td>
+<td>
+  103.201
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 301602           </span></th>
+<td>
+  102.101</td>
+<td>
+  101.421</td>
+<td>
+  101.061</td>
+<td>
+  100.643</td>
+<td>
+  100.511</td>
+<td>
+  100.103</td>
+<td>
+   99.753</td>
+<td>
+   99.428</td>
+<td>
+   99.032</td>
+<td>
+   98.451</td>
+<td>
+   99.005</td>
+<td>
+   98.615
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 301603           </span></th>
+<td>
+  102.419</td>
+<td>
+  102.006</td>
+<td>
+  101.648</td>
+<td>
+  100.911</td>
+<td>
+  100.291</td>
+<td>
+   99.621</td>
+<td>
+  100.155</td>
+<td>
+   99.432</td>
+<td>
+   99.030</td>
+<td>
+   98.004</td>
+<td>
+   98.414</td>
+<td>
+   98.038
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 301701           </span></th>
+<td>
+   99.953</td>
+<td>
+   99.612</td>
+<td>
+   99.214</td>
+<td>
+   98.393</td>
+<td>
+   98.182</td>
+<td>
+   98.377</td>
+<td>
+  101.070</td>
+<td>
+  101.598</td>
+<td>
+  101.296</td>
+<td>
+  101.149</td>
+<td>
+  100.815</td>
+<td>
+  100.357
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 302201           </span></th>
+<td>
+   99.263</td>
+<td>
+   98.516</td>
+<td>
+  100.290</td>
+<td>
+  101.606</td>
+<td>
+   99.860</td>
+<td>
+  103.418</td>
+<td>
+  101.589</td>
+<td>
+   98.616</td>
+<td>
+   96.059</td>
+<td>
+  101.485</td>
+<td>
+   98.405</td>
+<td>
+  100.700
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 3112             </span></th>
+<td>
+  100.861</td>
+<td>
+  101.769</td>
+<td>
+  101.231</td>
+<td>
+  101.015</td>
+<td>
+  100.266</td>
+<td>
+  100.165</td>
+<td>
+   99.517</td>
+<td>
+   99.625</td>
+<td>
+   98.531</td>
+<td>
+   98.890</td>
+<td>
+   98.721</td>
+<td>
+   99.154
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 311201           </span></th>
+<td>
+  100.861</td>
+<td>
+  101.769</td>
+<td>
+  101.231</td>
+<td>
+  101.015</td>
+<td>
+  100.266</td>
+<td>
+  100.165</td>
+<td>
+   99.517</td>
+<td>
+   99.625</td>
+<td>
+   98.531</td>
+<td>
+   98.890</td>
+<td>
+   98.721</td>
+<td>
+   99.154
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 3113             </span></th>
+<td>
+  100.043</td>
+<td>
+   99.709</td>
+<td>
+   99.969</td>
+<td>
+   99.997</td>
+<td>
+   99.896</td>
+<td>
+   99.676</td>
+<td>
+   99.786</td>
+<td>
+  100.097</td>
+<td>
+   99.955</td>
+<td>
+  100.367</td>
+<td>
+  100.279</td>
+<td>
+  100.205
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 311301           </span></th>
+<td>
+  100.043</td>
+<td>
+   99.709</td>
+<td>
+   99.969</td>
+<td>
+   99.997</td>
+<td>
+   99.896</td>
+<td>
+   99.676</td>
+<td>
+   99.786</td>
+<td>
+  100.097</td>
+<td>
+   99.955</td>
+<td>
+  100.367</td>
+<td>
+  100.279</td>
+<td>
+  100.205
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 312101           </span></th>
+<td>
+   98.723</td>
+<td>
+   98.526</td>
+<td>
+   99.625</td>
+<td>
+   99.304</td>
+<td>
+   99.628</td>
+<td>
+  100.817</td>
+<td>
+  102.311</td>
+<td>
+  102.060</td>
+<td>
+   99.942</td>
+<td>
+  101.036</td>
+<td>
+   99.254</td>
+<td>
+   98.935
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 3311             </span></th>
+<td>
+  100.602</td>
+<td>
+  100.253</td>
+<td>
+  101.286</td>
+<td>
+  101.158</td>
+<td>
+  101.185</td>
+<td>
+  100.734</td>
+<td>
+  100.330</td>
+<td>
+   99.372</td>
+<td>
+   98.813</td>
+<td>
+   99.061</td>
+<td>
+   98.806</td>
+<td>
+   98.399
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 331101           </span></th>
+<td>
+  101.096</td>
+<td>
+  101.092</td>
+<td>
+  100.269</td>
+<td>
+  100.442</td>
+<td>
+   99.699</td>
+<td>
+   99.306</td>
+<td>
+   98.286</td>
+<td>
+   97.696</td>
+<td>
+   97.651</td>
+<td>
+  101.780</td>
+<td>
+  101.880</td>
+<td>
+  101.011
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 331102           </span></th>
+<td>
+  100.505</td>
+<td>
+   99.984</td>
+<td>
+  103.022</td>
+<td>
+  102.987</td>
+<td>
+  102.141</td>
+<td>
+  101.372</td>
+<td>
+  100.483</td>
+<td>
+   99.627</td>
+<td>
+   98.710</td>
+<td>
+   97.753</td>
+<td>
+   97.088</td>
+<td>
+   96.298
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 331104           </span></th>
+<td>
+  100.684</td>
+<td>
+   99.318</td>
+<td>
+   99.677</td>
+<td>
+   99.248</td>
+<td>
+  100.829</td>
+<td>
+  100.746</td>
+<td>
+  101.009</td>
+<td>
+  100.084</td>
+<td>
+   99.693</td>
+<td>
+   99.253</td>
+<td>
+   99.838</td>
+<td>
+   99.655
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 331202           </span></th>
+<td>
+  100.553</td>
+<td>
+  100.565</td>
+<td>
+  100.368</td>
+<td>
+  100.036</td>
+<td>
+  100.386</td>
+<td>
+  100.957</td>
+<td>
+  100.593</td>
+<td>
+   99.870</td>
+<td>
+   99.404</td>
+<td>
+   99.171</td>
+<td>
+   98.756</td>
+<td>
+   99.258
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 362101           </span></th>
+<td>
+   98.962</td>
+<td>
+   96.027</td>
+<td>
+   98.518</td>
+<td>
+   98.703</td>
+<td>
+   97.135</td>
+<td>
+   97.520</td>
+<td>
+   95.121</td>
+<td>
+   94.671</td>
+<td>
+   99.450</td>
+<td>
+  107.993</td>
+<td>
+  109.972</td>
+<td>
+  105.898
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 362102           </span></th>
+<td>
+  106.914</td>
+<td>
+   98.199</td>
+<td>
+   95.450</td>
+<td>
+  101.009</td>
+<td>
+  108.558</td>
+<td>
+  103.777</td>
+<td>
+  103.785</td>
+<td>
+   90.442</td>
+<td>
+   89.144</td>
+<td>
+   96.673</td>
+<td>
+  103.428</td>
+<td>
+  102.784
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 372              </span></th>
+<td>
+   99.894</td>
+<td>
+   99.575</td>
+<td>
+   99.494</td>
+<td>
+   99.438</td>
+<td>
+  100.216</td>
+<td>
+  100.112</td>
+<td>
+  100.009</td>
+<td>
+  100.502</td>
+<td>
+  100.416</td>
+<td>
+  100.299</td>
+<td>
+  100.058</td>
+<td>
+   99.981
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 3721             </span></th>
+<td>
+   99.894</td>
+<td>
+   99.574</td>
+<td>
+   99.494</td>
+<td>
+   99.447</td>
+<td>
+  100.219</td>
+<td>
+  100.115</td>
+<td>
+  100.011</td>
+<td>
+  100.498</td>
+<td>
+  100.411</td>
+<td>
+  100.295</td>
+<td>
+  100.056</td>
+<td>
+   99.979
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 372101           </span></th>
+<td>
+   99.894</td>
+<td>
+   99.574</td>
+<td>
+   99.494</td>
+<td>
+   99.447</td>
+<td>
+  100.219</td>
+<td>
+  100.115</td>
+<td>
+  100.011</td>
+<td>
+  100.498</td>
+<td>
+  100.411</td>
+<td>
+  100.295</td>
+<td>
+  100.056</td>
+<td>
+   99.979
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 373              </span></th>
+<td>
+  100.020</td>
+<td>
+  100.982</td>
+<td>
+  101.436</td>
+<td>
+  100.849</td>
+<td>
+  100.542</td>
+<td>
+  100.623</td>
+<td>
+   99.910</td>
+<td>
+   98.851</td>
+<td>
+   98.476</td>
+<td>
+   99.982</td>
+<td>
+   99.562</td>
+<td>
+   98.955
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 3731             </span></th>
+<td>
+  100.020</td>
+<td>
+  100.982</td>
+<td>
+  101.436</td>
+<td>
+  100.849</td>
+<td>
+  100.542</td>
+<td>
+  100.623</td>
+<td>
+   99.910</td>
+<td>
+   98.851</td>
+<td>
+   98.476</td>
+<td>
+   99.982</td>
+<td>
+   99.562</td>
+<td>
+   98.955
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 373101           </span></th>
+<td>
+  100.020</td>
+<td>
+  100.982</td>
+<td>
+  101.436</td>
+<td>
+  100.849</td>
+<td>
+  100.542</td>
+<td>
+  100.623</td>
+<td>
+   99.910</td>
+<td>
+   98.851</td>
+<td>
+   98.476</td>
+<td>
+   99.982</td>
+<td>
+   99.562</td>
+<td>
+   98.955
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 391101           </span></th>
+<td>
+  101.461</td>
+<td>
+   99.907</td>
+<td>
+   97.848</td>
+<td>
+  101.157</td>
+<td>
+   98.159</td>
+<td>
+  100.532</td>
+<td>
+   98.407</td>
+<td>
+  103.606</td>
+<td>
+  102.692</td>
+<td>
+   98.191</td>
+<td>
+  100.994</td>
+<td>
+   97.205
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 391202           </span></th>
+<td>
+  100.412</td>
+<td>
+  103.445</td>
+<td>
+   99.794</td>
+<td>
+  104.503</td>
+<td>
+   99.483</td>
+<td>
+  101.344</td>
+<td>
+   96.024</td>
+<td>
+  103.323</td>
+<td>
+   98.349</td>
+<td>
+   95.493</td>
+<td>
+  101.182</td>
+<td>
+   96.374
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 391203           </span></th>
+<td>
+  101.137</td>
+<td>
+  101.005</td>
+<td>
+   98.509</td>
+<td>
+  100.716</td>
+<td>
+   97.901</td>
+<td>
+  101.107</td>
+<td>
+   99.122</td>
+<td>
+  101.854</td>
+<td>
+  100.994</td>
+<td>
+   98.938</td>
+<td>
+  100.350</td>
+<td>
+   98.397
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 411              </span></th>
+<td>
+  100.351</td>
+<td>
+  100.227</td>
+<td>
+  100.108</td>
+<td>
+  100.007</td>
+<td>
+   99.990</td>
+<td>
+  100.040</td>
+<td>
+  100.002</td>
+<td>
+   99.954</td>
+<td>
+  100.173</td>
+<td>
+   99.879</td>
+<td>
+   99.651</td>
+<td>
+   99.621
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 4111             </span></th>
+<td>
+  100.351</td>
+<td>
+  100.227</td>
+<td>
+  100.108</td>
+<td>
+  100.007</td>
+<td>
+   99.990</td>
+<td>
+  100.040</td>
+<td>
+  100.002</td>
+<td>
+   99.954</td>
+<td>
+  100.173</td>
+<td>
+   99.879</td>
+<td>
+   99.651</td>
+<td>
+   99.621
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 411103           </span></th>
+<td>
+  101.225</td>
+<td>
+  101.253</td>
+<td>
+  100.998</td>
+<td>
+  100.723</td>
+<td>
+  100.352</td>
+<td>
+  100.047</td>
+<td>
+   99.936</td>
+<td>
+   99.700</td>
+<td>
+   99.389</td>
+<td>
+   99.075</td>
+<td>
+   98.691</td>
+<td>
+   98.490
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 431              </span></th>
+<td>
+  101.859</td>
+<td>
+   98.969</td>
+<td>
+   97.978</td>
+<td>
+   98.958</td>
+<td>
+   98.750</td>
+<td>
+   99.262</td>
+<td>
+   98.947</td>
+<td>
+  101.370</td>
+<td>
+  101.790</td>
+<td>
+  100.461</td>
+<td>
+  100.042</td>
+<td>
+  101.660
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 4311             </span></th>
+<td>
+  102.449</td>
+<td>
+   98.757</td>
+<td>
+   97.528</td>
+<td>
+   98.685</td>
+<td>
+   98.426</td>
+<td>
+   99.162</td>
+<td>
+   98.831</td>
+<td>
+  101.487</td>
+<td>
+  102.224</td>
+<td>
+  100.394</td>
+<td>
+  100.052</td>
+<td>
+  102.061
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 431102           </span></th>
+<td>
+  105.068</td>
+<td>
+   97.333</td>
+<td>
+   94.660</td>
+<td>
+   97.875</td>
+<td>
+   97.374</td>
+<td>
+   99.435</td>
+<td>
+   99.591</td>
+<td>
+  102.598</td>
+<td>
+  103.780</td>
+<td>
+   99.757</td>
+<td>
+   98.116</td>
+<td>
+  104.337
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 431103           </span></th>
+<td>
+  100.766</td>
+<td>
+  100.805</td>
+<td>
+  100.654</td>
+<td>
+  100.309</td>
+<td>
+   99.943</td>
+<td>
+   99.438</td>
+<td>
+  100.058</td>
+<td>
+   99.860</td>
+<td>
+   99.476</td>
+<td>
+   99.561</td>
+<td>
+   99.386</td>
+<td>
+   99.817
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 431105           </span></th>
+<td>
+  100.973</td>
+<td>
+   97.051</td>
+<td>
+   92.086</td>
+<td>
+   94.259</td>
+<td>
+   95.091</td>
+<td>
+   97.938</td>
+<td>
+   99.626</td>
+<td>
+  107.474</td>
+<td>
+  106.436</td>
+<td>
+  105.085</td>
+<td>
+  102.574</td>
+<td>
+  101.460
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 432101           </span></th>
+<td>
+   99.597</td>
+<td>
+   99.303</td>
+<td>
+   98.964</td>
+<td>
+   99.031</td>
+<td>
+   99.478</td>
+<td>
+  100.140</td>
+<td>
+  100.612</td>
+<td>
+  100.859</td>
+<td>
+  100.977</td>
+<td>
+  100.663</td>
+<td>
+  100.373</td>
+<td>
+  100.004
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 441101           </span></th>
+<td>
+   93.291</td>
+<td>
+   94.625</td>
+<td>
+  100.035</td>
+<td>
+   97.281</td>
+<td>
+   97.316</td>
+<td>
+  103.139</td>
+<td>
+  108.640</td>
+<td>
+  105.452</td>
+<td>
+   99.656</td>
+<td>
+  102.899</td>
+<td>
+   98.444</td>
+<td>
+   99.381
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 442              </span></th>
+<td>
+   99.648</td>
+<td>
+   98.769</td>
+<td>
+   99.335</td>
+<td>
+  100.153</td>
+<td>
+  100.087</td>
+<td>
+  100.314</td>
+<td>
+  100.130</td>
+<td>
+  100.776</td>
+<td>
+  100.259</td>
+<td>
+  100.565</td>
+<td>
+  100.237</td>
+<td>
+   99.628
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 4421             </span></th>
+<td>
+   99.650</td>
+<td>
+   98.776</td>
+<td>
+   99.339</td>
+<td>
+  100.157</td>
+<td>
+  100.076</td>
+<td>
+  100.332</td>
+<td>
+  100.128</td>
+<td>
+  100.746</td>
+<td>
+  100.237</td>
+<td>
+  100.551</td>
+<td>
+  100.242</td>
+<td>
+   99.677
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 442101           </span></th>
+<td>
+   99.715</td>
+<td>
+   98.066</td>
+<td>
+   99.022</td>
+<td>
+  101.171</td>
+<td>
+  100.597</td>
+<td>
+  101.065</td>
+<td>
+  100.304</td>
+<td>
+  100.612</td>
+<td>
+   99.406</td>
+<td>
+   99.963</td>
+<td>
+  100.519</td>
+<td>
+   99.343
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 451              </span></th>
+<td>
+  100.852</td>
+<td>
+  101.605</td>
+<td>
+  101.297</td>
+<td>
+  101.435</td>
+<td>
+  100.858</td>
+<td>
+  100.248</td>
+<td>
+  100.137</td>
+<td>
+   99.444</td>
+<td>
+   98.761</td>
+<td>
+   99.236</td>
+<td>
+   98.375</td>
+<td>
+   97.661
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 4511             </span></th>
+<td>
+  100.852</td>
+<td>
+  101.605</td>
+<td>
+  101.297</td>
+<td>
+  101.435</td>
+<td>
+  100.858</td>
+<td>
+  100.248</td>
+<td>
+  100.137</td>
+<td>
+   99.444</td>
+<td>
+   98.761</td>
+<td>
+   99.236</td>
+<td>
+   98.375</td>
+<td>
+   97.661
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 451101           </span></th>
+<td>
+  100.852</td>
+<td>
+  101.605</td>
+<td>
+  101.297</td>
+<td>
+  101.435</td>
+<td>
+  100.858</td>
+<td>
+  100.248</td>
+<td>
+  100.137</td>
+<td>
+   99.444</td>
+<td>
+   98.761</td>
+<td>
+   99.236</td>
+<td>
+   98.375</td>
+<td>
+   97.661
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 452102           </span></th>
+<td>
+  101.334</td>
+<td>
+  101.218</td>
+<td>
+  100.428</td>
+<td>
+  100.513</td>
+<td>
+  100.589</td>
+<td>
+  100.577</td>
+<td>
+  100.073</td>
+<td>
+   98.865</td>
+<td>
+   98.977</td>
+<td>
+   99.070</td>
+<td>
+   98.381</td>
+<td>
+   99.976
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 453              </span></th>
+<td>
+  100.433</td>
+<td>
+  100.537</td>
+<td>
+  100.453</td>
+<td>
+  100.445</td>
+<td>
+  100.263</td>
+<td>
+  100.137</td>
+<td>
+   99.919</td>
+<td>
+   99.721</td>
+<td>
+   99.498</td>
+<td>
+   99.599</td>
+<td>
+   99.606</td>
+<td>
+   99.419
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 4532             </span></th>
+<td>
+  100.480</td>
+<td>
+  100.616</td>
+<td>
+  100.499</td>
+<td>
+  100.487</td>
+<td>
+  100.277</td>
+<td>
+  100.149</td>
+<td>
+   99.885</td>
+<td>
+   99.676</td>
+<td>
+   99.427</td>
+<td>
+   99.632</td>
+<td>
+   99.554</td>
+<td>
+   99.352
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 453201           </span></th>
+<td>
+  100.480</td>
+<td>
+  100.616</td>
+<td>
+  100.499</td>
+<td>
+  100.487</td>
+<td>
+  100.277</td>
+<td>
+  100.149</td>
+<td>
+   99.885</td>
+<td>
+   99.676</td>
+<td>
+   99.427</td>
+<td>
+   99.632</td>
+<td>
+   99.554</td>
+<td>
+   99.352
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 471101           </span></th>
+<td>
+  100.298</td>
+<td>
+  100.251</td>
+<td>
+   99.312</td>
+<td>
+  100.057</td>
+<td>
+  100.059</td>
+<td>
+  100.391</td>
+<td>
+  100.908</td>
+<td>
+  101.459</td>
+<td>
+  100.511</td>
+<td>
+   98.577</td>
+<td>
+   99.455</td>
+<td>
+   98.673
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 4712             </span></th>
+<td>
+   95.196</td>
+<td>
+   95.421</td>
+<td>
+   96.176</td>
+<td>
+   97.677</td>
+<td>
+   99.574</td>
+<td>
+  101.273</td>
+<td>
+   99.086</td>
+<td>
+  101.117</td>
+<td>
+  101.949</td>
+<td>
+  103.703</td>
+<td>
+  104.115</td>
+<td>
+  104.329
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 471201           </span></th>
+<td>
+   95.196</td>
+<td>
+   95.421</td>
+<td>
+   96.176</td>
+<td>
+   97.677</td>
+<td>
+   99.574</td>
+<td>
+  101.273</td>
+<td>
+   99.086</td>
+<td>
+  101.117</td>
+<td>
+  101.949</td>
+<td>
+  103.703</td>
+<td>
+  104.115</td>
+<td>
+  104.329
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 501              </span></th>
+<td>
+   99.112</td>
+<td>
+   99.361</td>
+<td>
+  101.225</td>
+<td>
+  100.993</td>
+<td>
+  100.714</td>
+<td>
+   99.548</td>
+<td>
+   99.995</td>
+<td>
+   99.792</td>
+<td>
+  100.513</td>
+<td>
+   99.652</td>
+<td>
+  100.545</td>
+<td>
+   98.632
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 5011             </span></th>
+<td>
+   99.112</td>
+<td>
+   99.361</td>
+<td>
+  101.225</td>
+<td>
+  100.993</td>
+<td>
+  100.714</td>
+<td>
+   99.548</td>
+<td>
+   99.995</td>
+<td>
+   99.792</td>
+<td>
+  100.513</td>
+<td>
+   99.652</td>
+<td>
+  100.545</td>
+<td>
+   98.632
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 501101           </span></th>
+<td>
+   99.112</td>
+<td>
+   99.361</td>
+<td>
+  101.225</td>
+<td>
+  100.993</td>
+<td>
+  100.714</td>
+<td>
+   99.548</td>
+<td>
+   99.995</td>
+<td>
+   99.792</td>
+<td>
+  100.513</td>
+<td>
+   99.652</td>
+<td>
+  100.545</td>
+<td>
+   98.632
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 511101           </span></th>
+<td>
+  100.081</td>
+<td>
+  100.076</td>
+<td>
+  100.099</td>
+<td>
+  100.006</td>
+<td>
+  100.022</td>
+<td>
+   99.963</td>
+<td>
+  100.054</td>
+<td>
+  100.012</td>
+<td>
+   99.953</td>
+<td>
+   99.935</td>
+<td>
+   99.887</td>
+<td>
+   99.913
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 511103           </span></th>
+<td>
+  100.492</td>
+<td>
+  100.358</td>
+<td>
+  100.127</td>
+<td>
+   99.867</td>
+<td>
+   99.588</td>
+<td>
+   99.271</td>
+<td>
+   99.190</td>
+<td>
+   99.561</td>
+<td>
+  100.202</td>
+<td>
+  100.604</td>
+<td>
+  100.546</td>
+<td>
+  100.297
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 511104           </span></th>
+<td>
+  100.173</td>
+<td>
+  100.220</td>
+<td>
+  100.096</td>
+<td>
+  100.078</td>
+<td>
+  100.036</td>
+<td>
+  100.092</td>
+<td>
+  100.507</td>
+<td>
+  100.269</td>
+<td>
+   99.850</td>
+<td>
+   99.876</td>
+<td>
+   99.691</td>
+<td>
+   99.103
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 511105           </span></th>
+<td>
+  100.093</td>
+<td>
+  100.323</td>
+<td>
+  100.189</td>
+<td>
+  100.116</td>
+<td>
+  100.079</td>
+<td>
+  100.024</td>
+<td>
+   99.922</td>
+<td>
+   99.969</td>
+<td>
+   99.976</td>
+<td>
+   99.847</td>
+<td>
+   99.722</td>
+<td>
+   99.721
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 512101           </span></th>
+<td>
+  100.294</td>
+<td>
+  100.179</td>
+<td>
+  100.174</td>
+<td>
+   99.999</td>
+<td>
+   99.941</td>
+<td>
+   99.774</td>
+<td>
+   99.678</td>
+<td>
+   99.646</td>
+<td>
+   99.475</td>
+<td>
+  100.414</td>
+<td>
+  100.250</td>
+<td>
+  100.163
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 512102           </span></th>
+<td>
+  100.522</td>
+<td>
+  100.335</td>
+<td>
+  100.185</td>
+<td>
+   99.889</td>
+<td>
+   99.691</td>
+<td>
+   99.512</td>
+<td>
+   99.552</td>
+<td>
+   99.734</td>
+<td>
+   99.532</td>
+<td>
+  100.418</td>
+<td>
+  100.385</td>
+<td>
+  100.238
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 512103           </span></th>
+<td>
+   99.992</td>
+<td>
+   99.773</td>
+<td>
+   99.763</td>
+<td>
+   99.860</td>
+<td>
+   99.791</td>
+<td>
+   99.490</td>
+<td>
+  100.531</td>
+<td>
+  100.267</td>
+<td>
+  100.228</td>
+<td>
+  100.301</td>
+<td>
+  100.028</td>
+<td>
+   99.977
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 531101           </span></th>
+<td>
+   97.113</td>
+<td>
+   97.694</td>
+<td>
+  102.024</td>
+<td>
+   99.504</td>
+<td>
+   99.354</td>
+<td>
+  104.714</td>
+<td>
+  103.724</td>
+<td>
+  100.811</td>
+<td>
+   99.681</td>
+<td>
+  101.806</td>
+<td>
+   96.319</td>
+<td>
+   97.283
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 531102           </span></th>
+<td>
+  100.376</td>
+<td>
+  100.253</td>
+<td>
+  101.172</td>
+<td>
+   99.733</td>
+<td>
+   99.606</td>
+<td>
+   99.898</td>
+<td>
+  100.443</td>
+<td>
+  100.059</td>
+<td>
+  100.017</td>
+<td>
+   99.949</td>
+<td>
+   99.817</td>
+<td>
+   98.740
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 551101           </span></th>
+<td>
+  100.372</td>
+<td>
+   99.949</td>
+<td>
+  100.672</td>
+<td>
+  100.247</td>
+<td>
+  100.157</td>
+<td>
+   99.997</td>
+<td>
+  100.012</td>
+<td>
+   99.770</td>
+<td>
+  100.057</td>
+<td>
+   99.958</td>
+<td>
+   99.537</td>
+<td>
+   99.279
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 561              </span></th>
+<td>
+  101.655</td>
+<td>
+  101.882</td>
+<td>
+  102.915</td>
+<td>
+  101.927</td>
+<td>
+   99.666</td>
+<td>
+   99.121</td>
+<td>
+   98.908</td>
+<td>
+   97.722</td>
+<td>
+   97.533</td>
+<td>
+   98.865</td>
+<td>
+   99.582</td>
+<td>
+  100.149
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 5611             </span></th>
+<td>
+  101.655</td>
+<td>
+  101.882</td>
+<td>
+  102.915</td>
+<td>
+  101.927</td>
+<td>
+   99.666</td>
+<td>
+   99.121</td>
+<td>
+   98.908</td>
+<td>
+   97.722</td>
+<td>
+   97.533</td>
+<td>
+   98.865</td>
+<td>
+   99.582</td>
+<td>
+  100.149
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 561102           </span></th>
+<td>
+  102.045</td>
+<td>
+  102.951</td>
+<td>
+  104.410</td>
+<td>
+  103.619</td>
+<td>
+   97.782</td>
+<td>
+   97.865</td>
+<td>
+   97.715</td>
+<td>
+   95.391</td>
+<td>
+   94.466</td>
+<td>
+   98.661</td>
+<td>
+  101.363</td>
+<td>
+  103.819
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 573101           </span></th>
+<td>
+   99.117</td>
+<td>
+   98.420</td>
+<td>
+   97.985</td>
+<td>
+   99.435</td>
+<td>
+  100.200</td>
+<td>
+  101.214</td>
+<td>
+  101.732</td>
+<td>
+  101.322</td>
+<td>
+  101.148</td>
+<td>
+  100.775</td>
+<td>
+   99.595</td>
+<td>
+   99.010
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 581102           </span></th>
+<td>
+  100.256</td>
+<td>
+  100.478</td>
+<td>
+  100.414</td>
+<td>
+  100.848</td>
+<td>
+  101.635</td>
+<td>
+  100.562</td>
+<td>
+   99.647</td>
+<td>
+  100.049</td>
+<td>
+   99.230</td>
+<td>
+  100.367</td>
+<td>
+   98.504</td>
+<td>
+   97.834
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 583              </span></th>
+<td>
+   97.256</td>
+<td>
+  101.101</td>
+<td>
+  102.103</td>
+<td>
+  100.854</td>
+<td>
+  100.270</td>
+<td>
+   97.940</td>
+<td>
+   93.783</td>
+<td>
+   97.479</td>
+<td>
+  101.097</td>
+<td>
+  105.031</td>
+<td>
+  100.921</td>
+<td>
+  102.182
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 5831             </span></th>
+<td>
+   97.256</td>
+<td>
+  101.101</td>
+<td>
+  102.103</td>
+<td>
+  100.854</td>
+<td>
+  100.270</td>
+<td>
+   97.940</td>
+<td>
+   93.783</td>
+<td>
+   97.479</td>
+<td>
+  101.097</td>
+<td>
+  105.031</td>
+<td>
+  100.921</td>
+<td>
+  102.182
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 583101           </span></th>
+<td>
+   96.508</td>
+<td>
+  101.187</td>
+<td>
+  102.601</td>
+<td>
+  101.043</td>
+<td>
+  100.211</td>
+<td>
+   97.096</td>
+<td>
+   92.712</td>
+<td>
+   97.177</td>
+<td>
+  101.815</td>
+<td>
+  105.654</td>
+<td>
+  101.354</td>
+<td>
+  102.608
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 585              </span></th>
+<td>
+  103.347</td>
+<td>
+  102.168</td>
+<td>
+  100.633</td>
+<td>
+  103.448</td>
+<td>
+   99.703</td>
+<td>
+  103.825</td>
+<td>
+  103.371</td>
+<td>
+  101.722</td>
+<td>
+   97.682</td>
+<td>
+  100.540</td>
+<td>
+   92.630</td>
+<td>
+   90.963
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 5851             </span></th>
+<td>
+  103.347</td>
+<td>
+  102.168</td>
+<td>
+  100.633</td>
+<td>
+  103.448</td>
+<td>
+   99.703</td>
+<td>
+  103.825</td>
+<td>
+  103.371</td>
+<td>
+  101.722</td>
+<td>
+   97.682</td>
+<td>
+  100.540</td>
+<td>
+   92.630</td>
+<td>
+   90.963
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 585101           </span></th>
+<td>
+  103.347</td>
+<td>
+  102.168</td>
+<td>
+  100.633</td>
+<td>
+  103.448</td>
+<td>
+   99.703</td>
+<td>
+  103.825</td>
+<td>
+  103.371</td>
+<td>
+  101.722</td>
+<td>
+   97.682</td>
+<td>
+  100.540</td>
+<td>
+   92.630</td>
+<td>
+   90.963
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 586101           </span></th>
+<td>
+   94.895</td>
+<td>
+   94.506</td>
+<td>
+   98.543</td>
+<td>
+  102.463</td>
+<td>
+  103.448</td>
+<td>
+  103.702</td>
+<td>
+  101.026</td>
+<td>
+  100.840</td>
+<td>
+  102.784</td>
+<td>
+  101.476</td>
+<td>
+   99.699</td>
+<td>
+   96.502
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 589              </span></th>
+<td>
+  101.932</td>
+<td>
+  100.354</td>
+<td>
+  102.213</td>
+<td>
+  104.559</td>
+<td>
+  100.435</td>
+<td>
+   99.462</td>
+<td>
+   97.200</td>
+<td>
+  103.487</td>
+<td>
+   98.347</td>
+<td>
+  100.120</td>
+<td>
+   96.828</td>
+<td>
+   94.166
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 5891             </span></th>
+<td>
+  101.932</td>
+<td>
+  100.354</td>
+<td>
+  102.213</td>
+<td>
+  104.559</td>
+<td>
+  100.435</td>
+<td>
+   99.462</td>
+<td>
+   97.200</td>
+<td>
+  103.487</td>
+<td>
+   98.347</td>
+<td>
+  100.120</td>
+<td>
+   96.828</td>
+<td>
+   94.166
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 589101           </span></th>
+<td>
+  101.932</td>
+<td>
+  100.354</td>
+<td>
+  102.213</td>
+<td>
+  104.559</td>
+<td>
+  100.435</td>
+<td>
+   99.462</td>
+<td>
+   97.200</td>
+<td>
+  103.487</td>
+<td>
+   98.347</td>
+<td>
+  100.120</td>
+<td>
+   96.828</td>
+<td>
+   94.166
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 58D101           </span></th>
+<td>
+   98.782</td>
+<td>
+  100.776</td>
+<td>
+  102.776</td>
+<td>
+  104.883</td>
+<td>
+  102.418</td>
+<td>
+  102.468</td>
+<td>
+  101.247</td>
+<td>
+   98.506</td>
+<td>
+   98.078</td>
+<td>
+   97.779</td>
+<td>
+   95.608</td>
+<td>
+   96.679
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 58E              </span></th>
+<td>
+   96.237</td>
+<td>
+  102.880</td>
+<td>
+  101.113</td>
+<td>
+  104.242</td>
+<td>
+  102.436</td>
+<td>
+  102.017</td>
+<td>
+   99.648</td>
+<td>
+   98.560</td>
+<td>
+  101.445</td>
+<td>
+   98.069</td>
+<td>
+   98.237</td>
+<td>
+   95.302
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 58E1             </span></th>
+<td>
+   96.237</td>
+<td>
+  102.880</td>
+<td>
+  101.113</td>
+<td>
+  104.242</td>
+<td>
+  102.436</td>
+<td>
+  102.017</td>
+<td>
+   99.648</td>
+<td>
+   98.560</td>
+<td>
+  101.445</td>
+<td>
+   98.069</td>
+<td>
+   98.237</td>
+<td>
+   95.302
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 58E101           </span></th>
+<td>
+   96.237</td>
+<td>
+  102.880</td>
+<td>
+  101.113</td>
+<td>
+  104.242</td>
+<td>
+  102.436</td>
+<td>
+  102.017</td>
+<td>
+   99.648</td>
+<td>
+   98.560</td>
+<td>
+  101.445</td>
+<td>
+   98.069</td>
+<td>
+   98.237</td>
+<td>
+   95.302
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 58F102           </span></th>
+<td>
+  100.984</td>
+<td>
+  102.252</td>
+<td>
+  105.905</td>
+<td>
+  107.170</td>
+<td>
+  106.650</td>
+<td>
+   97.913</td>
+<td>
+   97.232</td>
+<td>
+   97.250</td>
+<td>
+   94.322</td>
+<td>
+   94.090</td>
+<td>
+   96.266</td>
+<td>
+   99.905
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 58I              </span></th>
+<td>
+   99.171</td>
+<td>
+  100.696</td>
+<td>
+  101.344</td>
+<td>
+  101.025</td>
+<td>
+  101.062</td>
+<td>
+  100.474</td>
+<td>
+   99.930</td>
+<td>
+   99.732</td>
+<td>
+  100.481</td>
+<td>
+  100.001</td>
+<td>
+   98.176</td>
+<td>
+   97.914
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 58I1             </span></th>
+<td>
+   99.171</td>
+<td>
+  100.696</td>
+<td>
+  101.344</td>
+<td>
+  101.025</td>
+<td>
+  101.062</td>
+<td>
+  100.474</td>
+<td>
+   99.930</td>
+<td>
+   99.732</td>
+<td>
+  100.481</td>
+<td>
+  100.001</td>
+<td>
+   98.176</td>
+<td>
+   97.914
+&nbsp;</span></td>
+</tr>
+<tr><th scope='row' align='left'><span tabindex='0'>
+WPS 58I101           </span></th>
+<td>
+   99.171</td>
+<td>
+  100.696</td>
+<td>
+  101.344</td>
+<td>
+  101.025</td>
+<td>
+  101.062</td>
+<td>
+  100.474</td>
+<td>
+   99.930</td>
+<td>
+   99.732</td>
+<td>
+  100.481</td>
+<td>
+  100.001</td>
+<td>
+   98.176</td>
+<td>
+   97.914
+&nbsp;</span></td>
+</tr>
+<tr class="greenbar"><th scope='row' align='left'><span tabindex='0'>
+WPS 611102           </span></th>
+<td>
+   99.839</td>
+<td>
+  100.230</td>
+<td>
+  100.434</td>
+<td>
+  100.628</td>
+<td>
+  100.544</td>
+<td>
+  100.179</td>
+<td>
+  100.022</td>
+<td>
+   99.828</td>
+<td>
+   99.746</td>
+<td>
+   99.664</td>
+<td>
+   99.622</td>
+<td>
+   99.458
+&nbsp;</span></td>
+</tr>
+</table><br/>
+</body></html>
+<p><strong>Last Modified Date:&nbsp; </strong>February 27, 2026</p>
+<!-- **********************TRAILER FILES************************************* -->
+	<!-- OneColFootBasic Begin -->
+
+<!-- Footer Filename: -->
+
+<!--no_index_start-->
+
+<!-- 1COL CMS BASIC LAYOUT COL1 END -->
+
+
+
+<div class="clearfloat"></div>
+<div class="social-media">
+</div>
+</div> 
+
+
+
+<!-- 1COL CMS LAYOUT COL1 END -->
+
+
+
+
+
+
+<!-- WRAPPER BOTTOM BEGIN -->
+
+
+		
+		
+		</div><!-- close id="wrapper-outer" -->
+	</div><!-- close id="wrapper" -->
+</div><!-- close id="container" -->
+
+	
+
+
+<!-- WRAPPER BOTTOM END -->
+
+
+
+<!-- FOOTER LEFT BEGIN -->
+
+<footer >
+	
+<!-- Footer Nav Menu-->
+<div class="footerNav">
+<ul class="footerNavInner">
+   <li class="footerNavItem"><a href="https://www.bls.gov/">Home</a></li>
+   <li class="footerNavItem"><a href="/bls/proghome.htm">Subjects</a></li>
+   <li class="footerNavItem"><a href="/data/">Data Tools</a></li>
+   <li class="footerNavItem"><a href="/opub/">Publications</a></li>
+   <li class="footerNavItem"><a href="/bls/newsrels.htm">Economic Releases</a></li>
+   <li class="footerNavItem"><a href="/k12/" >Classroom</a></li>
+   <li class="footerNavItem"><a href="/beta/">Beta</a></li>
+</ul>
+</div>
+<!-- Footer Nav Menu-->
+<script>/*<![CDATA[*/(function(){var sz = document.createElement('script'); sz.type = 'text/javascript'; sz.async = true;sz.src = '//siteimproveanalytics.com/js/siteanalyze_6032860.js';var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(sz, s);})();/*]]>*/</script> 
+
+<script src="/javascripts/touchpointsForms.js"></script>
+<link rel="stylesheet" type="text/css" href="/stylesheets/touchpointsForms.css">
+
+<div id="footer-primary-wrapper">
+<div class="bootstrap standard-width">
+<div id="footer-container" class="row">
+	<div id="footer-links-container" class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+	
+	
+<div class="bls-lftside-holder">	
+<div class="bls-logo-footer">
+<img src="/images/bls_emblem_trans.png" class="responsiveImg" alt="U.S. Bureau of Labor Statistics Logo "/><div class="d-none d-md-block clearfloat"><br><br></div>
+
+ </div>
+ <div class="address-contact-footer">
+
+<!-- FOOTER LEFT END -->
+
+
+
+
+<address class="footer-address"  >   
+<strong>U.S. Bureau of Labor Statistics</strong>
+<span>Producer Price Index</span> 
+<span>Office of Prices and Living Conditions</span> 
+<span>Suitland Federal Center</span>
+<span>Floor 7</span>
+<span>4600 Silver Hill Road</span>  
+<span>Washington, DC 20212-0002</span>
+</address>
+
+
+
+<!-- FOOTER CENTER BEGIN -->
+
+
+
+
+
+<!-- FOOTER CENTER END -->
+
+
+
+
+
+<span class="footer-contact">  
+
+<a href="tel:12026917705" class="number" aria-label="Telephone: 202-691-7705">
+<span>Telephone:</span><span> 202-691-7705 </span>
+ 
+</a>
+
+<a href="/ppi/home.htm" aria-label="www.bls.gov/PPI" >www.bls.gov/PPI</a>
+<a href="mailto:ppi-info@bls.gov" aria-label="Contact PPI">Contact PPI</a>
+
+</span>
+		
+
+
+
+
+<!-- FOOTER RIGHT BEGIN -->
+
+</div> 
+</div>
+</div>
+
+				<div id="quicklinks" class="row col-xs-12 col-sm-12 col-md-8 col-lg-8">
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-5">
+					<strong>resources</strong>
+					<a class="d-sm-none" data-toggle="collapse" href="#quicklinksli5" role="button" aria-expanded="false" aria-controls="quicklinksli5" aria-label="resources Sub Menu"></a>
+						<div class="collapse" id="quicklinksli5">
+							<ul class="d-sm-block">						
+								<li><a href="https://www.oig.dol.gov/" aria-label="Office of Inspector General (OIG) website">Inspector General (OIG)</a></li>
+								<li><a href="/bls/bls_budget_and_performance.htm" aria-label="Budget and Performance">Budget and Performance</a></li>	
+								<li><a href="https://www.dol.gov/grants" aria-label="Department of Labor Grants">Department of Labor Grants</a></li>									
+								<li><a href="/bls/no_fear_act.htm" aria-label="No Fear Act">No Fear Act</a></li>
+								<li><a href="https://www.usa.gov/" aria-label="USA.gov website">USA.gov</a></li>
+							</ul>
+						</div>
+					</div>		
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-5">
+					<strong>about the site</strong>
+					<a class="d-sm-none" data-toggle="collapse" href="#quicklinksli6" role="button" aria-expanded="false" aria-controls="quicklinksli6" aria-label="about this site Sub Menu"></a>
+						<div class="collapse" id="quicklinksli6">
+							<ul class="d-sm-block">	
+								<li><a href="/bls/sitemap.htm" aria-label="Sitemap">Sitemap</a></li>						
+								<li><a href="/bls/blsfoia.htm" aria-label="Freedom of Information Act">Freedom of Information Act</a></li>
+								<li><a href="/bls/pss.htm" aria-label="Privacy and Security Statement">Privacy and Security Statement</a></li>
+								<li><a href="/bls/disclaimer.htm" aria-label="Disclaimers">Disclaimers</a></li>
+								<li><a href="/bls/linksite.htm" aria-label="Linking and Copyright Information">Linking and Copyright Info</a></li>	
+								<li><a href="/bls/website-policies.htm" aria-label="Important Website Notices">Important Website Notices</a></li>
+								<li><a href="/help/" aria-label="Help and Tutorials">Help and Tutorials</a></li>
+								<li><a href="/bls/ada.htm" aria-label="Accessibility Statement">Accessibility Statement</a></li>
+							</ul>
+						</div>
+					</div>				
+                </div>
+				 
+</div>
+</div>
+</div>
+<div id="footer-secondary-wrapper">
+
+<div class="bootstrap standard-width">
+
+<div>
+<span>Connect With BLS</span>
+  <div class="social-media-icons"> 
+    
+			<a class="social-media-icon" href="https://bsky.app/profile/usbls.bsky.social" title="Connect with BLS on Bluesky" target="_blank" rel="noopener noreferrer" >
+              <!--?xml version="1.0" encoding="utf-8"?-->
+				<svg aria-hidden="true" data-prefix="fas" data-icon="bluesky" class="svg-inline--fa fa-w-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 530"><path fill="currentColor" xmlns="http://www.w3.org/2000/svg" d="m135.72 44.03c66.496 49.921 138.02 151.14 164.28 205.46 26.262-54.316 97.782-155.54 164.28-205.46 47.98-36.021 125.72-63.892 125.72 24.795 0 17.712-10.155 148.79-16.111 170.07-20.703 73.984-96.144 92.854-163.25 81.433 117.3 19.964 147.14 86.092 82.697 152.22-122.39 125.59-175.91-31.511-189.63-71.766-2.514-7.3797-3.6904-10.832-3.7077-7.8964-0.0174-2.9357-1.1937 0.51669-3.7077 7.8964-13.714 40.255-67.233 197.36-189.63 71.766-64.444-66.128-34.605-132.26 82.697-152.22-67.108 11.421-142.55-7.4491-163.25-81.433-5.9562-21.282-16.111-152.36-16.111-170.07 0-88.687 77.742-60.816 125.72-24.795z"/></svg>
+              <span class="sr-only">Bluesky</span>
+          </a>
+
+           <a class="social-media-icon" href="https://www.instagram.com/usbls_gov/" title="Connect with BLS on Instagram" target="_blank" rel="noopener noreferrer" >
+              <!--?xml version="1.0" encoding="utf-8"?-->
+				<svg aria-hidden="true" data-prefix="fas" data-icon="instagram" class="svg-inline--fa fa-w-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+              <span class="sr-only">Instagram</span>
+          </a>
+
+           <a class="social-media-icon" href="https://www.linkedin.com/company/bureau-of-labor-statistics/" title="Connect with BLS on LinkedIn" target="_blank" rel="noopener noreferrer" >
+              <!--?xml version="1.0" encoding="utf-8"?-->
+			  <svg aria-hidden="true" data-prefix="fas" data-icon="linkedin" class="svg-inline--fa fa-w-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+              <span class="sr-only">LinkedIn</span>
+          </a>
+
+           <a class="social-media-icon" href="https://www.threads.net/@usbls_gov" title="Connect with BLS on Threads" target="_blank" rel="noopener noreferrer" >
+              <!--?xml version="1.0" encoding="utf-8"?-->
+				<svg aria-hidden="true" data-prefix="fas" data-icon="threads" class="svg-inline--fa fa-w-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M331.5 235.7c2.2 .9 4.2 1.9 6.3 2.8c29.2 14.1 50.6 35.2 61.8 61.4c15.7 36.5 17.2 95.8-30.3 143.2c-36.2 36.2-80.3 52.5-142.6 53h-.3c-70.2-.5-124.1-24.1-160.4-70.2c-32.3-41-48.9-98.1-49.5-169.6V256v-.2C17 184.3 33.6 127.2 65.9 86.2C102.2 40.1 156.2 16.5 226.4 16h.3c70.3 .5 124.9 24 162.3 69.9c18.4 22.7 32 50 40.6 81.7l-40.4 10.8c-7.1-25.8-17.8-47.8-32.2-65.4c-29.2-35.8-73-54.2-130.5-54.6c-57 .5-100.1 18.8-128.2 54.4C72.1 146.1 58.5 194.3 58 256c.5 61.7 14.1 109.9 40.3 143.3c28 35.6 71.2 53.9 128.2 54.4c51.4-.4 85.4-12.6 113.7-40.9c32.3-32.2 31.7-71.8 21.4-95.9c-6.1-14.2-17.1-26-31.9-34.9c-3.7 26.9-11.8 48.3-24.7 64.8c-17.1 21.8-41.4 33.6-72.7 35.3c-23.6 1.3-46.3-4.4-63.9-16c-20.8-13.8-33-34.8-34.3-59.3c-2.5-48.3 35.7-83 95.2-86.4c21.1-1.2 40.9-.3 59.2 2.8c-2.4-14.8-7.3-26.6-14.6-35.2c-10-11.7-25.6-17.7-46.2-17.8H227c-16.6 0-39 4.6-53.3 26.3l-34.4-23.6c19.2-29.1 50.3-45.1 87.8-45.1h.8c62.6 .4 99.9 39.5 103.7 107.7l-.2 .2zm-156 68.8c1.3 25.1 28.4 36.8 54.6 35.3c25.6-1.4 54.6-11.4 59.5-73.2c-13.2-2.9-27.8-4.4-43.4-4.4c-4.8 0-9.6 .1-14.4 .4c-42.9 2.4-57.2 23.2-56.2 41.8l-.1 .1z"/></svg>
+              <span class="sr-only">Threads</span>
+          </a>  
+    
+           <a class="social-media-icon" href="https://x.com/BLS_gov" title="Connect with BLS on X, formerly referred to as Twitter" target="_blank" rel="noopener noreferrer" >
+              <!--?xml version="1.0" encoding="utf-8"?-->
+              <svg aria-hidden="true" data-prefix="fab" data-icon="x.com" class="svg-inline--fa fa-twitter fa-w-16"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"></path></svg>
+              <span class="sr-only">Visit BLS on X</span>
+          </a>
+                  
+           <a class="social-media-icon" href="https://www.youtube.com/channel/UCijn3WBpHtx4AvSya7NER9Q" title="BLS Youtube" target="_blank" rel="noopener noreferrer" >
+              <!--?xml version="1.0" encoding="utf-8"?-->
+              <svg aria-hidden="true" data-prefix="fab" data-icon="youtube" class="svg-inline--fa fa-youtube fa-w-18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"></path></svg>
+              <span class="sr-only">Youtube</span>
+          </a>
+          <a class="social-media-icon" href="javascript:window.open('https://public.govdelivery.com/accounts/USDOLBLS/subscriber/new ','Popup','width=800,height=500,toolbar=no,scrollbars=yes,resizable=yes'); void('');" onclick="window.status='Subscribe'; return true" onmouseover="window.status='Subscribe'; return true" onmouseout="window.status=''; return true" id="social-email-3" title="Subscribe to BLS E-mail Updates">
+              <!--?xml version="1.0" encoding="utf-8"?-->
+              <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="envelope" class="svg-inline--fa fa-envelope fa-w-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path></svg>
+              <span class="sr-only">Email</span>
+          </a>
+        </div>
+</div>
+</div>
+</div>
+</footer>
+
+<!-- FOOTER RIGHT END -->
+
+
+
+<!--no_index_end-->
+
+<!-- OneColFootBasic End -->
+
+  
+<!-- ********************* END TRAILER ************************************** -->
+</body>
+</html>

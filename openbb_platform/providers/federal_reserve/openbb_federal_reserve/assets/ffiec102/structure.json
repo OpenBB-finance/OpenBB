@@ -1,0 +1,1067 @@
+{
+  "source": "https://www.frbservices.org/binaries/content/assets/crsocms/central-bank/reporting-central/ffiec-102-user-guide.pdf",
+  "schedule_count": 2,
+  "item_count": 89,
+  "schedules": [
+    {
+      "schedule": "COVER",
+      "name": "Cover Page"
+    },
+    {
+      "schedule": "RC",
+      "name": "Market Risk Regulatory Report"
+    }
+  ],
+  "items": [
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Printed Name of Senior Officer",
+      "mdrm": "MRRRC490",
+      "columns": [
+        "MRRRC490"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Title of Officer",
+      "mdrm": "MRRRC491",
+      "columns": [
+        "MRRRC491"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Date of Signature",
+      "mdrm": "MRRRJ196",
+      "columns": [
+        "MRRRJ196"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Name/Title of Person to Whom Questions Should Be Directed",
+      "mdrm": "MRRR8901",
+      "columns": [
+        "MRRR8901"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Area Code/Phone Number of Person to Whom Questions Should Be Directed",
+      "mdrm": "MRRR8902",
+      "columns": [
+        "MRRR8902"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "FAX Number of Person to Whom Questions Should Be Directed",
+      "mdrm": "MRRR9116",
+      "columns": [
+        "MRRR9116"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "E-mail Address of Contact to Whom Questions Should Be Directed",
+      "mdrm": "MRRR4086",
+      "columns": [
+        "MRRR4086"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Legal Entity Identifier (LEI) of the Reporting Entity (Report only if the Reporting Entity has an LEI)",
+      "mdrm": "MRRR9224",
+      "columns": [
+        "MRRR9224"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "1",
+      "caption": "Previous day's VaR-based measure",
+      "mdrm": "MRRRS298",
+      "columns": [
+        "MRRRS298"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "2",
+      "caption": "Average of the immediately preceding 60 business days VaR-based measures",
+      "mdrm": "MRRRS299",
+      "columns": [
+        "MRRRS299"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "3",
+      "caption": "Multiplication factor: equal to a value of 3.00 or higher (based on backtesting)",
+      "mdrm": "MRRRS300",
+      "columns": [
+        "MRRRS300"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "4",
+      "caption": "Greater of item 1 or (item 2 multiplied by item 3)",
+      "mdrm": "MRRRS301",
+      "columns": [
+        "MRRRS301"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "5",
+      "caption": "Most recent stressed VaR-based measure",
+      "mdrm": "MRRRS302",
+      "columns": [
+        "MRRRS302"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "6",
+      "caption": "Item 3 times the average of the preceding 12 weeks stressed VaR-based measures",
+      "mdrm": "MRRRS303",
+      "columns": [
+        "MRRRS303"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "7",
+      "caption": "Greater of item 5 or item 6",
+      "mdrm": "MRRRS304",
+      "columns": [
+        "MRRRS304"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": null,
+      "caption": "Specific Risk Add-Ons",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "8",
+      "caption": "Debt positions",
+      "mdrm": "MRRRS305",
+      "columns": [
+        "MRRRS305"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "9",
+      "caption": "Equity positions",
+      "mdrm": "MRRRS306",
+      "columns": [
+        "MRRRS306"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "10",
+      "caption": "For all institutions, capital requirements for securitization positions using the Simplified Supervisory Formula Approach (SSFA) or applying a specific risk-weighting factor of 100 percent",
+      "mdrm": "MRRRS307",
+      "columns": [
+        "MRRRS307"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "11",
+      "caption": "For advanced approaches institutions, capital requirements for securitization positions using the Supervisory Formula Approach (SFA)",
+      "mdrm": "MRRRS308",
+      "columns": [
+        "MRRRS308"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "12",
+      "caption": "For advanced approaches institutions, capital requirements for securitization positions using the SSFA or applying a specific risk-weighting factor of 100 percent",
+      "mdrm": "MRRRS309",
+      "columns": [
+        "MRRRS309"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "13",
+      "caption": "For advanced approaches institutions, sum of items 11 and 12",
+      "mdrm": "MRRRS310",
+      "columns": [
+        "MRRRS310"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "14",
+      "caption": "Standardized measure of specific risk add-ons (sum of items 8, 9, and 10)",
+      "mdrm": "MRRRS311",
+      "columns": [
+        "MRRRS311"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "15",
+      "caption": "For advanced approaches institutions, advanced measure of specific risk add-ons (sum of items 8, 9, and 13)",
+      "mdrm": "MRRRS312",
+      "columns": [
+        "MRRRS312"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "16",
+      "caption": "Most recent incremental risk measure",
+      "mdrm": "MRRRS313",
+      "columns": [
+        "MRRRS313"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "17",
+      "caption": "Average of the previous 12 weeks measure of incremental risk",
+      "mdrm": "MRRRS314",
+      "columns": [
+        "MRRRS314"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "18",
+      "caption": "Greater of item 16 or item 17",
+      "mdrm": "MRRRS315",
+      "columns": [
+        "MRRRS315"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": null,
+      "caption": "Comprehensive Risk Capital Requirement",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "19",
+      "caption": "Most recent modeled measure of all price risk",
+      "mdrm": "MRRRS316",
+      "columns": [
+        "MRRRS316"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "20",
+      "caption": "Debt positions",
+      "mdrm": "MRRRS325",
+      "columns": [
+        "MRRRS325"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "21",
+      "caption": "Equity positions",
+      "mdrm": "MRRRS326",
+      "columns": [
+        "MRRRS326"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": null,
+      "caption": "Standardized Specific Risk Add-Ons for Net Long Correlation Trading Positions",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "22",
+      "caption": "For all institutions, capital requirements for securitization positions using the SSFA or applying a specific risk-weighting factor of 100 percent",
+      "mdrm": "MRRRS319",
+      "columns": [
+        "MRRRS319"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "23",
+      "caption": "For advanced approaches institutions, capital requirements for securitization positions using the SFA",
+      "mdrm": "MRRRS320",
+      "columns": [
+        "MRRRS320"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "24",
+      "caption": "For advanced approaches institutions, capital requirements for securitization positions using the SSFA or applying a specific risk-weighting factor of 100 percent",
+      "mdrm": "MRRRS321",
+      "columns": [
+        "MRRRS321"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "25",
+      "caption": "For advanced approaches institutions, sum of items 23 and 24",
+      "mdrm": "MRRRS322",
+      "columns": [
+        "MRRRS322"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "26",
+      "caption": "Standardized measure of specific risk add-ons for net long correlation trading positions (sum of items 20, 21, and 22)",
+      "mdrm": "MRRRS323",
+      "columns": [
+        "MRRRS323"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "27",
+      "caption": "For advanced approaches institutions, advanced measure of specific risk add-ons for net long correlation trading positions (sum of items 20, 21, and 25)",
+      "mdrm": "MRRRS324",
+      "columns": [
+        "MRRRS324"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "28",
+      "caption": "Debt positions",
+      "mdrm": "MRRRS333",
+      "columns": [
+        "MRRRS333"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "29",
+      "caption": "Equity positions",
+      "mdrm": "MRRRS334",
+      "columns": [
+        "MRRRS334"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": null,
+      "caption": "Standardized Specific Risk Add-Ons for Net Short Correlation Trading Positions",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "30",
+      "caption": "For all institutions, capital requirements for securitization positions using the SSFA or applying a specific risk-weighting factor of 100 percent",
+      "mdrm": "MRRRS327",
+      "columns": [
+        "MRRRS327"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "31",
+      "caption": "For advanced approaches institutions, capital requirements for securitization positions using the SFA",
+      "mdrm": "MRRRS328",
+      "columns": [
+        "MRRRS328"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "32",
+      "caption": "For advanced approaches institutions, capital requirements for securitization positions using the SSFA or applying a specific risk-weighting factor of 100 percent",
+      "mdrm": "MRRRS329",
+      "columns": [
+        "MRRRS329"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "33",
+      "caption": "For advanced approaches institutions, sum of items 31 and 32",
+      "mdrm": "MRRRS330",
+      "columns": [
+        "MRRRS330"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "34",
+      "caption": "Standardized measure of specific risk add-ons for net short correlation trading positions (sum of items 28, 29, and 30)",
+      "mdrm": "MRRRS331",
+      "columns": [
+        "MRRRS331"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "35",
+      "caption": "For advanced approaches institutions, advanced measure of specific risk add-ons for net short correlation trading positions (sum of items 28, 29, and 33)",
+      "mdrm": "MRRRS332",
+      "columns": [
+        "MRRRS332"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "36",
+      "caption": "Standardized measure of specific risk add-ons (greater of item 26 or item 34)",
+      "mdrm": "MRRRS335",
+      "columns": [
+        "MRRRS335"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "37",
+      "caption": "Surcharge for modeled correlation trading positions (item 36 multiplied by 0.08)",
+      "mdrm": "MRRRS336",
+      "columns": [
+        "MRRRS336"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "38",
+      "caption": "For advanced approaches institutions, advanced measure of specific risk add-ons (greater of item 27 or item 35)",
+      "mdrm": "MRRRS337",
+      "columns": [
+        "MRRRS337"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "39",
+      "caption": "For advanced approaches institutions, surcharge for modeled correlation trading positions (item 38 multiplied by 0.08)",
+      "mdrm": "MRRRS338",
+      "columns": [
+        "MRRRS338"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "46",
+      "caption": "Most recent standardized comprehensive risk measure (greater of item 19 or item 37)",
+      "mdrm": "MRRRH327",
+      "columns": [
+        "MRRRH327"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "47",
+      "caption": "Average standardized comprehensive risk measure over the previous 12 weeks",
+      "mdrm": "MRRRH328",
+      "columns": [
+        "MRRRH328"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "48",
+      "caption": "Standardized comprehensive risk measure (greater of item 46 or item 47)",
+      "mdrm": "MRRRS341",
+      "columns": [
+        "MRRRS341"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "49",
+      "caption": "For advanced approaches institutions, most recent advanced comprehensive risk measure (greater of item 19 or item 39)",
+      "mdrm": "MRRRH329",
+      "columns": [
+        "MRRRH329"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "50",
+      "caption": "For advanced approaches institutions, average advanced comprehensive risk measure over the previous 12 weeks",
+      "mdrm": "MRRRH330",
+      "columns": [
+        "MRRRH330"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "51",
+      "caption": "For advanced approaches institutions, advanced comprehensive risk measure (greater of item 49 or item 50)",
+      "mdrm": "MRRRS342",
+      "columns": [
+        "MRRRS342"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": null,
+      "caption": "De Minimis Positions and Other Adjustments",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "52",
+      "caption": "Capital requirement for all de minimis exposures",
+      "mdrm": "MRRRS343",
+      "columns": [
+        "MRRRS343"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "53",
+      "caption": "Additional capital requirement",
+      "mdrm": "MRRRS344",
+      "columns": [
+        "MRRRS344"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "54",
+      "caption": "Sum of items 52 and 53",
+      "mdrm": "MRRRS345",
+      "columns": [
+        "MRRRS345"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": null,
+      "caption": "Market Risk-Weighted Assets",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "55",
+      "caption": "Standardized market risk-weighted assets: Sum of items 4, 7, 14, 18 (if applicable), 42 or 48 (as appropriate), and 54, all multiplied by 12.5",
+      "mdrm": "MRRRS581",
+      "columns": [
+        "MRRRS581"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "56",
+      "caption": "For advanced approaches institutions, advanced market risk-weighted assets: Sum of items 4, 7, 15, 18 (if applicable), 45 or 51 (as appropriate), and 54, all multiplied by 12.5",
+      "mdrm": "MRRRS347",
+      "columns": [
+        "MRRRS347"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": null,
+      "caption": "Items Related to the Previous Day's Value-at-Risk (VaR)-Based Measure",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.1",
+      "caption": "VaR-based measure for interest rate positions",
+      "mdrm": "MRRRS348",
+      "columns": [
+        "MRRRS348"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.2",
+      "caption": "VaR-based measure for debt positions",
+      "mdrm": "MRRRS349",
+      "columns": [
+        "MRRRS349"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.3",
+      "caption": "VaR-based measure for equity positions",
+      "mdrm": "MRRRS350",
+      "columns": [
+        "MRRRS350"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.4",
+      "caption": "VaR-based measure for foreign exchange positions",
+      "mdrm": "MRRRS351",
+      "columns": [
+        "MRRRS351"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.5",
+      "caption": "VaR-based measure for commodity and other positions",
+      "mdrm": "MRRRS352",
+      "columns": [
+        "MRRRS352"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.6",
+      "caption": "Modeled specific risk included in the previous day's VaR-based measure that is not included in Memorandum items 1 through 5",
+      "mdrm": "MRRRS353",
+      "columns": [
+        "MRRRS353"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": null,
+      "caption": "Items Related to the Average of the Daily VaR-Based Measure for Each of the Preceding 60 Business Day's (with Applicable Multiplication Factor)",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.7",
+      "caption": "VaR-based measure for interest rate positions",
+      "mdrm": "MRRRS354",
+      "columns": [
+        "MRRRS354"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.8",
+      "caption": "VaR-based measure for debt positions",
+      "mdrm": "MRRRS355",
+      "columns": [
+        "MRRRS355"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.9",
+      "caption": "VaR-based measure for equity positions",
+      "mdrm": "MRRRS356",
+      "columns": [
+        "MRRRS356"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.10",
+      "caption": "VaR-based measure for foreign exchange positions",
+      "mdrm": "MRRRS357",
+      "columns": [
+        "MRRRS357"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.11",
+      "caption": "VaR-based measure for commodity and other positions",
+      "mdrm": "MRRRS358",
+      "columns": [
+        "MRRRS358"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.12",
+      "caption": "Modeled specific risk included in the average of the daily VaR-based measure that is not included in Memorandum items 7 through 11",
+      "mdrm": "MRRRS359",
+      "columns": [
+        "MRRRS359"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": null,
+      "caption": "Backtesting (Over the Most Recent Calendar Quarter)",
+      "mdrm": null,
+      "columns": null,
+      "level": 1,
+      "is_header": true
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.13",
+      "caption": "Number of trading days in the calendar quarter with a trading profit",
+      "mdrm": "MRRRS360",
+      "columns": [
+        "MRRRS360"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.14",
+      "caption": "Number of trading days in the calendar quarter with a trading loss",
+      "mdrm": "MRRRS361",
+      "columns": [
+        "MRRRS361"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.15",
+      "caption": "Number of trading days in the calendar quarter where the trading day's trading loss exceeded the respective VaR estimate",
+      "mdrm": "MRRRS362",
+      "columns": [
+        "MRRRS362"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.16",
+      "caption": "The largest ratio of a daily trading loss to that trading day's VaR measure in the calendar quarter",
+      "mdrm": "MRRRS363",
+      "columns": [
+        "MRRRS363"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.17",
+      "caption": "The second largest ratio of a daily trading loss to that trading day's VaR measure in the calendar quarter",
+      "mdrm": "MRRRS364",
+      "columns": [
+        "MRRRS364"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.18",
+      "caption": "The third largest ratio of a daily trading loss to that trading day's VaR measure in the calendar quarter",
+      "mdrm": "MRRRS365",
+      "columns": [
+        "MRRRS365"
+      ],
+      "level": 2,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.19",
+      "caption": "The starting date of the stress period used to measure the stressed VaR",
+      "mdrm": "MRRRS366",
+      "columns": [
+        "MRRRS366"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.20",
+      "caption": "Number of changes to stress period starting date used in calculations for the preceding 12 weeks",
+      "mdrm": "MRRRS367",
+      "columns": [
+        "MRRRS367"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.21",
+      "caption": "Total specific risk add-ons for non-modeled net long securitization positions",
+      "mdrm": "MRRRS368",
+      "columns": [
+        "MRRRS368"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "RC",
+      "schedule_name": "Market Risk Regulatory Report",
+      "line": "M.22",
+      "caption": "Total specific risk add-ons for non-modeled net short securitization positions",
+      "mdrm": "MRRRS369",
+      "columns": [
+        "MRRRS369"
+      ],
+      "level": 1,
+      "is_header": false
+    }
+  ]
+}

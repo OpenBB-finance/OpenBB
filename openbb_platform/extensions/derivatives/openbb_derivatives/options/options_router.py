@@ -18,8 +18,6 @@ from openbb_core.provider.standard_models.options_chains import OptionsChainsDat
 
 router = Router(prefix="/options")
 
-# pylint: disable=unused-argument
-
 
 @router.command(
     model="OptionsChains",
@@ -55,7 +53,7 @@ async def chains(
         ),
     ],
 )
-async def surface(  # pylint: disable=R0913, R0917
+async def surface(
     data: list[Data] | Data,
     target: str = "implied_volatility",
     underlying_price: float | None = None,
@@ -137,9 +135,9 @@ async def surface(  # pylint: disable=R0913, R0917
         An OBBject containing the processed options data.
         Results are a list of dictionaries.
     """
-    # pylint: disable=import-outside-toplevel
-    from datetime import datetime  # noqa
-    from pandas import concat, DataFrame
+    from datetime import datetime
+
+    from pandas import DataFrame, concat
 
     df = DataFrame()
 
@@ -156,11 +154,13 @@ async def surface(  # pylint: disable=R0913, R0917
         if all(isinstance(d, dict) for d in data):
             df = DataFrame(data)
         elif all(isinstance(d, Data) for d in data):
-            df = DataFrame([d.model_dump(exclude_none=True, exclude_unset=True) for d in data])  # type: ignore
+            df = DataFrame(
+                [d.model_dump(exclude_none=True, exclude_unset=True) for d in data]
+            )
 
     options = DataFrame(df.copy())
 
-    last_price = underlying_price or options.underlying_price.iloc[0]  # type: ignore
+    last_price = underlying_price or options.underlying_price.iloc[0]
 
     if last_price is None:
         raise OpenBBError(
@@ -169,13 +169,13 @@ async def surface(  # pylint: disable=R0913, R0917
             )
         )
 
-    if target not in options.columns:  # type: ignore
+    if target not in options.columns:
         raise OpenBBError(f"Error: No {target} field found.")
-    if "dte" not in options.columns:  # type: ignore
-        options.dte = (options.expiration - datetime.today().date()).days  # type: ignore
+    if "dte" not in options.columns:
+        options.dte = (options.expiration - datetime.today().date()).days
 
-    calls = options.query(f"`option_type` == 'call' and `dte` >= 0 and `{target}` > 0")  # type: ignore
-    puts = options.query(f"`option_type` == 'put' and `dte` >= 0 and `{target}` > 0")  # type: ignore
+    calls = options.query(f"`option_type` == 'call' and `dte` >= 0 and `{target}` > 0")
+    puts = options.query(f"`option_type` == 'put' and `dte` >= 0 and `{target}` > 0")
 
     if oi:
         calls = calls[calls["open_interest"] > 0]
@@ -186,31 +186,27 @@ async def surface(  # pylint: disable=R0913, R0917
         puts = puts[puts["volume"] > 0]
 
     if dte_min is not None:
-        calls = calls.query("dte >= @dte_min")  # type: ignore
-        puts = puts.query("dte >= @dte_min")  # type: ignore
+        calls = calls.query("dte >= @dte_min")
+        puts = puts.query("dte >= @dte_min")
 
     if dte_max is not None:
-        calls = calls.query("dte <= @dte_max")  # type: ignore
-        puts = puts.query("dte <= @dte_max")  # type: ignore
+        calls = calls.query("dte <= @dte_max")
+        puts = puts.query("dte <= @dte_max")
 
     if moneyness is not None and moneyness > 0:
         moneyness = float(moneyness)
-        high = (  # noqa:F841 pylint: disable=unused-variable  # type: ignore
-            1 + (moneyness / 100)
-        ) * last_price
-        low = (  # noqa:F841 pylint: disable=unused-variable  # type: ignore
-            1 - (moneyness / 100)
-        ) * last_price
-        calls = calls.query("@low <= `strike` <= @high")  # type: ignore
-        puts = puts.query("@low <= `strike` <= @high")  # type: ignore
+        high = (1 + (moneyness / 100)) * last_price
+        low = (1 - (moneyness / 100)) * last_price
+        calls = calls.query("@low <= `strike` <= @high")
+        puts = puts.query("@low <= `strike` <= @high")
 
     if strike_min is not None:
-        calls = calls.query("strike >= @strike_min")  # type: ignore
-        puts = puts.query("strike >= @strike_min")  # type: ignore
+        calls = calls.query("strike >= @strike_min")
+        puts = puts.query("strike >= @strike_min")
 
     if strike_max is not None:
-        calls = calls.query("strike <= @strike_max")  # type: ignore
-        puts = puts.query("strike <= @strike_max")  # type: ignore
+        calls = calls.query("strike <= @strike_max")
+        puts = puts.query("strike <= @strike_max")
 
     if option_type in ["otm", "itm"] and last_price is None:
         raise RuntimeError(
@@ -218,12 +214,20 @@ async def surface(  # pylint: disable=R0913, R0917
         )
 
     if option_type is not None and option_type == "otm":
-        otm_calls = calls.query("strike > @last_price").set_index(["expiration", "strike", "option_type"])  # type: ignore
-        otm_puts = puts.query("strike < @last_price").set_index(["expiration", "strike", "option_type"])  # type: ignore
+        otm_calls = calls.query("strike > @last_price").set_index(
+            ["expiration", "strike", "option_type"]
+        )
+        otm_puts = puts.query("strike < @last_price").set_index(
+            ["expiration", "strike", "option_type"]
+        )
         df = concat([otm_calls, otm_puts]).sort_index().reset_index()
     elif option_type is not None and option_type == "itm":
-        itm_calls = calls.query("strike < @last_price").set_index(["expiration", "strike", "option_type"])  # type: ignore
-        itm_puts = puts.query("strike > @last_price").set_index(["expiration", "strike", "option_type"])  # type: ignore
+        itm_calls = calls.query("strike < @last_price").set_index(
+            ["expiration", "strike", "option_type"]
+        )
+        itm_puts = puts.query("strike > @last_price").set_index(
+            ["expiration", "strike", "option_type"]
+        )
         df = concat([itm_calls, itm_puts]).sort_index().reset_index()
     elif option_type is not None and option_type == "calls":
         df = calls
@@ -231,7 +235,7 @@ async def surface(  # pylint: disable=R0913, R0917
         df = puts
 
     df = DataFrame(
-        df[  # type: ignore
+        df[
             [
                 "expiration",
                 "strike",

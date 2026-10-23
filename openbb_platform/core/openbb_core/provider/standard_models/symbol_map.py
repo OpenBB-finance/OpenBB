@@ -1,7 +1,8 @@
 """Commitment of Traders Reports Search Standard Model."""
 
-from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field
+
+from openbb_core.provider.abstract.query_params import QueryParams
 
 
 class SymbolMapQueryParams(QueryParams):

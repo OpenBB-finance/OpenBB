@@ -7,10 +7,11 @@ from datetime import (
 )
 from typing import Literal
 
+from pydantic import Field, model_validator
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from pydantic import Field, model_validator
 
 
 class USTreasuryAuctionsQueryParams(QueryParams):

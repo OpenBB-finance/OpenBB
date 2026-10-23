@@ -5,6 +5,7 @@ from typing import Annotated
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
+
 from openbb_core.app.model.user_settings import UserSettings
 from openbb_core.app.service.user_service import UserService
 from openbb_core.env import Env

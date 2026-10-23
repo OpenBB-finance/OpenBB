@@ -1,0 +1,153 @@
+[
+  {
+    "name": "Philadelphia Fed",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Federal_Reserve_Bank_Building_Philadelphia.jpg/960px-Federal_Reserve_Bank_Building_Philadelphia.jpg",
+    "img_dark": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Federal_Reserve_Bank_Building_Philadelphia.jpg/960px-Federal_Reserve_Bank_Building_Philadelphia.jpg",
+    "img_light": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Federal_Reserve_Bank_Building_Philadelphia.jpg/960px-Federal_Reserve_Bank_Building_Philadelphia.jpg",
+    "description": "Forecasting and business-cycle data from the Philadelphia Fed - the ADS Business Conditions Index, the Survey of Professional Forecasters, the Livingston Survey, the Anxious Index, GDPplus, the State Coincident Indexes, and the Manufacturing and Nonmanufacturing Business Outlook surveys.",
+    "allowCustomization": true,
+    "tabs": {
+      "business-conditions": {
+        "id": "business-conditions",
+        "name": "Business Conditions",
+        "layout": [
+          {
+            "i": "philadelphia_business_conditions_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "philadelphia_state_coincident_index_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "forecasts-expectations": {
+        "id": "forecasts-expectations",
+        "name": "Forecasts & Expectations",
+        "layout": [
+          {
+            "i": "philadelphia_survey_professional_forecasters_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "philadelphia_anxious_index_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "philadelphia_livingston_survey_federal_reserve_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "philadelphia_term_structure_inflation_federal_reserve_obb",
+            "x": 0,
+            "y": 54,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "output-risk": {
+        "id": "output-risk",
+        "name": "Output & Risk",
+        "layout": [
+          {
+            "i": "philadelphia_gdpplus_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "philadelphia_partisan_conflict_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "outlook-surveys": {
+        "id": "outlook-surveys",
+        "name": "Outlook Surveys",
+        "layout": [
+          {
+            "i": "philadelphia_manufacturing_outlook_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "philadelphia_nonmanufacturing_outlook_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "publications-reports": {
+        "id": "publications-reports",
+        "name": "Publications & Reports",
+        "layout": [
+          {
+            "i": "philadelphia_publications_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      }
+    },
+    "groups": []
+  }
+]

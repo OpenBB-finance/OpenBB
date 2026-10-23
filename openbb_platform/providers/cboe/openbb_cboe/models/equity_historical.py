@@ -1,8 +1,5 @@
 """Cboe Equity Historical Price Model."""
 
-# pylint: disable=unused-argument
-
-from datetime import datetime
 from typing import Any, Literal
 from warnings import warn
 
@@ -15,16 +12,24 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 
+from openbb_cboe.utils.constants import EQUITY_CHOICES_ENDPOINT
+
 
 class CboeEquityHistoricalQueryParams(EquityHistoricalQueryParams):
-    """
-    Cboe Equity Historical Price Query
+    """Cboe Equity Historical Price Query.
 
     Source: https://www.cboe.com/
     """
 
     __json_schema_extra__ = {
-        "symbol": {"multiple_items_allowed": True},
+        "symbol": {
+            "multiple_items_allowed": True,
+            "x-widget_config": {
+                "type": "endpoint",
+                "optionsEndpoint": EQUITY_CHOICES_ENDPOINT,
+                "style": {"popupWidth": 600},
+            },
+        },
         "interval": {"choices": ["1m", "1d"]},
     }
 
@@ -70,37 +75,31 @@ class CboeEquityHistoricalFetcher(
         list[CboeEquityHistoricalData],
     ]
 ):
-    """Transform the query, extract and transform the data from the CBOE endpoints."""
+    """Transform the query, extract and transform the data from the Cboe endpoints."""
 
     @staticmethod
     def transform_query(params: dict[str, Any]) -> CboeEquityHistoricalQueryParams:
         """Transform the query."""
-        # pylint: disable=import-outside-toplevel
         from datetime import timedelta
 
+        from openbb_cboe.utils.helpers import ny_now
+
         transformed_params = params.copy()
-        now = datetime.now()
+        now = ny_now()
+
         if (
             len(params.get("symbol", "").split(",")) > 1
             and params.get("start_date") is None
         ):
-            transformed_params["start_date"] = (
-                transformed_params["start_date"]
-                if transformed_params["start_date"]
-                else (now - timedelta(days=720)).strftime("%Y-%m-%d")
+            transformed_params["start_date"] = (now - timedelta(days=720)).strftime(
+                "%Y-%m-%d"
             )
+
         if transformed_params.get("start_date") is None:
-            transformed_params["start_date"] = (
-                transformed_params["start_date"]
-                if transformed_params.get("start_date")
-                else "1950-01-01"
-            )
-        if params.get("end_date") is None:
-            transformed_params["end_date"] = (
-                transformed_params["end_date"]
-                if transformed_params.get("end_date")
-                else now.strftime("%Y-%m-%d")
-            )
+            transformed_params["start_date"] = "1950-01-01"
+
+        if transformed_params.get("end_date") is None:
+            transformed_params["end_date"] = now.strftime("%Y-%m-%d")
 
         return CboeEquityHistoricalQueryParams(**transformed_params)
 
@@ -111,21 +110,18 @@ class CboeEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the Cboe endpoint."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_cboe.utils.helpers import (
-            TICKER_EXCEPTIONS,
-            get_index_directory,
-        )
         from openbb_core.provider.utils.helpers import amake_requests
 
+        from openbb_cboe.utils.helpers import TICKER_EXCEPTIONS, get_index_directory
+
         symbols = query.symbol.split(",")
-        INDEXES = await get_index_directory(use_cache=query.use_cache)
-        INDEXES = INDEXES.set_index("index_symbol")
-        INTERVAL_DICT = {"1m": "intraday", "1d": "historical"}
+        indexes = await get_index_directory(use_cache=query.use_cache)
+        indexes = indexes.set_index("index_symbol")
+        interval_dict = {"1m": "intraday", "1d": "historical"}
 
         def _generate_historical_prices_url(
-            symbol,
-            interval_type: Literal["intraday", "historical"] = "historical",
+            symbol: str,
+            interval_type: str = "historical",
         ) -> str:
             """Generate the URL for the data."""
             if symbol.replace("^", "") in TICKER_EXCEPTIONS:
@@ -134,21 +130,23 @@ class CboeEquityHistoricalFetcher(
                     "Only the most recent trading day is available for this ticker, "
                     + symbol
                 )
-            base_url: str = (
+
+            base_url = (
                 f"https://cdn.cboe.com/api/global/delayed_quotes/charts/{interval_type}"
             )
-            url = (
+
+            return (
                 base_url + f"/_{symbol.replace('^', '')}.json"
                 if symbol.replace("^", "") in TICKER_EXCEPTIONS
-                or symbol.replace("^", "") in INDEXES.index
+                or symbol.replace("^", "") in indexes.index
                 else base_url + f"/{symbol.replace('^', '')}.json"
             )
-            return url
 
         urls = [
-            _generate_historical_prices_url(symbol, INTERVAL_DICT[query.interval])  # type: ignore[arg-type]
+            _generate_historical_prices_url(symbol, interval_dict[query.interval])
             for symbol in symbols
         ]
+
         return await amake_requests(urls, **kwargs)
 
     @staticmethod
@@ -156,37 +154,35 @@ class CboeEquityHistoricalFetcher(
         query: CboeEquityHistoricalQueryParams, data: list[dict], **kwargs: Any
     ) -> list[CboeEquityHistoricalData]:
         """Transform the data to the standard format."""
-        # pylint: disable=import-outside-toplevel
-        import contextlib  # noqa
-        from datetime import timedelta  # noqa
-        from pandas import DataFrame, Series, concat, to_datetime  # noqa
+        import contextlib
+        from datetime import timedelta
+
+        from pandas import DataFrame, Series, concat, to_datetime
 
         if not data:
             raise EmptyDataError()
+
         results = DataFrame()
-        # Results will be different depending on the interval.
-        # We will also parse the output from multiple symbols.
+
         for item in data:
-            result = DataFrame()
             _symbol = item["symbol"]
             _temp = item["data"]
+
             if query.interval == "1d":
                 result = DataFrame(_temp)
-                result["symbol"] = _symbol.replace("_", "").replace("^", "")
-                result = result.set_index("date")
-                results = concat([results, result])
-            if query.interval == "1m":
+            else:
                 _datetime = Series([d["datetime"] for d in _temp]).rename("date")
                 _price = DataFrame(d["price"] for d in _temp)
                 _volume = DataFrame(d["volume"] for d in _temp)
                 result = _price.join([_volume, _datetime])
-                result["symbol"] = _symbol.replace("_", "").replace("^", "")
-                result = result.set_index("date")
-                results = concat([results, result])
+
+            result["symbol"] = _symbol.replace("_", "").replace("^", "")
+            result = result.set_index("date")
+            results = concat([results, result])
+
         results = results.set_index("symbol", append=True).sort_index()
-        # There are some bad data points in the open/high/low results that will break things.
+
         for c in results.columns:
-            # Some symbols do not have volume data, and some intraday symbols don't have options.
             if c in ["volume", "puts_volume", "calls_volume", "total_options_volume"]:
                 results[c] = results[c].astype(float).astype("int64")
                 results = (
@@ -194,21 +190,25 @@ class CboeEquityHistoricalFetcher(
                     if results[c].sum() == 0 and c != "volume"
                     else results
                 )
-            # Sub-penny prices are not warranted for any of the assets returned.
+
             if c in ["open", "high", "low", "close"]:
                 with contextlib.suppress(Exception):
                     results[c] = results[c].astype(float)
-                    results[c] = round(results[c], 2)
+
         output = results.dropna(how="all", axis=1).reset_index()
         output = output[output["open"] > 0]
-        # When there is only one ticker symbol, the symbol column is redundant.
+
         if len(query.symbol.split(",")) == 1:
             output = output.drop(columns="symbol")
-        # Finally, we apply the user-specified date range because it is not filtered at the source.
+
         output = output[
-            (to_datetime(output["date"]) >= to_datetime(query.start_date))
-            & (to_datetime(output["date"]) <= to_datetime(query.end_date + timedelta(days=1)))  # type: ignore[operator]
+            (to_datetime(output["date"]) >= to_datetime(query.start_date))  # ty: ignore[no-matching-overload]
+            & (
+                to_datetime(output["date"])
+                <= to_datetime(query.end_date + timedelta(days=1))  # ty: ignore[unsupported-operator]
+            )
         ]
+
         return [
             CboeEquityHistoricalData.model_validate(d)
             for d in output.to_dict("records")

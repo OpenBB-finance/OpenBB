@@ -1,14 +1,35 @@
 """Views for the technical Extension."""
 
-# pylint: disable=too-many-locals,use-dict-literal
-
-from typing import TYPE_CHECKING, Any
-
-from openbb_charting.core.to_chart import to_chart
-from openbb_charting.styles.colors import LARGE_CYCLER
+from typing import TYPE_CHECKING, Any, Literal, cast
 
 if TYPE_CHECKING:
-    from openbb_charting.core.openbb_figure import OpenBBFigure
+    from openbb_charting.core.openbb_figure import (
+        OpenBBFigure,
+    )
+
+
+def _resolve_price_data(kwargs: dict, index: str = "date"):
+    """Return the original OHLCV series a chart should draw against.
+
+    The caller's own ``data`` argument is repacked by ``CommandRunner._chart``
+    into ``kwargs["extra_params"]["data"]`` before reaching the chart function,
+    so the indicator's own (price-column-free) result is checked last.
+    """
+    from openbb_core.app.utils import basemodel_to_df
+    from pandas import DataFrame
+
+    data = kwargs.get("data")
+    if data is None:
+        data = kwargs.get("extra_params", {}).get("data")
+
+    if isinstance(data, DataFrame) and not data.empty:
+        return data.set_index(index) if index in data.columns else data
+
+    if isinstance(data, list) and data:
+        df = DataFrame(data) if isinstance(data[0], dict) else basemodel_to_df(data)
+        return df.set_index(index) if index in df.columns else df
+
+    return basemodel_to_df(kwargs["obbject_item"], index=index)
 
 
 class TechnicalViews:
@@ -52,20 +73,11 @@ class TechnicalViews:
     @staticmethod
     def technical_aroon(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Technical Aroon Chart."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
-        from openbb_core.app.utils import basemodel_to_df
-        from pandas import DataFrame
+        from openbb_charting.core.plotly_ta.ta_class import (
+            PlotlyTA,
+        )
 
-        if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
-            data = kwargs["data"]
-        else:
-            data = basemodel_to_df(
-                kwargs["obbject_item"], index=kwargs.get("index", "date")
-            )
-
-        if "date" in data.columns:
-            data = data.set_index("date")
+        data = _resolve_price_data(kwargs, kwargs.get("index", "date"))
 
         if "symbol" in data.columns and len(data.symbol.unique()) > 1:
             raise ValueError(
@@ -82,7 +94,7 @@ class TechnicalViews:
         symbol = kwargs.get("symbol", "")
 
         ta = PlotlyTA()
-        fig = ta.plot(  # type: ignore
+        fig = ta.plot(
             data,
             dict(aroon=dict(length=length, scalar=scalar)),
             title,
@@ -97,20 +109,11 @@ class TechnicalViews:
     @staticmethod
     def technical_macd(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Plot moving average convergence divergence chart."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
-        from openbb_core.app.utils import basemodel_to_df
-        from pandas import DataFrame
+        from openbb_charting.core.plotly_ta.ta_class import (
+            PlotlyTA,
+        )
 
-        if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
-            data = kwargs["data"]
-        else:
-            data = basemodel_to_df(
-                kwargs["obbject_item"], index=kwargs.get("index", "date")
-            )
-
-        if "date" in data.columns:
-            data = data.set_index("date")
+        data = _resolve_price_data(kwargs, kwargs.get("index", "date"))
 
         if "symbol" in data.columns and len(data.symbol.unique()) > 1:
             raise ValueError(
@@ -126,7 +129,7 @@ class TechnicalViews:
         volume = kwargs.get("volume") is True
 
         ta = PlotlyTA()
-        fig = ta.plot(  # type: ignore
+        fig = ta.plot(
             data,
             dict(macd=dict(fast=fast, slow=slow, signal=signal)),
             title,
@@ -140,20 +143,11 @@ class TechnicalViews:
     @staticmethod
     def technical_adx(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Average directional movement index chart."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
-        from openbb_core.app.utils import basemodel_to_df
-        from pandas import DataFrame
+        from openbb_charting.core.plotly_ta.ta_class import (
+            PlotlyTA,
+        )
 
-        if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
-            data = kwargs["data"]
-        else:
-            data = basemodel_to_df(
-                kwargs["obbject_item"], index=kwargs.get("index", "date")
-            )
-
-        if "date" in data.columns:
-            data = data.set_index("date")
+        data = _resolve_price_data(kwargs, kwargs.get("index", "date"))
 
         if "symbol" in data.columns and len(data.symbol.unique()) > 1:
             raise ValueError(
@@ -166,7 +160,7 @@ class TechnicalViews:
         symbol = kwargs.get("symbol", "")
 
         ta = PlotlyTA()
-        fig = ta.plot(  # type: ignore
+        fig = ta.plot(
             data,
             dict(adx=dict(length=length, scalar=scalar, drift=drift)),
             f"Average Directional Movement Index (ADX) {symbol}",
@@ -180,20 +174,11 @@ class TechnicalViews:
     @staticmethod
     def technical_rsi(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Relative strength index chart."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
-        from openbb_core.app.utils import basemodel_to_df
-        from pandas import DataFrame
+        from openbb_charting.core.plotly_ta.ta_class import (
+            PlotlyTA,
+        )
 
-        if "data" in kwargs and isinstance(kwargs["data"], DataFrame):
-            data = kwargs["data"]
-        else:
-            data = basemodel_to_df(
-                kwargs["obbject_item"], index=kwargs.get("index", "date")
-            )
-
-        if "date" in data.columns:
-            data = data.set_index("date")
+        data = _resolve_price_data(kwargs, kwargs.get("index", "date"))
 
         if "symbol" in data.columns and len(data.symbol.unique()) > 1:
             raise ValueError(
@@ -206,7 +191,7 @@ class TechnicalViews:
         symbol = kwargs.get("symbol", "")
 
         ta = PlotlyTA()
-        fig = ta.plot(  # type: ignore
+        fig = ta.plot(
             data,
             dict(rsi=dict(length=window, scalar=scalar, drift=drift)),
             f"{symbol.upper()} RSI {window}",
@@ -220,9 +205,12 @@ class TechnicalViews:
     @staticmethod
     def technical_cones(**kwargs) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Volatility Cones Chart."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.core.chart_style import ChartStyle
-        from openbb_charting.core.openbb_figure import OpenBBFigure
+        from openbb_charting.core.chart_style import (
+            ChartStyle,
+        )
+        from openbb_charting.core.openbb_figure import (
+            OpenBBFigure,
+        )
         from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame
 
@@ -231,11 +219,10 @@ class TechnicalViews:
         if isinstance(data, DataFrame) and not data.empty and "window" in data.columns:
             df_ta = data.set_index("window")
         else:
-            df_ta = basemodel_to_df(kwargs["obbject_item"], index="window")  # type: ignore
+            df_ta = basemodel_to_df(kwargs["obbject_item"], index="window")
 
         df_ta.columns = [col.title().replace("_", " ") for col in df_ta.columns]
 
-        # Check if the data is formatted as expected.
         if not all(
             col in df_ta.columns for col in ["Realized", "Min", "Median", "Max"]
         ):
@@ -333,22 +320,28 @@ class TechnicalViews:
         **kwargs: Any,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Relative Rotation Chart."""
-        # pylint: disable=import-outside-toplevel
         from openbb_charting.charts import relative_rotation  # noqa
         from openbb_charting.core.chart_style import ChartStyle  # noqa
         from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
         from openbb_core.app.utils import basemodel_to_df  # noqa
 
-        ratios_df = basemodel_to_df(kwargs["obbject_item"].rs_ratios, index="date")  # type: ignore
-        momentum_df = basemodel_to_df(kwargs["obbject_item"].rs_momentum, index="date")  # type: ignore
-        benchmark_symbol = kwargs["obbject_item"].benchmark  # type: ignore
+        ratios_df = basemodel_to_df(kwargs["obbject_item"].rs_ratios, index="date")
+        momentum_df = basemodel_to_df(kwargs["obbject_item"].rs_momentum, index="date")
+        benchmark_symbol = kwargs["obbject_item"].benchmark
         study = kwargs.get("study")
         study = str(kwargs["obbject_item"].study) if study is None else str(study)
         show_tails = kwargs.get("show_tails")
         show_tails = True if show_tails is None else show_tails
-        tail_periods = int(kwargs.get("tail_periods")) if "tail_periods" in kwargs else 16  # type: ignore
-        tail_interval = str(kwargs.get("tail_interval")) if "tail_interval" in kwargs else "week"  # type: ignore
-        date = kwargs.get("date") if "date" in kwargs else None  # type: ignore
+        tail_periods = int(kwargs["tail_periods"]) if "tail_periods" in kwargs else 16
+        tail_interval = cast(
+            Literal["day", "week", "month"],
+            {
+                "day": "day",
+                "week": "week",
+                "month": "month",
+            }.get(str(kwargs.get("tail_interval", "week")), "week"),
+        )
+        date = kwargs.get("date") if "date" in kwargs else None
         show_tails = False if date is not None else show_tails
         if ratios_df.empty or momentum_df.empty:
             raise RuntimeError("Error: No data to plot.")
@@ -360,7 +353,7 @@ class TechnicalViews:
                 study,
                 benchmark_symbol,
                 tail_periods,
-                tail_interval,  # type: ignore
+                tail_interval,
             )
 
         if show_tails is False:
@@ -369,10 +362,10 @@ class TechnicalViews:
                 momentum_df,
                 benchmark_symbol,
                 study,
-                date,  # type: ignore
+                date,
             )
 
-        figure = OpenBBFigure(fig)  # pylint: disable=E0606
+        figure = OpenBBFigure(fig)
         font_color = "black" if ChartStyle().plt_style == "light" else "white"
         figure.update_layout(
             plot_bgcolor="rgba(255,255,255,1)",
@@ -413,18 +406,19 @@ class TechnicalViews:
 
 def _ta_ma(**kwargs):
     """Plot moving average helper."""
-    # pylint: disable=import-outside-toplevel
-    from openbb_charting.core.chart_style import ChartStyle
-    from openbb_charting.core.openbb_figure import OpenBBFigure
-    from openbb_core.app.utils import basemodel_to_df
+    from openbb_charting.core.chart_style import (
+        ChartStyle,
+    )
+    from openbb_charting.core.openbb_figure import (
+        OpenBBFigure,
+    )
+    from openbb_charting.core.to_chart import to_chart
+    from openbb_charting.styles.colors import (
+        LARGE_CYCLER,
+    )
     from pandas import DataFrame
 
-    index = (
-        kwargs.get("index")
-        if "index" in kwargs and kwargs.get("index") is not None
-        else "date"
-    )
-    data = kwargs.get("data")
+    index = kwargs.get("index") or "date"
     ma_type = (
         kwargs["ma_type"]
         if "ma_type" in kwargs and kwargs.get("ma_type") is not None
@@ -432,14 +426,7 @@ def _ta_ma(**kwargs):
     )
     ma_types = ma_type.split(",") if isinstance(ma_type, str) else ma_type
 
-    if isinstance(data, DataFrame) and not data.empty:
-        data = data.set_index(index) if index in data.columns else data
-
-    if data is None:
-        data = basemodel_to_df(kwargs["obbject_item"], index=index)
-
-    if isinstance(data, list):
-        data = basemodel_to_df(data, index=index)
+    data = _resolve_price_data(kwargs, index)
 
     window = (
         kwargs.get("length", [])

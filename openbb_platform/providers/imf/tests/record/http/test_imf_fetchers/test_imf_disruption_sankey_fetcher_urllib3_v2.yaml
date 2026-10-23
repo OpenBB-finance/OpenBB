@@ -1,0 +1,111 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/sankey_data/FeatureServer/0/query?where=eventid%20%3D%201001234&outFields=*&returnZ=true&resultRecordCount=1000&maxRecordCountFactor=5&outSR=&f=json&resultOffset=0
+  response:
+    body:
+      string: '{"objectIdFieldName":"ObjectId","uniqueIdField":{"name":"ObjectId","isSystemMaintained":true},"globalIdFieldName":"","fields":[{"name":"eventid","type":"esriFieldTypeInteger","alias":"eventid","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"from_id","type":"esriFieldTypeString","alias":"from_id","sqlType":"sqlTypeNVarchar","length":4000,"domain":null,"defaultValue":null},{"name":"from_iso3","type":"esriFieldTypeString","alias":"from_iso3","sqlType":"sqlTypeNVarchar","length":4000,"domain":null,"defaultValue":null},{"name":"to_id","type":"esriFieldTypeString","alias":"to_id","sqlType":"sqlTypeNVarchar","length":4000,"domain":null,"defaultValue":null},{"name":"to_iso3","type":"esriFieldTypeString","alias":"to_iso3","sqlType":"sqlTypeNVarchar","length":4000,"domain":null,"defaultValue":null},{"name":"perc_disaster_capacity","type":"esriFieldTypeDouble","alias":"perc_disaster_capacity","sqlType":"sqlTypeFloat","domain":null,"defaultValue":null},{"name":"source","type":"esriFieldTypeInteger","alias":"source","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"target","type":"esriFieldTypeInteger","alias":"target","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null},{"name":"from_","type":"esriFieldTypeString","alias":"from","sqlType":"sqlTypeNVarchar","length":4000,"domain":null,"defaultValue":null},{"name":"to_","type":"esriFieldTypeString","alias":"to","sqlType":"sqlTypeNVarchar","length":4000,"domain":null,"defaultValue":null},{"name":"ObjectId","type":"esriFieldTypeOID","alias":"ObjectId","sqlType":"sqlTypeInteger","domain":null,"defaultValue":null}],"features":[{"attributes":{"eventid":1001234,"from_id":"port1188","from_iso3":"CHN","to_id":"port1232","to_iso3":"PHL","perc_disaster_capacity":0.14861783118072364,"source":3,"target":1,"from_":"Shanghai
+        (Pudong) (China)","to_":"Subic Bay (Philippines)","ObjectId":6505}},{"attributes":{"eventid":1001234,"from_id":"port1201","from_iso3":"SGP","to_id":"port1232","to_iso3":"PHL","perc_disaster_capacity":1.4954899456989474,"source":6,"target":1,"from_":"Singapore
+        (Singapore)","to_":"Subic Bay (Philippines)","ObjectId":6506}},{"attributes":{"eventid":1001234,"from_id":"port125","from_iso3":"PHL","to_id":"port1232","to_iso3":"PHL","perc_disaster_capacity":0.50064088380990446,"source":4,"target":1,"from_":"Batangas
+        City (Philippines)","to_":"Subic Bay (Philippines)","ObjectId":6507}},{"attributes":{"eventid":1001234,"from_id":"port1404","from_iso3":"CHN","to_id":"port1232","to_iso3":"PHL","perc_disaster_capacity":0.77357329625809834,"source":8,"target":1,"from_":"Xiamen
+        (China)","to_":"Subic Bay (Philippines)","ObjectId":6508}},{"attributes":{"eventid":1001234,"from_id":"port425","from_iso3":"CHN","to_id":"port1232","to_iso3":"PHL","perc_disaster_capacity":0.21205818091826847,"source":12,"target":1,"from_":"Guangzhou
+        (Nansha) (China)","to_":"Subic Bay (Philippines)","ObjectId":6509}},{"attributes":{"eventid":1001234,"from_id":"port541","from_iso3":"TWN","to_id":"port1232","to_iso3":"PHL","perc_disaster_capacity":0.71070530458984238,"source":9,"target":1,"from_":"Kaohsiung
+        (Taiwan Province of China)","to_":"Subic Bay (Philippines)","ObjectId":6510}},{"attributes":{"eventid":1001234,"from_id":"port824","from_iso3":"CHN","to_id":"port1232","to_iso3":"PHL","perc_disaster_capacity":0.049372819735604929,"source":7,"target":1,"from_":"Ningbo
+        (China)","to_":"Subic Bay (Philippines)","ObjectId":6511}},{"attributes":{"eventid":1001234,"from_id":"port1188","from_iso3":"CHN","to_id":"port694","to_iso3":"PHL","perc_disaster_capacity":2.9148018095518968,"source":3,"target":2,"from_":"Shanghai
+        (Pudong) (China)","to_":"Manila (Philippines)","ObjectId":6512}},{"attributes":{"eventid":1001234,"from_id":"port1201","from_iso3":"SGP","to_id":"port694","to_iso3":"PHL","perc_disaster_capacity":5.043371701948959,"source":6,"target":2,"from_":"Singapore
+        (Singapore)","to_":"Manila (Philippines)","ObjectId":6513}},{"attributes":{"eventid":1001234,"from_id":"port1232","from_iso3":"PHL","to_id":"port694","to_iso3":"PHL","perc_disaster_capacity":2.6034448303036255,"source":10,"target":2,"from_":"Subic
+        Bay (Philippines)","to_":"Manila (Philippines)","ObjectId":6514}},{"attributes":{"eventid":1001234,"from_id":"port125","from_iso3":"PHL","to_id":"port694","to_iso3":"PHL","perc_disaster_capacity":3.4060460753760471,"source":4,"target":2,"from_":"Batangas
+        City (Philippines)","to_":"Manila (Philippines)","ObjectId":6515}},{"attributes":{"eventid":1001234,"from_id":"port1404","from_iso3":"CHN","to_id":"port694","to_iso3":"PHL","perc_disaster_capacity":2.4727686739486949,"source":8,"target":2,"from_":"Xiamen
+        (China)","to_":"Manila (Philippines)","ObjectId":6516}},{"attributes":{"eventid":1001234,"from_id":"port425","from_iso3":"CHN","to_id":"port694","to_iso3":"PHL","perc_disaster_capacity":2.29805502022165,"source":12,"target":2,"from_":"Guangzhou
+        (Nansha) (China)","to_":"Manila (Philippines)","ObjectId":6517}},{"attributes":{"eventid":1001234,"from_id":"port526","from_iso3":"SAU","to_id":"port694","to_iso3":"PHL","perc_disaster_capacity":2.455306856714397,"source":5,"target":2,"from_":"Juaymah
+        (Saudi Arabia)","to_":"Manila (Philippines)","ObjectId":6518}},{"attributes":{"eventid":1001234,"from_id":"port541","from_iso3":"TWN","to_id":"port694","to_iso3":"PHL","perc_disaster_capacity":5.6256165200043968,"source":9,"target":2,"from_":"Kaohsiung
+        (Taiwan Province of China)","to_":"Manila (Philippines)","ObjectId":6519}},{"attributes":{"eventid":1001234,"from_id":"port824","from_iso3":"CHN","to_id":"port694","to_iso3":"PHL","perc_disaster_capacity":2.391254473727463,"source":7,"target":2,"from_":"Ningbo
+        (China)","to_":"Manila (Philippines)","ObjectId":6520}},{"attributes":{"eventid":1001234,"from_id":"port955","from_iso3":"AUS","to_id":"port694","to_iso3":"PHL","perc_disaster_capacity":5.5856261960916154,"source":11,"target":2,"from_":"Port
+        Hedland (Australia)","to_":"Manila (Philippines)","ObjectId":6521}},{"attributes":{"eventid":1001234,"from_id":"port1232","from_iso3":"PHL","to_id":"port1188","to_iso3":"CHN","perc_disaster_capacity":0.38356227410744004,"source":1,"target":14,"from_":"Subic
+        Bay (Philippines)","to_":"Shanghai (Pudong) (China)","ObjectId":6522}},{"attributes":{"eventid":1001234,"from_id":"port1232","from_iso3":"PHL","to_id":"port1069","to_iso3":"CHN","perc_disaster_capacity":0.19065071602592337,"source":1,"target":19,"from_":"Subic
+        Bay (Philippines)","to_":"Qingdao (China)","ObjectId":6523}},{"attributes":{"eventid":1001234,"from_id":"port1232","from_iso3":"PHL","to_id":"port1201","to_iso3":"SGP","perc_disaster_capacity":0.490282059636996,"source":1,"target":18,"from_":"Subic
+        Bay (Philippines)","to_":"Singapore (Singapore)","ObjectId":6524}},{"attributes":{"eventid":1001234,"from_id":"port1232","from_iso3":"PHL","to_id":"port125","to_iso3":"PHL","perc_disaster_capacity":0.5853331939510279,"source":1,"target":16,"from_":"Subic
+        Bay (Philippines)","to_":"Batangas City (Philippines)","ObjectId":6525}},{"attributes":{"eventid":1001234,"from_id":"port1232","from_iso3":"PHL","to_id":"port1297","to_iso3":"CHN","perc_disaster_capacity":0.024260234512414849,"source":1,"target":17,"from_":"Subic
+        Bay (Philippines)","to_":"Tianjin Xin Gang (China)","ObjectId":6526}},{"attributes":{"eventid":1001234,"from_id":"port1232","from_iso3":"PHL","to_id":"port224","to_iso3":"PHL","perc_disaster_capacity":0.36426061432965062,"source":1,"target":20,"from_":"Subic
+        Bay (Philippines)","to_":"Cebu (Philippines)","ObjectId":6527}},{"attributes":{"eventid":1001234,"from_id":"port1232","from_iso3":"PHL","to_id":"port632","to_iso3":"CHN","perc_disaster_capacity":0.0345708662400407,"source":1,"target":15,"from_":"Subic
+        Bay (Philippines)","to_":"Lanqiao Port (China)","ObjectId":6528}},{"attributes":{"eventid":1001234,"from_id":"port1232","from_iso3":"PHL","to_id":"port694","to_iso3":"PHL","perc_disaster_capacity":3.1976748425823009,"source":1,"target":21,"from_":"Subic
+        Bay (Philippines)","to_":"Manila (Philippines)","ObjectId":6529}},{"attributes":{"eventid":1001234,"from_id":"port1232","from_iso3":"PHL","to_id":"port281","to_iso3":"PHL","perc_disaster_capacity":0.25070806417966196,"source":1,"target":13,"from_":"Subic
+        Bay (Philippines)","to_":"Davao (Philippines)","ObjectId":6530}},{"attributes":{"eventid":1001234,"from_id":"port1232","from_iso3":"PHL","to_id":"port541","to_iso3":"TWN","perc_disaster_capacity":0.44994784975234514,"source":1,"target":22,"from_":"Subic
+        Bay (Philippines)","to_":"Kaohsiung (Taiwan Province of China)","ObjectId":6531}},{"attributes":{"eventid":1001234,"from_id":"port694","from_iso3":"PHL","to_id":"port125","to_iso3":"PHL","perc_disaster_capacity":1.75117465456536,"source":2,"target":16,"from_":"Manila
+        (Philippines)","to_":"Batangas City (Philippines)","ObjectId":6532}},{"attributes":{"eventid":1001234,"from_id":"port694","from_iso3":"PHL","to_id":"port1188","to_iso3":"CHN","perc_disaster_capacity":2.3623567228249405,"source":2,"target":14,"from_":"Manila
+        (Philippines)","to_":"Shanghai (Pudong) (China)","ObjectId":6533}},{"attributes":{"eventid":1001234,"from_id":"port694","from_iso3":"PHL","to_id":"port1201","to_iso3":"SGP","perc_disaster_capacity":3.2126428487369552,"source":2,"target":18,"from_":"Manila
+        (Philippines)","to_":"Singapore (Singapore)","ObjectId":6534}},{"attributes":{"eventid":1001234,"from_id":"port694","from_iso3":"PHL","to_id":"port224","to_iso3":"PHL","perc_disaster_capacity":2.7239940144535817,"source":2,"target":20,"from_":"Manila
+        (Philippines)","to_":"Cebu (Philippines)","ObjectId":6535}},{"attributes":{"eventid":1001234,"from_id":"port694","from_iso3":"PHL","to_id":"port281","to_iso3":"PHL","perc_disaster_capacity":3.0552481697116027,"source":2,"target":13,"from_":"Manila
+        (Philippines)","to_":"Davao (Philippines)","ObjectId":6536}},{"attributes":{"eventid":1001234,"from_id":"port694","from_iso3":"PHL","to_id":"port1297","to_iso3":"CHN","perc_disaster_capacity":2.5028679672465937,"source":2,"target":17,"from_":"Manila
+        (Philippines)","to_":"Tianjin Xin Gang (China)","ObjectId":6537}},{"attributes":{"eventid":1001234,"from_id":"port694","from_iso3":"PHL","to_id":"port1069","to_iso3":"CHN","perc_disaster_capacity":2.0940298184726505,"source":2,"target":19,"from_":"Manila
+        (Philippines)","to_":"Qingdao (China)","ObjectId":6538}},{"attributes":{"eventid":1001234,"from_id":"port694","from_iso3":"PHL","to_id":"port541","to_iso3":"TWN","perc_disaster_capacity":3.564402161394868,"source":2,"target":22,"from_":"Manila
+        (Philippines)","to_":"Kaohsiung (Taiwan Province of China)","ObjectId":6539}},{"attributes":{"eventid":1001234,"from_id":"port694","from_iso3":"PHL","to_id":"port632","to_iso3":"CHN","perc_disaster_capacity":3.3009236484161377,"source":2,"target":15,"from_":"Manila
+        (Philippines)","to_":"Lanqiao Port (China)","ObjectId":6540}}]}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Content-Type, Authorization, X-Esri-Authorization
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - Request-Context
+      Cache-Control:
+      - public, max-age=3600, s-maxage=3600
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 25 May 2026 16:21:00 GMT
+      Etag:
+      - sd1195_-589495746
+      Last-Modified:
+      - Tue, 11 Nov 2025 12:35:42 GMT
+      Request-Context:
+      - appId=cid-v1:091e3ef9-df68-4d69-9df4-ab8f80183701
+      - appId=cid-v1:eccdbd2e-a85f-4676-a932-e967891b0fc6
+      Strict-Transport-Security:
+      - max-age=63072000
+      Vary:
+      - X-Esri-Authorization
+      X-ArcGIS-Correlation-Id:
+      - 80d28f81674c5081
+      X-ArcGIS-Instance:
+      - wziaf7inz00000D
+      X-ArcGIS-Trace-Id:
+      - 20260525T161750Z-165db84777698b5zhC1YVRan9400000007300000000089xp
+      X-Cache:
+      - TCP_REMOTE_HIT
+      X-Cache-Info:
+      - L2_T1
+      content-length:
+      - '10820'
+      x-arcgis-upstream:
+      - us1h09c00-services
+      x-azure-ref:
+      - 20260525T162100Z-15cb7fd6cb4859hdhC1WSTxbeg00000009hg00000000rnqe
+      x-esri-org-request-units-per-min:
+      - usage=395;max=6000
+      x-esri-query-request-units:
+      - '3'
+      x-esri-tiles-basic-query-mode:
+      - 'true'
+      x-esri-tiles-basic-query-type:
+      - Basic
+      x-fd-int-roxy-purgeid:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

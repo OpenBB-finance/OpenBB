@@ -1,0 +1,395 @@
+{
+  "tfp-combined-inputs-output": {
+    "slug": "total-factor-productivity-combined-inputs-and-output-percent-change-in-major-industries",
+    "label": "Combined Inputs and Output — % Change by Industry (Latest Year)",
+    "kind": "industry",
+    "chart_type": "bar",
+    "fields": [
+      [
+        "total_factor_productivity",
+        "Total Factor Productivity",
+        "pct"
+      ],
+      [
+        "combined_inputs",
+        "Combined Inputs",
+        "pct"
+      ],
+      [
+        "output",
+        "Output",
+        "pct"
+      ]
+    ]
+  },
+  "tfp-percent-change": {
+    "slug": "total-factor-productivity-percent-change-in-major-industries",
+    "label": "Total Factor Productivity — % Change by Industry",
+    "kind": "industry",
+    "chart_type": "bar",
+    "fields": [
+      [
+        "y2023",
+        "2023",
+        "pct"
+      ],
+      [
+        "y2024",
+        "2024",
+        "pct"
+      ]
+    ]
+  },
+  "tfp-output-and-inputs": {
+    "slug": "total-factor-productivity-output-and-inputs-percent-change-for-major-industries",
+    "label": "Output and Inputs — % Change by Industry",
+    "kind": "industry",
+    "chart_type": "bar",
+    "fields": [
+      [
+        "total_factor_productivity_2023",
+        "Total Factor Productivity, 2023",
+        "pct"
+      ],
+      [
+        "total_factor_productivity_2024",
+        "Total Factor Productivity, 2024",
+        "pct"
+      ],
+      [
+        "sectoral_output_2023",
+        "Sectoral Output, 2023",
+        "pct"
+      ],
+      [
+        "sectoral_output_2024",
+        "Sectoral Output, 2024",
+        "pct"
+      ],
+      [
+        "combined_inputs_2023",
+        "Combined Inputs, 2023",
+        "pct"
+      ],
+      [
+        "combined_inputs_2024",
+        "Combined Inputs, 2024",
+        "pct"
+      ],
+      [
+        "capital_input_2023",
+        "Capital Input, 2023",
+        "pct"
+      ],
+      [
+        "capital_input_2024",
+        "Capital Input, 2024",
+        "pct"
+      ],
+      [
+        "labor_input_2023",
+        "Labor Input, 2023",
+        "pct"
+      ],
+      [
+        "labor_input_2024",
+        "Labor Input, 2024",
+        "pct"
+      ],
+      [
+        "energy_input_2023",
+        "Energy Input, 2023",
+        "pct"
+      ],
+      [
+        "energy_input_2024",
+        "Energy Input, 2024",
+        "pct"
+      ],
+      [
+        "materials_input_2023",
+        "Materials Input, 2023",
+        "pct"
+      ],
+      [
+        "materials_input_2024",
+        "Materials Input, 2024",
+        "pct"
+      ],
+      [
+        "services_input_2023",
+        "Services Input, 2023",
+        "pct"
+      ],
+      [
+        "services_input_2024",
+        "Services Input, 2024",
+        "pct"
+      ]
+    ]
+  },
+  "tfp-contributions": {
+    "slug": "contributions-to-labor-productivity-percent-change-for-major-industries",
+    "label": "Contributions to Labor Productivity — % Change by Industry",
+    "kind": "industry",
+    "chart_type": "bar",
+    "fields": [
+      [
+        "total_factor_productivity",
+        "Total Factor Productivity",
+        "pct"
+      ],
+      [
+        "contribution_of_labor_composition_to_labor_productivity",
+        "Contribution of labor composition to labor productivity",
+        "pct"
+      ],
+      [
+        "contribution_of_capital_intensity_to_labor_productivity",
+        "Contribution of capital intensity to labor productivity",
+        "pct"
+      ],
+      [
+        "contribution_of_energy_intensity_to_labor_productivity",
+        "Contribution of energy intensity to labor productivity",
+        "pct"
+      ],
+      [
+        "contribution_of_materials_intensity_to_labor_productivity",
+        "Contribution of materials intensity to labor productivity",
+        "pct"
+      ],
+      [
+        "contribution_of_services_intensity_to_labor_productivity",
+        "Contribution of services intensity to labor productivity",
+        "pct"
+      ]
+    ]
+  },
+  "tfp-ict-trends": {
+    "slug": "information-and-communication-technology-industries-total-factor-productivity-combined-inputs-and-output-trends",
+    "label": "ICT Industries — TFP, Inputs, and Output Index Trends",
+    "kind": "ts",
+    "chart_type": "line",
+    "fields": [
+      [
+        "information_total_factor_productivity",
+        "Information, total factor productivity",
+        "num"
+      ],
+      [
+        "information_combined_inputs",
+        "Information, combined inputs",
+        "num"
+      ],
+      [
+        "information_real_output",
+        "Information, real output",
+        "num"
+      ],
+      [
+        "broadcasting_and_telecommunications_total_factor_productivity",
+        "Broadcasting and telecommunications, total factor productivity",
+        "num"
+      ],
+      [
+        "broadcasting_and_telecommunications_combined_inputs",
+        "Broadcasting and telecommunications, combined inputs",
+        "num"
+      ],
+      [
+        "broadcasting_and_telecommunications_real_output",
+        "Broadcasting and telecommunications, real output",
+        "num"
+      ],
+      [
+        "computer_systems_design_and_related_services_total_factor_productivity",
+        "Computer systems design and related services, total factor productivity",
+        "num"
+      ],
+      [
+        "computer_systems_design_and_related_services_combined_inputs",
+        "Computer systems design and related services, combined inputs",
+        "num"
+      ],
+      [
+        "computer_systems_design_and_related_services_real_output",
+        "Computer systems design and related services, real output",
+        "num"
+      ],
+      [
+        "computer_and_electronic_products_total_factor_productivity",
+        "Computer and electronic products, total factor productivity",
+        "num"
+      ],
+      [
+        "computer_and_electronic_products_combined_inputs",
+        "Computer and electronic products, combined inputs",
+        "num"
+      ],
+      [
+        "computer_and_electronic_products_real_output",
+        "Computer and electronic products, real output",
+        "num"
+      ],
+      [
+        "data_processing_internet_publishing_and_other_information_services_total_factor_productivity",
+        "Data processing, internet publishing, and other information services, total factor productivity",
+        "num"
+      ],
+      [
+        "data_processing_internet_publishing_and_other_information_services_combined_inputs",
+        "Data processing, internet publishing, and other information services, combined inputs",
+        "num"
+      ],
+      [
+        "data_processing_internet_publishing_and_other_information_services_real_output",
+        "Data processing, internet publishing, and other information services, real output",
+        "num"
+      ]
+    ]
+  },
+  "tfp-fire-trends": {
+    "slug": "finance-insurance-and-real-estate-industries-total-factor-productivity-combined-inputs-and-output-trends",
+    "label": "Finance, Insurance, and Real Estate Industries — TFP, Inputs, and Output Index Trends",
+    "kind": "ts",
+    "chart_type": "line",
+    "fields": [
+      [
+        "finance_insurance_and_real_estate_total_factor_productivity",
+        "Finance, insurance, and real estate, total factor productivity",
+        "num"
+      ],
+      [
+        "finance_insurance_and_real_estate_combined_inputs",
+        "Finance, insurance, and real estate, combined inputs",
+        "num"
+      ],
+      [
+        "finance_insurance_and_real_estate_real_output",
+        "Finance, insurance, and real estate, real output",
+        "num"
+      ],
+      [
+        "finance_and_insurance_total_factor_productivity",
+        "Finance and insurance, total factor productivity",
+        "num"
+      ],
+      [
+        "finance_and_insurance_combined_inputs",
+        "Finance and insurance, combined inputs",
+        "num"
+      ],
+      [
+        "finance_and_insurance_real_output",
+        "Finance and insurance, real output",
+        "num"
+      ],
+      [
+        "federal_reserve_banks_credit_intermediation_and_related_activities_total_factor_productivity",
+        "Federal Reserve banks, credit intermediation, and related activities, total factor productivity",
+        "num"
+      ],
+      [
+        "federal_reserve_banks_credit_intermediation_and_related_activities_combined_inputs",
+        "Federal Reserve banks, credit intermediation, and related activities, combined inputs",
+        "num"
+      ],
+      [
+        "federal_reserve_banks_credit_intermediation_and_related_activities_real_output",
+        "Federal Reserve banks, credit intermediation, and related activities, real output",
+        "num"
+      ],
+      [
+        "securities_commodity_contracts_and_investments_total_factor_productivity",
+        "Securities, commodity contracts, and investments, total factor productivity",
+        "num"
+      ],
+      [
+        "securities_commodity_contracts_and_investments_combined_inputs",
+        "Securities, commodity contracts, and investments, combined inputs",
+        "num"
+      ],
+      [
+        "securities_commodity_contracts_and_investments_real_output",
+        "Securities, commodity contracts, and investments, real output",
+        "num"
+      ],
+      [
+        "insurance_carriers_and_related_activities_total_factor_productivity",
+        "Insurance carriers and related activities, total factor productivity",
+        "num"
+      ],
+      [
+        "insurance_carriers_and_related_activities_combined_inputs",
+        "Insurance carriers and related activities, combined inputs",
+        "num"
+      ],
+      [
+        "insurance_carriers_and_related_activities_real_output",
+        "Insurance carriers and related activities, real output",
+        "num"
+      ],
+      [
+        "funds_trusts_and_other_financial_vehicles_total_factor_productivity",
+        "Funds, trusts, and other financial vehicles, total factor productivity",
+        "num"
+      ],
+      [
+        "funds_trusts_and_other_financial_vehicles_combined_inputs",
+        "Funds, trusts, and other financial vehicles, combined inputs",
+        "num"
+      ],
+      [
+        "funds_trusts_and_other_financial_vehicles_real_output",
+        "Funds, trusts, and other financial vehicles, real output",
+        "num"
+      ],
+      [
+        "real_estate_and_rental_and_leasing_total_factor_productivity",
+        "Real estate and rental and leasing, total factor productivity",
+        "num"
+      ],
+      [
+        "real_estate_and_rental_and_leasing_combined_inputs",
+        "Real estate and rental and leasing, combined inputs",
+        "num"
+      ],
+      [
+        "real_estate_and_rental_and_leasing_real_output",
+        "Real estate and rental and leasing, real output",
+        "num"
+      ],
+      [
+        "real_estate_total_factor_productivity",
+        "Real estate, total factor productivity",
+        "num"
+      ],
+      [
+        "real_estate_combined_inputs",
+        "Real estate, combined inputs",
+        "num"
+      ],
+      [
+        "real_estate_real_output",
+        "Real estate, real output",
+        "num"
+      ],
+      [
+        "rental_and_leasing_services_and_lessors_of_intangible_assets_total_factor_productivity",
+        "Rental and leasing services and lessors of intangible assets, total factor productivity",
+        "num"
+      ],
+      [
+        "rental_and_leasing_services_and_lessors_of_intangible_assets_combined_inputs",
+        "Rental and leasing services and lessors of intangible assets, combined inputs",
+        "num"
+      ],
+      [
+        "rental_and_leasing_services_and_lessors_of_intangible_assets_real_output",
+        "Rental and leasing services and lessors of intangible assets, real output",
+        "num"
+      ]
+    ]
+  }
+}

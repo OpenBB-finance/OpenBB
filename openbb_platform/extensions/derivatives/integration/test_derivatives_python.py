@@ -3,9 +3,6 @@
 import pytest
 from openbb_core.app.model.obbject import OBBject
 
-# pylint: disable=too-many-lines,redefined-outer-name
-# pylint: disable=import-outside-toplevel,inconsistent-return-statements
-
 
 @pytest.fixture(scope="session")
 def obb(pytestconfig):
@@ -14,6 +11,8 @@ def obb(pytestconfig):
         import openbb
 
         return openbb.obb
+
+    pytest.skip("Integration tests are not enabled.")
 
 
 @pytest.mark.parametrize(
@@ -58,18 +57,20 @@ def test_derivatives_options_chains(params, obb):
     result = obb.derivatives.options.chains(**params)
     assert result
     assert isinstance(result, OBBject)
-    result = result.results  # type: ignore
+    result = result.results
     list_msg = "Unexpected data format, expected List"
     oi_msg = "Unexpected keys in total_oi property, expected ['total', 'expiration', 'strike']"
-    assert isinstance(result.expirations, list), list_msg  # type: ignore
-    assert isinstance(result.strikes, list), list_msg  # type: ignore
-    assert isinstance(result.contract_symbol, list), list_msg  # type: ignore
-    assert hasattr(result, "total_oi"), "Missing total_oi property"  # type: ignore
-    assert isinstance(result.total_oi, dict), "Unexpected property format, expected dictionary."  # type: ignore
-    assert list(result.total_oi) == ["total", "expiration", "strike"], oi_msg  # type: ignore
-    assert hasattr(result, "dataframe"), "Missing dataframe attribute"  # type: ignore
-    assert result.has_iv, "Expected implied volatility data"  # type: ignore
-    assert len(getattr(result, "dataframe", [])) == len(result.contract_symbol)  # type: ignore
+    assert isinstance(result.expirations, list), list_msg
+    assert isinstance(result.strikes, list), list_msg
+    assert isinstance(result.contract_symbol, list), list_msg
+    assert hasattr(result, "total_oi"), "Missing total_oi property"
+    assert isinstance(result.total_oi, dict), (
+        "Unexpected property format, expected dictionary."
+    )
+    assert list(result.total_oi) == ["total", "expiration", "strike"], oi_msg
+    assert hasattr(result, "dataframe"), "Missing dataframe attribute"
+    assert result.has_iv, "Expected implied volatility data"
+    assert len(getattr(result, "dataframe", [])) == len(result.contract_symbol)
 
 
 @pytest.mark.parametrize(

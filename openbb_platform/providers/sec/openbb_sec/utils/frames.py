@@ -1,54 +1,268 @@
 """SEC Frames Utilities."""
 
-# pylint: disable=line-too-long
-
 import asyncio
-from datetime import datetime
+from collections import defaultdict
+from datetime import date, datetime
 from warnings import warn
 
-from aiohttp_client_cache import SQLiteBackend
-from aiohttp_client_cache.session import CachedSession
 from openbb_core.app.model.abstract.error import OpenBBError
-from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import amake_request
+from pandas import DataFrame
+
+from openbb_sec.utils.cache import cached_request
 from openbb_sec.utils.definitions import (
-    FISCAL_PERIODS,
-    FISCAL_PERIODS_DICT,
+    CALENDAR_PERIODS,
+    CALENDAR_PERIODS_DICT,
     HEADERS,
+    INSTANT_FACTS,
     SHARES_FACTS,
     TAXONOMIES,
     USD_PER_SHARE_FACTS,
 )
 from openbb_sec.utils.helpers import get_all_companies, symbol_map
-from pandas import DataFrame
 
 
 async def fetch_data(url, use_cache, persist) -> dict | list[dict]:
-    """Fetch the data from the constructed URL."""
-    response: dict | list[dict] = {}
-    if use_cache is True:
-        cache_dir = f"{get_user_cache_directory()}/http/sec_frames"
-        async with CachedSession(
-            cache=(
-                SQLiteBackend(cache_dir, expire_after=3600 * 24)
-                if persist is False
-                else SQLiteBackend(cache_dir)
-            )
-        ) as session:
-            try:
-                response = await amake_request(url, headers=HEADERS, session=session)  # type: ignore
-            finally:
-                await session.close()
+    """Fetch the data from the constructed URL.
+
+    Frames for the current year (``persist`` is True) are cached until evicted;
+    historical frames refresh daily.
+    """
+    expire = None if persist else 3600 * 24
+    return await cached_request(
+        url, headers=HEADERS, use_cache=use_cache, expire=expire
+    )
+
+
+# Duration buckets that participate in a cumulative year-to-date chain.
+_CUMULATIVE_SPANS = frozenset({"quarter", "h1", "nine_month", "annual"})
+# Spans surfaced to the caller (intermediate YTD cumulatives are dropped).
+_PRIMARY_SPANS = frozenset({"annual", "quarter", "instant"})
+
+
+# Standard calendar quarter-end month/day pairs (Q1-Q4).
+_QUARTER_END_DAYS = ((3, 31), (6, 30), (9, 30), (12, 31))
+
+
+def _parse_frame(frame: str) -> tuple[int | None, str | None]:
+    """Parse an SEC frame id into a ``(calendar_year, calendar_period)`` pair.
+
+    Accepts ``CY2026`` (annual -> ``FY``), ``CY2026Q1`` and the instantaneous
+    ``CY2026Q1I`` (trailing ``I`` ignored). The frame id is the SEC's own
+    calendar alignment, so it is authoritative when present.
+    """
+    year = int(frame[2:6]) if frame[2:6].isdigit() else None
+    period = "Q" + frame.split("Q", 1)[1].rstrip("I") if "Q" in frame else "FY"
+    return year, period
+
+
+def _nearest_quarter(end: str) -> tuple[int | None, str | None]:
+    """Map an ISO period-end date to the calendar quarter it aligns with.
+
+    The xbrl/frames API assigns each reported period to the calendar quarter
+    whose standard end date (Mar 31, Jun 30, Sep 30, Dec 31) is nearest, shifting
+    an off-calendar filer onto the calendar grid rather than labelling by the
+    raw end month. A period ending Apr 30 aligns to Q1 (nearest Mar 31), and a
+    January fiscal year-end rolls back to the prior December (Q4). Returns
+    ``(None, None)`` for an unparseable date.
+    """
+    try:
+        d = date.fromisoformat(end)
+    except (ValueError, TypeError):
+        return None, None
+    best_year, best_q, best_dist = None, None, None
+    for yy in (d.year - 1, d.year, d.year + 1):
+        for q, (month, day) in enumerate(_QUARTER_END_DAYS, start=1):
+            dist = abs((date(yy, month, day) - d).days)
+            if best_dist is None or dist < best_dist:
+                best_year, best_q, best_dist = yy, q, dist
+    return best_year, f"Q{best_q}"
+
+
+def _span_days(item: dict) -> int | None:
+    """Return the inclusive day count of an entry, or None when instantaneous."""
+    start = item.get("start")
+    end = item.get("end")
+    if not start or not end:
+        return None
+    try:
+        return (date.fromisoformat(end) - date.fromisoformat(start)).days + 1
+    except (ValueError, TypeError):
+        return None
+
+
+def _classify_span(days: int | None) -> str:
+    """Bucket a reporting duration (in days) into a span class.
+
+    None (no start date) is instantaneous; otherwise the calendar-quarter
+    multiples with the SEC's +/- 30 day tolerance: ~3mo, ~6mo, ~9mo, ~12mo.
+    """
+    if days is None:
+        return "instant"
+    if days <= 120:
+        return "quarter"
+    if days <= 210:
+        return "h1"
+    if days <= 300:
+        return "nine_month"
+    return "annual"
+
+
+def _enrich_entry(item: dict) -> dict:
+    """Annotate a companyconcept entry with span + calendar period metadata.
+
+    Calendar alignment follows the SEC: a ``frame`` id on the entry is
+    authoritative; otherwise the period end is rounded to the nearest calendar
+    quarter-end so off-calendar filers land on the same calendar grid as the
+    xbrl/frames API (e.g. a period ending Apr 30 aligns to Q1, not Q2).
+    """
+    end = item.get("end") or ""
+    span = _classify_span(_span_days(item))
+    item["span"] = span
+    frame = item.get("frame")
+    if frame:
+        cal_year, cal_period = _parse_frame(frame)
     else:
-        response = await amake_request(url, headers=HEADERS)  # type: ignore
-    return response
+        cal_year, cal_period = _nearest_quarter(end)
+        if span == "annual":
+            cal_period = "FY"
+    item["calendar_year"] = cal_year
+    item["calendar_period"] = cal_period
+    return item
 
 
-async def get_frame(  # pylint: disable=R0912,R0913,R0914,R0915,R0917
+def _dedup_latest_filed(records: list[dict]) -> list[dict]:
+    """Keep the most recently filed value per (symbol, unit, period, span).
+
+    A single concept is re-reported across successive filings (originals,
+    restatements, prior-period comparatives). The latest filing wins so the
+    reference value is used rather than an early estimate or a stale comparative.
+    """
+    best: dict[tuple, dict] = {}
+    for r in records:
+        key = (
+            r.get("symbol"),
+            r.get("unit"),
+            r.get("start"),
+            r.get("end"),
+            r.get("span"),
+        )
+        cur = best.get(key)
+        rank = (r.get("filed", ""), r.get("accn", ""))
+        if cur is None or rank > (cur.get("filed", ""), cur.get("accn", "")):
+            best[key] = r
+    return list(best.values())
+
+
+def _derive_standalone_quarters(records: list[dict]) -> list[dict]:
+    """Derive standalone 3-month quarters from cumulative YTD chains.
+
+    For each (symbol, unit, fiscal_year) the entries sharing the fiscal-year
+    start date form a cumulative chain (Q1 3mo, H1 6mo, 9M, FY 12mo). Standalone
+    quarters are successive differences along that chain, so Q4 falls out as
+    FY - 9-month (no 10-Q is ever filed for the fourth quarter). Each derived
+    value is labelled by the calendar quarter of its period end. Only
+    differences spanning roughly one quarter are emitted, so a gap in the chain
+    never yields a bogus multi-quarter "standalone", and a calendar quarter
+    already reported directly is never double-counted.
+    """
+    derived: list[dict] = []
+    groups: dict[tuple, list[dict]] = defaultdict(list)
+    for r in records:
+        if r.get("span") in _CUMULATIVE_SPANS and r.get("end"):
+            groups[(r.get("symbol"), r.get("unit"), r.get("fy"))].append(r)
+
+    for entries in groups.values():
+        annual = next((e for e in entries if e.get("span") == "annual"), None)
+        fy_start = (
+            annual.get("start")
+            if annual and annual.get("start")
+            else min((e["start"] for e in entries if e.get("start")), default=None)
+        )
+        if not fy_start:
+            continue
+        chain = sorted(
+            (e for e in entries if e.get("start") == fy_start),
+            key=lambda e: e["end"],
+        )
+        reported = {
+            e["calendar_period"]
+            for e in entries
+            if e.get("span") == "quarter" and e.get("calendar_period")
+        }
+        prev_val = 0.0
+        prev_days = 0
+        prev_end = fy_start
+        for e in chain:
+            link_start = prev_end
+            cur_val = e.get("val")
+            cur_days = _span_days(e) or 0
+            cur_end = e["end"]
+            standalone = (cur_val - prev_val) if cur_val is not None else None
+            step_days = cur_days - prev_days
+            if cur_val is not None:
+                prev_val = cur_val
+            prev_days = cur_days
+            prev_end = cur_end
+            # First link is already a standalone quarter; keep it from the
+            # primary set rather than re-deriving it.
+            if cur_val is None or e.get("span") == "quarter":
+                continue
+            # A difference that is not ~one quarter means the chain skipped a
+            # link; splitting it would invent data, so leave it alone.
+            if not 60 <= step_days <= 120:
+                continue
+            cal_year, cq = _nearest_quarter(cur_end)
+            if cq in reported:
+                continue
+            new = dict(e)
+            new["val"] = standalone
+            new["start"] = link_start
+            new["span"] = "quarter"
+            new["calendar_period"] = cq
+            new["calendar_year"] = cal_year
+            new.pop("frame", None)  # derived from a cumulative; not a real frame
+            new["derived"] = True
+            reported.add(cq)
+            derived.append(new)
+    return derived
+
+
+def _select_periods(
+    records: list[dict], year: int | None, calendar_period: str | None
+) -> list[dict]:
+    """Filter parsed records to the requested calendar year and period.
+
+    ``calendar_period`` selects in calendar space: ``"fy"`` selects annual
+    figures (or, for an instant concept, the calendar year-end balance);
+    ``"q1"``-``"q4"`` select the standalone quarter whose period end falls in
+    that calendar quarter. With no ``calendar_period`` the annual + standalone
+    quarter + instant figures are returned (YTD cumulatives are dropped).
+    """
+    primary = [r for r in records if r.get("span") in _PRIMARY_SPANS]
+    fp = (calendar_period or "").lower()
+    if fp == "fy":
+        selected = [r for r in primary if r.get("calendar_period") == "FY"]
+        if not selected:  # instant-only concept: use the calendar year-end point
+            selected = [
+                r
+                for r in primary
+                if r.get("span") == "instant" and r.get("calendar_period") == "Q4"
+            ]
+    elif fp in {"q1", "q2", "q3", "q4"}:
+        target = fp.upper()
+        selected = [r for r in primary if r.get("calendar_period") == target]
+    else:
+        selected = primary
+    if year is not None:
+        selected = [r for r in selected if r.get("calendar_year") == year]
+    return selected
+
+
+async def get_frame(
     fact: str = "Revenues",
     year: int | None = None,
-    fiscal_period: FISCAL_PERIODS | None = None,
+    calendar_period: CALENDAR_PERIODS | None = None,
     taxonomy: TAXONOMIES | None = "us-gaap",
     units: str | None = "USD",
     instantaneous: bool = False,
@@ -84,8 +298,8 @@ async def get_frame(  # pylint: disable=R0912,R0913,R0914,R0915,R0917
         In previous years, they may have reported as "Revenues".
     year : int, optional
         The year to retrieve the data for. If not provided, the current year is used.
-    fiscal_period: Literal["fy", "q1", "q2", "q3", "q4"], optional
-        The fiscal period to retrieve the data for. If not provided, the most recent quarter is used.
+    calendar_period: Literal["fy", "q1", "q2", "q3", "q4"], optional
+        The calendar period to retrieve the data for. If not provided, the most recent quarter is used.
     taxonomy : Literal["us-gaap", "dei", "ifrs-full", "srt"], optional
         The taxonomy to use. Defaults to "us-gaap".
     units : str, optional
@@ -105,11 +319,10 @@ async def get_frame(  # pylint: disable=R0912,R0913,R0914,R0915,R0917
         Nested dictionary with keys, "metadata" and "data".
         The "metadata" key contains information about the frame.
     """
-    # pylint: disable=import-outside-toplevel
     from numpy import nan
 
     current_date = datetime.now().date()
-    quarter = FISCAL_PERIODS_DICT.get(fiscal_period) if fiscal_period else None
+    quarter = CALENDAR_PERIODS_DICT.get(calendar_period) if calendar_period else None
     if year is None and quarter is None:
         quarter = (current_date.month - 1) // 3
         year = current_date.year
@@ -137,7 +350,7 @@ async def get_frame(  # pylint: disable=R0912,R0913,R0914,R0915,R0917
     response: dict | list[dict] = {}
     try:
         response = await fetch_data(url, use_cache, persist)
-    except Exception as e:  # pylint: disable=W0718
+    except Exception as e:
         message = (
             "No frame was found with the combination of parameters supplied."
             + " Try adjusting the period."
@@ -162,15 +375,15 @@ async def get_frame(  # pylint: disable=R0912,R0913,R0914,R0915,R0917
         else:
             raise OpenBBError(message) from e
 
-    data = sorted(response.get("data", {}), key=lambda x: x["val"], reverse=True)  # type: ignore
+    data = sorted(response.get("data", {}), key=lambda x: x["val"], reverse=True)  # ty: ignore[unresolved-attribute]
     metadata = {
-        "frame": response.get("ccp", ""),  # type: ignore
-        "tag": response.get("tag", ""),  # type: ignore
-        "label": response.get("label", ""),  # type: ignore
-        "description": response.get("description", ""),  # type: ignore
-        "taxonomy": response.get("taxonomy", ""),  # type: ignore
-        "unit": response.get("uom", ""),  # type: ignore
-        "count": response.get("pts", ""),  # type: ignore
+        "frame": response.get("ccp", ""),  # ty: ignore[unresolved-attribute]
+        "tag": response.get("tag", ""),  # ty: ignore[unresolved-attribute]
+        "label": response.get("label", ""),  # ty: ignore[unresolved-attribute]
+        "description": response.get("description", ""),  # ty: ignore[unresolved-attribute]
+        "taxonomy": response.get("taxonomy", ""),  # ty: ignore[unresolved-attribute]
+        "unit": response.get("uom", ""),  # ty: ignore[unresolved-attribute]
+        "count": response.get("pts", ""),  # ty: ignore[unresolved-attribute]
     }
     df = DataFrame(data)
     companies = await get_all_companies(use_cache=use_cache)
@@ -179,6 +392,9 @@ async def get_frame(  # pylint: disable=R0912,R0913,R0914,R0915,R0917
     df["unit"] = metadata.get("unit")
     df["fact"] = metadata.get("label")
     df["frame"] = metadata.get("frame")
+    cal_year, cal_period = _parse_frame(metadata.get("frame", "") or "")
+    df["calendar_period"] = cal_period
+    df["calendar_year"] = cal_year if cal_year is not None else year
     df = df.replace({nan: None})
     results = {"metadata": metadata, "data": df.to_dict("records")}
 
@@ -189,6 +405,7 @@ async def get_concept(
     symbol: str,
     fact: str = "Revenues",
     year: int | None = None,
+    calendar_period: CALENDAR_PERIODS | None = None,
     taxonomy: TAXONOMIES | None = "us-gaap",
     use_cache: bool = True,
 ) -> dict:
@@ -207,7 +424,14 @@ async def get_concept(
         AAPL, MSFT, GOOG, BRK-A all report revenue as, "RevenueFromContractWithCustomerExcludingAssessedTax".
         In previous years, they may have reported as "Revenues".
     year : int, optional
-        The year to retrieve the data for. If not provided, all reported values will be returned.
+        The calendar year to retrieve the data for. If not provided, all reported values
+        are returned. Values are aligned to the calendar quarter/year of the period end,
+        not the company's fiscal calendar, so off-calendar filers stay comparable.
+    calendar_period: Literal["fy", "q1", "q2", "q3", "q4"], optional
+        The calendar period to retrieve. "fy" returns annual figures; "q1"-"q4" return the
+        standalone (3-month) quarter whose period end falls in that calendar quarter.
+        Cumulative year-to-date figures are reduced to standalone quarters and the fourth
+        quarter is derived as FY - 9-month. If not provided, all periods are returned.
     taxonomy : Literal["us-gaap", "dei", "ifrs-full", "srt"], optional
         The taxonomy to use. Defaults to "us-gaap".
     use_cache: bool
@@ -238,18 +462,18 @@ async def get_concept(
             response: dict | list[dict] = {}
             try:
                 response = await fetch_data(url, use_cache, False)
-            except Exception as _:  # pylint: disable=W0718
+            except Exception as _:
                 warn(message)
                 messages.append(message)
             if response:
-                units = response.get("units", {})  # type: ignore
+                units = response.get("units", {})  # ty: ignore[unresolved-attribute]
                 metadata[ticker] = {
-                    "cik": response.get("cik", ""),  # type: ignore
-                    "taxonomy": response.get("taxonomy", ""),  # type: ignore
-                    "tag": response.get("tag", ""),  # type: ignore
-                    "label": response.get("label", ""),  # type: ignore
-                    "description": response.get("description", ""),  # type: ignore
-                    "name": response.get("entityName", ""),  # type: ignore
+                    "cik": response.get("cik", ""),  # ty: ignore[unresolved-attribute]
+                    "taxonomy": response.get("taxonomy", ""),  # ty: ignore[unresolved-attribute]
+                    "tag": response.get("tag", ""),  # ty: ignore[unresolved-attribute]
+                    "label": response.get("label", ""),  # ty: ignore[unresolved-attribute]
+                    "description": response.get("description", ""),  # ty: ignore[unresolved-attribute]
+                    "name": response.get("entityName", ""),  # ty: ignore[unresolved-attribute]
                     "units": (
                         list(units) if units and len(units) > 1 else list(units)[0]
                     ),
@@ -270,17 +494,139 @@ async def get_concept(
     if not results:
         raise EmptyDataError(f"{messages}")
 
-    if year is not None:
-        filtered_results = [d for d in results if str(year) == str(d.get("fy"))]
-        if len(filtered_results) > 0:
-            results = filtered_results
-        if len(filtered_results) == 0:
-            warn(
-                f"No results were found for {fact} in the year, {year}."
-                " Returning all entries instead. Concept and fact names may differ by company and year."
-            )
+    # Dedup re-reported values (latest filing wins), then reduce cumulative
+    # year-to-date figures to standalone quarters (deriving Q4 = FY - 9-month).
+    parsed = _dedup_latest_filed([_enrich_entry(r) for r in results])
+    parsed.extend(_derive_standalone_quarters(parsed))
+
+    final = _select_periods(parsed, year, calendar_period)
+    if not final and (year is not None or calendar_period):
+        warn(
+            f"No results were found for {fact} in the requested calendar period."
+            " Returning all reported values instead."
+            " Concept and fact names may differ by company and year."
+        )
+        final = [r for r in parsed if r.get("span") in _PRIMARY_SPANS]
 
     return {
         "metadata": metadata,
-        "data": sorted(results, key=lambda x: (x["filed"], x["end"]), reverse=True),
+        "data": sorted(
+            final, key=lambda x: (x.get("filed", ""), x.get("end", "")), reverse=True
+        ),
     }
+
+
+async def get_universe_quarter4(
+    fact: str = "Revenues",
+    year: int | None = None,
+    taxonomy: TAXONOMIES | None = "us-gaap",
+    units: str | None = "USD",
+    use_cache: bool = True,
+) -> dict:
+    """Derive a standalone calendar-Q4 universe frame as FY - (Q1 + Q2 + Q3).
+
+    The xbrl/frames API has no standalone fourth-quarter duration frame: no 10-Q
+    covers Q4, and the 10-K reports the full year. This fetches the annual frame
+    and the three quarterly frames and subtracts, per filer, to produce a
+    standalone calendar-Q4 figure. Only filers that reported all three earlier
+    quarters are included, since a partial subtraction would be wrong.
+
+    This applies to flow (duration) concepts. Instantaneous balance-sheet
+    concepts already have a populated ``CY####Q4I`` frame and do not need this.
+    """
+    from numpy import nan
+
+    if year is None:
+        year = datetime.now().date().year
+
+    # Instantaneous (balance-sheet) concepts already have a populated year-end
+    # ``CY####Q4I`` frame, so fetch that directly. Subtracting earlier quarters
+    # is meaningful only for flow concepts; for a point-in-time balance it would
+    # be nonsense.
+    if fact in INSTANT_FACTS:
+        return await get_frame(
+            fact=fact,
+            year=year,
+            calendar_period="q4",
+            instantaneous=True,
+            taxonomy=taxonomy,
+            units=units,
+            use_cache=use_cache,
+        )
+
+    if fact in SHARES_FACTS:
+        units = "shares"
+    if fact in USD_PER_SHARE_FACTS:
+        units = "USD-per-shares"
+
+    persist = datetime.now().date().year == year
+    base = f"https://data.sec.gov/api/xbrl/frames/{taxonomy}/{fact}/{units}/CY{year}"
+
+    try:
+        annual_resp = await fetch_data(base + ".json", use_cache, persist)
+    except Exception:
+        # No annual (duration) frame exists for this concept: it is reported as
+        # a point-in-time balance not captured by INSTANT_FACTS. Fall back to the
+        # year-end instant frame so the request still resolves ("if the frame
+        # does not already exist").
+        return await get_frame(
+            fact=fact,
+            year=year,
+            calendar_period="q4",
+            instantaneous=True,
+            taxonomy=taxonomy,
+            units=units,
+            use_cache=use_cache,
+        )
+
+    quarter_sums: dict = defaultdict(float)
+    quarter_counts: dict = defaultdict(int)
+    for q in (1, 2, 3):
+        try:
+            qresp = await fetch_data(f"{base}Q{q}.json", use_cache, persist)
+        except Exception:  # noqa: S112
+            continue
+        for row in qresp.get("data", []):  # ty: ignore[unresolved-attribute]
+            cik = row.get("cik")
+            if cik is None or row.get("val") is None:
+                continue
+            quarter_sums[cik] += row["val"]
+            quarter_counts[cik] += 1
+
+    data: list[dict] = []
+    for row in annual_resp.get("data", []):  # ty: ignore[unresolved-attribute]
+        cik = row.get("cik")
+        if cik is None or row.get("val") is None or quarter_counts.get(cik, 0) < 3:
+            continue
+        new = dict(row)
+        new["val"] = row["val"] - quarter_sums[cik]
+        data.append(new)
+
+    metadata = {
+        "frame": f"CY{year}Q4",
+        "tag": annual_resp.get("tag", ""),  # ty: ignore[unresolved-attribute]
+        "label": annual_resp.get("label", ""),  # ty: ignore[unresolved-attribute]
+        "description": annual_resp.get("description", ""),  # ty: ignore[unresolved-attribute]
+        "taxonomy": annual_resp.get("taxonomy", ""),  # ty: ignore[unresolved-attribute]
+        "unit": annual_resp.get("uom", ""),  # ty: ignore[unresolved-attribute]
+        "count": len(data),
+        "note": (
+            "Q4 derived as FY - (Q1 + Q2 + Q3);"
+            " only filers reporting all three earlier quarters are included."
+        ),
+    }
+
+    data = sorted(data, key=lambda x: x["val"], reverse=True)
+    df = DataFrame(data)
+    companies = await get_all_companies(use_cache=use_cache)
+    cik_to_symbol = companies.set_index("cik")["symbol"].to_dict()
+    if not df.empty:
+        df["symbol"] = df["cik"].astype(str).map(cik_to_symbol)
+        df["unit"] = metadata.get("unit")
+        df["fact"] = metadata.get("label")
+        df["frame"] = metadata["frame"]
+        df["calendar_year"] = year
+        df["calendar_period"] = "Q4"
+        df = df.replace({nan: None})
+
+    return {"metadata": metadata, "data": df.to_dict("records")}

@@ -37,7 +37,8 @@ To install, follow the instructions [here](installation). The sections below pro
 
 It works by extending the `OBBject` class with a new attribute, `charting`. When it is installed, every response from the OpenBB Platform will be equipped with these tools.
 
-For functions that have pre-defined views, it serves as an intermediary between the user request and the response, activated when `chart=True`. When a chart is created, it will populate the existing, `chart`, attribute of the `OBBject`. This is where it is served by the FAST API from the function request. In the Python Interface, charts can be generated post-request, regardless of `chart=True`.
+For functions that have pre-defined views, it serves as an intermediary between the user request and the response, activated when `chart=True`. When a chart is created, it will populate the existing, `chart`, attribute of the `OBBject`. This is where it is served by the FAST API from the function request. In the Python Interface, charts can be generated
+post-request, regardless of `chart=True`.
 
 The `chart` attribute in the OBBject contains three items, responses from the API have two:
 
@@ -87,7 +88,7 @@ When creating a chart directly from the OpenBB Platform endpoint, chart paramete
 chart_params = dict(
     title="AAPL 50/200 Day EMA",
     indicators=dict(
-        ema=dict(length=[50,200]),
+        ema=dict(length=[50, 200]),
     ),
 )
 params = dict(
@@ -130,7 +131,8 @@ Setting as `False` will return the chart to itself, populating the `chart` attri
 
 ## What Endpoints Have Charts?
 
-The OpenBB Platform router, open_api.json, function signatures, and documentation are all generated based on your specific configuration. When the `openbb-charting` extension is installed, any function found in the "[charting_router](https://github.com/OpenBB-finance/OpenBB/blob/develop/openbb_platform/obbject_extensions/charting/openbb_charting/charting_router.py)" adds `chart: bool = False` to the command on build. For example, `obb.index.price.historical?`
+The OpenBB Platform router, open_api.json, function signatures, and documentation are all generated based on your specific configuration. When the `openbb-charting` extension is installed, any function found in the
+"[charting_router](https://github.com/OpenBB-finance/OpenBB/blob/develop/openbb_platform/obbject_extensions/charting/openbb_charting/charting_router.py)" adds `chart: bool = False` to the command on build. For example, `obb.index.price.historical?`
 
 ```python
 Signature:
@@ -256,7 +258,7 @@ obb.equity.price.historical(
     start_date="2024-01-01",
     provider="yfinance",
     chart=True,
-    chart_params=dict(title="XLK YTD", heikin_ashi=True)
+    chart_params=dict(title="XLK YTD", heikin_ashi=True),
 ).show()
 ```
 
@@ -346,7 +348,7 @@ External data can also be supplied, providing an opportunity to filter or apply 
 
 ```python
 new_df = df.to_df().T
-new_df.index.name="metric"
+new_df.index.name = "metric"
 new_df.columns = new_df.loc["symbol"]
 new_df.drop("symbol", inplace=True)
 data.charting.table(data=new_df)

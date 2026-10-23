@@ -11,15 +11,85 @@ from openbb_core.provider.standard_models.etf_search import (
 )
 from pydantic import Field, field_validator
 
+from openbb_tmx.utils.choices import etf_value, etf_widget_config, literal_choices
+from openbb_tmx.utils.screener_types import (
+    ETF_ASSET_CLASS,
+    ETF_FUND_FAMILY,
+    ETF_INVESTMENT_STYLE,
+    ETF_REGION,
+)
+
 
 class TmxEtfSearchQueryParams(EtfSearchQueryParams):
-    """TMX ETF Search query.
+    """TMX ETF Search query."""
 
-    Source: https://www.tmx.com/
-    """
+    __json_schema_extra__ = etf_widget_config() | {
+        "div_freq": {
+            "x-widget_config": {
+                "options": literal_choices(
+                    ("monthly", "quarterly", "annually", "semi-annually", "unspecified")
+                )
+            }
+        },
+        "currency": {"x-widget_config": {"options": literal_choices(("CAD", "USD"))}},
+        "sort_by": {
+            "x-widget_config": {
+                "options": literal_choices(
+                    (
+                        "aum",
+                        "return_1m",
+                        "return_3m",
+                        "return_6m",
+                        "return_1y",
+                        "return_3y",
+                        "return_ytd",
+                        "beta_1y",
+                        "volume_avg_daily",
+                        "management_fee",
+                        "distribution_yield",
+                        "pb_ratio",
+                        "pe_ratio",
+                    ),
+                    return_1m="Return 1M",
+                    return_3m="Return 3M",
+                    return_6m="Return 6M",
+                    return_1y="Return 1Y",
+                    return_3y="Return 3Y",
+                    beta_1y="Beta 1Y",
+                    volume_avg_daily="Average Daily Volume",
+                )
+            }
+        },
+    }
 
-    div_freq: Literal["monthly", "annually", "quarterly"] | None = Field(
-        description="The dividend payment frequency.", default=None
+    div_freq: (
+        Literal["monthly", "quarterly", "annually", "semi-annually", "unspecified"]
+        | None
+    ) = Field(description="The dividend payment frequency.", default=None)
+
+    asset_class: ETF_ASSET_CLASS | None = Field(
+        description="Filter by asset class.",
+        default=None,
+    )
+    region: ETF_REGION | None = Field(
+        description="Filter by region.",
+        default=None,
+    )
+    fund_family: ETF_FUND_FAMILY | None = Field(
+        description="Filter by fund family.",
+        default=None,
+    )
+    investment_style: ETF_INVESTMENT_STYLE | None = Field(
+        description="Filter by investment style.",
+        default=None,
+    )
+    currency: Literal["CAD", "USD"] | None = Field(
+        description="Filter by the currency the fund trades in.",
+        default=None,
+    )
+    esg: bool | None = Field(
+        description="Restrict to funds flagged as ESG.",
+        default=None,
     )
 
     sort_by: (
@@ -223,8 +293,9 @@ class TmxEtfSearchFetcher(
     ) -> list[dict]:
         """Return the raw data from the TMX endpoint."""
         # pylint: disable=import-outside-toplevel
-        from openbb_tmx.utils.helpers import get_all_etfs
         from pandas import DataFrame
+
+        from openbb_tmx.utils.helpers import get_all_etfs, purge_nulls
 
         etfs = DataFrame(await get_all_etfs(use_cache=query.use_cache))
 
@@ -240,7 +311,22 @@ class TmxEtfSearchFetcher(
         data = etfs.copy()
 
         if query.div_freq:
-            data = data[data["dividend_frequency"] == query.div_freq.capitalize()]
+            data = data[
+                data["dividend_frequency"].astype(str).str.casefold()
+                == query.div_freq.casefold()
+            ]
+
+        if query.currency:
+            data = data[data["currency"].astype(str) == query.currency]
+
+        if query.esg is not None:
+            data = data[data["esg"].astype(bool) == query.esg]
+
+        for field in ("asset_class", "region", "fund_family", "investment_style"):
+            value = etf_value(field, getattr(query, field, None))
+
+            if value and field in data.columns:
+                data = data[data[field].astype(str) == value]
 
         if query.sort_by:
             data = data.sort_values(by=query.sort_by, ascending=False)
@@ -259,7 +345,7 @@ class TmxEtfSearchFetcher(
             inplace=True,
         )
         data = data.dropna(how="all")
-        return data.fillna("N/A").replace("N/A", None).to_dict("records")
+        return purge_nulls(data).to_dict("records")
 
     @staticmethod
     def transform_data(

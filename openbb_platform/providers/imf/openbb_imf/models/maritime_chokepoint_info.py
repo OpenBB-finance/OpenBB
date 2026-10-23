@@ -1,6 +1,6 @@
 """IMF Maritime Chokepoint Info Model."""
 
-# pylint: disable=unused-argument
+from __future__ import annotations
 
 from typing import Any, Literal
 
@@ -14,10 +14,7 @@ from pydantic import ConfigDict, Field
 
 
 class ImfMaritimeChokePointInfoQueryParams(MaritimeChokePointInfoQueryParams):
-    """IMF Maritime Chokepoint Info Query Parameters.
-
-    Source: https://portwatch.imf.org/pages/port-monitor
-    """
+    """IMF Maritime Chokepoint Info Query Parameters."""
 
     __json_schema_extra__ = {
         "theme": {"x-widget_config": {"show": False}},
@@ -32,10 +29,7 @@ class ImfMaritimeChokePointInfoQueryParams(MaritimeChokePointInfoQueryParams):
 
 
 class ImfMaritimeChokePointInfoData(MaritimeChokePointInfoData):
-    """IMF Maritime Chokepoint Data.
-
-    Source: https://portwatch.imf.org/pages/port-monitor
-    """
+    """IMF Maritime Chokepoint Data."""
 
     model_config = ConfigDict(
         extra="ignore",
@@ -55,6 +49,9 @@ class ImfMaritimeChokePointInfoData(MaritimeChokePointInfoData):
                 "$.name": "Global Maritime Chokepoints",
                 "$.description": "Global maritime chokepoints are narrow channels along popular shipping routes.",
                 "$.refetchInterval": False,
+                "$.category": "IMF Utilities",
+                "$.subCategory": "Port Watch",
+                "$.source": ["UN Global Platform; IMF PortWatch"],
             }
         },
     )
@@ -148,7 +145,6 @@ class ImfMaritimeChokePointInfoFetcher(
         **kwargs: Any,
     ) -> dict:
         """Extract the raw data from the IMF Port Watch API."""
-        # pylint: disable=import-outside-toplevel
         from openbb_core.provider.utils.helpers import get_async_requests_session
 
         url = (
@@ -157,9 +153,10 @@ class ImfMaritimeChokePointInfoFetcher(
         )
 
         try:
-            async with await get_async_requests_session() as session, await session.get(
-                url
-            ) as response:
+            async with (
+                await get_async_requests_session() as session,
+                await session.get(url) as response,
+            ):
                 if response.status != 200:
                     raise OpenBBError(f"Failed to fetch data: {response.status}")
 

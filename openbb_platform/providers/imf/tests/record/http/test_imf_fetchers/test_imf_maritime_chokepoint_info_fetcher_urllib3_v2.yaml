@@ -12,61 +12,92 @@ interactions:
     uri: https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/PortWatch_chokepoints_database/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson
   response:
     body:
-      string: !!binary |
-        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
+      string: '{"type":"FeatureCollection","features":[{"type":"Feature","id":1,"geometry":{"type":"Point","coordinates":[32.43688221,30.59334599]},"properties":{"portid":"chokepoint1","portname":"Suez
+        Canal","country":null,"ISO3":null,"continent":null,"fullname":"Suez Canal","lat":30.59334599,"lon":32.43688221,"vessel_count_total":19787,"vessel_count_container":5513,"vessel_count_dry_bulk":5222,"vessel_count_general_cargo":1868,"vessel_count_RoRo":766,"vessel_count_tanker":6418,"industry_top1":"Mineral
+        Products","industry_top2":"Vegetable Products","industry_top3":"Chemical &
+        Allied Industries","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"c57c79bf612b4372b08a9c6ea9c97ef0","countrynoaccents":null,"ObjectId":1}},{"type":"Feature","id":2,"geometry":{"type":"Point","coordinates":[-79.76723825,9.120512367]},"properties":{"portid":"chokepoint2","portname":"Panama
+        Canal","country":null,"ISO3":null,"continent":null,"fullname":"Panama Canal","lat":9.120512367,"lon":-79.76723825,"vessel_count_total":11020,"vessel_count_container":2712,"vessel_count_dry_bulk":2412,"vessel_count_general_cargo":619,"vessel_count_RoRo":770,"vessel_count_tanker":4507,"industry_top1":"Mineral
+        Products","industry_top2":"Vegetable Products","industry_top3":"Chemical &
+        Allied Industries","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"44d73fd00bbc4f73a16d46d5beb11b4d","countrynoaccents":null,"ObjectId":2}},{"type":"Feature","id":3,"geometry":{"type":"Point","coordinates":[29.09150126,41.16928167]},"properties":{"portid":"chokepoint3","portname":"Bosporus
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Bosporus Strait","lat":41.16928167,"lon":29.09150126,"vessel_count_total":35125,"vessel_count_container":3015,"vessel_count_dry_bulk":8058,"vessel_count_general_cargo":15233,"vessel_count_RoRo":264,"vessel_count_tanker":8555,"industry_top1":"Mineral
+        Products","industry_top2":"Vegetable Products","industry_top3":"Chemical &
+        Allied Industries","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"837f298c756a4efd85e3fabe31e319ac","countrynoaccents":null,"ObjectId":3}},{"type":"Feature","id":4,"geometry":{"type":"Point","coordinates":[43.34954476,12.78859715]},"properties":{"portid":"chokepoint4","portname":"Bab
+        el-Mandeb Strait","country":null,"ISO3":null,"continent":null,"fullname":"Bab
+        el-Mandeb Strait","lat":12.78859715,"lon":43.34954476,"vessel_count_total":19306,"vessel_count_container":5062,"vessel_count_dry_bulk":5228,"vessel_count_general_cargo":1688,"vessel_count_RoRo":904,"vessel_count_tanker":6424,"industry_top1":"Mineral
+        Products","industry_top2":"Chemical & Allied Industries","industry_top3":"Vegetable
+        Products","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"6b1814d64903461b98144a6cc25eb79c","countrynoaccents":null,"ObjectId":4}},{"type":"Feature","id":5,"geometry":{"type":"Point","coordinates":[102.6651061,1.516954817]},"properties":{"portid":"chokepoint5","portname":"Malacca
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Malacca Strait","lat":1.516954817,"lon":102.6651061,"vessel_count_total":71451,"vessel_count_container":18154,"vessel_count_dry_bulk":18336,"vessel_count_general_cargo":5236,"vessel_count_RoRo":2256,"vessel_count_tanker":27469,"industry_top1":"Mineral
+        Products","industry_top2":"Chemical & Allied Industries","industry_top3":"Vegetable
+        Products","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"5f51a0d85ac44a6bad02561e25899c4a","countrynoaccents":null,"ObjectId":5}},{"type":"Feature","id":6,"geometry":{"type":"Point","coordinates":[56.85984844,26.29685349]},"properties":{"portid":"chokepoint6","portname":"Strait
+        of Hormuz","country":null,"ISO3":null,"continent":null,"fullname":"Strait
+        of Hormuz","lat":26.29685349,"lon":56.85984844,"vessel_count_total":32496,"vessel_count_container":5274,"vessel_count_dry_bulk":5414,"vessel_count_general_cargo":1412,"vessel_count_RoRo":856,"vessel_count_tanker":19540,"industry_top1":"Mineral
+        Products","industry_top2":"Chemical & Allied Industries","industry_top3":"Vegetable
+        Products","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"cb5856222a5b4105adc6ee7e880a1730","countrynoaccents":null,"ObjectId":6}},{"type":"Feature","id":7,"geometry":{"type":"Point","coordinates":[20.88273666,-34.92728556]},"properties":{"portid":"chokepoint7","portname":"Cape
+        of Good Hope","country":null,"ISO3":null,"continent":null,"fullname":"Cape
+        of Good Hope","lat":-34.92728556,"lon":20.88273666,"vessel_count_total":21531,"vessel_count_container":3493,"vessel_count_dry_bulk":11736,"vessel_count_general_cargo":968,"vessel_count_RoRo":628,"vessel_count_tanker":4706,"industry_top1":"Mineral
+        Products","industry_top2":"Vegetable Products","industry_top3":"Prepared Foodstuffs
+        & Beverages","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"edf18f455a2b4637a3632b6af201abe9","countrynoaccents":null,"ObjectId":7}},{"type":"Feature","id":8,"geometry":{"type":"Point","coordinates":[-5.754895722,35.94227416]},"properties":{"portid":"chokepoint8","portname":"Gibraltar
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Gibraltar
+        Strait","lat":35.94227416,"lon":-5.754895722,"vessel_count_total":47801,"vessel_count_container":11698,"vessel_count_dry_bulk":10466,"vessel_count_general_cargo":8088,"vessel_count_RoRo":1883,"vessel_count_tanker":15666,"industry_top1":"Mineral
+        Products","industry_top2":"Vegetable Products","industry_top3":"Chemical &
+        Allied Industries","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"d2b71882a70449288ee9bd15421d2aa9","countrynoaccents":null,"ObjectId":8}},{"type":"Feature","id":9,"geometry":{"type":"Point","coordinates":[1.505839717,51.03022414]},"properties":{"portid":"chokepoint9","portname":"Dover
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Dover Strait","lat":51.03022414,"lon":1.505839717,"vessel_count_total":60580,"vessel_count_container":12535,"vessel_count_dry_bulk":8224,"vessel_count_general_cargo":14577,"vessel_count_RoRo":4118,"vessel_count_tanker":21126,"industry_top1":"Mineral
+        Products","industry_top2":"Chemical & Allied Industries","industry_top3":"Vegetable
+        Products","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"34a9c079e9e14b19a1ca9f218f368d12","countrynoaccents":null,"ObjectId":9}},{"type":"Feature","id":10,"geometry":{"type":"Point","coordinates":[12.85079477,55.50784043]},"properties":{"portid":"chokepoint10","portname":"Oresund
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Oresund Strait","lat":55.50784043,"lon":12.85079477,"vessel_count_total":17833,"vessel_count_container":2135,"vessel_count_dry_bulk":2248,"vessel_count_general_cargo":7962,"vessel_count_RoRo":1170,"vessel_count_tanker":4318,"industry_top1":"Mineral
+        Products","industry_top2":"Wood & Wood Products","industry_top3":"Chemical
+        & Allied Industries","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"65ec417b135745d0924b2c0d68649d1a","countrynoaccents":null,"ObjectId":10}},{"type":"Feature","id":11,"geometry":{"type":"Point","coordinates":[119.8313644,24.72350972]},"properties":{"portid":"chokepoint11","portname":"Taiwan
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Taiwan Strait","lat":24.72350972,"lon":119.8313644,"vessel_count_total":88436,"vessel_count_container":31190,"vessel_count_dry_bulk":23626,"vessel_count_general_cargo":10901,"vessel_count_RoRo":2313,"vessel_count_tanker":20406,"industry_top1":"Mineral
+        Products","industry_top2":"Vegetable Products","industry_top3":"Chemical &
+        Allied Industries","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"e3001146dc5c4666bb36d5024f4389a7","countrynoaccents":null,"ObjectId":11}},{"type":"Feature","id":12,"geometry":{"type":"Point","coordinates":[129.209206,34.13076811]},"properties":{"portid":"chokepoint12","portname":"Korea
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Korea Strait","lat":34.13076811,"lon":129.209206,"vessel_count_total":82119,"vessel_count_container":20682,"vessel_count_dry_bulk":15163,"vessel_count_general_cargo":20256,"vessel_count_RoRo":3286,"vessel_count_tanker":22732,"industry_top1":"Mineral
+        Products","industry_top2":"Vegetable Products","industry_top3":"Metals","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"3adbfe51b53e42e48ef5ece5a3bb12a9","countrynoaccents":null,"ObjectId":12}},{"type":"Feature","id":13,"geometry":{"type":"Point","coordinates":[140.3532743,41.32803599]},"properties":{"portid":"chokepoint13","portname":"Tsugaru
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Tsugaru Strait","lat":41.32803599,"lon":140.3532743,"vessel_count_total":16440,"vessel_count_container":3867,"vessel_count_dry_bulk":4907,"vessel_count_general_cargo":2505,"vessel_count_RoRo":718,"vessel_count_tanker":4443,"industry_top1":"Mineral
+        Products","industry_top2":"Vegetable Products","industry_top3":"Metals","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"5b5450a9b33b4e57952e2dff890be7ad","countrynoaccents":null,"ObjectId":13}},{"type":"Feature","id":14,"geometry":{"type":"Point","coordinates":[121.352295045579,20.488890710794]},"properties":{"portid":"chokepoint14","portname":"Luzon
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Luzon Strait","lat":20.488890710794,"lon":121.352295045579,"vessel_count_total":25748,"vessel_count_container":2438,"vessel_count_dry_bulk":11846,"vessel_count_general_cargo":1616,"vessel_count_RoRo":898,"vessel_count_tanker":8950,"industry_top1":"Mineral
+        Products","industry_top2":"Vegetable Products","industry_top3":"Wood & Wood
+        Products","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"7eaad0054dad4ae7acdae2d86c612fbe","countrynoaccents":null,"ObjectId":14}},{"type":"Feature","id":15,"geometry":{"type":"Point","coordinates":[115.801433044024,-8.41914514129252]},"properties":{"portid":"chokepoint15","portname":"Lombok
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Lombok Strait","lat":-8.41914514129252,"lon":115.801433044024,"vessel_count_total":12918,"vessel_count_container":70,"vessel_count_dry_bulk":9566,"vessel_count_general_cargo":571,"vessel_count_RoRo":95,"vessel_count_tanker":2616,"industry_top1":"Mineral
+        Products","industry_top2":"Vegetable Products","industry_top3":"Chemical &
+        Allied Industries","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"152bef5391ca44e8af7b102c966daf87","countrynoaccents":null,"ObjectId":15}},{"type":"Feature","id":16,"geometry":{"type":"Point","coordinates":[125.090981399512,-8.39854120024366]},"properties":{"portid":"chokepoint16","portname":"Ombai
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Ombai Strait","lat":-8.39854120024364,"lon":125.090981399512,"vessel_count_total":4084,"vessel_count_container":476,"vessel_count_dry_bulk":1848,"vessel_count_general_cargo":354,"vessel_count_RoRo":51,"vessel_count_tanker":1355,"industry_top1":"Mineral
+        Products","industry_top2":"Chemical & Allied Industries","industry_top3":"Prepared
+        Foodstuffs & Beverages","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"201f4309e3694ad789ad35266c7fda62","countrynoaccents":null,"ObjectId":16}},{"type":"Feature","id":17,"geometry":{"type":"Point","coordinates":[120.900049176636,38.373044249766]},"properties":{"portid":"chokepoint17","portname":"Bohai
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Bohai Strait","lat":38.373044249766,"lon":120.900049176636,"vessel_count_total":64100,"vessel_count_container":7801,"vessel_count_dry_bulk":34891,"vessel_count_general_cargo":7202,"vessel_count_RoRo":916,"vessel_count_tanker":13290,"industry_top1":"Mineral
+        Products","industry_top2":"Metals","industry_top3":"Vegetable Products","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"cf77151f98b641769ee4a2df13cc6d57","countrynoaccents":null,"ObjectId":17}},{"type":"Feature","id":18,"geometry":{"type":"Point","coordinates":[142.247528743501,-9.86253413199954]},"properties":{"portid":"chokepoint18","portname":"Torres
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Torres Strait","lat":-9.86253413199954,"lon":142.247528743501,"vessel_count_total":3308,"vessel_count_container":540,"vessel_count_dry_bulk":1570,"vessel_count_general_cargo":365,"vessel_count_RoRo":94,"vessel_count_tanker":739,"industry_top1":"Mineral
+        Products","industry_top2":"Vegetable Products","industry_top3":"Chemical &
+        Allied Industries","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"62e6baba51d54fc6887b598f62358912","countrynoaccents":null,"ObjectId":18}},{"type":"Feature","id":19,"geometry":{"type":"Point","coordinates":[105.775219888066,-5.96684057041463]},"properties":{"portid":"chokepoint19","portname":"Sunda
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Sunda Strait","lat":-5.96684057041462,"lon":105.775219888066,"vessel_count_total":10393,"vessel_count_container":1141,"vessel_count_dry_bulk":3873,"vessel_count_general_cargo":1088,"vessel_count_RoRo":222,"vessel_count_tanker":4069,"industry_top1":"Mineral
+        Products","industry_top2":"Vegetable Products","industry_top3":"Prepared Foodstuffs
+        & Beverages","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"47dbeae6b75e438b88c92b4c3c495f07","countrynoaccents":null,"ObjectId":19}},{"type":"Feature","id":20,"geometry":{"type":"Point","coordinates":[119.257065444388,0.352280586988642]},"properties":{"portid":"chokepoint20","portname":"Makassar
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Makassar Strait","lat":0.352280586988657,"lon":119.257065444388,"vessel_count_total":19117,"vessel_count_container":722,"vessel_count_dry_bulk":15616,"vessel_count_general_cargo":826,"vessel_count_RoRo":44,"vessel_count_tanker":1909,"industry_top1":"Mineral
+        Products","industry_top2":"Vegetable Products","industry_top3":"Prepared Foodstuffs
+        & Beverages","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"01be21ec85b448689f4c0e5d623715ec","countrynoaccents":null,"ObjectId":20}},{"type":"Feature","id":21,"geometry":{"type":"Point","coordinates":[-69.5948324606974,-52.6403396677892]},"properties":{"portid":"chokepoint21","portname":"Magellan
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Magellan Strait","lat":-52.6403396677892,"lon":-69.5948324606974,"vessel_count_total":1426,"vessel_count_container":110,"vessel_count_dry_bulk":790,"vessel_count_general_cargo":100,"vessel_count_RoRo":67,"vessel_count_tanker":359,"industry_top1":"Mineral
+        Products","industry_top2":"Vegetable Products","industry_top3":"Prepared Foodstuffs
+        & Beverages","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"32a8deea4def480790d78fcfb5f6dff4","countrynoaccents":null,"ObjectId":21}},{"type":"Feature","id":22,"geometry":{"type":"Point","coordinates":[-85.6472792223515,21.8152541926988]},"properties":{"portid":"chokepoint22","portname":"Yucatan
+        Channel","country":null,"ISO3":null,"continent":null,"fullname":"Yucatan Channel","lat":21.8152541926988,"lon":-85.6472792223515,"vessel_count_total":16416,"vessel_count_container":3346,"vessel_count_dry_bulk":2915,"vessel_count_general_cargo":1406,"vessel_count_RoRo":347,"vessel_count_tanker":8402,"industry_top1":"Mineral
+        Products","industry_top2":"Vegetable Products","industry_top3":"Chemical &
+        Allied Industries","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"b028745615454909bde67aa947502c90","countrynoaccents":null,"ObjectId":22}},{"type":"Feature","id":23,"geometry":{"type":"Point","coordinates":[-73.6975398964955,19.9861871932071]},"properties":{"portid":"chokepoint23","portname":"Windward
+        Passage","country":null,"ISO3":null,"continent":null,"fullname":"Windward
+        Passage","lat":19.9861871932071,"lon":-73.6975398964955,"vessel_count_total":5600,"vessel_count_container":2696,"vessel_count_dry_bulk":691,"vessel_count_general_cargo":843,"vessel_count_RoRo":604,"vessel_count_tanker":766,"industry_top1":"Mineral
+        Products","industry_top2":"Vegetable Products","industry_top3":"Wood & Wood
+        Products","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"b5759986427c4b1abf2b5da5a9ddf066","countrynoaccents":null,"ObjectId":23}},{"type":"Feature","id":24,"geometry":{"type":"Point","coordinates":[-67.7113544869163,18.4487355684237]},"properties":{"portid":"chokepoint24","portname":"Mona
+        Passage","country":null,"ISO3":null,"continent":null,"fullname":"Mona Passage","lat":18.4487355684237,"lon":-67.7113544869163,"vessel_count_total":3714,"vessel_count_container":1230,"vessel_count_dry_bulk":913,"vessel_count_general_cargo":439,"vessel_count_RoRo":233,"vessel_count_tanker":899,"industry_top1":"Mineral
+        Products","industry_top2":"Vegetable Products","industry_top3":"Chemical &
+        Allied Industries","share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"214b7be27e78457f89a01cfa2c794900","countrynoaccents":null,"ObjectId":24}},{"type":"Feature","id":25,"geometry":{"type":"Point","coordinates":[117.114621682663,7.41361499317766]},"properties":{"portid":"chokepoint25","portname":"Balabac
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Balabac Strait","lat":7.4136149931776751,"lon":117.11462168266297,"vessel_count_total":3794,"vessel_count_container":337,"vessel_count_dry_bulk":1694,"vessel_count_general_cargo":463,"vessel_count_RoRo":14,"vessel_count_tanker":1286,"industry_top1":null,"industry_top2":null,"industry_top3":null,"share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"b7d8909b058749da808d519942087890","countrynoaccents":null,"ObjectId":25}},{"type":"Feature","id":26,"geometry":{"type":"Point","coordinates":[-165.549828611457,65.9664885915593]},"properties":{"portid":"chokepoint26","portname":"Bering
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Bering Strait","lat":65.96648859155934,"lon":-165.54982861145731,"vessel_count_total":294,"vessel_count_container":23,"vessel_count_dry_bulk":51,"vessel_count_general_cargo":89,"vessel_count_RoRo":3,"vessel_count_tanker":128,"industry_top1":null,"industry_top2":null,"industry_top3":null,"share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"1707bd5d6a21481ab8c6b98ab4ed412c","countrynoaccents":null,"ObjectId":26}},{"type":"Feature","id":27,"geometry":{"type":"Point","coordinates":[120.403427878012,12.4683153719592]},"properties":{"portid":"chokepoint27","portname":"Mindoro
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Mindoro Strait","lat":12.468315371959248,"lon":120.40342787801248,"vessel_count_total":16493,"vessel_count_container":584,"vessel_count_dry_bulk":13455,"vessel_count_general_cargo":1086,"vessel_count_RoRo":34,"vessel_count_tanker":1334,"industry_top1":null,"industry_top2":null,"industry_top3":null,"share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"7fdc7d8c9da1447bb2968f55c58b025c","countrynoaccents":null,"ObjectId":27}},{"type":"Feature","id":28,"geometry":{"type":"Point","coordinates":[36.54390169965,45.266763090417]},"properties":{"portid":"chokepoint28","portname":"Kerch
+        Strait","country":null,"ISO3":null,"continent":null,"fullname":"Kerch Strait","lat":45.266763090417008,"lon":36.543901699650043,"vessel_count_total":10390,"vessel_count_container":64,"vessel_count_dry_bulk":527,"vessel_count_general_cargo":7163,"vessel_count_RoRo":77,"vessel_count_tanker":2559,"industry_top1":null,"industry_top2":null,"industry_top3":null,"share_country_maritime_import":null,"share_country_maritime_export":null,"LOCODE":null,"pageid":"0f7ba54d142e48ea98f8b70a159cd6ae","countrynoaccents":null,"ObjectId":28}}]}'
     headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Content-Type, Authorization, X-Esri-Authorization
       Access-Control-Allow-Origin:
       - '*'
       Access-Control-Expose-Headers:
@@ -75,52 +106,39 @@ interactions:
       - public, max-age=3600, s-maxage=3600
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
-      Content-Length:
-      - '2995'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 29 May 2025 05:00:12 GMT
+      - Mon, 25 May 2026 16:20:55 GMT
       Etag:
-      - sd1198_2131478034
+      - sd1198_-1886688963
       Last-Modified:
-      - Mon, 12 May 2025 12:42:34 GMT
+      - Thu, 30 Apr 2026 11:42:16 GMT
       Request-Context:
       - appId=cid-v1:091e3ef9-df68-4d69-9df4-ab8f80183701
       - appId=cid-v1:eccdbd2e-a85f-4676-a932-e967891b0fc6
-      Set-Cookie: null
       Strict-Transport-Security:
       - max-age=63072000
       Vary:
       - X-Esri-Authorization
-      Via:
-      - 1.1 53d43c59da0241f882094df4d0a28056.cloudfront.net (CloudFront)
-      X-Amz-Cf-Id:
-      - 8UezT5773nHwSCsAkjnDVxtBtn9YtxseUmwny6kDPFljgfECTQNuJw==
-      X-Amz-Cf-Pop:
-      - YVR52-P2
       X-ArcGIS-Correlation-Id:
-      - 00-1d0797ed03dfe10de0b16ca231d23928-34eafa382ffc7da6-00
+      - 5e5057dea49dea99
       X-ArcGIS-Instance:
       - wziaf7inz00000D
       X-ArcGIS-Trace-Id:
-      - 9ZJi8kEQVQTsDJD8MMNP1AcNklspTqGDNqYtzuVNY72-OYWUygop3A==
+      - 20260525T162055Z-15cb7fd6cb4rp72khC1WST76240000000b7g000000006fzb
       X-Cache:
-      - RefreshHit from cloudfront
+      - TCP_MISS
+      content-length:
+      - '20473'
       x-arcgis-upstream:
-      - us1h09c00
-      x-esri-org-request-units-per-min:
-      - usage=39;max=6000
-      x-esri-query-geometry-field-name:
-      - Shape
-      x-esri-query-request-units:
-      - '2'
-      x-esri-tiles-basic-query-mode:
+      - us1h09c00-services
+      x-azure-ref:
+      - 20260525T162055Z-15cb7fd6cb4rp72khC1WST76240000000b7g000000006fzb
+      x-esri-features-cache:
       - 'true'
-      x-esri-tiles-basic-query-type:
-      - Basic
+      x-fd-int-roxy-purgeid:
+      - '0'
     status:
       code: 200
       message: OK

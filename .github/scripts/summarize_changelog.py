@@ -23,7 +23,9 @@ def fetch_pr_details(owner: str, repo: str, pr_number: str, github_token: str) -
     return {}
 
 
-def parse_and_fetch_pr_details(markdown_text: str, owner: str, repo: str, github_token: str) -> dict[str, str]:
+def parse_and_fetch_pr_details(
+    markdown_text: str, owner: str, repo: str, github_token: str
+) -> dict[str, str]:
     """Parse the markdown text and fetch details of PRs mentioned in the text."""
     sections = re.split(r"\n## ", markdown_text)
     categories: dict[str, str] = {}
@@ -46,7 +48,9 @@ def parse_and_fetch_pr_details(markdown_text: str, owner: str, repo: str, github
                         "body": re.sub(r"\s+", " ", pr_details["body"].strip()).strip(),
                     }
                 except Exception as e:
-                    logging.error("Failed to fetch PR details for PR #%s: %s", pr_number, e)
+                    logging.error(
+                        "Failed to fetch PR details for PR #%s: %s", pr_number, e
+                    )
                 if category_name in categories:
                     categories[category_name].append(pr_info)  # type: ignore
                 else:
@@ -55,7 +59,9 @@ def parse_and_fetch_pr_details(markdown_text: str, owner: str, repo: str, github
     return categories
 
 
-def insert_summary_into_markdown(markdown_text: str, category_name: str, summary: str) -> str:
+def insert_summary_into_markdown(
+    markdown_text: str, category_name: str, summary: str
+) -> str:
     """Insert a summary into the markdown text directly under the specified category name."""
     marker = f"## {category_name}"
     if marker in markdown_text:
@@ -66,7 +72,12 @@ def insert_summary_into_markdown(markdown_text: str, category_name: str, summary
         if newline_pos != -1:
             # Insert the summary right after the newline that follows the category name
             # Ensuring it's on a new line and followed by two newlines before any subsequent content
-            updated_markdown = markdown_text[: newline_pos + 1] + "\n" + summary + markdown_text[newline_pos + 1 :]
+            updated_markdown = (
+                markdown_text[: newline_pos + 1]
+                + "\n"
+                + summary
+                + markdown_text[newline_pos + 1 :]
+            )
         else:
             # If there's no newline (e.g., end of file), just append the summary
             updated_markdown = markdown_text + "\n\n" + summary + "\n"
@@ -78,7 +89,7 @@ def insert_summary_into_markdown(markdown_text: str, category_name: str, summary
 
 def summarize_text_with_openai(text: str, openai_api_key: str) -> str:
     """Summarize text using OpenAI's GPT model."""
-    from openai import OpenAI  # pylint: disable=C0415
+    from openai import OpenAI
 
     openai = OpenAI(api_key=openai_api_key)
     response = openai.chat.completions.create(
@@ -86,7 +97,7 @@ def summarize_text_with_openai(text: str, openai_api_key: str) -> str:
         messages=[
             {
                 "role": "system",
-                "content": "Summarize the following text in a concise way to describe what happened in the new release. This will be used on top of the changelog to provide a high-level overview of the changes. Make sure it is well-written, concise, structured and that it captures the essence of the text. It should read like a concise story.",  # noqa: E501 # pylint: disable=C0301
+                "content": "Summarize the following text in a concise way to describe what happened in the new release. This will be used on top of the changelog to provide a high-level overview of the changes. Make sure it is well-written, concise, structured and that it captures the essence of the text. It should read like a concise story.",  # noqa: E501
             },
             {"role": "user", "content": text},
         ],
@@ -128,11 +139,13 @@ def summarize_changelog_v2(
             aggregated_text = "\n".join(
                 [
                     f"- {pr['title']}: {re.sub(pattern, '', pr['body'])}"  # type: ignore
-                    for pr in categories[category_of_interest]  # type: ignore
+                    for pr in categories[category_of_interest]
                 ]
             )
             summary = summarize_text_with_openai(aggregated_text, openai_api_key)
-            updated_markdown = insert_summary_into_markdown(updated_markdown, category_of_interest, summary)
+            updated_markdown = insert_summary_into_markdown(
+                updated_markdown, category_of_interest, summary
+            )
 
     with open(changelog_v2, "w") as file:
         logging.info("Writing updated file: %s", changelog_v2)
@@ -141,7 +154,9 @@ def summarize_changelog_v2(
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        logging.error("Usage: python summarize_changelog.py <github_token> <openai_api_key>")
+        logging.error(
+            "Usage: python summarize_changelog.py <github_token> <openai_api_key>"
+        )
         sys.exit(1)
 
     token = sys.argv[1]

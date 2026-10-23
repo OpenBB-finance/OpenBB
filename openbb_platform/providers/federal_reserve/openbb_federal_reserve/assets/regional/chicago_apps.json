@@ -1,0 +1,147 @@
+[
+  {
+    "name": "Chicago Fed",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Federal_Reserve_Bank_of_Chicago_%2851574643886%29.jpg/960px-Federal_Reserve_Bank_of_Chicago_%2851574643886%29.jpg",
+    "img_dark": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Federal_Reserve_Bank_of_Chicago_%2851574643886%29.jpg/960px-Federal_Reserve_Bank_of_Chicago_%2851574643886%29.jpg",
+    "img_light": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Federal_Reserve_Bank_of_Chicago_%2851574643886%29.jpg/960px-Federal_Reserve_Bank_of_Chicago_%2851574643886%29.jpg",
+    "description": "The Chicago Fed's national and Seventh District barometers: the CFNAI national activity index, the NFCI financial conditions index, the Brave-Butters-Kelley and Midwest Economy indexes, advance retail trade (CARTS), labor-market conditions, and the AgLetter farmland-value and farm-credit survey.",
+    "allowCustomization": true,
+    "tabs": {
+      "national-activity-conditions": {
+        "id": "national-activity-conditions",
+        "name": "National Activity & Conditions",
+        "layout": [
+          {
+            "i": "chicago_national_activity_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "chicago_financial_conditions_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "chicago_economic_conditions_federal_reserve_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "chicago_brave_butters_kelley_federal_reserve_obb",
+            "x": 0,
+            "y": 54,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "chicago_midwest_economy_federal_reserve_obb",
+            "x": 0,
+            "y": 72,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "retail-labor": {
+        "id": "retail-labor",
+        "name": "Retail & Labor",
+        "layout": [
+          {
+            "i": "chicago_retail_trade_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "chicago_labor_market_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "agriculture": {
+        "id": "agriculture",
+        "name": "Agriculture",
+        "layout": [
+          {
+            "i": "chicago_farmland_values_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "chicago_ag_credit_conditions_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "chicago_farm_loan_rates_federal_reserve_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "publications-reports": {
+        "id": "publications-reports",
+        "name": "Publications & Reports",
+        "layout": [
+          {
+            "i": "chicago_publications_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      }
+    },
+    "groups": []
+  }
+]

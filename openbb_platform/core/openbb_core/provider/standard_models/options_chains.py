@@ -364,7 +364,7 @@ class OptionsChainsData(OptionsChainsProperties):
     def model_serialize(self):
         """Return the serialized data."""
         data: dict = {}
-        for field in self.model_fields:
+        for field in type(self).model_fields:
             value = getattr(self, field)
             if isinstance(value, list):
                 if value:  # Check if the list is not empty
@@ -373,7 +373,7 @@ class OptionsChainsData(OptionsChainsProperties):
                     else:
                         data[field] = value
             else:
-                data[field] = value
+                data[field] = value  # pragma: no cover
 
         records = [dict(zip(data.keys(), values)) for values in zip(*data.values())]
 
@@ -390,7 +390,7 @@ class OptionsChainsData(OptionsChainsProperties):
 
         row_fields: dict[str, Any] = {}
         for field_name, field_info in cls.model_fields.items():
-            annotation = field_info.annotation
+            annotation: Any = field_info.annotation
             inner = (
                 get_args(annotation)[0]
                 if get_origin(annotation) is list

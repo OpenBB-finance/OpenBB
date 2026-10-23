@@ -1,0 +1,3 @@
+# Build-time SDMX metadata cache — materialized by hatch_build.py /
+# generate_cache.py, never committed.
+openbb_ecb/assets/ecb_cache.json.xz

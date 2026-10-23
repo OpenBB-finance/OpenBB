@@ -11,18 +11,9 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      # - uses: mheap/github-action-required-labels@v5
-      #   with:
-      #     mode: minimum
-      #     count: 1
-      #     labels: "guides, bug, build, docker, docs, feat XS, feat S, feat M, feat L, feat XL, help wanted, refactor, tests, dependencies, release"
       - uses: mheap/github-action-required-labels@0ac283b4e65c1fb28ce6079dea5546ceca98ccbe # v5
         with:
           mode: exactly
           count: 0
           labels: "do not merge"
 
-      - name: 🏷️ Label OpenBB Platform PRs
-        uses: srvaroa/labeler@e8fbb2561481ef6e711a770f0234e9379dc76892 # master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

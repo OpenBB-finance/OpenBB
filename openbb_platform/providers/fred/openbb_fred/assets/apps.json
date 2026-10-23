@@ -1,0 +1,395 @@
+[
+    {
+        "name": "FRED",
+        "img": "https://tvblog-static.tradingview.com/uploads/2021/07/fred-preview.png",
+        "description": "FRED (Federal Reserve Economic Data) offers U.S. and global economic data, including GDP, inflation (CPI, PCE), unemployment, and consumer spending. It tracks interest rates, money supply (M1, M2), stock indices, bond yields, exchange rates, housing prices (Case-Shiller), mortgage rates, and trade balances. Industry data covers manufacturing, energy, and real estate.",
+        "authentication": "Get your FRED API KEY at https://fred.stlouisfed.org/docs/api/api_key.html",
+        "allowCustomization": true,
+        "tabs": {
+            "Search": {
+                "id": "Search",
+                "name": "Search & Series",
+                "layout": [
+                    {
+                        "i": "economy_fred_search_fred_obb",
+                        "x": 0,
+                        "y": 2,
+                        "w": 40,
+                        "h": 15,
+                        "state": {
+                            "params": {
+                                "query": "pce",
+                                "tag_names": "inflation;pce"
+                            },
+                            "chartView": {
+                                "enabled": false,
+                                "chartType": "line"
+                            },
+                            "columnState": {
+                                "default_": {
+                                    "columnPinning": {
+                                        "leftColIds": [
+                                            "series_id",
+                                            "title"
+                                        ],
+                                        "rightColIds": []
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "i": "economy_fred_series_fred_obb",
+                        "x": 0,
+                        "y": 17,
+                        "w": 40,
+                        "h": 10,
+                        "state": {
+                            "params": {
+                                "symbol": "RPI,PCE"
+                            },
+                            "chartView": {
+                                "enabled": false,
+                                "chartType": "line"
+                            }
+                        }
+                    }
+                ]
+            },
+            "ReleaseTables": {
+                "id": "ReleaseTables",
+                "name": "Release Tables",
+                "layout": [
+                    {
+                        "i": "economy_fred_search_fred_obb",
+                        "x": 0,
+                        "y": 0,
+                        "w": 40,
+                        "h": 8,
+                        "state": {
+                            "params": {
+                                "search_type": "full_text",
+                                "query": "retail sales"
+                            },
+                            "chartView": {
+                                "enabled": false,
+                                "chartType": "line"
+                            },
+                            "columnState": {
+                                "default_": {
+                                    "columnVisibility": {
+                                        "hiddenColIds": [
+                                            "release_id",
+                                            "series_group",
+                                            "region_type",
+                                            "name",
+                                            "frequency_short",
+                                            "units_short",
+                                            "seasonal_adjustment_short",
+                                            "realtime_start",
+                                            "realtime_end",
+                                            "notes",
+                                            "press_release",
+                                            "url",
+                                            "group_popularity"
+                                        ]
+                                    },
+                                    "scroll": {
+                                        "top": 0,
+                                        "left": 0
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "i": "fred_economy_release_table_custom_obb",
+                        "x": 0,
+                        "y": 8,
+                        "w": 40,
+                        "h": 16,
+                        "state": {
+                            "params": {
+                                "release_id": "9",
+                                "limit": 8
+                            }
+                        }
+                    },
+                    {
+                        "i": "economy_fred_series_fred_obb",
+                        "x": 0,
+                        "y": 24,
+                        "w": 40,
+                        "h": 14,
+                        "state": {
+                            "params": {
+                                "symbol": "RSAFS"
+                            },
+                            "chartView": {
+                                "enabled": true,
+                                "chartType": "line"
+                            }
+                        }
+                    }
+                ]
+            },
+            "InterestRates": {
+                "id": "InterestRates",
+                "name": "Interest Rates",
+                "layout": [
+                    {
+                        "i": "fixedincome_government_yield_curve_fred_obb",
+                        "x": 0,
+                        "y": 0,
+                        "w": 20,
+                        "h": 13,
+                        "state": {
+                            "params": {
+                                "yield_curve_type": "nominal"
+                            },
+                            "chartView": {
+                                "enabled": true,
+                                "chartType": "line"
+                            }
+                        }
+                    },
+                    {
+                        "i": "fixedincome_spreads_tcm_fred_obb",
+                        "x": 20,
+                        "y": 0,
+                        "w": 20,
+                        "h": 13,
+                        "state": {
+                            "params": {
+                                "start_date": "2020-01-01",
+                                "maturity": "3m"
+                            },
+                            "chartView": {
+                                "enabled": true,
+                                "chartType": "line"
+                            }
+                        }
+                    },
+                    {
+                        "i": "fixedincome_government_tips_yields_fred_obb",
+                        "x": 0,
+                        "y": 13,
+                        "w": 40,
+                        "h": 14,
+                        "state": {
+                            "params": {
+                                "start_date": "2020-01-01",
+                                "maturity": "10"
+                            },
+                            "chartView": {
+                                "enabled": false,
+                                "chartType": "line"
+                            }
+                        }
+                    },
+                    {
+                        "i": "fixedincome_rate_effr_fred_obb",
+                        "x": 0,
+                        "y": 27,
+                        "w": 20,
+                        "h": 13,
+                        "state": {
+                            "params": {
+                                "start_date": "2020-01-01"
+                            },
+                            "chartView": {
+                                "enabled": false,
+                                "chartType": "line"
+                            }
+                        }
+                    },
+                    {
+                        "i": "fixedincome_rate_sofr_fred_obb",
+                        "x": 20,
+                        "y": 27,
+                        "w": 20,
+                        "h": 13,
+                        "state": {
+                            "params": {
+                                "start_date": "2020-01-01"
+                            },
+                            "chartView": {
+                                "enabled": false,
+                                "chartType": "line"
+                            }
+                        }
+                    },
+                    {
+                        "i": "fixedincome_rate_iorb_fred_obb",
+                        "x": 0,
+                        "y": 40,
+                        "w": 13,
+                        "h": 11,
+                        "state": {
+                            "params": {
+                                "start_date": "2020-01-01"
+                            },
+                            "chartView": {
+                                "enabled": true,
+                                "chartType": "line"
+                            }
+                        }
+                    },
+                    {
+                        "i": "fixedincome_rate_dpcredit_fred_obb",
+                        "x": 13,
+                        "y": 40,
+                        "w": 13,
+                        "h": 11,
+                        "state": {
+                            "params": {
+                                "start_date": "2020-01-01"
+                            },
+                            "chartView": {
+                                "enabled": true,
+                                "chartType": "line"
+                            }
+                        }
+                    },
+                    {
+                        "i": "fixedincome_rate_ecb_fred_obb",
+                        "x": 26,
+                        "y": 40,
+                        "w": 14,
+                        "h": 11,
+                        "state": {
+                            "params": {
+                                "start_date": "2020-01-01",
+                                "interest_rate_type": "deposit"
+                            },
+                            "chartView": {
+                                "enabled": true,
+                                "chartType": "line"
+                            }
+                        }
+                    },
+                    {
+                        "i": "fixedincome_mortgage_indices_fred_obb",
+                        "x": 0,
+                        "y": 51,
+                        "w": 20,
+                        "h": 12,
+                        "state": {
+                            "params": {
+                                "start_date": "2020-01-01",
+                                "index": "primary"
+                            },
+                            "chartView": {
+                                "enabled": true,
+                                "chartType": "line"
+                            }
+                        }
+                    },
+                    {
+                        "i": "fixedincome_corporate_commercial_paper_fred_obb",
+                        "x": 20,
+                        "y": 51,
+                        "w": 20,
+                        "h": 12,
+                        "state": {
+                            "params": {
+                                "start_date": "2020-01-01",
+                                "maturity": "overnight,30d,90d",
+                                "category": "nonfinancial"
+                            },
+                            "chartView": {
+                                "enabled": false,
+                                "chartType": "line"
+                            }
+                        }
+                    },
+                    {
+                        "i": "fixedincome_corporate_hqm_fred_obb",
+                        "x": 0,
+                        "y": 63,
+                        "w": 20,
+                        "h": 12,
+                        "state": {
+                            "params": {
+                                "yield_curve": "spot"
+                            },
+                            "chartView": {
+                                "enabled": true,
+                                "chartType": "line"
+                            }
+                        }
+                    },
+                    {
+                        "i": "fixedincome_corporate_spot_rates_fred_obb",
+                        "x": 20,
+                        "y": 63,
+                        "w": 20,
+                        "h": 12,
+                        "state": {
+                            "params": {
+                                "start_date": "2020-01-01",
+                                "maturity": "2,5,10,30",
+                                "category": "spot_rate"
+                            },
+                            "chartView": {
+                                "enabled": false,
+                                "chartType": "line"
+                            }
+                        }
+                    },
+                    {
+                        "i": "fixedincome_bond_indices_fred_obb",
+                        "x": 0,
+                        "y": 75,
+                        "w": 40,
+                        "h": 13,
+                        "state": {
+                            "params": {
+                                "start_date": "2020-01-01",
+                                "category": "us",
+                                "index": "yield_curve",
+                                "index_type": "yield"
+                            },
+                            "chartView": {
+                                "enabled": false,
+                                "chartType": "line"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "groups": [
+            {
+                "name": "Series",
+                "type": "param",
+                "paramName": "symbol",
+                "defaultValue": "RSAFS",
+                "widgetIds": [
+                    "economy_fred_search_fred_obb",
+                    "fred_economy_release_table_custom_obb",
+                    "economy_fred_series_fred_obb"
+                ]
+            },
+            {
+                "name": "History",
+                "type": "param",
+                "paramName": "start_date",
+                "defaultValue": "2020-01-01",
+                "widgetIds": [
+                    "fixedincome_spreads_tcm_fred_obb",
+                    "fixedincome_government_tips_yields_fred_obb",
+                    "fixedincome_rate_effr_fred_obb",
+                    "fixedincome_rate_sofr_fred_obb",
+                    "fixedincome_rate_iorb_fred_obb",
+                    "fixedincome_rate_dpcredit_fred_obb",
+                    "fixedincome_rate_ecb_fred_obb",
+                    "fixedincome_mortgage_indices_fred_obb",
+                    "fixedincome_corporate_commercial_paper_fred_obb",
+                    "fixedincome_corporate_spot_rates_fred_obb",
+                    "fixedincome_bond_indices_fred_obb"
+                ]
+            }
+        ]
+    }
+]

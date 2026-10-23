@@ -69,13 +69,14 @@ def check_docstring_examples() -> list[str]:
 
 
 def filter_eps(eps: EntryPoints | dict, group: str) -> tuple[EntryPoint, ...]:
+    """Return the entry points registered under ``group``."""
     if version_info[:2] == (3, 12):
         return eps.select(group=group) or ()  # type: ignore[union-attr]
     return eps.get(group, ())  # type: ignore[union-attr]
 
 
 def list_openbb_extensions() -> tuple[set[str], set[str], set[str]]:
-    """list installed openbb extensions and providers.
+    """List installed openbb extensions and providers.
 
     Returns
     -------

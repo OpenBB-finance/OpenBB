@@ -1,0 +1,134 @@
+{
+  "source": "https://www.frbservices.org/binaries/content/assets/crsocms/central-bank/reporting-central/frq-1-user-guide.pdf",
+  "schedule_count": 2,
+  "item_count": 9,
+  "schedules": [
+    {
+      "schedule": "COVER",
+      "name": "Cover Page"
+    },
+    {
+      "schedule": "I-to-VII",
+      "name": "Schedule I to VII - Company Inventory to Section 171 Calculation"
+    }
+  ],
+  "items": [
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Name / Title",
+      "mdrm": "INSQ8901",
+      "columns": [
+        "INSQ8901"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Area Code / Phone Number",
+      "mdrm": "INSQ8902",
+      "columns": [
+        "INSQ8902"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "E-mail Address of Contact",
+      "mdrm": "INSQ4086",
+      "columns": [
+        "INSQ4086"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Is confidential treatment requested for any portion of this report submission? (0=No, 1=Yes)",
+      "mdrm": "INSQC447",
+      "columns": [
+        "INSQC447"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Printed Name of Officer",
+      "mdrm": "INSQC490",
+      "columns": [
+        "INSQC490"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "COVER",
+      "schedule_name": "Cover Page",
+      "line": null,
+      "caption": "Date of Signature (MM/DD/YYYY)",
+      "mdrm": "INSQJ196",
+      "columns": [
+        "INSQJ196"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "I-to-VII",
+      "schedule_name": "Schedule I to VII - Company Inventory to Section 171 Calculation",
+      "line": null,
+      "caption": "Building Block Available Capital",
+      "mdrm": "INSTLK11",
+      "columns": [
+        "INSTLK11"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "I-to-VII",
+      "schedule_name": "Schedule I to VII - Company Inventory to Section 171 Calculation",
+      "line": null,
+      "caption": "Building Block Capital Requirement",
+      "mdrm": "INSTLK28",
+      "columns": [
+        "INSTLK28"
+      ],
+      "level": 1,
+      "is_header": false
+    },
+    {
+      "schedule": "I-to-VII",
+      "schedule_name": "Schedule I to VII - Company Inventory to Section 171 Calculation",
+      "line": null,
+      "caption": "BBA Ratio",
+      "mdrm": "INSTLK39",
+      "columns": [
+        "INSTLK39"
+      ],
+      "level": 1,
+      "is_header": false
+    }
+  ],
+  "caption_source": "https://www.frbservices.org/binaries/content/assets/crsocms/central-bank/reporting-central/frq-1-user-guide.pdf",
+  "validation": {
+    "available": true,
+    "union_count": 9,
+    "covered_count": 9,
+    "missing": [],
+    "coverage": 100.0,
+    "permanent_empty_items": 0
+  }
+}

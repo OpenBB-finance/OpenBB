@@ -1,0 +1,416 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+    method: GET
+    uri: https://data-api.ecb.europa.eu/service/data/EST/B.EU000A2X2A25.WT+R25+R75+TT+NT+NB+VL?detail=full&endPeriod=2025-01-10&format=jsondata&startPeriod=2025-01-02
+  response:
+    body:
+      string: "{\n    \"header\": {\n        \"id\": \"0bb2c577-72c1-4fc2-b258-3b956d618cb9\",\n
+        \       \"test\": false,\n        \"prepared\": \"2026-06-25T00:28:59.246+02:00\",\n
+        \       \"sender\": {\n            \"id\": \"ECB\"\n        }\n    },\n    \"dataSets\":
+        [\n        {\n            \"action\": \"Replace\",\n            \"validFrom\":
+        \"2026-06-25T00:28:59.246+02:00\",\n            \"series\": {\n                \"0:0:0\":
+        {\n                    \"attributes\": [\n                        0,\n                        null,\n
+        \                       null,\n                        null,\n                        0,\n
+        \                       null,\n                        0,\n                        null,\n
+        \                       null,\n                        null,\n                        null,\n
+        \                       0,\n                        0,\n                        0,\n
+        \                       null,\n                        0,\n                        0\n
+        \                   ],\n                    \"observations\": {\n                        \"0\":
+        [\n                            36,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"1\":
+        [\n                            33,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"2\":
+        [\n                            33,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"3\":
+        [\n                            35,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"4\":
+        [\n                            36,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"5\":
+        [\n                            36,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"6\":
+        [\n                            36,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ]\n                    }\n
+        \               },\n                \"0:0:1\": {\n                    \"attributes\":
+        [\n                        0,\n                        null,\n                        null,\n
+        \                       null,\n                        0,\n                        null,\n
+        \                       0,\n                        null,\n                        null,\n
+        \                       null,\n                        null,\n                        0,\n
+        \                       1,\n                        1,\n                        null,\n
+        \                       0,\n                        0\n                    ],\n
+        \                   \"observations\": {\n                        \"0\": [\n
+        \                           617,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"1\":
+        [\n                            597,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"2\":
+        [\n                            574,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"3\":
+        [\n                            670,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"4\":
+        [\n                            724,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"5\":
+        [\n                            705,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"6\":
+        [\n                            737,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ]\n                    }\n
+        \               },\n                \"0:0:2\": {\n                    \"attributes\":
+        [\n                        0,\n                        null,\n                        null,\n
+        \                       null,\n                        0,\n                        null,\n
+        \                       1,\n                        null,\n                        null,\n
+        \                       null,\n                        null,\n                        1,\n
+        \                       2,\n                        2,\n                        null,\n
+        \                       1,\n                        0\n                    ],\n
+        \                   \"observations\": {\n                        \"0\": [\n
+        \                           2.9,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"1\":
+        [\n                            2.9,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"2\":
+        [\n                            2.9,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"3\":
+        [\n                            2.89,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"4\":
+        [\n                            2.89,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"5\":
+        [\n                            2.89,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"6\":
+        [\n                            2.89,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ]\n                    }\n
+        \               },\n                \"0:0:3\": {\n                    \"attributes\":
+        [\n                        0,\n                        null,\n                        null,\n
+        \                       null,\n                        0,\n                        null,\n
+        \                       1,\n                        null,\n                        null,\n
+        \                       null,\n                        null,\n                        1,\n
+        \                       3,\n                        3,\n                        null,\n
+        \                       1,\n                        0\n                    ],\n
+        \                   \"observations\": {\n                        \"0\": [\n
+        \                           2.95,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"1\":
+        [\n                            2.95,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"2\":
+        [\n                            2.95,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"3\":
+        [\n                            2.95,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"4\":
+        [\n                            2.95,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"5\":
+        [\n                            2.95,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"6\":
+        [\n                            2.95,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ]\n                    }\n
+        \               },\n                \"0:0:4\": {\n                    \"attributes\":
+        [\n                        0,\n                        null,\n                        null,\n
+        \                       null,\n                        0,\n                        null,\n
+        \                       0,\n                        null,\n                        null,\n
+        \                       null,\n                        null,\n                        0,\n
+        \                       4,\n                        4,\n                        null,\n
+        \                       2,\n                        1\n                    ],\n
+        \                   \"observations\": {\n                        \"0\": [\n
+        \                           59601,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"1\":
+        [\n                            55651,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"2\":
+        [\n                            53701,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"3\":
+        [\n                            59102,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"4\":
+        [\n                            59265,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"5\":
+        [\n                            55672,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"6\":
+        [\n                            56000,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ]\n                    }\n
+        \               },\n                \"0:0:5\": {\n                    \"attributes\":
+        [\n                        0,\n                        null,\n                        null,\n
+        \                       null,\n                        0,\n                        null,\n
+        \                       0,\n                        null,\n                        null,\n
+        \                       null,\n                        null,\n                        1,\n
+        \                       5,\n                        5,\n                        null,\n
+        \                       1,\n                        0\n                    ],\n
+        \                   \"observations\": {\n                        \"0\": [\n
+        \                           56,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"1\":
+        [\n                            58,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"2\":
+        [\n                            58,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"3\":
+        [\n                            55,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"4\":
+        [\n                            55,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"5\":
+        [\n                            55,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"6\":
+        [\n                            56,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ]\n                    }\n
+        \               },\n                \"0:0:6\": {\n                    \"attributes\":
+        [\n                        0,\n                        null,\n                        null,\n
+        \                       null,\n                        0,\n                        null,\n
+        \                       2,\n                        null,\n                        null,\n
+        \                       null,\n                        null,\n                        2,\n
+        \                       6,\n                        6,\n                        null,\n
+        \                       1,\n                        0\n                    ],\n
+        \                   \"observations\": {\n                        \"0\": [\n
+        \                           2.92,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"1\":
+        [\n                            2.919,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"2\":
+        [\n                            2.917,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"3\":
+        [\n                            2.918,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"4\":
+        [\n                            2.917,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"5\":
+        [\n                            2.92,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ],\n                        \"6\":
+        [\n                            2.917,\n                            0,\n                            0,\n
+        \                           null,\n                            null,\n                            null,\n
+        \                           null\n                        ]\n                    }\n
+        \               }\n            }\n        }\n    ],\n    \"structure\": {\n
+        \       \"links\": [\n            {\n                \"title\": \"Euro Short-Term
+        Rate\",\n                \"rel\": \"dataflow\",\n                \"href\":
+        \"https://data-api.ecb.europa.eu:443/service/dataflow/ECB/EST/1.0\"\n            }\n
+        \       ],\n        \"name\": \"Euro Short-Term Rate\",\n        \"dimensions\":
+        {\n            \"series\": [\n                {\n                    \"id\":
+        \"FREQ\",\n                    \"name\": \"Frequency\",\n                    \"values\":
+        [\n                        {\n                            \"id\": \"B\",\n
+        \                           \"name\": \"Daily - businessweek\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"BENCHMARK_ITEM\",\n                    \"name\": \"Benchmark item\",\n                    \"values\":
+        [\n                        {\n                            \"id\": \"EU000A2X2A25\",\n
+        \                           \"name\": \"Euro short-term rate\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"DATA_TYPE_EST\",\n                    \"name\": \"Data type in the Euro
+        short-term rate context\",\n                    \"values\": [\n                        {\n
+        \                           \"id\": \"NB\",\n                            \"name\":
+        \"Number of active banks\"\n                        },\n                        {\n
+        \                           \"id\": \"NT\",\n                            \"name\":
+        \"Number of transactions\"\n                        },\n                        {\n
+        \                           \"id\": \"R25\",\n                            \"name\":
+        \"Rate at 25th percentile of volume\"\n                        },\n                        {\n
+        \                           \"id\": \"R75\",\n                            \"name\":
+        \"Rate at 75th percentile of volume\"\n                        },\n                        {\n
+        \                           \"id\": \"TT\",\n                            \"name\":
+        \"Total volume\"\n                        },\n                        {\n
+        \                           \"id\": \"VL\",\n                            \"name\":
+        \"Share of volume of the 5 largest active banks\"\n                        },\n
+        \                       {\n                            \"id\": \"WT\",\n                            \"name\":
+        \"Volume-weighted trimmed mean rate\"\n                        }\n                    ]\n
+        \               }\n            ],\n            \"observation\": [\n                {\n
+        \                   \"id\": \"TIME_PERIOD\",\n                    \"name\":
+        \"Time period or range\",\n                    \"role\": \"time\",\n                    \"values\":
+        [\n                        {\n                            \"id\": \"2025-01-02\",\n
+        \                           \"name\": \"2025-01-02\",\n                            \"start\":
+        \"2025-01-02T00:00:00.000+01:00\",\n                            \"end\": \"2025-01-02T23:59:59.999+01:00\"\n
+        \                       },\n                        {\n                            \"id\":
+        \"2025-01-03\",\n                            \"name\": \"2025-01-03\",\n                            \"start\":
+        \"2025-01-03T00:00:00.000+01:00\",\n                            \"end\": \"2025-01-03T23:59:59.999+01:00\"\n
+        \                       },\n                        {\n                            \"id\":
+        \"2025-01-06\",\n                            \"name\": \"2025-01-06\",\n                            \"start\":
+        \"2025-01-06T00:00:00.000+01:00\",\n                            \"end\": \"2025-01-06T23:59:59.999+01:00\"\n
+        \                       },\n                        {\n                            \"id\":
+        \"2025-01-07\",\n                            \"name\": \"2025-01-07\",\n                            \"start\":
+        \"2025-01-07T00:00:00.000+01:00\",\n                            \"end\": \"2025-01-07T23:59:59.999+01:00\"\n
+        \                       },\n                        {\n                            \"id\":
+        \"2025-01-08\",\n                            \"name\": \"2025-01-08\",\n                            \"start\":
+        \"2025-01-08T00:00:00.000+01:00\",\n                            \"end\": \"2025-01-08T23:59:59.999+01:00\"\n
+        \                       },\n                        {\n                            \"id\":
+        \"2025-01-09\",\n                            \"name\": \"2025-01-09\",\n                            \"start\":
+        \"2025-01-09T00:00:00.000+01:00\",\n                            \"end\": \"2025-01-09T23:59:59.999+01:00\"\n
+        \                       },\n                        {\n                            \"id\":
+        \"2025-01-10\",\n                            \"name\": \"2025-01-10\",\n                            \"start\":
+        \"2025-01-10T00:00:00.000+01:00\",\n                            \"end\": \"2025-01-10T23:59:59.999+01:00\"\n
+        \                       }\n                    ]\n                }\n            ]\n
+        \       },\n        \"attributes\": {\n            \"series\": [\n                {\n
+        \                   \"id\": \"TIME_FORMAT\",\n                    \"name\":
+        \"Time format code\",\n                    \"values\": [\n                        {\n
+        \                           \"name\": \"P1D\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"BREAKS\",\n                    \"name\": \"Breaks\",\n                    \"values\":
+        [\n                    ]\n                },\n                {\n                    \"id\":
+        \"COMMENT_TS\",\n                    \"name\": \"Series comment including
+        brief description of the underlying statistic\",\n                    \"values\":
+        [\n                    ]\n                },\n                {\n                    \"id\":
+        \"COMPILING_ORG\",\n                    \"name\": \"Compiling organisation\",\n
+        \                   \"values\": [\n                    ]\n                },\n
+        \               {\n                    \"id\": \"COVERAGE\",\n                    \"name\":
+        \"Coverage\",\n                    \"values\": [\n                        {\n
+        \                           \"name\": \"ESA 2010 Sectors: S.121, S.122, S.123,
+        S.124, S.125, S.126, S.127, S.128, S.129\"\n                        }\n                    ]\n
+        \               },\n                {\n                    \"id\": \"DATA_COMP\",\n
+        \                   \"name\": \"Underlying compilation\",\n                    \"values\":
+        [\n                    ]\n                },\n                {\n                    \"id\":
+        \"DECIMALS\",\n                    \"name\": \"Decimals\",\n                    \"values\":
+        [\n                        {\n                            \"id\": \"0\",\n
+        \                           \"name\": \"Zero\"\n                        },\n
+        \                       {\n                            \"id\": \"2\",\n                            \"name\":
+        \"Two\"\n                        },\n                        {\n                            \"id\":
+        \"3\",\n                            \"name\": \"Three\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"DISS_ORG\",\n                    \"name\": \"Data dissemination organisation\",\n
+        \                   \"values\": [\n                    ]\n                },\n
+        \               {\n                    \"id\": \"PUBL_ECB\",\n                    \"name\":
+        \"Source publication (ECB only)\",\n                    \"values\": [\n                    ]\n
+        \               },\n                {\n                    \"id\": \"PUBL_MU\",\n
+        \                   \"name\": \"Source publication (Euro area only)\",\n                    \"values\":
+        [\n                    ]\n                },\n                {\n                    \"id\":
+        \"PUBL_PUBLIC\",\n                    \"name\": \"Source publication (public)\",\n
+        \                   \"values\": [\n                    ]\n                },\n
+        \               {\n                    \"id\": \"TIME_PER_COLLECT\",\n                    \"name\":
+        \"Time period collection\",\n                    \"values\": [\n                        {\n
+        \                           \"id\": \"S\",\n                            \"name\":
+        \"Summed through period\"\n                        },\n                        {\n
+        \                           \"id\": \"V\",\n                            \"name\":
+        \"Other\"\n                        },\n                        {\n                            \"id\":
+        \"A\",\n                            \"name\": \"Average of observations through
+        period\"\n                        }\n                    ]\n                },\n
+        \               {\n                    \"id\": \"TITLE\",\n                    \"name\":
+        \"Title\",\n                    \"values\": [\n                        {\n
+        \                           \"name\": \"Euro short-term rate, Number of active
+        banks\"\n                        },\n                        {\n                            \"name\":
+        \"Euro short-term rate, Number of transactions\"\n                        },\n
+        \                       {\n                            \"name\": \"Euro short-term
+        rate, Rate at 25th percentile of volume\"\n                        },\n                        {\n
+        \                           \"name\": \"Euro short-term rate, Rate at 75th
+        percentile of volume\"\n                        },\n                        {\n
+        \                           \"name\": \"Euro short-term rate, Total volume\"\n
+        \                       },\n                        {\n                            \"name\":
+        \"Euro short-term rate, Share of volume of the 5 largest active banks\"\n
+        \                       },\n                        {\n                            \"name\":
+        \"Euro short-term rate\"\n                        }\n                    ]\n
+        \               },\n                {\n                    \"id\": \"TITLE_COMPL\",\n
+        \                   \"name\": \"Title complement\",\n                    \"values\":
+        [\n                        {\n                            \"name\": \"Euro
+        short-term rate, Number of active banks - Unsecured - Overnight - Borrowing
+        - Financial corporations\"\n                        },\n                        {\n
+        \                           \"name\": \"Euro short-term rate, Number of transactions
+        - Unsecured - Overnight - Borrowing - Financial corporations\"\n                        },\n
+        \                       {\n                            \"name\": \"Euro short-term
+        rate, Rate at 25th percentile of volume - Unsecured - Overnight - Borrowing
+        - Financial corporations\"\n                        },\n                        {\n
+        \                           \"name\": \"Euro short-term rate, Rate at 75th
+        percentile of volume - Unsecured - Overnight - Borrowing - Financial corporations\"\n
+        \                       },\n                        {\n                            \"name\":
+        \"Euro short-term rate, Total volume - Unsecured - Overnight - Borrowing -
+        Financial corporations\"\n                        },\n                        {\n
+        \                           \"name\": \"Euro short-term rate, Share of volume
+        of the 5 largest active banks - Unsecured - Overnight - Borrowing - Financial
+        corporations\"\n                        },\n                        {\n                            \"name\":
+        \"Euro short-term rate, Volume-weighted trimmed mean rate - Unsecured - Overnight
+        - Borrowing - Financial corporations\"\n                        }\n                    ]\n
+        \               },\n                {\n                    \"id\": \"UNIT_INDEX_BASE\",\n
+        \                   \"name\": \"Unit index base\",\n                    \"values\":
+        [\n                    ]\n                },\n                {\n                    \"id\":
+        \"UNIT_MEASURE\",\n                    \"name\": \"Unit of measure\",\n                    \"values\":
+        [\n                        {\n                            \"id\": \"_Z\",\n
+        \                           \"name\": \"Not applicable\"\n                        },\n
+        \                       {\n                            \"id\": \"PC\",\n                            \"name\":
+        \"Percent\"\n                        },\n                        {\n                            \"id\":
+        \"EUR\",\n                            \"name\": \"Euro\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"UNIT_MULT\",\n                    \"name\": \"Unit multiplier\",\n                    \"values\":
+        [\n                        {\n                            \"id\": \"0\",\n
+        \                           \"name\": \"Units\"\n                        },\n
+        \                       {\n                            \"id\": \"6\",\n                            \"name\":
+        \"Millions\"\n                        }\n                    ]\n                }\n
+        \           ],\n            \"observation\": [\n                {\n                    \"id\":
+        \"OBS_STATUS\",\n                    \"name\": \"Observation status\",\n                    \"values\":
+        [\n                        {\n                            \"id\": \"A\",\n
+        \                           \"name\": \"Normal value\"\n                        }\n
+        \                   ]\n                },\n                {\n                    \"id\":
+        \"CONF_STATUS\",\n                    \"name\": \"Confidentiality status\",\n
+        \                   \"values\": [\n                        {\n                            \"id\":
+        \"F\",\n                            \"name\": \"Free (free for publication)\"\n
+        \                       }\n                    ]\n                },\n                {\n
+        \                   \"id\": \"PRE_BREAK_VALUE\",\n                    \"name\":
+        \"Pre-break value\",\n                    \"values\": [\n                    ]\n
+        \               },\n                {\n                    \"id\": \"COMMENT_OBS\",\n
+        \                   \"name\": \"Comments to the observation value\",\n                    \"values\":
+        [\n                    ]\n                },\n                {\n                    \"id\":
+        \"CALCUL_START_DATE\",\n                    \"name\": \"Calculation start
+        date\",\n                    \"values\": [\n                    ]\n                },\n
+        \               {\n                    \"id\": \"CALCUL_END_DATE\",\n                    \"name\":
+        \"Calculation end date\",\n                    \"values\": [\n                    ]\n
+        \               }\n            ]\n        }\n    }\n}"
+    headers:
+      Cache-Control:
+      - max-age=30
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment;filename=data.json
+      Content-Type:
+      - application/vnd.sdmx.data+json;version=1.0.0-wd
+      Date:
+      - Wed, 24 Jun 2026 22:28:59 GMT
+      Expires:
+      - Wed, 24 Jun 2026 22:29:29 GMT
+      Last-Modified:
+      - Wed, 24 Jun 2026 06:05:07 GMT
+      Server:
+      - myracloud
+      Strict-Transport-Security:
+      - max-age=31536000 ; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - accept
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Xss-Protection:
+      - '0'
+    status:
+      code: 200
+      message: OK
+version: 1

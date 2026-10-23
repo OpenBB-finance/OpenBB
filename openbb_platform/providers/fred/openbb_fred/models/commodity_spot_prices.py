@@ -1,7 +1,5 @@
 """FRED Commodity Spot Prices Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -13,6 +11,8 @@ from openbb_core.provider.standard_models.commodity_spot_prices import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
+
+from openbb_fred.utils.query import UseCacheQueryParams
 
 SERIES_MAP = {
     "wti": "DCOILWTICO",
@@ -33,7 +33,9 @@ SERIES_MAP = {
 }
 
 
-class FredCommoditySpotPricesQueryParams(CommoditySpotPricesQueryParams):
+class FredCommoditySpotPricesQueryParams(
+    UseCacheQueryParams, CommoditySpotPricesQueryParams
+):
     """FRED Commodity Spot Prices Query Params."""
 
     __json_schema_extra__ = {
@@ -181,9 +183,9 @@ class FredCommoditySpotPricesFetcher(
         **kwargs: Any,
     ) -> dict:
         """Extract the data from the FRED API."""
-        # pylint: disable=import-outside-toplevel
         from datetime import datetime, timedelta  # noqa
         from openbb_fred.models.series import FredSeriesFetcher
+        from openbb_fred.utils.api import unwrap_series
 
         symbols = SERIES_MAP[query.commodity]
 
@@ -200,14 +202,16 @@ class FredCommoditySpotPricesFetcher(
             "frequency": query.frequency,
             "aggregation_method": query.aggregation_method,
             "transform": query.transform,
+            "use_cache": query.use_cache,
         }
 
         try:
             results = await FredSeriesFetcher.fetch_data(series_query, credentials)
+            rows, metadata = unwrap_series(results)
 
             return {
-                "result": results.result,  # type: ignore
-                "metadata": results.metadata,  # type: ignore
+                "result": rows,
+                "metadata": metadata,
             }
         except Exception as e:
             raise OpenBBError(f"Failed to fetch data from FRED API: {e}") from e
@@ -217,7 +221,6 @@ class FredCommoditySpotPricesFetcher(
         query: FredCommoditySpotPricesQueryParams, data: dict, **kwargs: Any
     ) -> AnnotatedResult[list[FredCommoditySpotPricesData]]:
         """Transform the data."""
-        # pylint: disable=import-outside-toplevel
         from pandas import DataFrame
 
         results = data.get("result", [])

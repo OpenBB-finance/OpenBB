@@ -2,6 +2,7 @@
 
 # pylint: disable=unused-argument,too-many-ancestors
 
+from datetime import date as dateType
 from typing import Any
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -17,13 +18,16 @@ from openbb_core.provider.standard_models.balance_of_payments import (
     ECBServices,
     ECBSummary,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.errors import EmptyDataError
+from pydantic import Field
+
 from openbb_ecb.utils.bps_series import (
     BPS_COUNTRIES,
     BPS_FREQUENCIES,
     BPS_REPORT_TYPES,
     generate_bps_series_ids,
 )
-from pydantic import Field
 
 
 class ECBBalanceOfPaymentsQueryParams(BalanceOfPaymentsQueryParams):
@@ -37,9 +41,19 @@ class ECBBalanceOfPaymentsQueryParams(BalanceOfPaymentsQueryParams):
         default="monthly",
         description="The frequency of the data.  Monthly is valid only for ['main', 'summary'].",
     )
-    country: BPS_COUNTRIES = Field(
+    country: BPS_COUNTRIES | None = Field(
         default=None,
         description="The country/region of the data.  This parameter will override the 'report_type' parameter.",
+    )
+    start_date: dateType | None = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
+    )
+    end_date: dateType | None = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("end_date", "")
+    )
+    use_cache: bool = Field(
+        default=True,
+        description="If true, cache parsed results on disk for the dataset TTL.",
     )
 
 
@@ -72,46 +86,71 @@ class ECBBalanceOfPaymentsFetcher(
         credentials: dict[str, str] | None,
         **kwargs: Any,
     ) -> list[dict]:
-        """Extract data."""
+        """Fetch the raw component series for each balance-of-payments item."""
         # pylint: disable=import-outside-toplevel
-        import asyncio  # noqa
-        from openbb_ecb.utils.ecb_helpers import get_series_data  # noqa
-        from pandas import DataFrame  # noqa
+        import asyncio
 
-        results: list[dict] = []
+        from openbb_ecb.utils.data_cache import cached_records, make_key
+        from openbb_ecb.utils.query_builder import fetch_sdmx_data
 
-        _series_ids = generate_bps_series_ids(
+        series_ids = generate_bps_series_ids(
             query.frequency, query.report_type, country=query.country
         )
-        names = list(_series_ids)
-        series_ids = list(_series_ids.values())
-        data: dict = {}
+        start = query.start_date.isoformat() if query.start_date else None
+        end = query.end_date.isoformat() if query.end_date else None
 
-        async def get_one(series_id, name):
-            result = {}
-            temp = await get_series_data(series_id)
-            result.update({name: {d["PERIOD"]: d["OBS_VALUE_AS_IS"] for d in temp}})
-            data.update(result)
+        async def get_one(name: str, key: str) -> list[dict]:
+            async def loader() -> list[dict]:
+                return await fetch_sdmx_data(
+                    "BPS", key, start_date=start, end_date=end, raise_empty=False
+                )
 
-        await asyncio.gather(
-            *[get_one(series_id, name) for series_id, name in zip(series_ids, names)]
-        )
-
-        try:
-            results = (
-                DataFrame(data)
-                .sort_index()
-                .reset_index()
-                .rename(columns={"index": "period"})
-                .to_dict("records")
+            cache_key = make_key("balance_of_payments", key=key, start=start, end=end)
+            records = await cached_records(
+                "balance_of_payments", cache_key, loader, use_cache=query.use_cache
             )
-            return results
-        except Exception as error:
-            raise OpenBBError() from error
+            for record in records:
+                record["_item"] = name
+            return records
+
+        batches = await asyncio.gather(*[get_one(n, k) for n, k in series_ids.items()])
+        return [record for batch in batches for record in batch]
 
     @staticmethod
     def transform_data(
         query: ECBBalanceOfPaymentsQueryParams, data: list[dict], **kwargs: Any
     ) -> list[ECBBalanceOfPaymentsData]:
-        """Transform and validate data through the model."""
-        return [ECBBalanceOfPaymentsData.model_validate(d) for d in data]
+        """Sum component series, pivot to one row per period, and validate."""
+        # pylint: disable=import-outside-toplevel
+        from math import isnan
+
+        from pandas import DataFrame
+
+        if not data:
+            raise OpenBBError(EmptyDataError("No balance of payments data found."))
+
+        items: dict[str, dict[str, float]] = {}
+        for record in data:
+            value = record.get("OBS_VALUE")
+            if value is None:
+                continue
+            by_period = items.setdefault(record["_item"], {})
+            by_period[record["date"]] = by_period.get(record["date"], 0.0) + value
+
+        if not items:
+            raise OpenBBError(EmptyDataError("No balance of payments data found."))
+
+        frame = (
+            DataFrame(items)
+            .sort_index()
+            .reset_index()
+            .rename(columns={"index": "period"})
+        )
+        records = [
+            {
+                k: (None if (isinstance(v, float) and isnan(v)) else v)
+                for k, v in row.items()
+            }
+            for row in frame.to_dict("records")
+        ]
+        return [ECBBalanceOfPaymentsData.model_validate(d) for d in records]

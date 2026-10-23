@@ -1,0 +1,436 @@
+[
+  {
+    "title": "2014 Tenure, Ownership, and Transition of Agricultural Land (TOTAL) survey",
+    "workbook": "2014TenureOwnershipandTransitionofAgriculturalLandTOTALsurvey",
+    "default_view": "TOTALStory",
+    "description": "2014 Tenure, Ownership, and Transition of Agricultural Land (TOTAL) survey",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "A Closer Look at Retail Food Spending and Price Environment",
+    "workbook": "ACloserLookatRetailFoodSpendingandPriceEnvironment",
+    "default_view": "FPEStory",
+    "description": "This visualization addresses various aspects of the food price environment, such as how the average U.S. household spends their money.",
+    "last_updated": "2026-05-06"
+  },
+  {
+    "title": "Annual Value of State Exports",
+    "workbook": "Valueof2017StateExports",
+    "default_view": "Dashboard1",
+    "description": "Annual Value of State Exports",
+    "last_updated": "2025-12-09"
+  },
+  {
+    "title": "Average share of exports in U.S. agricultural production",
+    "workbook": "AverageshareofexportsinU_S_agriculturalproduction",
+    "default_view": "AvgshareofEXPAgprod",
+    "description": "Average share of exports in U.S. agricultural production",
+    "last_updated": "2025-07-22"
+  },
+  {
+    "title": "Average share of imports in U.S. consumption",
+    "workbook": "AverageshareofimportsinU_S_consumption",
+    "default_view": "AvgshareofIMPAgprod",
+    "description": "Average share of imports in U.S. consumption",
+    "last_updated": "2025-07-22"
+  },
+  {
+    "title": "Changes in farm values can affect retail prices",
+    "workbook": "Changesinfarmvaluescanaffectretailprices",
+    "default_view": "Changesinfarmvaluescanaffectretailprices",
+    "description": "Changes in farm values can affect retail prices",
+    "last_updated": "2026-02-17"
+  },
+  {
+    "title": "Commodity Costs and Returns: Crops",
+    "workbook": "U_S_CommodityCostsandReturns",
+    "default_view": "CommodityCostsandReturns",
+    "description": "U.S. Commodity Costs and Returns",
+    "last_updated": "2026-05-28"
+  },
+  {
+    "title": "Commodity Costs and Returns: Livestock and Milk",
+    "workbook": "CommodityCostsandReturnsLivestockandMilk",
+    "default_view": "CommodityCostsandReturnsLivestockandMilk",
+    "description": "Commodity Costs and Returns: Livestock and Milk",
+    "last_updated": "2026-05-28"
+  },
+  {
+    "title": "Consecutive decades of high poverty since 1960 in U.S. counties",
+    "workbook": "Consecutivedecadesofhighpovertysince1960inU_S_counties",
+    "default_view": "Consecutivehighpovertyareas",
+    "description": "Consecutive decades of high poverty since 1960 in U.S. counties",
+    "last_updated": "2024-10-17"
+  },
+  {
+    "title": "Dietary Recommendations and Calorie Consumption",
+    "workbook": "DietaryRecommendationsandCalorieConsumption",
+    "default_view": "DietaryRecomandCalorieCon",
+    "description": "Dietary Recommendations and Calorie Consumption",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "Digging Into the U.S. Farm Balance Sheet",
+    "workbook": "BalanceSheetStoryPoint2",
+    "default_view": "BalanceSheet",
+    "description": "Digging Into the U.S. Farm Balance Sheet",
+    "last_updated": "2026-02-05"
+  },
+  {
+    "title": "Estimated U.S. poultry and red meat disappearance per capita by year",
+    "workbook": "EstimatedU_S_poultryandredmeatdisappearancepercapitabyyear",
+    "default_view": "Dissappearance",
+    "description": "Estimated U.S. poultry and red meat disappearance per capita by year",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "Exports of bulk and high-value commodities",
+    "workbook": "Exportsofbulkandhigh-valuecommodities",
+    "default_view": "XPBlkvsHVP",
+    "description": "Exports of bulk and high-value commodities",
+    "last_updated": "2025-07-22"
+  },
+  {
+    "title": "Farm share of retail price varies across food products",
+    "workbook": "Farmshareofretailpricevariesacrossfoodproducts",
+    "default_view": "Farmshareofretailpricevariesacrossfoodproducts",
+    "description": "Farm share of retail price varies across food products",
+    "last_updated": "2026-02-17"
+  },
+  {
+    "title": "Food Security in the United States: How Do States Compare?",
+    "workbook": "FoodSecurityintheUnitedStatesHowDoStatesCompare",
+    "default_view": "mainstory",
+    "description": "Food Security in the United States: How Do States Compare?",
+    "last_updated": "2026-02-18"
+  },
+  {
+    "title": "Fruit and Vegetable Availability",
+    "workbook": "FruitandVegetableAvailability",
+    "default_view": "FruitVegetableStory",
+    "description": "Fruit and Vegetable Availability, 2017.",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "Fruit and vegetable costs per cup equivalent: Cost ranges",
+    "workbook": "FruitandvegetablecostspercupequivalentCostranges",
+    "default_view": "BoxPlotsStory3",
+    "description": "Fruit and vegetable costs per cup equivalent: Cost ranges",
+    "last_updated": "2025-12-09"
+  },
+  {
+    "title": "Fruit and vegetable retail prices: Most and least expensive",
+    "workbook": "FruitandvegetableretailpricesMostandleastexpensive",
+    "default_view": "MostLeastStory2",
+    "description": "Fruit and vegetable retail prices: Most and least expensive",
+    "last_updated": "2025-12-09"
+  },
+  {
+    "title": "Fruits and Vegetable Costs per Edible Cup Equivalent",
+    "workbook": "FruitsandVegetableCostsperEdibleCupEquivalent",
+    "default_view": "CostsStory1",
+    "description": "Average retail prices for fresh and processed fruits and vegetables on a per-pound basis/per-pint basis and per edible cup equivalent.",
+    "last_updated": "2025-12-09"
+  },
+  {
+    "title": "Get to know your State",
+    "workbook": "Gettoknowyourstate2",
+    "default_view": "State-leveldashboard",
+    "description": "Get to know your state",
+    "last_updated": "2026-02-05"
+  },
+  {
+    "title": "Global cotton supply and use",
+    "workbook": "Globalcottonsupplyanduse",
+    "default_view": "Dashboard3",
+    "description": "Global cotton supply and use",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "Imports of bulk and high-value commodities",
+    "workbook": "Importsofbulkandhigh-valuecommodities",
+    "default_view": "IMPBlkvsHVP",
+    "description": "Imports of bulk and high-value commodities",
+    "last_updated": "2025-07-22"
+  },
+  {
+    "title": "International Baseline Projections",
+    "workbook": "InternationalBaselineProjections",
+    "default_view": "Internationalbaselinevisualization",
+    "description": "International Baseline Projections",
+    "last_updated": "2025-03-28"
+  },
+  {
+    "title": "Major Uses of Land in the United States, 2012",
+    "workbook": "MajorUsesofLandintheUnitedStates2012",
+    "default_view": "MajorLandUse2012",
+    "description": "Major Uses of Land in the United States, 2012",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "Market Baskets",
+    "workbook": "Marketbaskets",
+    "default_view": "Marketbaskets",
+    "description": "Market baskets",
+    "last_updated": "2026-02-17"
+  },
+  {
+    "title": "Meeting honey demand in the United States",
+    "workbook": "MeetinghoneydemandintheUnitedStates",
+    "default_view": "HoneyDemand",
+    "description": "Meeting honey demand in the United States",
+    "last_updated": "2026-06-18"
+  },
+  {
+    "title": "National Food Expenditure Series",
+    "workbook": "NationalFoodExpenditureSeries",
+    "default_view": "National",
+    "description": "National Food Expenditure Series",
+    "last_updated": "2026-06-01"
+  },
+  {
+    "title": "National Household Food Acquisition and Purchase Survey Food Expenditures",
+    "workbook": "NationalHouseholdFoodAcquisitionandPurchaseSurveyFoodExpenditures",
+    "default_view": "FoodAPSDataViz",
+    "description": "National Household Food Acquisition and Purchase Survey Food Expenditures",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "Percentage change in UK agricultural exports and imports",
+    "workbook": "PercentagechangeinUKagriculturalexportsandimports",
+    "default_view": "Growthrate",
+    "description": "Percentage change in UK agricultural exports and imports",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "Persistent poverty and high poverty U.S. counties",
+    "workbook": "PersistentpovertyandhighpovertyU_S_counties",
+    "default_view": "PersistentandHighPovertyDashboard",
+    "description": "Persistent poverty and high poverty U.S. counties",
+    "last_updated": "2022-12-06"
+  },
+  {
+    "title": "Prevalence and distribution of food insecurity by education status",
+    "workbook": "Prevalenceanddistributionoffoodinsecuritybyeducationstatus",
+    "default_view": "Story2",
+    "description": "Prevalence and distribution of food insecurity by education status",
+    "last_updated": "2026-02-18"
+  },
+  {
+    "title": "Price spreads for individual food products",
+    "workbook": "Pricespreadsforindividualfoodproducts",
+    "default_view": "Pricespreadsforindividualfoodproducts",
+    "description": "Price spreads for individual food products",
+    "last_updated": "2026-02-17"
+  },
+  {
+    "title": "Shares of different regions in U.S. agricultural exports",
+    "workbook": "SharesofdifferentregionsinU_S_agriculturalexports",
+    "default_view": "SharesofdifferentregionsinUSagriculturalexports",
+    "description": "Shares of different regions in U.S. agricultural exports",
+    "last_updated": "2025-07-22"
+  },
+  {
+    "title": "SNAP Policy Index: Eligibility",
+    "workbook": "SNAPPolicyIndexEligibility",
+    "default_view": "Eligibilty",
+    "description": "SNAP Policy Index: Eligibility",
+    "last_updated": "2026-06-15"
+  },
+  {
+    "title": "SNAP Policy Index: Outreach",
+    "workbook": "SNAPPolicyIndexOutreach",
+    "default_view": "Outreach",
+    "description": "SNAP Policy Index: Outreach",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "SNAP Policy Index: Overview",
+    "workbook": "SNAPPolicyIndexOverview",
+    "default_view": "Overview",
+    "description": "SNAP Policy Index: Overview",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "SNAP Policy Index: Stigma",
+    "workbook": "SNAPPolicyIndexStigma",
+    "default_view": "Stigma",
+    "description": "SNAP Policy Index: Stigma",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "SNAP Policy Index: Transaction costs",
+    "workbook": "SNAPPolicyIndexTransactioncosts",
+    "default_view": "Transaction",
+    "description": "SNAP Policy Index: Transaction costs",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "State Food Expenditure Series",
+    "workbook": "StateFoodExpenditureSeries",
+    "default_view": "State",
+    "description": "State Food Expenditure Series",
+    "last_updated": "2026-07-10"
+  },
+  {
+    "title": "State-Level Estimates of Low Income and Low Access Populations",
+    "workbook": "State-LevelEstimatesofLowIncomeandLowAccessPopulations",
+    "default_view": "FinalWide",
+    "description": "State-Level Estimates of Low Income and Low Access Populations\n\nNote: Updates to this page are discontinued. The material remains on the site for reference.",
+    "last_updated": "2025-09-17"
+  },
+  {
+    "title": "Statistical summary of the poultry and eggs sector",
+    "workbook": "StatisticalsummaryofthePoultryandEggsSector",
+    "default_view": "tableAndLineGraph",
+    "description": "Statistical summary of the poultry and eggs sector",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "The Farm Income Atlas",
+    "workbook": "IncomeStatementStoryPoint3",
+    "default_view": "Incomestatement",
+    "description": "The Farm Income Atlas",
+    "last_updated": "2026-02-05"
+  },
+  {
+    "title": "Trends in agricultural outputs, inputs, and total factor productivity (TFP) by country income group, 1961–2023",
+    "workbook": "TrendsinagriculturaloutputsinputsandtotalfactorproductivityTFPbycountryincomegroup19612023",
+    "default_view": "AgriculturalTFPChart",
+    "description": "Trends in agricultural outputs, inputs, and total factor productivity (TFP) by country income group, 1961–2023",
+    "last_updated": "2026-01-27"
+  },
+  {
+    "title": "Trends in food insecurity in U.S. households with children",
+    "workbook": "TrendsinfoodinsecurityinU_S_householdswithchildren",
+    "default_view": "FoodSecurityCharacteristics",
+    "description": "Trends in food insecurity in U.S. households with children",
+    "last_updated": "2026-02-18"
+  },
+  {
+    "title": "Trends in U.S. food security",
+    "workbook": "TrendsinU_S_FoodSecurity",
+    "default_view": "FoodSecurityCharacteristics",
+    "description": "Trends in U.S. Food Security",
+    "last_updated": "2026-02-18"
+  },
+  {
+    "title": "U.S. Agricultural Baseline Projections",
+    "workbook": "U_S_AgriculturalBaselineProjections",
+    "default_view": "Projections",
+    "description": "U.S. Agricultural Baseline Projections",
+    "last_updated": "2025-12-19"
+  },
+  {
+    "title": "U.S. agricultural exports supported jobs outside farming",
+    "workbook": "U_S_agriculturalexportssupportedjobsoutsidefarming",
+    "default_view": "XPJobSupport",
+    "description": "U.S. agricultural exports supported jobs outside farming",
+    "last_updated": "2025-07-22"
+  },
+  {
+    "title": "U.S. agricultural exports to the UK by product",
+    "workbook": "U_S_agriculturalexportstotheUKbyproduct",
+    "default_view": "USagexports",
+    "description": "U.S. agricultural exports to the UK by product",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "U.S. county poverty rates",
+    "workbook": "U_S_countypovertyrates",
+    "default_view": "Povertydashboardorig",
+    "description": "U.S. county poverty rates",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "U.S. export values per region",
+    "workbook": "U_S_exportvaluesperregion",
+    "default_view": "XPbyregionbar",
+    "description": "U.S. export values per region",
+    "last_updated": "2025-07-22"
+  },
+  {
+    "title": "U.S. Farmer Household Wellbeing",
+    "workbook": "U_S_FarmerHouseholdWellbeing",
+    "default_view": "OVERVIEW-FullWidth",
+    "description": "U.S. Farmer Household Wellbeing",
+    "last_updated": "2026-02-24"
+  },
+  {
+    "title": "U.S. food system resource use by supply chain stage",
+    "workbook": "U_S_foodsystemresourceusebysupplychainstage",
+    "default_view": "RRFDFigure2",
+    "description": "U.S. food system resource use by supply chain stage",
+    "last_updated": "2026-04-08"
+  },
+  {
+    "title": "U.S. food system’s share of national resource use",
+    "workbook": "U_S_foodsystemsshareofnationalresourceuse",
+    "default_view": "RRFDFigure1",
+    "description": "U.S. food system’s share of national resource use",
+    "last_updated": "2026-03-17"
+  },
+  {
+    "title": "U.S. food-at-home resource use by category",
+    "workbook": "U_S_food-at-homeresourceusebycategory",
+    "default_view": "RRFDFigure3",
+    "description": "U.S. food-at-home resource use by category",
+    "last_updated": "2026-03-17"
+  },
+  {
+    "title": "U.S. per capita food availability for additional commodities",
+    "workbook": "U_S_percapitafoodavailabilityforadditionalcommodities",
+    "default_view": "PerCapitaStory2",
+    "description": "U.S. per capita food availability for additional commodities",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "U.S. per capita food availability for selected commodities",
+    "workbook": "U_S_percapitafoodavailabilityforselectedcommodities",
+    "default_view": "PerCapitaStory1",
+    "description": "U.S. per capita food availability for selected commodities",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "U.S. source and destination shares",
+    "workbook": "U_S_sourceanddestinationshares",
+    "default_view": "USImpExpShares",
+    "description": "U.S. source and destination shares",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "U.S. State-level poultry sales for major commodities",
+    "workbook": "U_S_State-levelpoultrysalesformajorcommodities",
+    "default_view": "Map",
+    "description": "U.S. State-level poultry sales for major commodities",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "UK agricultural imports and exports",
+    "workbook": "UKagriculturalimportsandexports",
+    "default_view": "UKimports",
+    "description": "UK agricultural imports and exports",
+    "last_updated": "2024-10-18"
+  },
+  {
+    "title": "Vegetables and pulses: commodity highlights",
+    "workbook": "Vegetablesandpulsescommodityhighlights",
+    "default_view": "Story1",
+    "description": "Vegetables and pulses: commodity highlights",
+    "last_updated": "2025-09-25"
+  },
+  {
+    "title": "Wheat Data Visualization",
+    "workbook": "WheatDataVisualization",
+    "default_view": "U_S_Overview",
+    "description": "Wheat Data Visualization",
+    "last_updated": "2026-07-15"
+  },
+  {
+    "title": "World Agricultural Supply and Demand Estimates at a Glance",
+    "workbook": "WorldAgriculturalSupplyandDemandEstimatesataGlance",
+    "default_view": "MAIN_STORY",
+    "description": "World Agricultural Supply and Demand Estimates at a Glance",
+    "last_updated": "2026-07-15"
+  }
+]

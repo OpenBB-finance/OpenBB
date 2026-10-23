@@ -1,35 +1,37 @@
 """CFTC Commitment of Traders Reports Model."""
 
-# pylint: disable=unused-argument,too-many-lines
-
 from datetime import (
+    date as dateType,
     datetime,
 )
 from typing import Any, Literal
 
-from openbb_cftc.utils import reports_dict
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.service.system_service import SystemService
+from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.cot import COTData, COTQueryParams
+from openbb_core.provider.abstract.query_params import QueryParams
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+    QUERY_DESCRIPTIONS,
+)
 from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import Field
+from pydantic import AliasChoices, Field
+
+from openbb_cftc.utils.constants import reports_dict
 
 api_prefix = SystemService().system_settings.api_settings.prefix
 
 
-class CftcCotQueryParams(COTQueryParams):
-    """CFTC Commitment of Traders Reports Query Parameters.
-
-    Source: https://publicreporting.cftc.gov/stories/s/r4w3-av2u
-    """
+class CftcCotQueryParams(QueryParams):
+    """CFTC Commitment of Traders Reports Query Parameters."""
 
     __json_schema_extra__ = {
         "code": {
             "multiple_items_allowed": False,
             "x-widget_config": {
                 "type": "endpoint",
-                "optionsEndpoint": f"{api_prefix}/cftc/get_cot_choices",
+                "optionsEndpoint": f"{api_prefix}/cftc/cot_choices",
                 "style": {"popupWidth": 650},
             },
         },
@@ -50,6 +52,18 @@ class CftcCotQueryParams(COTQueryParams):
         },
     }
 
+    code: str = Field(
+        description="A string with the market code.",
+        validation_alias=AliasChoices("code", "id"),
+    )
+    start_date: dateType | None = Field(
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("start_date", "")
+        + " Default is the most recent report.",
+    )
+    end_date: dateType | None = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("end_date", "")
+    )
     report_type: Literal["legacy", "disaggregated", "financial", "supplemental"] = (
         Field(
             default="legacy",
@@ -72,17 +86,8 @@ class CftcCotQueryParams(COTQueryParams):
     )
 
 
-class CftcCotData(COTData):
-    """CFTC Commitment of Traders Reports Data.
-
-    Fields are populated based on the report type selected. The Legacy report has
-    non-commercial and commercial classifications. The Disaggregated report has
-    producer/merchant, swap dealer, managed money, and other reportable classifications.
-    The Financial (TFF) report has dealer, asset manager, leveraged money, and other
-    reportable classifications. The Supplemental report adds commodity index trader (CIT)
-    and non-CIT breakdowns. Position data is reported for all contracts, with old crop year
-    and other crop year splits where applicable (Legacy and Disaggregated only).
-    """
+class CftcCotData(Data):
+    """CFTC Commitment of Traders Reports Data."""
 
     __alias_dict__ = {
         "asset_manager_positions_long": "asset_mgr_positions_long",
@@ -358,11 +363,83 @@ class CftcCotData(COTData):
         }
     )
 
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    report_week: str | None = Field(
+        default=None, description="Report week for the year."
+    )
+    market_and_exchange_names: str | None = Field(
+        default=None, description="Market and exchange names."
+    )
+    cftc_contract_market_code: str | None = Field(
+        default=None,
+        description="CFTC contract market code.",
+        json_schema_extra={
+            "x-widget_config": {"cellDataType": "text", "formatterFn": "none"}
+        },
+    )
+    cftc_market_code: str | None = Field(
+        default=None,
+        description="CFTC market code.",
+        json_schema_extra={
+            "x-widget_config": {"cellDataType": "text", "formatterFn": "none"}
+        },
+    )
+    cftc_region_code: str | None = Field(
+        default=None,
+        description="CFTC region code.",
+        json_schema_extra={
+            "x-widget_config": {"cellDataType": "text", "formatterFn": "none"}
+        },
+    )
+    cftc_commodity_code: str | None = Field(
+        default=None,
+        description="CFTC commodity code.",
+        json_schema_extra={
+            "x-widget_config": {"cellDataType": "text", "formatterFn": "none"}
+        },
+    )
+    cftc_contract_market_code_quotes: str | None = Field(
+        default=None,
+        description="CFTC contract market code quotes.",
+        json_schema_extra={
+            "x-widget_config": {"cellDataType": "text", "formatterFn": "none"}
+        },
+    )
+    cftc_market_code_quotes: str | None = Field(
+        default=None,
+        description="CFTC market code quotes.",
+        json_schema_extra={
+            "x-widget_config": {"cellDataType": "text", "formatterFn": "none"}
+        },
+    )
+    cftc_commodity_code_quotes: str | None = Field(
+        default=None,
+        description="CFTC commodity code quotes.",
+        json_schema_extra={
+            "x-widget_config": {"cellDataType": "text", "formatterFn": "none"}
+        },
+    )
+    cftc_subgroup_code: str | None = Field(
+        default=None,
+        description="CFTC subgroup code.",
+        json_schema_extra={
+            "x-widget_config": {"cellDataType": "text", "formatterFn": "none"}
+        },
+    )
+    commodity: str | None = Field(default=None, description="Commodity.")
+    commodity_group: str | None = Field(
+        default=None, description="Commodity group name."
+    )
+    commodity_subgroup: str | None = Field(
+        default=None, description="Commodity subgroup name."
+    )
+    futonly_or_combined: str | None = Field(
+        default=None, description="If the report is futures-only or combined."
+    )
+    contract_units: str | None = Field(default=None, description="Contract units.")
     contract_market_name: str | None = Field(
         default=None, description="Short contract market name."
     )
-
-    # -- Open Interest --
 
     open_interest_all: int | None = Field(
         default=None, description="Total open interest, all contracts."
@@ -375,8 +452,6 @@ class CftcCotData(COTData):
         default=None,
         description="Total open interest, other crop year. Legacy/Disaggregated reports.",
     )
-
-    # -- Legacy Report: Non-Commercial Positions --
 
     non_commercial_positions_long_all: int | None = Field(
         default=None,
@@ -415,8 +490,6 @@ class CftcCotData(COTData):
         description="Non-commercial spreading positions, other crop year. Legacy report.",
     )
 
-    # -- Legacy Report: Commercial Positions --
-
     commercial_positions_long_all: int | None = Field(
         default=None,
         description="Commercial long positions, all contracts. Legacy report.",
@@ -442,8 +515,6 @@ class CftcCotData(COTData):
         description="Commercial short positions, other crop year. Legacy report.",
     )
 
-    # -- Disaggregated Report: Producer/Merchant/Processor/User Positions --
-
     producer_merchant_positions_long: int | None = Field(
         default=None,
         description="Producer/merchant long positions, all contracts. Disaggregated report.",
@@ -468,8 +539,6 @@ class CftcCotData(COTData):
         default=None,
         description="Producer/merchant short positions, other crop year. Disaggregated report.",
     )
-
-    # -- Disaggregated Report: Swap Dealer Positions --
 
     swap_positions_long_all: int | None = Field(
         default=None,
@@ -508,8 +577,6 @@ class CftcCotData(COTData):
         description="Swap dealer spreading positions, other crop year. Disaggregated report.",
     )
 
-    # -- Disaggregated Report: Managed Money Positions --
-
     managed_money_positions_long_all: int | None = Field(
         default=None,
         description="Managed money long positions, all contracts. Disaggregated report.",
@@ -547,8 +614,6 @@ class CftcCotData(COTData):
         description="Managed money spreading positions, other crop year. Disaggregated report.",
     )
 
-    # -- Financial (TFF) Report: Dealer/Intermediary Positions --
-
     dealer_positions_long_all: int | None = Field(
         default=None,
         description="Dealer/intermediary long positions, all contracts. TFF report.",
@@ -561,8 +626,6 @@ class CftcCotData(COTData):
         default=None,
         description="Dealer/intermediary spreading positions, all contracts. TFF report.",
     )
-
-    # -- Financial (TFF) Report: Asset Manager/Institutional Positions --
 
     asset_manager_positions_long: int | None = Field(
         default=None,
@@ -577,8 +640,6 @@ class CftcCotData(COTData):
         description="Asset manager/institutional spreading positions, all contracts. TFF report.",
     )
 
-    # -- Financial (TFF) Report: Leveraged Funds Positions --
-
     leveraged_funds_positions_long: int | None = Field(
         default=None,
         description="Leveraged funds long positions, all contracts. TFF report.",
@@ -591,8 +652,6 @@ class CftcCotData(COTData):
         default=None,
         description="Leveraged funds spreading positions, all contracts. TFF report.",
     )
-
-    # -- Disaggregated + Financial (TFF): Other Reportable Positions --
 
     other_reportable_positions_long: int | None = Field(
         default=None,
@@ -631,8 +690,6 @@ class CftcCotData(COTData):
         description="Other reportable spreading positions, other crop year. Disaggregated report.",
     )
 
-    # -- Supplemental Report: Non-Commercial (Excluding CIT) Positions --
-
     non_commercial_positions_long_all_non_cit: int | None = Field(
         default=None,
         description="Non-commercial long positions excluding CIT, all contracts. Supplemental report.",
@@ -646,8 +703,6 @@ class CftcCotData(COTData):
         description="Non-commercial spreading positions excluding CIT, all contracts. Supplemental report.",
     )
 
-    # -- Supplemental Report: Commercial (Excluding CIT) Positions --
-
     commercial_positions_long_all_non_cit: int | None = Field(
         default=None,
         description="Commercial long positions excluding CIT, all contracts. Supplemental report.",
@@ -657,8 +712,6 @@ class CftcCotData(COTData):
         description="Commercial short positions excluding CIT, all contracts. Supplemental report.",
     )
 
-    # -- Supplemental Report: Commodity Index Trader (CIT) Positions --
-
     cit_positions_long_all: int | None = Field(
         default=None,
         description="Commodity index trader (CIT) long positions, all contracts. Supplemental report.",
@@ -667,8 +720,6 @@ class CftcCotData(COTData):
         default=None,
         description="Commodity index trader (CIT) short positions, all contracts. Supplemental report.",
     )
-
-    # -- Total Reportable Positions --
 
     total_reportable_positions_long_all: int | None = Field(
         default=None, description="Total reportable long positions, all contracts."
@@ -693,8 +744,6 @@ class CftcCotData(COTData):
         description="Total reportable short positions, other crop year. Legacy/Disaggregated reports.",
     )
 
-    # -- Non-Reportable Positions --
-
     non_reportable_positions_long_all: int | None = Field(
         default=None, description="Non-reportable long positions, all contracts."
     )
@@ -718,8 +767,6 @@ class CftcCotData(COTData):
         description="Non-reportable short positions, other crop year. Legacy/Disaggregated reports.",
     )
 
-    # -- Changes: Open Interest --
-
     change_in_open_interest_all: int | None = Field(
         default=None, description="Weekly change in total open interest, all contracts."
     )
@@ -727,8 +774,6 @@ class CftcCotData(COTData):
         default=None,
         description="Weekly change in total open interest, all contracts. Supplemental report.",
     )
-
-    # -- Changes: Legacy Non-Commercial --
 
     change_in_non_commercial_long_all: int | None = Field(
         default=None,
@@ -743,8 +788,6 @@ class CftcCotData(COTData):
         description="Weekly change in non-commercial spreading positions. Legacy report.",
     )
 
-    # -- Changes: Legacy Commercial --
-
     change_in_commercial_long_all: int | None = Field(
         default=None,
         description="Weekly change in commercial long positions. Legacy report.",
@@ -754,8 +797,6 @@ class CftcCotData(COTData):
         description="Weekly change in commercial short positions. Legacy report.",
     )
 
-    # -- Changes: Disaggregated Producer/Merchant --
-
     change_in_producer_merchant_long: int | None = Field(
         default=None,
         description="Weekly change in producer/merchant long positions. Disaggregated report.",
@@ -764,8 +805,6 @@ class CftcCotData(COTData):
         default=None,
         description="Weekly change in producer/merchant short positions. Disaggregated report.",
     )
-
-    # -- Changes: Disaggregated Swap Dealer --
 
     change_in_swap_long_all: int | None = Field(
         default=None,
@@ -780,8 +819,6 @@ class CftcCotData(COTData):
         description="Weekly change in swap dealer spreading positions. Disaggregated report.",
     )
 
-    # -- Changes: Disaggregated Managed Money --
-
     change_in_managed_money_long_all: int | None = Field(
         default=None,
         description="Weekly change in managed money long positions. Disaggregated report.",
@@ -794,8 +831,6 @@ class CftcCotData(COTData):
         default=None,
         description="Weekly change in managed money spreading positions. Disaggregated report.",
     )
-
-    # -- Changes: Financial (TFF) Dealer --
 
     change_in_dealer_long_all: int | None = Field(
         default=None,
@@ -810,8 +845,6 @@ class CftcCotData(COTData):
         description="Weekly change in dealer/intermediary spreading positions. TFF report.",
     )
 
-    # -- Changes: Financial (TFF) Asset Manager --
-
     change_in_asset_manager_long: int | None = Field(
         default=None,
         description="Weekly change in asset manager/institutional long positions. TFF report.",
@@ -824,8 +857,6 @@ class CftcCotData(COTData):
         default=None,
         description="Weekly change in asset manager/institutional spreading positions. TFF report.",
     )
-
-    # -- Changes: Financial (TFF) Leveraged Funds --
 
     change_in_leveraged_funds_long: int | None = Field(
         default=None,
@@ -840,8 +871,6 @@ class CftcCotData(COTData):
         description="Weekly change in leveraged funds spreading positions. TFF report.",
     )
 
-    # -- Changes: Other Reportable --
-
     change_in_other_reportable_long: int | None = Field(
         default=None,
         description="Weekly change in other reportable long positions. Disaggregated/TFF reports.",
@@ -854,8 +883,6 @@ class CftcCotData(COTData):
         default=None,
         description="Weekly change in other reportable spreading positions. Disaggregated/TFF reports.",
     )
-
-    # -- Changes: Supplemental Non-Commercial NoCIT --
 
     change_non_commercial_long_all_non_cit: int | None = Field(
         default=None,
@@ -870,8 +897,6 @@ class CftcCotData(COTData):
         description="Weekly change in non-commercial spreading positions excluding CIT. Supplemental report.",
     )
 
-    # -- Changes: Supplemental Commercial NoCIT --
-
     change_commercial_long_all_non_cit: int | None = Field(
         default=None,
         description="Weekly change in commercial long positions excluding CIT. Supplemental report.",
@@ -881,8 +906,6 @@ class CftcCotData(COTData):
         description="Weekly change in commercial short positions excluding CIT. Supplemental report.",
     )
 
-    # -- Changes: Supplemental CIT --
-
     change_cit_long_all: int | None = Field(
         default=None,
         description="Weekly change in commodity index trader long positions. Supplemental report.",
@@ -891,8 +914,6 @@ class CftcCotData(COTData):
         default=None,
         description="Weekly change in commodity index trader short positions. Supplemental report.",
     )
-
-    # -- Changes: Total Reportable --
 
     change_in_total_reportable_long_all: int | None = Field(
         default=None, description="Weekly change in total reportable long positions."
@@ -909,8 +930,6 @@ class CftcCotData(COTData):
         description="Weekly change in total reportable short positions. Supplemental report.",
     )
 
-    # -- Changes: Non-Reportable --
-
     change_in_non_reportable_long_all: int | None = Field(
         default=None, description="Weekly change in non-reportable long positions."
     )
@@ -925,8 +944,6 @@ class CftcCotData(COTData):
         default=None,
         description="Weekly change in non-reportable short positions. Supplemental report.",
     )
-
-    # -- Percent of Open Interest: Totals --
 
     open_interest_pct_all: float | None = Field(
         default=None,
@@ -943,8 +960,6 @@ class CftcCotData(COTData):
         description="Percent of total open interest, other crop year. Legacy/Disaggregated reports.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-
-    # -- Percent of OI: Legacy Non-Commercial --
 
     open_interest_pct_non_commercial_long_all: float | None = Field(
         default=None,
@@ -992,8 +1007,6 @@ class CftcCotData(COTData):
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
-    # -- Percent of OI: Legacy Commercial --
-
     open_interest_pct_commercial_long_all: float | None = Field(
         default=None,
         description="Commercial long as percent of open interest, all contracts. Legacy report.",
@@ -1025,8 +1038,6 @@ class CftcCotData(COTData):
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
-    # -- Percent of OI: Disaggregated Producer/Merchant --
-
     open_interest_pct_producer_merchant_long: float | None = Field(
         default=None,
         description="Producer/merchant long as percent of open interest, all contracts. Disaggregated report.",
@@ -1057,8 +1068,6 @@ class CftcCotData(COTData):
         description="Producer/merchant short as percent of open interest, other crop year. Disaggregated report.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-
-    # -- Percent of OI: Disaggregated Swap Dealer --
 
     open_interest_pct_swap_long_all: float | None = Field(
         default=None,
@@ -1106,8 +1115,6 @@ class CftcCotData(COTData):
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
-    # -- Percent of OI: Disaggregated Managed Money --
-
     open_interest_pct_managed_money_long_all: float | None = Field(
         default=None,
         description="Managed money long as percent of open interest, all contracts. Disaggregated report.",
@@ -1154,8 +1161,6 @@ class CftcCotData(COTData):
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
-    # -- Percent of OI: Financial (TFF) Dealer --
-
     open_interest_pct_dealer_long_all: float | None = Field(
         default=None,
         description="Dealer/intermediary long as percent of open interest, all contracts. TFF report.",
@@ -1171,8 +1176,6 @@ class CftcCotData(COTData):
         description="Dealer/intermediary spreading as percent of open interest, all contracts. TFF report.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-
-    # -- Percent of OI: Financial (TFF) Asset Manager --
 
     open_interest_pct_asset_manager_long: float | None = Field(
         default=None,
@@ -1190,8 +1193,6 @@ class CftcCotData(COTData):
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
-    # -- Percent of OI: Financial (TFF) Leveraged Funds --
-
     open_interest_pct_leveraged_funds_long: float | None = Field(
         default=None,
         description="Leveraged funds long as percent of open interest, all contracts. TFF report.",
@@ -1207,8 +1208,6 @@ class CftcCotData(COTData):
         description="Leveraged funds spreading as percent of open interest, all contracts. TFF report.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-
-    # -- Percent of OI: Other Reportable --
 
     open_interest_pct_other_reportable_long: float | None = Field(
         default=None,
@@ -1256,8 +1255,6 @@ class CftcCotData(COTData):
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
-    # -- Percent of OI: Supplemental NoCIT --
-
     open_interest_pct_non_commercial_long_all_non_cit: float | None = Field(
         default=None,
         description="Non-commercial long excluding CIT as percent of open interest. Supplemental report.",
@@ -1284,8 +1281,6 @@ class CftcCotData(COTData):
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
-    # -- Percent of OI: Supplemental CIT --
-
     open_interest_pct_cit_long_all: float | None = Field(
         default=None,
         description="Commodity index trader long as percent of open interest. Supplemental report.",
@@ -1296,8 +1291,6 @@ class CftcCotData(COTData):
         description="Commodity index trader short as percent of open interest. Supplemental report.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-
-    # -- Percent of OI: Supplemental Totals NoCIT --
 
     open_interest_pct_total_reportable_long_all_non_cit: float | None = Field(
         default=None,
@@ -1319,8 +1312,6 @@ class CftcCotData(COTData):
         description="Non-reportable short excluding CIT as percent of open interest. Supplemental report.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
-
-    # -- Percent of OI: Total Reportable --
 
     open_interest_pct_total_reportable_long_all: float | None = Field(
         default=None,
@@ -1353,8 +1344,6 @@ class CftcCotData(COTData):
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
-    # -- Percent of OI: Non-Reportable --
-
     open_interest_pct_non_reportable_long_all: float | None = Field(
         default=None,
         description="Non-reportable long as percent of open interest, all contracts.",
@@ -1386,8 +1375,6 @@ class CftcCotData(COTData):
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
-    # -- Number of Traders: Totals --
-
     traders_total_all: int | None = Field(
         default=None, description="Total number of reportable traders, all contracts."
     )
@@ -1399,8 +1386,6 @@ class CftcCotData(COTData):
         default=None,
         description="Total number of reportable traders, other crop year. Legacy/Disaggregated reports.",
     )
-
-    # -- Number of Traders: Legacy Non-Commercial --
 
     traders_non_commercial_long_all: int | None = Field(
         default=None,
@@ -1439,8 +1424,6 @@ class CftcCotData(COTData):
         description="Number of non-commercial spreading traders, other crop year. Legacy report.",
     )
 
-    # -- Number of Traders: Legacy Commercial --
-
     traders_commercial_long_all: int | None = Field(
         default=None,
         description="Number of commercial long traders, all contracts. Legacy report.",
@@ -1466,8 +1449,6 @@ class CftcCotData(COTData):
         description="Number of commercial short traders, other crop year. Legacy report.",
     )
 
-    # -- Number of Traders: Disaggregated Producer/Merchant --
-
     traders_producer_merchant_long_all: int | None = Field(
         default=None,
         description="Number of producer/merchant long traders, all contracts. Disaggregated report.",
@@ -1492,8 +1473,6 @@ class CftcCotData(COTData):
         default=None,
         description="Number of producer/merchant short traders, other crop year. Disaggregated report.",
     )
-
-    # -- Number of Traders: Disaggregated Swap Dealer --
 
     traders_swap_long_all: int | None = Field(
         default=None,
@@ -1532,8 +1511,6 @@ class CftcCotData(COTData):
         description="Number of swap dealer spreading traders, other crop year. Disaggregated report.",
     )
 
-    # -- Number of Traders: Disaggregated Managed Money --
-
     traders_managed_money_long_all: int | None = Field(
         default=None,
         description="Number of managed money long traders, all contracts. Disaggregated report.",
@@ -1571,8 +1548,6 @@ class CftcCotData(COTData):
         description="Number of managed money spreading traders, other crop year. Disaggregated report.",
     )
 
-    # -- Number of Traders: Financial (TFF) Dealer --
-
     traders_dealer_long_all: int | None = Field(
         default=None,
         description="Number of dealer/intermediary long traders, all contracts. TFF report.",
@@ -1585,8 +1560,6 @@ class CftcCotData(COTData):
         default=None,
         description="Number of dealer/intermediary spreading traders, all contracts. TFF report.",
     )
-
-    # -- Number of Traders: Financial (TFF) Asset Manager --
 
     traders_asset_manager_long_all: int | None = Field(
         default=None,
@@ -1601,8 +1574,6 @@ class CftcCotData(COTData):
         description="Number of asset manager/institutional spreading traders, all contracts. TFF report.",
     )
 
-    # -- Number of Traders: Financial (TFF) Leveraged Funds --
-
     traders_leveraged_funds_long_all: int | None = Field(
         default=None,
         description="Number of leveraged funds long traders, all contracts. TFF report.",
@@ -1615,8 +1586,6 @@ class CftcCotData(COTData):
         default=None,
         description="Number of leveraged funds spreading traders, all contracts. TFF report.",
     )
-
-    # -- Number of Traders: Other Reportable --
 
     traders_other_reportable_long_all: int | None = Field(
         default=None,
@@ -1655,8 +1624,6 @@ class CftcCotData(COTData):
         description="Number of other reportable spreading traders, other crop year. Disaggregated report.",
     )
 
-    # -- Number of Traders: Supplemental NoCIT --
-
     traders_non_commercial_long_all_non_cit: int | None = Field(
         default=None,
         description="Number of non-commercial long traders excluding CIT. Supplemental report.",
@@ -1678,8 +1645,6 @@ class CftcCotData(COTData):
         description="Number of commercial short traders excluding CIT. Supplemental report.",
     )
 
-    # -- Number of Traders: Supplemental CIT --
-
     traders_cit_long_all: int | None = Field(
         default=None,
         description="Number of commodity index trader long traders. Supplemental report.",
@@ -1689,8 +1654,6 @@ class CftcCotData(COTData):
         description="Number of commodity index trader short traders. Supplemental report.",
     )
 
-    # -- Number of Traders: Supplemental Totals NoCIT --
-
     traders_total_reportable_long_all_non_cit: int | None = Field(
         default=None,
         description="Total reportable long traders excluding CIT. Supplemental report.",
@@ -1699,8 +1662,6 @@ class CftcCotData(COTData):
         default=None,
         description="Total reportable short traders excluding CIT. Supplemental report.",
     )
-
-    # -- Number of Traders: Total Reportable --
 
     traders_total_reportable_long_all: int | None = Field(
         default=None,
@@ -1726,8 +1687,6 @@ class CftcCotData(COTData):
         default=None,
         description="Total number of reportable short traders, other crop year. Legacy/Disaggregated reports.",
     )
-
-    # -- Concentration Ratios: All Contracts --
 
     concentration_gross_top_4_traders_long: float | None = Field(
         default=None,
@@ -1762,8 +1721,6 @@ class CftcCotData(COTData):
         description="Net short position concentration of top 8 traders, all contracts.",
     )
 
-    # -- Concentration Ratios: Old Crop Year --
-
     concentration_gross_top_4_traders_long_1: float | None = Field(
         default=None,
         description="Gross long position concentration of top 4 traders, old crop year. Legacy/Disaggregated reports.",
@@ -1796,8 +1753,6 @@ class CftcCotData(COTData):
         default=None,
         description="Net short position concentration of top 8 traders, old crop year. Legacy/Disaggregated reports.",
     )
-
-    # -- Concentration Ratios: Other Crop Year --
 
     concentration_gross_top_4_traders_long_2: float | None = Field(
         default=None,
@@ -1850,10 +1805,12 @@ class CftcCotFetcher(Fetcher[CftcCotQueryParams, list[CftcCotData]]):
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the data from the CFTC API."""
-        # pylint: disable=import-outside-toplevel
-        import os  # noqa
+        import os
         from datetime import timedelta
+
         from openbb_core.provider.utils.helpers import amake_request
+
+        from openbb_cftc.utils.helpers import socrata_json
 
         app_token = (
             credentials.get("cftc_app_token")
@@ -1863,7 +1820,7 @@ class CftcCotFetcher(Fetcher[CftcCotQueryParams, list[CftcCotData]]):
 
         today = datetime.now()
 
-        _id = "" if query.code == "all" else query.code  # type: ignore
+        _id = "" if query.code == "all" else query.code
         if _id.startswith("CFTC_"):
             _id = _id[5:]
 
@@ -1884,8 +1841,7 @@ class CftcCotFetcher(Fetcher[CftcCotQueryParams, list[CftcCotData]]):
             else f"{today.year}-12-31"
         )
         date_range = (
-            "$where=Report_Date_as_YYYY_MM_DD"
-            f" between '{start_date}' AND '{end_date}'"
+            f"$where=Report_Date_as_YYYY_MM_DD between '{start_date}' AND '{end_date}'"
         )
         report_type = query.report_type.replace("financial", "tff")
 
@@ -1914,18 +1870,28 @@ class CftcCotFetcher(Fetcher[CftcCotQueryParams, list[CftcCotData]]):
         )
         url = f"{url}{order}"
 
-        if app_token:
-            url += f"&$$app_token={app_token}"
+        from openbb_cftc.utils import store
+
+        cached = store.get_response(url)
+
+        if cached is not None:
+            return cached
+
+        request_url = f"{url}&$$app_token={app_token}" if app_token else url
 
         try:
-            response = await amake_request(url, **kwargs)
+            response = await amake_request(
+                request_url, response_callback=socrata_json, **kwargs
+            )
         except OpenBBError as error:
             raise error from error
 
-        if not response:
+        if not response or not isinstance(response, list):
             raise EmptyDataError(f"No data found for {_id.replace('%', '')}.")
 
-        return response  # type: ignore
+        store.put_response(url, response)
+
+        return response
 
     @staticmethod
     def transform_data(

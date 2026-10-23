@@ -1,0 +1,1280 @@
+[
+  {
+    "name": "CFTC",
+    "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU7uvmB6aGBM5Jng6oYeAOJ0CwDCwN_6VHlOlmBsAp1A&s",
+    "img_dark": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU7uvmB6aGBM5Jng6oYeAOJ0CwDCwN_6VHlOlmBsAp1A&s",
+    "img_light": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQU7uvmB6aGBM5Jng6oYeAOJ0CwDCwN_6VHlOlmBsAp1A&s",
+    "description": "CFTC COT reports, executed overnight index swap curves (par or zero), market-implied forward rate curves, FX forward points (executed vs covered-interest-parity, deliverable and non-deliverable), the FX implied-volatility surface, historical benchmark fixings, and raw swaps, forwards and options dissemination tapes.",
+    "allowCustomization": true,
+    "tabs": {
+      "commitment-of-traders": {
+        "id": "commitment-of-traders",
+        "name": "Commitment of Traders",
+        "layout": [
+          {
+            "i": "cftc_cot_movers_cftc_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 10,
+            "state": {
+              "params": {
+                "asset_class": "all",
+                "limit": "8",
+                "futures_only": "true"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "market"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "market",
+                      "trader_group",
+                      "spec_score",
+                      "commercial_score",
+                      "change",
+                      "signal"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": []
+          },
+          {
+            "i": "cftc_cot_index_cftc_obb",
+            "x": 0,
+            "y": 12,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "asset_class": "all",
+                "lookback_weeks": "52",
+                "futures_only": "true"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "report_date",
+                      "market"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "report_date",
+                      "market",
+                      "open_interest",
+                      "large_specs",
+                      "large_specs_zone",
+                      "large_specs_change",
+                      "large_specs_net_pct_oi",
+                      "small_specs",
+                      "small_specs_zone",
+                      "small_specs_change",
+                      "small_specs_net_pct_oi",
+                      "commercials",
+                      "commercials_zone",
+                      "commercials_change",
+                      "commercials_net_pct_oi"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": []
+          },
+          {
+            "i": "cftc_cot_search_cftc_obb",
+            "x": 0,
+            "y": 26,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "params": {
+                "subcategory": "stock_indices"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "code",
+                      "name",
+                      "category",
+                      "subcategory",
+                      "units",
+                      "symbol",
+                      "commodity"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 1"
+            ]
+          },
+          {
+            "i": "cftc_cot_positioning_cftc_obb",
+            "x": 0,
+            "y": 41,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "params": {
+                "code": "CFTC_13874+",
+                "lookback_weeks": "52",
+                "futures_only": "true"
+              },
+              "chartModel": {
+                "modelType": "range",
+                "chartType": "line",
+                "chartOptions": {
+                  "line": {
+                    "series": {
+                      "strokeWidth": 2,
+                      "marker": {
+                        "enabled": false
+                      },
+                      "tooltip": {
+                        "enabled": true
+                      }
+                    }
+                  }
+                },
+                "cellRange": {
+                  "columns": [
+                    "report_date",
+                    "large_specs_net_pct_oi",
+                    "small_specs_net_pct_oi",
+                    "commercials_net_pct_oi"
+                  ]
+                },
+                "suppressChartRanges": true
+              },
+              "chartView": {
+                "enabled": true,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "report_date"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "report_date",
+                      "large_specs_net_pct_oi",
+                      "small_specs_net_pct_oi",
+                      "commercials_net_pct_oi",
+                      "large_specs_score",
+                      "small_specs_score",
+                      "commercials_score",
+                      "large_specs_net",
+                      "small_specs_net",
+                      "commercials_net",
+                      "open_interest"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 1"
+            ]
+          },
+          {
+            "i": "cftc_cot_cftc_obb",
+            "x": 0,
+            "y": 63,
+            "w": 40,
+            "h": 22,
+            "state": {
+              "params": {
+                "code": "CFTC_13874+",
+                "measure": "changes",
+                "futures_only": "true",
+                "limit": "52"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "date",
+                      "open_interest_all",
+                      "change_in_open_interest_all",
+                      "change_in_non_commercial_long_all",
+                      "change_in_non_commercial_short_all",
+                      "change_in_non_commercial_spread_all",
+                      "change_in_commercial_long_all",
+                      "change_in_commercial_short_all",
+                      "change_in_total_reportable_long_all",
+                      "change_in_total_reportable_short",
+                      "change_in_non_reportable_long_all",
+                      "change_in_non_reportable_short_all"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 1"
+            ]
+          }
+        ]
+      },
+      "ois-swap-curve": {
+        "id": "ois-swap-curve",
+        "name": "OIS Swap Curve",
+        "layout": [
+          {
+            "i": "cftc_ois_curve_cftc_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 25,
+            "state": {
+              "params": {
+                "curve_type": "zero",
+                "source": "slice",
+                "lookback_days": "7",
+                "min_trades": "1",
+                "cleared": "false"
+              },
+              "chartModel": {
+                "modelType": "range",
+                "chartType": "line",
+                "chartOptions": {
+                  "line": {
+                    "background": {
+                      "fill": "rgb(21, 21, 24)"
+                    },
+                    "axes": {
+                      "number": {
+                        "left": {
+                          "gridLine": {
+                            "style": [
+                              {
+                                "lineDash": [
+                                  0
+                                ],
+                                "stroke": "#515153"
+                              }
+                            ]
+                          }
+                        },
+                        "right": {
+                          "gridLine": {
+                            "style": [
+                              {
+                                "lineDash": [
+                                  0
+                                ],
+                                "stroke": "#515153"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "series": {
+                      "strokeWidth": 3,
+                      "lineDash": [
+                        0
+                      ],
+                      "marker": {
+                        "enabled": false,
+                        "size": 10,
+                        "strokeWidth": 0
+                      },
+                      "strokeOpacity": 1,
+                      "label": {
+                        "enabled": false
+                      },
+                      "tooltip": {
+                        "enabled": true
+                      }
+                    }
+                  }
+                },
+                "cellRange": {
+                  "columns": [
+                    "index",
+                    "rate"
+                  ]
+                },
+                "suppressChartRanges": true
+              },
+              "chartView": {
+                "enabled": true,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "index",
+                      "date"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "date",
+                      "currency",
+                      "benchmark",
+                      "index",
+                      "as_of_date",
+                      "staleness_days",
+                      "tenor",
+                      "tenor_days",
+                      "tenor_years",
+                      "maturity_date",
+                      "rate",
+                      "curve_type",
+                      "discount_factor",
+                      "day_count",
+                      "num_trades",
+                      "total_notional",
+                      "min_rate",
+                      "max_rate",
+                      "is_capped"
+                    ]
+                  },
+                  "columnVisibility": {
+                    "hiddenColIds": [
+                      "day_count"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 2"
+            ]
+          },
+          {
+            "i": "cftc_ois_curve_history_cftc_obb",
+            "x": 0,
+            "y": 27,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "params": {
+                "currency": "USD",
+                "measure": "par_rate",
+                "pivot": "true"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date"
+                    ],
+                    "rightColIds": []
+                  }
+                }
+              },
+              "chartModel": {
+                "modelType": "range",
+                "chartType": "line",
+                "chartOptions": {},
+                "cellRange": {
+                  "columns": [
+                    "date",
+                    "tenor_2y",
+                    "tenor_5y",
+                    "tenor_10y",
+                    "tenor_30y"
+                  ]
+                },
+                "suppressChartRanges": true
+              }
+            },
+            "groups": [
+              "Group 2"
+            ]
+          }
+        ]
+      },
+      "forward-rate-curve": {
+        "id": "forward-rate-curve",
+        "name": "Forward Rate Curve",
+        "layout": [
+          {
+            "i": "cftc_ois_forward_curve_cftc_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 26,
+            "state": {
+              "params": {
+                "forward_tenor": "6M",
+                "forward_step": "6M"
+              },
+              "chartModel": {
+                "modelType": "range",
+                "chartType": "line",
+                "chartOptions": {
+                  "line": {
+                    "series": {
+                      "lineDash": [
+                        2
+                      ],
+                      "marker": {
+                        "enabled": true,
+                        "size": 7
+                      },
+                      "strokeWidth": 2
+                    },
+                    "axes": {
+                      "category": {
+                        "bottom": {
+                          "title": {
+                            "enabled": true,
+                            "text": "Forward Start Date",
+                            "fontStyle": "italic",
+                            "fontWeight": "normal",
+                            "fontSize": 16,
+                            "spacing": 28
+                          },
+                          "label": {
+                            "fontSize": 10,
+                            "spacing": 10,
+                            "autoRotate": true
+                          },
+                          "tick": {
+                            "enabled": true,
+                            "size": 15
+                          }
+                        },
+                        "top": {
+                          "title": {
+                            "enabled": true,
+                            "text": "Forward Start Date",
+                            "fontStyle": "italic",
+                            "fontWeight": "normal",
+                            "fontSize": 16,
+                            "spacing": 28
+                          },
+                          "label": {
+                            "fontSize": 10,
+                            "spacing": 10,
+                            "autoRotate": true
+                          },
+                          "tick": {
+                            "enabled": true,
+                            "size": 15
+                          }
+                        }
+                      },
+                      "number": {
+                        "left": {
+                          "label": {
+                            "spacing": 30,
+                            "fontSize": 14
+                          }
+                        },
+                        "right": {
+                          "label": {
+                            "spacing": 30,
+                            "fontSize": 14
+                          }
+                        }
+                      }
+                    },
+                    "padding": {
+                      "left": 24,
+                      "bottom": 0,
+                      "right": 20,
+                      "top": 50
+                    }
+                  }
+                },
+                "cellRange": {
+                  "columns": [
+                    "index",
+                    "forward_rate"
+                  ]
+                },
+                "suppressChartRanges": true
+              },
+              "chartView": {
+                "enabled": true,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "index"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnVisibility": {
+                    "hiddenColIds": [
+                      "extrapolated"
+                    ]
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "date",
+                      "currency",
+                      "index",
+                      "tenor",
+                      "start_years",
+                      "forward_rate",
+                      "extrapolated",
+                      "num_trades"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 2"
+            ]
+          }
+        ]
+      },
+      "ois-policy-path": {
+        "id": "ois-policy-path",
+        "name": "OIS Policy Path",
+        "layout": [
+          {
+            "i": "cftc_ois_policy_path_cftc_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "params": {
+                "currency": "USD"
+              },
+              "chartModel": {
+                "modelType": "range",
+                "chartType": "line",
+                "chartOptions": {
+                  "line": {
+                    "series": {
+                      "strokeWidth": 3,
+                      "marker": {
+                        "enabled": false
+                      },
+                      "tooltip": {
+                        "enabled": true
+                      }
+                    }
+                  }
+                },
+                "cellRange": {
+                  "columns": [
+                    "index",
+                    "rate"
+                  ]
+                },
+                "suppressChartRanges": true
+              },
+              "chartView": {
+                "enabled": true,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "index"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "index",
+                      "rate",
+                      "forward_days",
+                      "start_date",
+                      "end_date",
+                      "tenor_days",
+                      "num_trades",
+                      "as_of_date",
+                      "staleness_days",
+                      "min_rate",
+                      "max_rate",
+                      "is_capped"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": []
+          }
+        ]
+      },
+      "fx": {
+        "id": "fx",
+        "name": "FX",
+        "layout": [
+          {
+            "i": "cftc_fx_forward_points_cftc_obb",
+            "x": 0,
+            "y": 15,
+            "w": 40,
+            "h": 13,
+            "state": {
+              "params": {
+                "pair": "USDJPY"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date",
+                      "tenor"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnVisibility": {
+                    "hiddenColIds": [
+                      "date",
+                      "as_of_date",
+                      "staleness_days",
+                      "pair",
+                      "tenor_days"
+                    ]
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "date",
+                      "as_of_date",
+                      "staleness_days",
+                      "pair",
+                      "tenor",
+                      "tenor_days",
+                      "spot_rate",
+                      "forward_rate",
+                      "forward_points",
+                      "quotation",
+                      "carry",
+                      "num_trades",
+                      "total_notional",
+                      "min_rate",
+                      "max_rate"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 3"
+            ]
+          },
+          {
+            "i": "cftc_fx_forward_curve_cftc_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 13,
+            "state": {
+              "chartModel": {
+                "modelType": "range",
+                "chartType": "line",
+                "chartOptions": {
+                  "line": {
+                    "series": {
+                      "strokeWidth": 3,
+                      "marker": {
+                        "enabled": false
+                      },
+                      "tooltip": {
+                        "enabled": true
+                      }
+                    },
+                    "legend": {
+                      "enabled": false
+                    }
+                  }
+                },
+                "cellRange": {
+                  "columns": [
+                    "index",
+                    "rate"
+                  ]
+                },
+                "suppressChartRanges": true
+              },
+              "chartView": {
+                "enabled": true,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date",
+                      "index"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "date",
+                      "pair",
+                      "index",
+                      "tenor_days",
+                      "rate",
+                      "spot",
+                      "num_trades",
+                      "total_notional",
+                      "min_rate",
+                      "max_rate",
+                      "as_of_date",
+                      "staleness_days",
+                      "tenor"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 3"
+            ]
+          },
+          {
+            "i": "cftc_fx_implied_vol_cftc_obb",
+            "x": 0,
+            "y": 28,
+            "w": 40,
+            "h": 17,
+            "state": {
+              "params": {
+                "pair": "USDJPY",
+                "use_cache": "true"
+              },
+              "chartModel": {
+                "modelType": "range",
+                "chartType": "line",
+                "chartOptions": {},
+                "cellRange": {
+                  "columns": [
+                    "strike",
+                    "vol_1w",
+                    "vol_2w",
+                    "vol_1m",
+                    "vol_2m",
+                    "vol_3m",
+                    "vol_6m",
+                    "vol_9m",
+                    "vol_1y",
+                    "vol_2y"
+                  ]
+                },
+                "suppressChartRanges": true
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date",
+                      "strike"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "date",
+                      "pair",
+                      "strike",
+                      "strike_offset",
+                      "vol_1w",
+                      "vol_2w",
+                      "vol_1m",
+                      "vol_2m",
+                      "vol_3m",
+                      "vol_6m",
+                      "vol_9m",
+                      "vol_1y",
+                      "vol_2y",
+                      "num_options"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 3"
+            ]
+          },
+          {
+            "i": "cftc_fx_forward_trades_cftc_obb",
+            "x": 0,
+            "y": 45,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "params": {
+                "pair": "USDJPY",
+                "use_cache": "true"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "event_timestamp",
+                      "pair"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "event_timestamp",
+                      "execution_timestamp",
+                      "pair",
+                      "product_type",
+                      "action_type",
+                      "exchange_rate",
+                      "exchange_rate_basis",
+                      "notional_1",
+                      "notional_currency_1",
+                      "notional_2",
+                      "notional_currency_2",
+                      "settlement_currency",
+                      "effective_date",
+                      "expiration_date",
+                      "days_to_expiry",
+                      "cleared",
+                      "venue",
+                      "package_trade",
+                      "block_trade",
+                      "prime_brokerage",
+                      "upi_fisn",
+                      "underlier",
+                      "unique_product_identifier",
+                      "dissemination_date",
+                      "trade_key",
+                      "original_trade_key",
+                      "is_capped"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 3"
+            ]
+          },
+          {
+            "i": "cftc_fx_option_trades_cftc_obb",
+            "x": 0,
+            "y": 60,
+            "w": 40,
+            "h": 15,
+            "state": {
+              "params": {
+                "pair": "USDJPY",
+                "use_cache": "true"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "event_timestamp",
+                      "pair"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "event_timestamp",
+                      "execution_timestamp",
+                      "pair",
+                      "option_type",
+                      "action_type",
+                      "call_currency",
+                      "call_amount",
+                      "put_currency",
+                      "put_amount",
+                      "strike",
+                      "strike_pair",
+                      "expiration_date",
+                      "days_to_expiry",
+                      "premium_amount",
+                      "premium_currency",
+                      "cleared",
+                      "venue",
+                      "exchange_rate",
+                      "exchange_rate_basis",
+                      "effective_date",
+                      "first_exercise_date",
+                      "package_trade",
+                      "strike_notation",
+                      "notional_1",
+                      "notional_currency_1",
+                      "notional_2",
+                      "notional_currency_2",
+                      "event_type",
+                      "block_trade",
+                      "prime_brokerage",
+                      "upi_fisn",
+                      "underlier",
+                      "unique_product_identifier",
+                      "dissemination_date",
+                      "trade_key",
+                      "is_capped"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 3"
+            ]
+          }
+        ]
+      },
+      "swap": {
+        "id": "swap",
+        "name": "Swap",
+        "layout": [
+          {
+            "i": "cftc_swap_trades_cftc_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 22,
+            "state": {
+              "params": {
+                "asset_class": "rates",
+                "action_type": "NEWT"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "event_timestamp"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "trade_key",
+                      "action_type",
+                      "event_timestamp",
+                      "asset_class",
+                      "product_name",
+                      "cleared",
+                      "execution_timestamp",
+                      "effective_date",
+                      "expiration_date",
+                      "notional_amount_leg_1",
+                      "notional_amount_leg_2",
+                      "notional_currency_leg_1",
+                      "notional_currency_leg_2",
+                      "fixed_rate_leg_1",
+                      "price",
+                      "unique_product_identifier",
+                      "upi_fisn",
+                      "upi_underlier_name"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 5"
+            ]
+          },
+          {
+            "i": "cftc_swap_summary_cftc_obb",
+            "x": 0,
+            "y": 24,
+            "w": 40,
+            "h": 14,
+            "state": {
+              "params": {
+                "currency": "USD",
+                "side": "pay"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "metric",
+                      "value",
+                      "detail"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 5"
+            ]
+          },
+          {
+            "i": "cftc_swap_valuation_cftc_obb",
+            "x": 0,
+            "y": 38,
+            "w": 40,
+            "h": 20,
+            "state": {
+              "params": {
+                "currency": "USD",
+                "side": "pay"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "period",
+                      "payment_date"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "period",
+                      "start_date",
+                      "payment_date",
+                      "year_fraction",
+                      "discount_factor",
+                      "forward_rate",
+                      "fixed_rate",
+                      "fixed_cashflow",
+                      "fixed_pv",
+                      "floating_cashflow",
+                      "floating_pv"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": [
+              "Group 5"
+            ]
+          }
+        ]
+      },
+      "cds-index-trades": {
+        "id": "cds-index-trades",
+        "name": "CDS Index Trades",
+        "layout": [
+          {
+            "i": "cftc_cds_index_trades_cftc_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 22,
+            "state": {
+              "params": {
+                "use_cache": "true"
+              },
+              "chartView": {
+                "enabled": false,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "event_timestamp",
+                      "index"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "dissemination_identifier",
+                      "action_type",
+                      "event_timestamp",
+                      "execution_timestamp",
+                      "index",
+                      "upi_fisn",
+                      "unique_product_identifier",
+                      "effective_date",
+                      "maturity_date",
+                      "tenor",
+                      "coupon",
+                      "upfront_amount",
+                      "upfront_currency",
+                      "spread",
+                      "notional_amount",
+                      "notional_currency",
+                      "venue",
+                      "cleared"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": []
+          }
+        ]
+      },
+      "historical-fixings": {
+        "id": "historical-fixings",
+        "name": "Historical Fixings",
+        "layout": [
+          {
+            "i": "cftc_historical_fixings_cftc_obb",
+            "x": 0,
+            "y": 2,
+            "w": 40,
+            "h": 22,
+            "state": {
+              "params": {
+                "index": "SOFR"
+              },
+              "chartModel": {
+                "modelType": "range",
+                "chartType": "line",
+                "chartOptions": {
+                  "line": {
+                    "series": {
+                      "strokeWidth": 2,
+                      "marker": {
+                        "enabled": false
+                      },
+                      "tooltip": {
+                        "enabled": true
+                      }
+                    }
+                  }
+                },
+                "cellRange": {
+                  "columns": [
+                    "date",
+                    "rate"
+                  ]
+                },
+                "suppressChartRanges": true
+              },
+              "chartView": {
+                "enabled": true,
+                "chartType": "line"
+              },
+              "columnState": {
+                "default": {
+                  "columnPinning": {
+                    "leftColIds": [
+                      "date"
+                    ],
+                    "rightColIds": []
+                  },
+                  "columnOrder": {
+                    "orderedColIds": [
+                      "date",
+                      "rate",
+                      "change_bps"
+                    ]
+                  }
+                }
+              }
+            },
+            "groups": []
+          }
+        ]
+      }
+    },
+    "groups": [
+      {
+        "name": "Group 1",
+        "type": "param",
+        "paramName": "code",
+        "defaultValue": "CFTC_13874+"
+      },
+      {
+        "name": "Group 2",
+        "type": "param",
+        "paramName": "currency",
+        "defaultValue": "USD"
+      },
+      {
+        "name": "Group 3",
+        "type": "param",
+        "paramName": "pair",
+        "defaultValue": "USDJPY"
+      },
+      {
+        "name": "Group 4",
+        "type": "param",
+        "paramName": "pair",
+        "defaultValue": "USDJPY"
+      },
+      {
+        "name": "Group 5",
+        "type": "param",
+        "paramName": "dissemination_identifier"
+      },
+      {
+        "name": "Group 6",
+        "type": "param",
+        "paramName": "index",
+        "defaultValue": "SOFR"
+      }
+    ]
+  }
+]

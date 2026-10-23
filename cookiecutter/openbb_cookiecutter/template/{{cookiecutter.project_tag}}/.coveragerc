@@ -1,7 +1,0 @@
-[coverage:run]
-omit =
-    env/*
-    tests/*
-    **/tests/**
-    **/package/**
-source = .

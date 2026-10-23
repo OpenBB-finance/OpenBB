@@ -3,12 +3,6 @@
 __docformat__ = "numpy"
 
 
-from openbb import obb
-
-# https://rich.readthedocs.io/en/stable/appendix/colors.html#appendix-colors
-# https://rich.readthedocs.io/en/latest/highlighting.html#custom-highlighters
-
-
 RICH_TAGS = [
     "[menu]",
     "[/menu]",
@@ -53,37 +47,18 @@ class MenuText:
         List
             The list of providers for the given command.
         """
-        command_reference = obb.reference.get("paths", {}).get(command_path, {})  # type: ignore
+        try:
+            from openbb import obb
+        except ImportError:
+            return []
+        command_reference = obb.reference.get("paths", {}).get(command_path, {})  # ty: ignore[unresolved-attribute]
         if command_reference:
             providers = list(command_reference["parameters"].keys())
             return [provider for provider in providers if provider != "standard"]
         return []
 
     def _format_cmd_name(self, name: str) -> str:
-        """Truncate command name length if it is too long."""
-        if len(name) > self.CMD_NAME_LENGTH:
-            new_name = name[: self.CMD_NAME_LENGTH]
-
-            if "_" in name:
-                name_split = name.split("_")
-
-                new_name = (
-                    "_".join(name_split[:2]) if len(name_split) > 2 else name_split[0]
-                )
-
-                if len(new_name) > self.CMD_NAME_LENGTH:
-                    new_name = new_name[: self.CMD_NAME_LENGTH]
-
-            if new_name != name:
-                self.warnings.append(
-                    {
-                        "warning": "Command name too long",
-                        "actual command": f"`{name}`",
-                        "displayed command": f"`{new_name}`",
-                    }
-                )
-                name = new_name
-
+        """Return command name as-is without truncation."""
         return name
 
     def _format_cmd_description(

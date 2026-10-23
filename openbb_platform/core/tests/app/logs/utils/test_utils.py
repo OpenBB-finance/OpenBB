@@ -5,6 +5,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
+
 from openbb_core.app.logs.utils.utils import get_app_id, get_log_dir, get_session_id
 
 ## get_session_id
@@ -51,7 +52,7 @@ def test_get_app_id_success():
     """Test get_app_id function."""
     # Mock the return value of get_log_dir to simulate a successful scenario
     with patch("openbb_core.app.logs.utils.utils.get_log_dir") as mock_get_log_dir:
-        mock_get_log_dir  # pylint: disable=pointless-statement
+        mock_get_log_dir
         mock_get_log_dir.return_value = Path(
             "/path/to/contextual_user_data_directory/app_id.log"
         )

@@ -1,0 +1,26 @@
+[run]
+source = openbb_bls
+omit =
+    env/*
+    tests/*
+    **/tests/**
+    **/package/**
+    cookiecutter/**
+    # bls_router.py + routers/*: FastAPI route decorators that wrap fetchers;
+    # the underlying fetcher.test() / extract_data() / transform_data() paths
+    # are covered by tests/test_bls_fetchers.py. The routers themselves are
+    # OpenBB boilerplate wired up by the framework at app boot, split one
+    # module per survey topic for the sub-router namespaces.
+    openbb_bls/bls_router.py
+    openbb_bls/routers/*.py
+    # generate_cache.py: one-shot CLI script that FTP-fetches BLS files to
+    # build the shipped bls_cache.zip. Not exercised at runtime; the cache
+    # it produces IS exercised via tests/test_metadata.py.
+    openbb_bls/utils/generate_cache.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    if TYPE_CHECKING:

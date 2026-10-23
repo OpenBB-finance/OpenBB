@@ -1,7 +1,5 @@
 """Utilities for LRU caching."""
 
-# pylint: disable=W0613
-
 import time
 from collections.abc import Callable
 from functools import lru_cache, update_wrapper

@@ -1,13 +1,22 @@
 """IMF Constants."""
 
-from typing import Literal
+from __future__ import annotations
 
-# pylint: disable=line-too-long
-# flake8: noqa: E501
+from typing import Literal
 
 DAILY_TRADE_BASE_URL = "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/Daily_Ports_Data/FeatureServer/0/query?"
 
 CHOKEPOINTS_BASE_URL = "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/Daily_Chokepoints_Data/FeatureServer/0/query?"
+
+DAILY_TRADE_REG_BASE_URL = "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/Daily_Trade_Data_REG/FeatureServer/0/query?"
+
+MONTHLY_TRADENOW_BASE_URL = "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/Monthly_TradeNow/FeatureServer/0/query?"
+
+CONTAINER_METRICS_BASE_URL = "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/Container_Metrics/FeatureServer/0/query?"
+
+DISRUPTIONS_DATABASE_URL = "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/portwatch_disruptions_database/FeatureServer/0/query?"
+
+SANKEY_DATA_URL = "https://services9.arcgis.com/weJ1QsnbMYJlCHdG/arcgis/rest/services/sankey_data/FeatureServer/0/query?"
 
 CHOKEPOINTS_ID_MAP = {
     "chokepoint1": "Suez Canal",

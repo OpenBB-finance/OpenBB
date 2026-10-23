@@ -13,8 +13,6 @@ from openbb_core.app.router import Router
 
 router = Router(prefix="/rate")
 
-# pylint: disable=unused-argument
-
 
 @router.command(
     model="Ameribor",
@@ -31,7 +29,7 @@ async def ameribor(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject:  # type: ignore
+) -> OBBject:
     """AMERIBOR.
 
     AMERIBOR (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
@@ -53,7 +51,7 @@ async def sonia(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject:  # type: ignore
+) -> OBBject:
     """Sterling Overnight Index Average.
 
     SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual
@@ -74,7 +72,7 @@ async def sofr(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject:  # type: ignore
+) -> OBBject:
     """Secured Overnight Financing Rate.
 
     The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
@@ -92,7 +90,7 @@ async def iorb(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject:  # type: ignore
+) -> OBBject:
     """Interest on Reserve Balances.
 
     Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its
@@ -114,7 +112,7 @@ async def effr(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject:  # type: ignore
+) -> OBBject:
     """Fed Funds Rate.
 
     Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
@@ -135,7 +133,7 @@ async def effr_forecast(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject:  # type: ignore
+) -> OBBject:
     """Fed Funds Rate Projections.
 
     The projections for the federal funds rate are the value of the midpoint of the
@@ -158,7 +156,7 @@ async def estr(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject:  # type: ignore
+) -> OBBject:
     """Euro Short-Term Rate.
 
     The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in
@@ -232,7 +230,7 @@ async def overnight_bank_funding(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject:  # type: ignore
+) -> OBBject:
     """Overnight Bank Funding.
 
     For the United States, the overnight bank funding rate (OBFR) is calculated as a volume-weighted median of

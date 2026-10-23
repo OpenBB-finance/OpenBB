@@ -17,7 +17,6 @@ router = Router(prefix="", description="Cryptocurrency market data.")
 router.include_router(price_router)
 
 
-# pylint: disable=unused-argument
 @router.command(
     model="CryptoSearch",
     examples=[

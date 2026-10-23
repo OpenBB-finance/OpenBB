@@ -1,5 +1,6 @@
 """Views for the Fixed Income Extension."""
 
+from importlib import import_module
 from typing import TYPE_CHECKING, Any
 
 from openbb_core.provider.abstract.data import Data
@@ -14,31 +15,31 @@ class FixedIncomeViews:
     """FixedIncome Views."""
 
     @staticmethod
-    def fixedincome_government_yield_curve(  # noqa: PLR0912
+    def fixedincome_government_yield_curve(
         **kwargs,
     ) -> tuple["OpenBBFigure", dict[str, Any]]:
         """Government Yield Curve Chart."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_charting.charts.helpers import (
-            duration_sorter,
-        )
-        from openbb_charting.core.chart_style import ChartStyle
-        from openbb_charting.core.openbb_figure import OpenBBFigure
-        from openbb_charting.styles.colors import LARGE_CYCLER
         from openbb_core.app.utils import basemodel_to_df
         from pandas import DataFrame
+
+        duration_sorter = import_module(
+            "openbb_charting.charts.helpers"
+        ).duration_sorter
+        ChartStyle = import_module("openbb_charting.core.chart_style").ChartStyle
+        OpenBBFigure = import_module("openbb_charting.core.openbb_figure").OpenBBFigure
+        LARGE_CYCLER = import_module("openbb_charting.styles.colors").LARGE_CYCLER
 
         data = kwargs.get("data")
         df: DataFrame = DataFrame()
         if data:
-            if isinstance(data, DataFrame) and not data.empty:  # noqa: SIM108
+            if isinstance(data, DataFrame) and not data.empty:
                 df = data
             elif isinstance(data, (list, Data)):
-                df = basemodel_to_df(data, index=None)  # type: ignore
+                df = basemodel_to_df(data, index=None)
             else:
                 pass
         else:
-            df = DataFrame([d.model_dump() for d in kwargs["obbject_item"]])  # type: ignore
+            df = DataFrame([d.model_dump() for d in kwargs["obbject_item"]])
 
         if df.empty:
             raise ValueError("Error: No data to plot.")

@@ -1,0 +1,8 @@
+[launcher]
+host = "0.0.0.0"
+port = 6900
+
+[mcp]
+host = "0.0.0.0"
+port = 8001
+transport = "streamable-http"

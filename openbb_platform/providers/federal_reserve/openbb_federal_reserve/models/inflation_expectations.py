@@ -1,7 +1,5 @@
 """Survey of Professional Forecasters - Inflation Expectations Data Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import date as dateType
 from typing import Any
 
@@ -10,8 +8,9 @@ from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.lru import ttl_cache
 from pydantic import AliasGenerator, ConfigDict, Field
+
+from openbb_federal_reserve.utils.cache import disk_cached
 
 URL = (
     "https://www.philadelphiafed.org/-/media/FRBP/Assets/Surveys-And-Data"
@@ -19,14 +18,13 @@ URL = (
 )
 
 
-@ttl_cache(ttl=86400)
+@disk_cached("inflation_expectations", cadence="quarterly")
 def download_inflation_excel() -> bytes:
     """Download the Inflation Expectations Excel file from the Philadelphia Fed.
 
     Returns:
         bytes: The Excel file content.
     """
-    # pylint: disable=import-outside-toplevel
     from openbb_core.provider.utils.helpers import make_request
 
     response = make_request(URL)
@@ -50,16 +48,7 @@ class FederalReserveInflationExpectationsQueryParams(QueryParams):
 
 
 class FederalReserveInflationExpectationsData(Data):
-    """Survey of Professional Forecasters Inflation Expectations Data.
-
-    Contains one-year-ahead and ten-year-ahead inflation forecasts from the
-    Philadelphia Fed's Survey of Professional Forecasters.
-
-    The one-year-ahead series are expectations for average inflation over the
-    four quarters following the survey quarter.
-
-    Source: https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/inflation-forecasts
-    """
+    """Survey of Professional Forecasters Inflation Expectations Data."""
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -135,7 +124,7 @@ class FederalReserveInflationExpectationsFetcher(
         """Download the Excel data from the Philadelphia Fed."""
         try:
             return {"file": download_inflation_excel()}
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             raise OpenBBError(e) from e
 
     @staticmethod
@@ -145,13 +134,15 @@ class FederalReserveInflationExpectationsFetcher(
         **kwargs: Any,
     ) -> list[FederalReserveInflationExpectationsData]:
         """Transform the Excel data into validated Pydantic models."""
-        # pylint: disable=import-outside-toplevel
-        from io import BytesIO  # noqa
+        from io import BytesIO
+
         from openpyxl import load_workbook
         from pandas import DataFrame, to_datetime
 
+        from openbb_federal_reserve.utils.workbook import sanitize_xlsx_core_dates
+
         wb = load_workbook(
-            filename=BytesIO(data["file"]),
+            filename=BytesIO(sanitize_xlsx_core_dates(data["file"])),
             read_only=True,
             data_only=True,
             keep_vba=False,

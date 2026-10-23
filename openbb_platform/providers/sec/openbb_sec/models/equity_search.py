@@ -1,7 +1,5 @@
 """SEC Equity Search Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -54,12 +52,12 @@ class SecEquitySearchFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Return the raw data from the SEC endpoint."""
-        # pylint: disable=import-outside-toplevel
+        from pandas import DataFrame
+
         from openbb_sec.utils.helpers import (
             get_all_companies,
             get_mf_and_etf_map,
         )
-        from pandas import DataFrame
 
         results = DataFrame()
 

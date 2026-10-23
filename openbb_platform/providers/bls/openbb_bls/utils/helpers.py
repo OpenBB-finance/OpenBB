@@ -1,15 +1,29 @@
 """BLS Helpers."""
 
-from typing import TYPE_CHECKING, Union
-
-if TYPE_CHECKING:
-    from pandas import DataFrame
+from datetime import date as _dateType
+from typing import Any
 
 
-# We need to wrap this as a helper to accommodate requests for historical data
-# greater than 20 years in length, or containing more than 50 symbols.
-async def get_bls_timeseries(  # pylint: disable=too-many-branches,too-many-positional-arguments  # noqa: PLR0912
-    api_key: str,
+def apply_date_window(
+    rows: list[dict[str, Any]],
+    start_date: _dateType | None,
+    end_date: _dateType | None,
+    key: str = "date",
+) -> list[dict[str, Any]]:
+    """Filter rows to an inclusive ``[start_date, end_date]`` window.
+
+    Applied uniformly to every row — a row whose ``key`` date is missing or
+    outside the window is dropped whenever a bound is set.
+    """
+    if start_date is not None:
+        rows = [r for r in rows if r.get(key) is not None and r[key] >= start_date]
+    if end_date is not None:
+        rows = [r for r in rows if r.get(key) is not None and r[key] <= end_date]
+    return rows
+
+
+async def get_bls_timeseries(  # noqa: PLR0912
+    api_key: str | None,
     series_ids: str | list[str],
     start_year: int | None = None,
     end_year: int | None = None,
@@ -22,8 +36,8 @@ async def get_bls_timeseries(  # pylint: disable=too-many-branches,too-many-posi
 
     Parameters
     ----------
-    api_key : str
-        BLS API key.
+    api_key : str | None
+        BLS API key; ``None`` issues an unregistered request (lower limits).
     series_ids : List[str]
         List of BLS series IDs. Max 50 symbols per request.
     start_year : Optional[int]
@@ -140,7 +154,11 @@ async def get_bls_timeseries(  # pylint: disable=too-many-branches,too-many-posi
             footnotes = _d.get("footnotes")
             if footnotes:
                 new_d["footnotes"] = "; ".join(
-                    [f.get("text") if isinstance(f, dict) else str(f) for f in footnotes if f]  # type: ignore
+                    [
+                        f.get("text") if isinstance(f, dict) else str(f)
+                        for f in footnotes
+                        if f
+                    ]
                 )
                 if not new_d.get("footnotes"):
                     new_d.pop("footnotes")
@@ -194,7 +212,7 @@ async def get_bls_timeseries(  # pylint: disable=too-many-branches,too-many-posi
                             {
                                 "date": _date,
                                 "footnotes": " ".join(
-                                    [f.get("text", "") for f in footnotes] if footnotes else None  # type: ignore
+                                    f.get("text", "") for f in (footnotes or [])
                                 ).strip(),
                             }
                         )
@@ -215,220 +233,3 @@ async def get_bls_timeseries(  # pylint: disable=too-many-branches,too-many-posi
         return EmptyDataError(f"No data found -> {messages}")  # type: ignore
 
     return {"data": data, "metadata": metadata, "messages": messages}
-
-
-async def get_survey_asset(survey: str, asset: str) -> "DataFrame | None":
-    """Get an asset in the FTP download folder of the two-letter survey code."""
-    # pylint: disable=import-outside-toplevel
-    from io import StringIO  # noqa
-    from openbb_core.provider.utils.helpers import make_request
-    from numpy import nan
-    from pandas import read_csv, NA
-
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Linux; U; Android 4.0.4; en-us; Glass 1 Build/IMM76L; XE16.2) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"  # noqa  # pylint: disable=line-too-long
-    }
-    url = f"https://download.bls.gov/pub/time.series/{survey.lower()}/{survey.lower()}.{asset.lower()}"
-    res = make_request(url=url, method="GET", headers=headers)
-
-    if res.status_code != 200:
-        return None
-
-    df = read_csv(StringIO(res.text), sep="\t", low_memory=False, dtype="object")
-    df.columns = [d.strip() for d in df.columns]
-    df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
-
-    return df.replace({"''": None, '""': None, NA: None, "nan": None, nan: None})
-
-
-async def download_category_series_ids(category) -> tuple[list, dict]:
-    """Download all series ids for a category of survey, along with the code maps.
-    This should only be required for updating static files.
-    """
-    # pylint: disable=import-outside-toplevel
-    from numpy import nan  # noqa
-    from openbb_core.provider.utils.errors import EmptyDataError
-    from openbb_bls.utils.constants import SURVEY_CATEGORY_MAP, SURVEY_NAMES
-
-    series_ids: list = []
-    series_codes: dict = {}
-
-    if category not in SURVEY_CATEGORY_MAP:
-        raise EmptyDataError(
-            f"Category {category} is not a supported choice. Choose from {list(SURVEY_CATEGORY_MAP)}"
-        )
-
-    async def get_all_series_ids(survey):
-        """Get an asset in the FTP download folder of the two-letter survey code."""
-        if survey in ["ch", "cs", "fw", "is", "nw", "oe", "yy"]:
-            return
-        data = await get_survey_asset(survey, "series")
-        for col in ["series_title", "survey_name"]:
-            if col not in data.columns:  # type: ignore
-                data.loc[:, col] = None  # type: ignore
-        codes = [d for d in data.columns if "code" in d and "periodicity" not in d]  # type: ignore
-        ids = data.get(["series_id", "series_title"] + codes).copy()  # type: ignore
-
-        if ids is None or ids.empty:
-            return
-
-        ids = ids.rename(columns={"footnote_codes": "footnote_code"})
-        ids = ids.astype(str).replace({"nan": None, "''": None, "": None})
-
-        ids["survey_name"] = SURVEY_NAMES.get(survey.upper(), None)
-        ids = ids[ids.series_id.astype(str).str.startswith(survey.upper())]
-
-        if ids is None or ids.empty:
-            return
-
-        # Get the code maps for the survey and convert the codes in the series table.
-        code_map: dict = {}
-        new_codes = [d.split("_")[0] for d in codes]
-
-        for code in new_codes:
-            code = "datatype" if code == "data" else code  # noqa
-            code_dict: dict = {}
-            code_data = await get_survey_asset(survey, code)
-            if code_data is None or code_data.empty:
-                continue
-            code = (  # noqa
-                "data_type" if code == "datatype" and survey == "ce" else code
-            )
-            code_data = code_data.rename(
-                columns={
-                    col: f"{code}_name"
-                    for col in code_data.columns
-                    if col in [f"{code}_text", f"{code}_title"]
-                }
-            )
-            if f"{code}_code" in code_data.columns:
-                if (
-                    code_data.index.dtype == "object"
-                    and code_data.get(f"{code}_name").isnull().all()  # type: ignore
-                ):
-                    code_data.loc[:, f"{code}_name"] = code_data.loc[
-                        :, f"{code}_code"
-                    ].copy()
-                    code_data.loc[:, f"{code}_code"] = code_data.index.copy()  # type: ignore
-                    code_data = code_data.reset_index(drop=True)
-                code_dict = (
-                    code_data.set_index(f"{code}_code")[[f"{code}_name"]]
-                    .to_dict()
-                    .get(f"{code}_name", code_dict)
-                )
-            else:
-                code_dict = code_data.to_dict(orient="series")
-
-            code_map[f"{code}_code"] = code_dict
-            ids[f"{code}_code"] = [code_dict.get(d, d) for d in ids[f"{code}_code"]]
-
-        # Footnotes may be comma-separated, so we need to expand them.
-        if "footnote_code" in ids.columns:
-            expanded_data = []
-            for item in ids["footnote_code"]:
-                if (
-                    item
-                    and isinstance(item, str)
-                    and "," in item
-                    and any(char.isdigit() for char in item)
-                ):
-                    expanded_data.append(
-                        " ".join(
-                            [
-                                code_map["footnote_code"].get(sub_item, sub_item)
-                                for sub_item in item.split(",")
-                                if code_map["footnote_code"].get(sub_item) is not None
-                            ]
-                        )
-                    )
-                else:
-                    expanded_data.append(item)
-            ids["footnote_code"] = expanded_data
-
-        ids = ids.replace({nan: None, "nan": None, "''": None}).to_dict(
-            orient="records"
-        )
-        series_ids.extend(ids)
-        series_codes.update({survey: code_map})
-
-    # Iterate over the all the surveys in the category and generate the tables and code maps.
-    # The FTP doesn't seem to like a flood of requests, so we do this operation in series.
-    for survey in SURVEY_CATEGORY_MAP[category]:
-        await get_all_series_ids(survey.lower())
-
-    return series_ids, series_codes
-
-
-def open_asset(asset: str) -> Union["DataFrame", dict]:
-    """Open a static file asset for series IDs or code maps."""
-    # pylint: disable=import-outside-toplevel
-    import os  # noqa
-    import json
-    from importlib.resources import files
-    from pathlib import Path
-    from numpy import nan
-    from openbb_core.app.model.abstract.error import OpenBBError
-    from pandas import read_csv
-
-    if ".xz" not in asset and "series" in asset:
-        asset = asset + ".xz"
-    elif ".json" not in asset and "codes" in asset:
-        asset = asset + ".json"
-    elif ".json" in asset or ".xz" in asset:
-        pass
-    else:
-        raise OpenBBError(f"Asset '{asset}' not supported. Expected .json or .xz file.")
-
-    assets_path = Path(str(files("openbb_bls").joinpath("assets")))
-
-    if not os.path.exists(assets_path.joinpath(asset)):
-        raise OpenBBError(f"Asset '{asset}' not found.")
-
-    if asset.endswith(".json"):
-        with open(assets_path.joinpath(asset)) as f:
-            return json.load(f)
-    else:
-        with open(assets_path.joinpath(asset), "rb") as f:
-            df = read_csv(f, compression="xz", low_memory=False, dtype="str")
-        return df.replace({nan: None, "nan": None, "''": None}).dropna(
-            how="all", axis=1
-        )
-
-
-async def update_static_asset(category: str) -> None:
-    """Update a static file assets with series IDs and code maps for a given category.
-    Do not use unless the static files in the assets folder require updating.
-    """
-    # pylint: disable=import-outside-toplevel
-    import json  # noqa
-    from importlib.resources import files
-    from pathlib import Path
-    from openbb_core.app.model.abstract.error import OpenBBError
-    from openbb_bls.utils.constants import SURVEY_CATEGORY_NAMES
-    from numpy import nan
-    from pandas import DataFrame
-
-    if category not in SURVEY_CATEGORY_NAMES:
-        raise OpenBBError(
-            f"Category '{category}' not found. Choose from {list(SURVEY_CATEGORY_NAMES)}"
-        )
-
-    try:
-        ids, codes = await download_category_series_ids(category)
-    except Exception as e:  # pylint: disable=broad-except
-        raise OpenBBError(f"Failed to download {category} -> {e}") from e
-
-    assets_path = Path(str(files("openbb_bls").joinpath("assets")))
-
-    # Save the code map to a JSON file.
-    if codes:
-        with open(assets_path.joinpath(f"{category}_codes.json"), "w") as f:
-            json.dump(codes, f, indent=4)
-
-    # Save the series IDs to a CSV file.
-    if ids:
-        df = DataFrame(ids)
-        df = df.replace({nan: None, "nan": None, "''": None}).dropna(how="all", axis=1)
-        df.to_csv(
-            assets_path.joinpath(f"{category}_series.xz"), index=False, compression="xz"
-        )

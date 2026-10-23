@@ -61,8 +61,10 @@ SPDRS = [
     "XLU",
     "XLRE",
 ]
-start_date = (datetime.now() - timedelta(weeks=52*5)).date()
-spdrs = obb.equity.price.historical(SPDRS, start_date=start_date, provider="yfinance", chart=True)
+start_date = (datetime.now() - timedelta(weeks=52 * 5)).date()
+spdrs = obb.equity.price.historical(
+    SPDRS, start_date=start_date, provider="yfinance", chart=True
+)
 
 spdrs.show()
 ```
@@ -76,7 +78,7 @@ The `data` parameter allows modifications to the data before creating the figure
 In this example, the length of the data is trimmed to the beginning of the year.
 
 ```python
-new_data = spdrs.to_df().loc[datetime(2024,12,29).date():]
+new_data = spdrs.to_df().loc[datetime(2024, 12, 29).date() :]
 spdrs.charting.to_chart(data=new_data, title="YTD")
 ```
 
@@ -110,7 +112,7 @@ price_performance.charting.create_bar_chart(
     y="one_month",
     orientation="h",
     title="One Month Price Performance",
-    xtitle="Percent (%)"
+    xtitle="Percent (%)",
 )
 ```
 
@@ -122,38 +124,42 @@ This example analyzes the share volume turnover of the S&P 500 Energy Sector con
 
 ```python
 symbols = [
-    'XOM',
-    'CVX',
-    'COP',
-    'WMB',
-    'EOG',
-    'KMI',
-    'OKE',
-    'MPC',
-    'PSX',
-    'SLB',
-    'VLO',
-    'BKR',
-    'HES',
-    'TRGP',
-    'EQT',
-    'OXY',
-    'TPL',
-    'FANG',
-    'EXE',
-    'DVN',
-    'HAL',
-    'CTRA',
-    'APA',
+    "XOM",
+    "CVX",
+    "COP",
+    "WMB",
+    "EOG",
+    "KMI",
+    "OKE",
+    "MPC",
+    "PSX",
+    "SLB",
+    "VLO",
+    "BKR",
+    "HES",
+    "TRGP",
+    "EQT",
+    "OXY",
+    "TPL",
+    "FANG",
+    "EXE",
+    "DVN",
+    "HAL",
+    "CTRA",
+    "APA",
 ]
-data = obb.equity.price.historical(symbols, start_date="2025-01-01", provider="yfinance")
+data = obb.equity.price.historical(
+    symbols, start_date="2025-01-01", provider="yfinance"
+)
 create_bar_chart = data.charting.create_bar_chart
 volume = data.to_df().groupby("symbol").sum()["volume"]
-shares = obb.equity.profile(
-    symbols, provider="yfinance"
-).to_df().set_index("symbol")["shares_float"]
+shares = (
+    obb.equity.profile(symbols, provider="yfinance")
+    .to_df()
+    .set_index("symbol")["shares_float"]
+)
 df = volume.to_frame().join(shares)
-df["Turnover"] = (df.volume/df.shares_float).round(4)
+df["Turnover"] = (df.volume / df.shares_float).round(4)
 df = df.sort_values(by="Turnover", ascending=False).reset_index()
 create_bar_chart(
     data=df,

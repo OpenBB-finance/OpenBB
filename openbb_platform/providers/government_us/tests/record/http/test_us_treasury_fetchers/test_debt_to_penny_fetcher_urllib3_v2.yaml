@@ -1,0 +1,98 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?filter=record_date%3Agte%3A2025-01-01%2Crecord_date%3Alte%3A2025-03-31&page%5Bnumber%5D=1&page%5Bsize%5D=10000&sort=record_date
+  response:
+    body:
+      string: !!binary |
+        H4sIANAjWWoA/9Vc224cxxH9FWIR50lqVFVX9cVAHhRRjg1EcqzQD0IQECtpbRGhlspyaVgR9O85
+        vUPKumxXx29p6rozPSPxdM2pU6e6593q5Xq/Xn39j3er3ebF1e7lOT5vVl+vhMTuE98nWd1bvdw8
+        35+/2ly+PH9z8/zy4sX5+vW+jSklck2alXOuIScMvdjud+ufr345f3WF4cu4HGOuVUpOtVBQw7D9
+        1b7d6/xw56ub/e3ImDjVajkxBlMQxtDr3Yvzy4vt5nz7fIch7dDtf/Wni+sX68vzt5v17vZ//MW5
+        f9+sd/vN4fRv53Bis3253h2/8sPZ367lI2dfX233r3COjp18uX7bTsnq/b0usHEAbDI2M0k5sPWB
+        Fa3GGfiXkLIPrLKmLJnUQpG5gY0esMkHVsSqMONnoNIHtlqMWmPVEiq5wAL9ClgxXTXUMjewyQM2
+        u8AKiKBq1EYFpU8FJqAMK6rRQo4+sCWBBRizZcHq3MBmD9jiA6uUiDBYUmDuAis1FUN0k1Lg6gJr
+        MatFxQ1TiDQ3sMUDtg6ogBNFS7GmILFPBSrgWctSYjCfChLuhT9iaukwzg1sdYBlGgCbOQlTC0V1
+        klcqBGVARBZIfWCrCbUvJC+dmwqAnQPsQBWIWRJFLHKouQusUqmlJK6lBvaBxWAzppyRDnluucWe
+        KjjA0AfWwK4FyhOMEEo/Yo1SzqZSYw7R5VhEa6VksbBpEJ0bWPWAtUHERggj1arg2L4qUC5crEJE
+        5ZD9AqFVG8TRNGmgySPWPGB9HatQRohWQam01EmdiGUFFUTLoILoFwg1gwhqLUo52Nw6lj0dy76O
+        BR+i+opsiUPpq4LEhB8Ai2OI4lNBshpxQ8u21HITA+vp2EMY9oFNUSGPUHwVAFv7EdvKCHyRatDk
+        AstFUEkQ1Bl07NzAAjsHWN+ESRHjiuWW7tWpvFQTwIWazYFcKhCQbGXA2koOm1vHimfCiC+3ChVU
+        q6i9jELULrDK3EZGPOUDrwCA4m5ZIurf2VWBeHJLfLlVkLoKohZKNoinY8GxAjIGWtWXW8IQcBZj
+        IVl0xsTAenJL/OSV8HCbmhhXr0AwKFNCpsuVQxxxLHSsVKREDJ2cCtzk5ZswADRVUCcqAM+PReGf
+        cjGLwH/EsRVVhOSCHBZkbj9WPBNGfBMGsWooDhC3ZTEBOsCmRHjGU+WRVwBgObGViiptcXgnBtYz
+        YaJvwhixcfNQE7JSP2IzS0WOi1XzMHmxKmgDJQcvRfK8wEbPhImujq3MRiVZSXfxdRxYjKmFcoXu
+        CqX4wBJqhIzc1eZg7uQV+zpWBj2vKrGCOptrSOHQdzwKLB5rDM0mUF2hjHRsyeBXpMOylBz/78Ae
+        u/Gw5wVgfblVM5CNQlVj0H5JKwhsiK0K7lhUv68KWBPIoMwRsQ6wfbkFYM0H1jJZoiyK+KI+sKKc
+        myOrFhIPgOVWSCB9ofrluYHtu1sy6tK25F2UxbS6wObWxGpdcFu8QI9jm2XTJC/oeHJg++6WjLq0
+        lUVT0/0qXoEgJUaLSF4lDyMWwdp+oaKYwzZ0gO0XCDLqeYEJoY4ia7WQuQssSlkkuPaMl5D8kpZB
+        K5o1FggInaFL2wfW6XkBWFduFWj/Sia5dWlTX8cqHu2crRmMizh1bcOE6WKUwUtDd2JgPbnFvm1Y
+        UxP9xClKYIdjmWpkUwiDZXmLaxuWVv3mLHNUXg6wfdtQRl3amvCIgzqhC5ZFWR1gY7ba+IJ0Eace
+        x+akVDKQDTa33HK6tDLq0rY1WVkgZCl6tqHEpJBaRUVDlgEVQBiDX1Ty4jBODKynY9l3tzI0bElQ
+        BZw9uaWtnUiIxjKuvFqjB+TClJZnYGJg++4WgPXdLbAh47nVHDlUp4NAkVigdskGXVpEbDPPibgt
+        QZhbx3Lf3ZL74sutVLNWQury/VhDaUAQsZTysujVa81UFF1GUBqLMp4XWPHk1qhLK4aAheBqBUI/
+        Yq1mkgrxkKGhRsAKc6JU+bY9OTGwntwa9Lw0IWhrbkuLF8uk48dGoiahQLMhDUyY2vgFrJx4jvWx
+        DrBe8hLfhImZWapAHaAA7Ucs8nxMWajS/+DHglySNjcyqMwNrGfCiG/CGEp6CM/UFgQ5lRfEViaI
+        s5jKYLVh63kVSq1AQJE8ecR6Joz4JkxbcZkyF+T8wM4So1Q0QpLVZlmNWjNVm5IlpMM6Q5fWAdYz
+        YfwuLaopZbLm+bsLNkiNJbelmbe7ltwCQSIqhJhpKZInBravY+OoNdPafkg0QjGG1E1eUqyt6DZt
+        fiwPKq+UBI8Afishz+AVxC6wTmsmDlozkLCE4r7h6m7uYNZY8HBTTSH7VMC5OWGSMFtzGN0OsH1V
+        EAetGWR5SNi2KYlKsL5XgFoqU0aVoBxkYMKkVM0MSu52g9PEwPZVQRy0ZiojBrXtxGhL5fvJi3IS
+        SFnLBh07sA1BGxnBzRAQNnnE9lVBHLRmKtXKMVmiooH6JgxlTIFJrjJa0d3a36J3a5RnKGkdYPuq
+        IA5aM5UiV+j+DKL1gOWW4cCw2WRodEMao0RLEF1zbPnsA+u0ZuKoNYOQFdOIJ7cu5NnxYyEIIHi1
+        3BkAHsdGReGFm5ZlH8jEwPa9gjhozVTUs9S2gHNbxulQgaRCKmYo0A6LBdyILSWDs2US29ABtt+a
+        iYPWDJhTWFqr0NRbFEeNKwrCsCB5DXQsQKXYOrpp0RkTA+vpWL81g/oIuqC5hlSXnsvxAiED07Y0
+        rqYYeEQFyIVtM22Wxa+ZGFhPx/rbkaqgojIRkyKOjpWSYmsmYiSoYJC8NFaN7YUFFGhyjnVVge8V
+        tPWZRqnpqaVW7VBBMs6JElh22VjgcWxboZxqjBri5BHreQV+z6u2vAV9mqxSUCdipa39VsmWhyth
+        VFOGeohaFtaYGNh+zysOel4AFlVXW1ZQbFkQ1AE2Iyml1BYaLR0cdyVMe2GEcUmLXzYvsE7PKw56
+        XlVya8CKtl1ZB3F0HNhKgB5xiyQ3XB+bIR1ALa2WK5MD6+lYv+dVRfF0lxhRKHi2IYQDMbUKrCx+
+        uMuxBu7OFPMcHQQHWE8VyMDdIq7aerDQsbmvY9s2mNKWz8W6VL6e3KIawR1tE+PklZd47pbf86oi
+        iUpuuw7J2Y4kjTLABRBSt7vivIg9bLdTzjy7CeP0vOKg51WRxK1qWwVAS1+7A6xlVcxCc7dsILcy
+        UleU9sKC5YVHEwPr6dhRzwvSP6fWninLO4c6wIKH2wqXNHwnDKhA24IZaRxbJo9YT8cO9nkRyoPD
+        m2GyLQvbe83EQmwJ0JZg5gOrkHAqBHWw5Ll5gW37vP55b/V6094e+W714upmi28y8b3V5fr55vK6
+        HfwU9aeHTyen7VMX9lMcPvkWh0+evz3Zv9qc/O1wtgP+d7fHNrvt6812v748+RYnL7Y/X/en4eyq
+        jVtue3L4576/2V/v19t23ZdT8verm92LzclfceTkyc3r58CsM0ffHD6dPGuf+lN1O+qH5cAXt/x8
+        +h7efv7stkfm8cPI4a3vZvfDFY/bgf74ZcI/jD5dv70b+/7e4fWhZ2/fbI5M+OmDs0f9mX7449On
+        j548fNaZ2o9OdybyoxGfzdl3T84e/eXR095EPXv04MtzvwH5w48Pnp59fPXnc/Lp9Uemon+HO+gf
+        f//k7Nsu1KcPnt1B+83V7vV6fwTcZ/i6//jx/dPTPsR/QKqVXp344WQH3g/nP+co6uKKLw9XB9FP
+        rjyGqIfl4z6Qpw3HfXvi73/EUMuBN+ufW9QyRuDb+9cB4+vN5U+47o/t3Ff25+0hzL+y0z/x3aHr
+        i/9sDgfay+jwD/90sbve/75L3uw2v6y+3t5cXt5bbTe/7u/+frn+fXd6//6/S10sDb5XAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '2903'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 16 Jul 2026 18:32:49 GMT
+      Server:
+      - nginx
+      Set-Cookie:
+      - cookiesession1=678A3E0F047CDDB8CFF9EC78C9376D69;Expires=Fri, 16 Jul 2027 18:32:48
+        GMT;Path=/;HttpOnly
+      - BIGipServerddsfMj0s2EaKsi9WsSRnAw=!BYOAIY/odU5ai83fcKTyKInrG7ukTjyPenwPNFjeyvmHIxaPokOywncDm423KWpMSoBy/tu/xdVb7g==;
+        path=/; Httponly; Secure
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

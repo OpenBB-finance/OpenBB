@@ -1,7 +1,5 @@
 """Generic Charts Module."""
 
-# pylint: disable=too-many-arguments,unused-argument,too-many-locals, too-many-branches, too-many-lines, too-many-statements, use-dict-literal, broad-exception-caught, too-many-nested-blocks, too-many-positional-arguments
-
 from typing import TYPE_CHECKING, Any, Literal, Union
 
 from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
@@ -50,7 +48,6 @@ def line_chart(  # noqa: PLR0912
     **kwargs,
 ) -> Union["OpenBBFigure", "Figure"]:
     """Create a line chart."""
-    # pylint: disable=import-outside-toplevel
     from pandas import DataFrame, Series, to_datetime  # noqa
     from openbb_charting.core.openbb_figure import OpenBBFigure
 
@@ -58,10 +55,14 @@ def line_chart(  # noqa: PLR0912
         raise ValueError("Error: Data is a required field.")
 
     auto_layout = False
-    index = (  # type: ignore
+    index = (  # ty: ignore[invalid-assignment]
         data.index.name
         if isinstance(data, (DataFrame, Series))
-        else index if index is not None else x if x is not None else "date"
+        else index
+        if index is not None
+        else x
+        if x is not None
+        else "date"
     )
     df: DataFrame = (basemodel_to_df(convert_to_basemodel(data), index=index)).dropna(
         how="all", axis=1
@@ -74,17 +75,19 @@ def line_chart(  # noqa: PLR0912
         else:
             found_index = False
             for col in df.columns:
-                if df[col].dtype == "object":
+                if (
+                    df[col].dtype == "object"
+                ):  # pragma: no cover  # basemodel_to_df emits StringDtype, never object
                     try:
                         df[col] = df[col].apply(to_datetime)
-                        index = df[col].name  # type: ignore
+                        index = df[col].name
                         df.set_index(col, inplace=True)
                         df.index.name = "date"
                         found_index = True
                     except Exception as _:  # noqa: S112
                         continue
                 if found_index is True:
-                    break
+                    break  # pragma: no cover  # found_index only set in unreachable object branch
             if found_index is False:
                 df.set_index(df.iloc[:, 0], inplace=True)
 
@@ -94,7 +97,7 @@ def line_chart(  # noqa: PLR0912
         df = df.pivot(columns="symbol", values=target)
 
     if "symbol" not in df.columns and target in df.columns:
-        df = df[[target]]  # type: ignore
+        df = df[[target]]
 
     y = y.split(",") if isinstance(y, str) else y
 
@@ -106,11 +109,11 @@ def line_chart(  # noqa: PLR0912
         auto_layout = False
 
     if returns is True:
-        df = df.apply(calculate_returns)  # type: ignore
+        df = df.apply(calculate_returns)
         auto_layout = False
 
     if normalize is True:
-        df = df.apply(z_score_standardization)  # type: ignore
+        df = df.apply(z_score_standardization)
         auto_layout = False
 
     if layout_kwargs is None:
@@ -121,7 +124,9 @@ def line_chart(  # noqa: PLR0912
 
     try:
         fig = OpenBBFigure()
-    except Exception as _:
+    except (
+        Exception
+    ) as _:  # pragma: no cover  # no-arg OpenBBFigure() has no triggerable failure
         fig = OpenBBFigure(create_backend=True)
 
     text_color = "white" if ChartStyle().plt_style == "dark" else "black"
@@ -132,26 +137,23 @@ def line_chart(  # noqa: PLR0912
     y2 = y2 if y2 else []
     yaxis_num = 1
     yaxis = f"y{yaxis_num}"
-    first_y = y[0]  # type: ignore[index]
+    first_y = y[0]
     second_y = None
     third_y = None
     add_scatter = False
 
-    # Attempt to layout the chart automatically with multiple y-axis.
     mode = scatter_kwargs.pop("mode", "lines")
     hovertemplate = scatter_kwargs.pop("hovertemplate", None)
 
     if auto_layout is True:
-        # Sort columns by the difference between the max and min values.
-        # This is to help determine which columns should share the same y-axis.
         diff = df.max(numeric_only=True) - df.min(numeric_only=True)
         sorted_columns = diff.sort_values(ascending=False).index
         if sorted_columns is None or len(sorted_columns) == 0:
             raise ValueError("Error: expected data with numeric values.")
-        df = df[sorted_columns]  # type: ignore
+        df = df[sorted_columns]
 
         for i, col in enumerate(df.columns):
-            if col in y:  # type: ignore[operator]
+            if col in y:
                 hovertemplate = (
                     hovertemplate
                     if hovertemplate
@@ -192,7 +194,7 @@ def line_chart(  # noqa: PLR0912
 
     if auto_layout is False:
         color = 0
-        for i, col in enumerate(y):  # type: ignore[arg-type]
+        for i, col in enumerate(y):
             hovertemplate = (
                 hovertemplate
                 if hovertemplate
@@ -390,12 +392,13 @@ def bar_chart(  # noqa: PLR0912
     OpenBBFigure
         The OpenBBFigure object.
     """
-    # pylint: disable=import-outside-toplevel
     from openbb_charting.core.openbb_figure import OpenBBFigure
 
     try:
         figure = OpenBBFigure()
-    except Exception as _:
+    except (
+        Exception
+    ) as _:  # pragma: no cover  # no-arg OpenBBFigure() has no triggerable failure
         figure = OpenBBFigure(create_backend=True)
 
     figure = figure.create_subplots(
@@ -416,7 +419,7 @@ def bar_chart(  # noqa: PLR0912
     if isinstance(data, (Data, list, dict)):
         data = basemodel_to_df(convert_to_basemodel(data), index=None)
 
-    bar_df = data.copy().set_index(x)  # type: ignore
+    bar_df = data.copy().set_index(x)  # ty: ignore[unresolved-attribute]
     y = y.split(",") if isinstance(y, str) else y
     hovertemplate = bar_kwargs.pop("hovertemplate", None)
     width = bar_kwargs.pop("width", None)
@@ -440,7 +443,9 @@ def bar_chart(  # noqa: PLR0912
             width=(
                 width
                 if width
-                else 0.95 / len(y) * 0.75 if barmode == "group" and len(y) > 1 else 0.95
+                else 0.95 / len(y) * 0.75
+                if barmode == "group" and len(y) > 1
+                else 0.95
             ),
             **bar_kwargs,
         )
@@ -506,7 +511,7 @@ def bar_chart(  # noqa: PLR0912
     return figure
 
 
-def bar_increasing_decreasing(  # pylint: disable=W0102
+def bar_increasing_decreasing(
     keys: list[str],
     values: list[int | float],
     title: str | None = None,
@@ -545,13 +550,14 @@ def bar_increasing_decreasing(  # pylint: disable=W0102
     OpenBBFigure
         The OpenBBFigure object.
     """
-    # pylint: disable=import-outside-toplevel
     from openbb_charting.core.openbb_figure import OpenBBFigure  # noqa
     from pandas import Series
 
     try:
         figure = OpenBBFigure()
-    except Exception as _:
+    except (
+        Exception
+    ) as _:  # pragma: no cover  # no-arg OpenBBFigure() has no triggerable failure
         figure = OpenBBFigure(create_backend=True)
 
     figure = figure.create_subplots(
@@ -566,25 +572,25 @@ def bar_increasing_decreasing(  # pylint: disable=W0102
 
     try:
         data = Series(data=values, index=keys)
-        increasing_data = data[data > 0]  # type: ignore
-        decreasing_data = data[data < 0]  # type: ignore
+        increasing_data = data[data > 0]
+        decreasing_data = data[data < 0]
     except Exception as e:
         raise ValueError(f"Error: {e}") from e
 
-    if not increasing_data.empty:  # type: ignore
+    if not increasing_data.empty:
         figure.add_bar(
-            x=increasing_data.index if orientation == "v" else increasing_data,  # type: ignore
-            y=increasing_data if orientation == "v" else increasing_data.index,  # type: ignore
+            x=increasing_data.index if orientation == "v" else increasing_data,
+            y=increasing_data if orientation == "v" else increasing_data.index,
             marker=dict(color=colors[0]),
             orientation=orientation,
             showlegend=False,
             width=0.95 / len(keys) * 0.75 if barmode == "group" else 0.95,
             hoverinfo="y" if orientation == "v" else "x",
         )
-    if not decreasing_data.empty:  # type: ignore
+    if not decreasing_data.empty:
         figure.add_bar(
-            x=decreasing_data.index if orientation == "v" else decreasing_data,  # type: ignore
-            y=decreasing_data if orientation == "v" else decreasing_data.index,  # type: ignore
+            x=decreasing_data.index if orientation == "v" else decreasing_data,
+            y=decreasing_data if orientation == "v" else decreasing_data.index,
             marker=dict(color=colors[1]),
             orientation=orientation,
             showlegend=False,
@@ -670,7 +676,6 @@ def surface3d(
     OpenBBFigure
         The OpenBBFigure object.
     """
-    # pylint: disable=import-outside-toplevel
     from openbb_core.app.model.abstract.error import OpenBBError  # noqa
     from openbb_charting.core.openbb_figure import OpenBBFigure
     from numpy import vstack

@@ -1,0 +1,209 @@
+[
+  {
+    "name": "Dallas Fed",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Federal_Reserve_Bank_of_Dallas_01.jpg/960px-Federal_Reserve_Bank_of_Dallas_01.jpg",
+    "img_dark": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Federal_Reserve_Bank_of_Dallas_01.jpg/960px-Federal_Reserve_Bank_of_Dallas_01.jpg",
+    "img_light": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Federal_Reserve_Bank_of_Dallas_01.jpg/960px-Federal_Reserve_Bank_of_Dallas_01.jpg",
+    "description": "Texas and global activity from the Dallas Fed - the Texas Manufacturing, Service Sector, Retail, and Banking Outlook surveys, Trimmed Mean PCE, the Texas Leading and Weekly Economic indexes, the Energy Survey, and global growth and trade indicators.",
+    "allowCustomization": true,
+    "tabs": {
+      "texas-outlook-surveys": {
+        "id": "texas-outlook-surveys",
+        "name": "Texas Outlook Surveys",
+        "layout": [
+          {
+            "i": "dallas_manufacturing_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "dallas_service_sector_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "dallas_retail_federal_reserve_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "dallas_banking_conditions_federal_reserve_obb",
+            "x": 0,
+            "y": 54,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "energy": {
+        "id": "energy",
+        "name": "Energy",
+        "layout": [
+          {
+            "i": "dallas_energy_survey_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "dallas_breakeven_prices_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "texas-economy": {
+        "id": "texas-economy",
+        "name": "Texas Economy",
+        "layout": [
+          {
+            "i": "dallas_trimmed_mean_pce_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "dallas_weekly_economic_index_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "dallas_leading_index_federal_reserve_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "global-indicators": {
+        "id": "global-indicators",
+        "name": "Global Indicators",
+        "layout": [
+          {
+            "i": "dallas_global_economic_indicators_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "dallas_global_real_economic_activity_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "dallas_government_debt_federal_reserve_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "agriculture-resources": {
+        "id": "agriculture-resources",
+        "name": "Agriculture & Resources",
+        "layout": [
+          {
+            "i": "dallas_agricultural_survey_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "dallas_gigafactory_map_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "dallas_lithium_map_federal_reserve_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "publications-reports": {
+        "id": "publications-reports",
+        "name": "Publications & Reports",
+        "layout": [
+          {
+            "i": "dallas_publications_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      }
+    },
+    "groups": []
+  }
+]

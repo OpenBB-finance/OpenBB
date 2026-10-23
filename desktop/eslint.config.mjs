@@ -1,6 +1,5 @@
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
-import react from "eslint-plugin-react";
 
 export default [
   {
@@ -62,14 +61,6 @@ export default [
     files: ["src/components/BackendLogsPage.tsx", "src/routes/backends.tsx"],
     rules: {
       "no-control-regex": "off",
-    },
-  },
-  {
-    plugins: { react },
-    files: ["**/*.jsx", "**/*.tsx"],
-    settings: { react: { version: "detect" } },
-    rules: {
-      // Add custom React rules here if needed
     },
   },
   {

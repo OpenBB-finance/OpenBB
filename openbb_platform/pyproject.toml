@@ -1,120 +1,65 @@
-[tool.poetry]
+[project]
 name = "openbb"
-version = "4.7.3"
+version = "5.0.0"
 description = "Investment research for everyone, anywhere."
-authors = ["OpenBB Team <hello@openbb.co>"]
-license = "AGPL-3.0-only"
+authors = [{ name = "OpenBB Team", email = "hello@openbb.co" }]
+license = { text = "Apache-2.0" }
 readme = "README.md"
-
-packages = [{ include = "openbb", from = "core" }]
-exclude = [
-    "core/openbb/**"
+requires-python = ">=3.10,<4"
+dependencies = [
+    "openbb-core[flask,pandas]>=2.0.1",
+    "openbb-devtools>=2.0.1",
+    "openbb-mcp-server[cli]>=2.0.1",
+    "openbb-news>=2.0.0",
+    "openbb-platform-api>=2.0.1",
+    "openbb-charting[pywry]>=4.0.0",
+    "openbb-bls>=2.0.0",
+    "openbb-cboe[charting]>=2.0.0",
+    "openbb-cftc>=2.0.0",
+    "openbb-deribit>=2.0.0",
+    "openbb-ecb>=2.0.0",
+    "openbb-us-eia>=2.0.0",
+    "openbb-famafrench>=2.0.0",
+    "openbb-federal-reserve>=2.0.0",
+    "openbb-finra>=2.0.0",
+    "openbb-fred>=2.0.0",
+    "openbb-government-us>=2.0.0",
+    "openbb-imf[charting]>=3.0.0",
+    "openbb-jodi>=2.0.0",
+    "openbb-nasdaq>=2.0.0",
+    "openbb-oecd>=2.0.0",
+    "openbb-sec>=2.0.0",
+    "openbb-tmx[all,builder,charting]>=2.0.0",
+    "openbb-cli[all,charting,interactive]>=2.0.1",
 ]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<4"
-openbb-core = "^1.6.13"
-openbb-platform-api = "^1.3.6"
-
-openbb-benzinga = "^1.6.1"
-openbb-bls = "^1.3.1"
-openbb-cftc = "^1.4.2"
-openbb-congress-gov = "^1.2.3"
-openbb-econdb = "^1.5.1"
-openbb-federal-reserve = "^1.6.2"
-openbb-fmp = "^1.6.1"
-openbb-fred = "^1.6.2"
-openbb-government-us = "^1.6.1"
-openbb-imf = "^2.1.3"
-openbb-intrinio = "^1.6.1"
-openbb-oecd = "^1.6.1"
-openbb-sec = "^1.6.7"
-openbb-tiingo = "^1.6.1"
-openbb-tradingeconomics = "^1.6.1"
-openbb-us-eia = "^1.3.1"
-openbb-yfinance = "^1.6.3"
-
-openbb-commodity = "^1.5.2"
-openbb-crypto = "^1.6.2"
-openbb-currency = "^1.6.2"
-openbb-derivatives = "^1.6.2"
-openbb-economy = "^1.6.2"
-openbb-equity = "^1.6.2"
-openbb-etf = "^1.6.2"
-openbb-fixedincome = "^1.6.2"
-openbb-index = "^1.6.2"
-openbb-news = "^1.6.2"
-openbb-regulators = "^1.6.2"
-
-# Community dependencies
-openbb-alpha-vantage = { version = "^1.6.1", optional = true }
-openbb-biztoc = { version = "^1.6.1", optional = true }
-openbb-cboe = { version = "^1.6.1", optional = true }
-openbb-deribit = { version = "^1.2.1", optional = true }
-openbb-ecb = { version = "^1.6.1", optional = true }
-openbb-famafrench = { version = "^1.2.1", optional = true }
-openbb-finra = { version = "^1.6.1", optional = true }
-openbb-finviz = { version = "^1.5.1", optional = true }
-openbb-multpl = { version = "^1.3.1", optional = true }
-openbb-nasdaq = { version = "^1.6.3", optional = true }
-openbb-seeking-alpha = { version = "^1.6.1", optional = true }
-openbb-stockgrid = { version = "^1.6.1", optional = true }
-openbb-tmx = { version = "^1.5.2", optional = true }
-openbb-tradier = { version = "^1.5.1", optional = true }
-openbb-wsj = { version = "^1.6.1", optional = true }
-
-openbb-charting = { version = "^3.0.0", optional = true }
-openbb-econometrics = { version = "^1.7.2", optional = true }
-openbb-quantitative = { version = "^1.6.2", optional = true }
-openbb-technical = { version = "^1.6.2", optional = true }
-openbb-mcp-server = { version = "^1.4.1", optional = true }
-
-[tool.poetry.extras]
-alpha_vantage = ["openbb-alpha-vantage"]
-biztoc = ["openbb-biztoc"]
-cboe = ["openbb-cboe"]
-charting = ["openbb-charting"]
-deribit = ["openbb-deribit"]
-ecb = ["openbb-ecb"]
-econometrics = ["openbb-econometrics"]
-famafrench = ["openbb-famafrench"]
-finra = ["openbb-finra"]
-finviz = ["openbb-finviz"]
-mcp_server = ["openbb-mcp-server"]
-nasdaq = ["openbb-nasdaq"]
-multpl = ["openbb-multpl"]
-quantitative = ["openbb-quantitative"]
-seeking_alpha = ["openbb-seeking-alpha"]
-stockgrid = ["openbb-stockgrid"]
-technical = ["openbb-technical"]
-tmx = ["openbb-tmx"]
-tradier = ["openbb-tradier"]
-wsj = ["openbb-wsj"]
-
-
-all = [
-    "openbb-alpha-vantage",
-    "openbb-biztoc",
-    "openbb-cboe",
-    "openbb-charting",
-    "openbb-deribit",
-    "openbb-ecb",
-    "openbb-econometrics",
-    "openbb-famafrench",
-    "openbb-finra",
-    "openbb-finviz",
-    "openbb-mcp-server",
-    "openbb-multpl",
-    "openbb-nasdaq",
-    "openbb-quantitative",
-    "openbb-seeking-alpha",
-    "openbb-stockgrid",
-    "openbb-technical",
-    "openbb-tmx",
-    "openbb-tradier",
-    "openbb-wsj",
+[project.optional-dependencies]
+routers = [
+    "openbb-commodity>=2.0.0",
+    "openbb-crypto>=2.0.0",
+    "openbb-currency>=2.0.0",
+    "openbb-derivatives>=2.0.0",
+    "openbb-econometrics>=2.0.0",
+    "openbb-economy>=2.0.0",
+    "openbb-equity>=2.0.0",
+    "openbb-etf>=2.0.0",
+    "openbb-fixedincome>=2.0.0",
+    "openbb-index>=2.0.0",
+    "openbb-quantitative>=2.0.0",
+    "openbb-technical>=2.0.1",
 ]
+
+[project.urls]
+Homepage = "https://openbb.co"
+Repository = "https://github.com/OpenBB-finance/OpenBB"
+Documentation = "https://docs.openbb.co"
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+bypass-selection = true
+
+[tool.hatch.build.targets.sdist]
+only-include = ["README.md", "pyproject.toml"]

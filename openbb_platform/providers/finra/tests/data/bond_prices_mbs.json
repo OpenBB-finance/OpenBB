@@ -1,0 +1,86 @@
+[
+ {
+  "method": "GET",
+  "url": "https://services-dynarep.ddwa.finra.org/public/reporting/v2/data/group/FixedIncomeMarket/name/CorporateAndAgencySecurities",
+  "params": null,
+  "json": null,
+  "status": 400,
+  "headers": {},
+  "text": "{\"status\":\"failure\",\"statusMessage\":\"Bad Request.\"}"
+ },
+ {
+  "method": "POST",
+  "url": "https://services-dynarep.ddwa.finra.org/public/reporting/v2/data/group/FixedIncomeMarket/name/mortgageBackedSecurities",
+  "params": null,
+  "json": {
+   "fields": [
+    "finraSecurityIdentifier",
+    "cusip",
+    "issueSymbolIdentifier",
+    "productSubTypeCode",
+    "subProductType",
+    "issuingAgency",
+    "poolNumber",
+    "referenceDataIdentifier",
+    "mortgageProduct",
+    "amortizationType",
+    "couponRate",
+    "maturityDate",
+    "originalMaturityTerm",
+    "weightedAverageCoupon",
+    "weightedAverageMaturity",
+    "weightedAverageLoanAge",
+    "loanToValueRatio",
+    "averageLoanSize",
+    "lastSalePrice",
+    "lastTradeDate",
+    "priceChangeNumber",
+    "priceChangePercent"
+   ],
+   "sortFields": [
+    "finraSecurityIdentifier"
+   ],
+   "orFilters": [
+    {
+     "compareFilters": [
+      {
+       "fieldName": "maturityDate",
+       "fieldValue": "2026-09-23",
+       "compareType": "GREATER"
+      },
+      {
+       "fieldName": "maturityDate",
+       "fieldValue": null,
+       "compareType": "EQUAL"
+      }
+     ]
+    }
+   ],
+   "multiFieldMatchFilters": [
+    {
+     "searchValue": "ginnie",
+     "fuzzy": false,
+     "synonym": false,
+     "fields": [
+      {
+       "name": "issuingAgency",
+       "boost": 1
+      }
+     ]
+    }
+   ],
+   "compareFilters": [
+    {
+     "fieldName": "couponRate",
+     "fieldValue": "7.0",
+     "compareType": "GTE"
+    }
+   ],
+   "offset": 0,
+   "limit": 5
+  },
+  "status": 200,
+  "headers": {},
+  "text": "{\"status\":\"success\",\"returnBody\":{\"statusCode\":200,\"headers\":{\"Record-Max-Limit\":[\"5000\"],\"Transfer-Encoding\":[\"chunked\"],\"Connection\":[\"keep-alive\"],\"Pragma\":[\"no-cache\"],\"Record-Limit\":[\"5\"],\"Date\":[\"Wed, 23 Sep 2026 22:52:47 GMT\"],\"Record-Total\":[\"26365\"],\"Offset\":[\"0\"],\"X-Frame-Options\":[\"DENY\"],\"FINRA-api-request-id\":[\"7730cc87-d41d-4dd5-91b7-d135aad84f7d\"],\"Response-Payload-Max-Size\":[\"3mb\"],\"Record-Offset\":[\"0\"],\"Cache-Control\":[\"no-cache, no-store, max-age=0, must-revalidate\"],\"Limit\":[\"5\"],\"Expires\":[\"0\"],\"data-version\":[\"1\"],\"Content-Type\":[\"application/json\"]},\"data\":\"[{\\\"cusip\\\":\\\"36207B2G4\\\",\\\"issueSymbolIdentifier\\\":\\\"GNMA2281942\\\",\\\"referenceDataIdentifier\\\":\\\"GML7F4482062AH5##\\\",\\\"finraSecurityIdentifier\\\":2281942,\\\"issuingAgency\\\":\\\"Ginnie Mae 1\\\",\\\"averageLoanSize\\\":1737692.15,\\\"weightedAverageMaturity\\\":34,\\\"poolNumber\\\":\\\"427475\\\",\\\"priceChangeNumber\\\":0,\\\"subProductType\\\":\\\"Multi-Family\\\",\\\"originalMaturityTerm\\\":420,\\\"couponRate\\\":7.875,\\\"maturityDate\\\":\\\"2029-06-15\\\",\\\"loanToValueRatio\\\":null,\\\"productSubTypeCode\\\":\\\"MBS\\\",\\\"lastTradeDate\\\":\\\"2023-10-26\\\",\\\"weightedAverageLoanAge\\\":243,\\\"amortizationType\\\":\\\"L\\\",\\\"weightedAverageCoupon\\\":8.125,\\\"priceChangePercent\\\":0,\\\"mortgageProduct\\\":\\\"M\\\",\\\"lastSalePrice\\\":100.4375},{\\\"cusip\\\":\\\"36206SSV7\\\",\\\"issueSymbolIdentifier\\\":\\\"GNMA2290934\\\",\\\"referenceDataIdentifier\\\":\\\"RSL703C7A003C050K\\\",\\\"finraSecurityIdentifier\\\":2290934,\\\"issuingAgency\\\":\\\"Ginnie Mae 1\\\",\\\"averageLoanSize\\\":36003.01,\\\"weightedAverageMaturity\\\":2,\\\"poolNumber\\\":\\\"420032\\\",\\\"priceChangeNumber\\\":0,\\\"subProductType\\\":\\\"Single Family\\\",\\\"originalMaturityTerm\\\":360,\\\"couponRate\\\":7,\\\"maturityDate\\\":\\\"2026-11-15\\\",\\\"loanToValueRatio\\\":88,\\\"productSubTypeCode\\\":\\\"MBS\\\",\\\"lastTradeDate\\\":null,\\\"weightedAverageLoanAge\\\":358,\\\"amortizationType\\\":\\\"L\\\",\\\"weightedAverageCoupon\\\":7.5,\\\"priceChangePercent\\\":0,\\\"mortgageProduct\\\":\\\"S\\\",\\\"lastSalePrice\\\":null},{\\\"cusip\\\":\\\"36207RPX7\\\",\\\"issueSymbolIdentifier\\\":\\\"GNMA2292376\\\",\\\"referenceDataIdentifier\\\":\\\"RSL7A3C80003C0510\\\",\\\"finraSecurityIdentifier\\\":2292376,\\\"issuingAgency\\\":\\\"Ginnie Mae 1\\\",\\\"averageLoanSize\\\":41612,\\\"weightedAverageMaturity\\\":2,\\\"poolNumber\\\":\\\"439738\\\",\\\"priceChangeNumber\\\":0,\\\"subProductType\\\":\\\"Single Family\\\",\\\"originalMaturityTerm\\\":360,\\\"couponRate\\\":7.5,\\\"maturityDate\\\":\\\"2026-11-15\\\",\\\"loanToValueRatio\\\":100,\\\"productSubTypeCode\\\":\\\"MBS\\\",\\\"lastTradeDate\\\":null,\\\"weightedAverageLoanAge\\\":358,\\\"amortizationType\\\":\\\"L\\\",\\\"weightedAverageCoupon\\\":8,\\\"priceChangePercent\\\":0,\\\"mortgageProduct\\\":\\\"S\\\",\\\"lastSalePrice\\\":null},{\\\"cusip\\\":\\\"36207RPY5\\\",\\\"issueSymbolIdentifier\\\":\\\"GNMA2292377\\\",\\\"referenceDataIdentifier\\\":\\\"RSL703C7A003C050K\\\",\\\"finraSecurityIdentifier\\\":2292377,\\\"issuingAgency\\\":\\\"Ginnie Mae 1\\\",\\\"averageLoanSize\\\":38904,\\\"weightedAverageMaturity\\\":2,\\\"poolNumber\\\":\\\"439739\\\",\\\"priceChangeNumber\\\":0,\\\"subProductType\\\":\\\"Single Family\\\",\\\"originalMaturityTerm\\\":360,\\\"couponRate\\\":7,\\\"maturityDate\\\":\\\"2026-11-15\\\",\\\"loanToValueRatio\\\":85,\\\"productSubTypeCode\\\":\\\"MBS\\\",\\\"lastTradeDate\\\":null,\\\"weightedAverageLoanAge\\\":358,\\\"amortizationType\\\":\\\"L\\\",\\\"weightedAverageCoupon\\\":7.5,\\\"priceChangePercent\\\":0,\\\"mortgageProduct\\\":\\\"S\\\",\\\"lastSalePrice\\\":null},{\\\"cusip\\\":\\\"36206T6P2\\\",\\\"issueSymbolIdentifier\\\":\\\"GNMA2292980\\\",\\\"referenceDataIdentifier\\\":\\\"GSL7A3C80003C0014\\\",\\\"finraSecurityIdentifier\\\":2292980,\\\"issuingAgency\\\":\\\"Ginnie Mae 1\\\",\\\"averageLoanSize\\\":1998.86,\\\"weightedAverageMaturity\\\":3,\\\"poolNumber\\\":\\\"421278\\\",\\\"priceChangeNumber\\\":0,\\\"subProductType\\\":\\\"Single Family\\\",\\\"originalMaturityTerm\\\":360,\\\"couponRate\\\":7.5,\\\"maturityDate\\\":\\\"2026-12-15\\\",\\\"loanToValueRatio\\\":102,\\\"productSubTypeCode\\\":\\\"MBS\\\",\\\"lastTradeDate\\\":null,\\\"weightedAverageLoanAge\\\":357,\\\"amortizationType\\\":\\\"L\\\",\\\"weightedAverageCoupon\\\":8,\\\"priceChangePercent\\\":0,\\\"mortgageProduct\\\":\\\"S\\\",\\\"lastSalePrice\\\":null}]\"}}"
+ }
+]

@@ -1,14 +1,12 @@
 """IMF Progressive Query Helper."""
 
-# pylint: disable=W0212
+from __future__ import annotations
 
-from openbb_imf.utils.query_builder import ImfQueryBuilder
+from openbb_imf.utils.query_builder import ImfQueryBuilder  # noqa: F401
 
 
 class ImfParamsBuilder:
-    """A helper class to build IMF queries progressively by making sequential dimension selections,
-    for each dimension of a dataflow, filtering the available options at each step based on previous selections.
-    """
+    """Build IMF queries progressively by making sequential dimension selections."""
 
     def __init__(self, dataflow_id: str):
         """Initialize the ImfParamsBuilder object.
@@ -18,7 +16,9 @@ class ImfParamsBuilder:
         dataflow_id : str
             The ID of the dataflow to build a query for.
         """
-        self._builder = ImfQueryBuilder()
+        import sys
+
+        self._builder = sys.modules[__name__].ImfQueryBuilder()
         if dataflow_id not in self._builder.metadata.dataflows:
             raise KeyError(
                 f"Dataflow '{dataflow_id}' not found."
@@ -42,12 +42,12 @@ class ImfParamsBuilder:
         """Get the list of dimension IDs in their specified order."""
         dimensions_metadata = self.dsd.get("dimensions", [])
 
-        # Sort by position if available, otherwise keep original order
         if dimensions_metadata and all(
             d.get("position") is not None for d in dimensions_metadata
         ):
             dimensions_metadata = sorted(
-                dimensions_metadata, key=lambda x: int(x.get("position"))  # type: ignore
+                dimensions_metadata,
+                key=lambda x: int(x.get("position")),
             )
 
         return [
@@ -57,8 +57,7 @@ class ImfParamsBuilder:
         ]
 
     def get_next_dimension_to_select(self) -> str | None:
-        """
-        Get the ID of the next dimension that needs a selection.
+        """Get the ID of the next dimension that needs a selection.
 
         Returns
         -------
@@ -99,8 +98,6 @@ class ImfParamsBuilder:
             if self._selections[dim] is not None:
                 key_parts.append(self._selections[dim])
             else:
-                # Use wildcard '*' for unselected dimensions instead of empty string
-                # Empty string creates malformed URLs like '../'
                 key_parts.append("*")
         key = ".".join(key_parts)
 
@@ -109,7 +106,6 @@ class ImfParamsBuilder:
             key=key,
             component_id=dimension_id,
         )
-        # Store the last constraints response for time period validation
         self._last_constraints_response = constraints
 
         options: list[dict[str, str]] = []
@@ -170,8 +166,6 @@ class ImfParamsBuilder:
                 f" Valid dimensions: {list(self._selections.keys())}"
             )
         self._selections[dimension[0]] = dimension[1]
-        # When a selection is made, we clear selections for downstream dimensions
-        # as they might now be invalid.
         found_dim = False
         for dim in self._dimensions:
             if found_dim:
@@ -196,8 +190,7 @@ class ImfParamsBuilder:
     def build_url(
         self, start_date: str | None = None, end_date: str | None = None
     ) -> str:
-        """
-        Build the final API URL based on the current selections.
+        """Build the final API URL based on the current selections.
 
         Parameters
         ----------
@@ -219,8 +212,7 @@ class ImfParamsBuilder:
         )
 
     def fetch(self, start_date: str | None = None, end_date: str | None = None) -> dict:
-        """
-        Build the URL and fetch the data based on the current selections.
+        """Build the URL and fetch the data based on the current selections.
 
         Parameters
         ----------

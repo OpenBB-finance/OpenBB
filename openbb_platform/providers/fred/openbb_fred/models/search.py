@@ -1,7 +1,5 @@
 """FRED Search Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any, Literal
 
 from dateutil import parser
@@ -15,8 +13,10 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, NonNegativeInt, field_validator
 
+from openbb_fred.utils.query import UseCacheQueryParams
 
-class FredSearchQueryParams(SearchQueryParams):
+
+class FredSearchQueryParams(UseCacheQueryParams, SearchQueryParams):
     """FRED Search Query Params."""
 
     __alias_dict__ = {
@@ -185,9 +185,8 @@ class FredSearchFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Extract the raw data."""
-        # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
-        from openbb_core.provider.utils.helpers import get_querystring
+        from openbb_fred.utils.api import GEO_ROOT_URL, build_url
         from openbb_fred.utils.rate_limiter import fred_get
 
         api_key = credentials.get("fred_api_key") if credentials else ""
@@ -198,9 +197,11 @@ class FredSearchFetcher(
             async def get_one(_id: str):
                 """Get data for one series."""
                 data: dict = {}
-                url = f"https://api.stlouisfed.org/geofred/series/group?series_id={_id}&api_key={api_key}&file_type=json"
-                response = await fred_get(url)
-                data = response.get("series_group")  # type: ignore
+                url = build_url(
+                    "series/group", api_key, root=GEO_ROOT_URL, series_id=_id
+                )
+                response = await fred_get(url, use_cache=query.use_cache)
+                data = response.get("series_group")
                 if data:
                     data.update({"series_id": _id})
                     results.append(data)
@@ -212,31 +213,28 @@ class FredSearchFetcher(
             raise EmptyDataError("No results found for the provided series_id(s).")
 
         if query.search_type == "release" and query.release_id is None:
-            url = f"https://api.stlouisfed.org/fred/releases?api_key={api_key}&file_type=json"
-            response = await fred_get(url)
-            results = response.get("releases")  # type: ignore
+            url = build_url("releases", api_key)
+            response = await fred_get(url, use_cache=query.use_cache)
+            results = response.get("releases")
             if results:
                 return results
             raise OpenBBError(
                 "Unexpected result while retrieving the list of releases from the FRED API."
             )
 
-        url = (
-            "https://api.stlouisfed.org/fred/release/series?"
-            if query.release_id is not None
-            else "https://api.stlouisfed.org/fred/series/search?"
-        )
+        path = "release/series" if query.release_id is not None else "series/search"
+        params = query.model_dump(exclude_none=True)
 
-        exclude = (
-            ["search_text", "limit"] if query.release_id is not None else ["limit"]
-        )
+        for key in ["use_cache", "limit"] + (
+            ["search_text"] if query.release_id is not None else []
+        ):
+            params.pop(key, None)
 
         if query.release_id is not None and query.order_by == "search_rank":
-            query.order_by = None  # type: ignore
+            params.pop("order_by", None)
 
-        querystring = get_querystring(query.model_dump(), exclude).replace(" ", "%20")
-        url = url + querystring + f"&file_type=json&api_key={api_key}"
-        response = await fred_get(url)
+        url = build_url(path, api_key, **params)
+        response = await fred_get(url, use_cache=query.use_cache)
 
         if isinstance(response, dict) and "error_code" in response:
             raise OpenBBError(
@@ -255,7 +253,6 @@ class FredSearchFetcher(
         query: FredSearchQueryParams, data: list[dict], **kwargs: Any
     ) -> list[FredSearchData]:
         """Transform data."""
-        # pylint: disable=import-outside-toplevel
         from numpy import nan
         from pandas import DataFrame, Series
 
@@ -275,7 +272,7 @@ class FredSearchFetcher(
         )
         terms += tags
 
-        if terms and query.search_type != "series_id":
+        if terms and query.series_id is None and query.search_type != "series_id":
             combined_mask = Series([True] * len(df))
             for term in terms:
                 mask = df.apply(

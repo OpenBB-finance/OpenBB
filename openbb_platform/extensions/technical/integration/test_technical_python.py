@@ -1,970 +1,452 @@
-"""Test ta extension."""
+"""End-to-end coverage of every openbb-technical endpoint against real CSV data.
 
-import random
-from typing import Literal
+Single-symbol endpoints run against one daily and one intraday SPY fixture
+(``spy_daily_or_intraday``) so both date and datetime code paths are exercised
+without a full 6-interval matrix explosion. Multi-symbol endpoints use the
+``dow30_multi`` fixture loaded from ``multi.csv``. The catalog endpoint takes
+no data and is exercised once per category.
+
+Every test asserts the response is an ``OBBject`` whose ``results`` is a
+non-empty list (or, for sparse signal endpoints, ``allow_empty=True``).
+"""
 
 import pytest
 from openbb_core.app.model.obbject import OBBject
 
+pytestmark = pytest.mark.integration
 
-# pylint:disable=inconsistent-return-statements
-@pytest.fixture(scope="session")
-def obb(pytestconfig):
-    """Fixture to setup obb."""
-    if pytestconfig.getoption("markexpr") != "not integration":
-        import openbb  # pylint:disable=import-outside-toplevel
-
-        return openbb.obb
-
-
-# pylint:disable=redefined-outer-name
-
-data: dict = {}
-
-
-def get_stocks_data():
-    """Get stocks data."""
-    import openbb  # pylint:disable=import-outside-toplevel
-
-    if "stocks_data" in data:
-        return data["stocks_data"]
-
-    symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
-    provider = random.choice(["fmp", "yfinance"])  # noqa: S311
-
-    data["stocks_data"] = openbb.obb.equity.price.historical(
-        symbol=symbol, provider=provider
-    ).results
-    return data["stocks_data"]
-
-
-def get_crypto_data():
-    """Get crypto data."""
-    import openbb  # pylint:disable=import-outside-toplevel
-
-    if "crypto_data" in data:
-        return data["crypto_data"]
-
-    # TODO : add more crypto providers and symbols
-    symbol = random.choice(["BTCUSD"])  # noqa: S311
-    provider = random.choice(["fmp"])  # noqa: S311
-
-    data["crypto_data"] = openbb.obb.crypto.price.historical(
-        symbol=symbol, provider=provider
-    ).results
-    return data["crypto_data"]
-
-
-def get_data(menu: Literal["stocks", "crypto"]):
-    """Get data."""
-    funcs = {"stocks": get_stocks_data, "crypto": get_crypto_data}
-    return funcs[menu]()
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "index": "",
-                "length": "",
-                "mamode": "",
-                "drift": "",
-                "offset": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "index": "date",
-                "length": "15",
-                "mamode": "rma",
-                "drift": "2",
-                "offset": "1",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_atr(params, data_type, obb):
-    """Test atr."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.atr(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "index": "",
-                "close_column": "",
-                "period": "",
-                "start_date": "",
-                "end_date": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "index": "date",
-                "close_column": "close",
-                "period": "125",
-                "start_date": "",
-                "end_date": "",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_fib(params, data_type, obb):
-    """Test fib."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.fib(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        ({"data": "", "index": "", "offset": ""}, "stocks"),
-        ({"data": "", "index": "date", "offset": "1"}, "crypto"),
-    ],
-)
-@pytest.mark.integration
-def test_technical_obv(params, data_type, obb):
-    """Test obv."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.obv(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        ({"data": "", "index": "", "length": "", "signal": ""}, "stocks"),
-        ({"data": "", "index": "date", "length": "15", "signal": "2"}, "crypto"),
-    ],
-)
-@pytest.mark.integration
-def test_technical_fisher(params, data_type, obb):
-    """Test fisher."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.fisher(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "index": "",
-                "fast": "",
-                "slow": "",
-                "offset": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "index": "date",
-                "fast": "5",
-                "slow": "15",
-                "offset": "2",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_adosc(params, data_type, obb):
-    """Test adosc."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.adosc(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "target": "",
-                "index": "",
-                "length": "",
-                "std": "",
-                "mamode": "",
-                "offset": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "target": "high",
-                "index": "date",
-                "length": "55",
-                "std": "3",
-                "mamode": "wma",
-                "offset": "1",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_bbands(params, data_type, obb):
-    """Test bbands."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.bbands(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "target": "",
-                "index": "",
-                "length": "",
-                "offset": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "target": "high",
-                "index": "date",
-                "length": "55",
-                "offset": "5",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_zlma(params, data_type, obb):
-    """Test zlma."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.zlma(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        ({"data": "", "index": "", "length": "", "scalar": ""}, "stocks"),
-        (
-            {
-                "data": "",
-                "index": "date",
-                "length": "30",
-                "scalar": "110",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_aroon(params, data_type, obb):
-    """Test aroon."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.aroon(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "target": "",
-                "index": "",
-                "length": "",
-                "offset": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "target": "high",
-                "index": "date",
-                "length": "55",
-                "offset": "2",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_sma(params, data_type, obb):
-    """Test sma."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.sma(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "index": "",
-                "target": "",
-                "show_all": "",
-                "asint": "",
-                "offset": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "index": "date",
-                "target": "high",
-                "show_all": "true",
-                "asint": "true",
-                "offset": "5",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_demark(params, data_type, obb):
-    """Test demark."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.demark(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        ({"data": "", "index": "", "anchor": "", "offset": ""}, "stocks"),
-        ({"data": "", "index": "date", "anchor": "W", "offset": "5"}, "crypto"),
-    ],
-)
-@pytest.mark.integration
-def test_technical_vwap(params, data_type, obb):
-    """Test vwap."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.vwap(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "target": "",
-                "index": "",
-                "fast": "",
-                "slow": "",
-                "signal": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "target": "high",
-                "index": "date",
-                "fast": "10",
-                "slow": "30",
-                "signal": "10",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_macd(params, data_type, obb):
-    """Test macd."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.macd(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "target": "",
-                "index": "",
-                "length": "",
-                "offset": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "target": "high",
-                "index": "date",
-                "length": "55",
-                "offset": "2",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_hma(params, data_type, obb):
-    """Test hma."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.hma(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "index": "",
-                "lower_length": "",
-                "upper_length": "",
-                "offset": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "index": "date",
-                "lower_length": "30",
-                "upper_length": "40",
-                "offset": "5",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_donchian(params, data_type, obb):
-    """Test donchian."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.donchian(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "index": "",
-                "conversion": "",
-                "base": "",
-                "lagging": "",
-                "offset": "",
-                "lookahead": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "index": "date",
-                "conversion": "10",
-                "base": "30",
-                "lagging": "50",
-                "offset": "30",
-                "lookahead": "true",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_ichimoku(params, data_type, obb):
-    """Test ichimoku."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.ichimoku(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        ({"data": "", "index": "", "target": "", "period": ""}, "stocks"),
-        (
-            {
-                "data": "",
-                "index": "date",
-                "target": "close",
-                "period": "95",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_clenow(params, data_type, obb):
-    """Test clenow."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.clenow(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "index": "",
-                "length": "",
-                "scalar": "",
-                "drift": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "index": "date",
-                "length": "60",
-                "scalar": "90.0",
-                "drift": "2",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_adx(params, data_type, obb):
-    """Test adx."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.adx(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        ({"data": "", "index": "", "offset": ""}, "stocks"),
-        ({"data": "", "index": "date", "offset": "5"}, "crypto"),
-    ],
-)
-@pytest.mark.integration
-def test_technical_ad(params, data_type, obb):
-    """Test ad."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.ad(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "target": "",
-                "index": "",
-                "length": "",
-                "offset": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "target": "high",
-                "index": "date",
-                "length": "60",
-                "offset": "10",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_wma(params, data_type, obb):
-    """Test wma."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.wma(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        ({"data": "", "index": "", "length": "", "scalar": ""}, "stocks"),
-        (
-            {
-                "data": "",
-                "index": "date",
-                "length": "16",
-                "scalar": "0.02",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_cci(params, data_type, obb):
-    """Test cci."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.cci(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "target": "",
-                "index": "",
-                "length": "",
-                "scalar": "",
-                "drift": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "target": "high",
-                "index": "date",
-                "length": "16",
-                "scalar": "90.0",
-                "drift": "2",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_rsi(params, data_type, obb):
-    """Test rsi."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.rsi(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "index": "",
-                "fast_k_period": "",
-                "slow_d_period": "",
-                "slow_k_period": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "index": "date",
-                "fast_k_period": "12",
-                "slow_d_period": "2",
-                "slow_k_period": "2",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_stoch(params, data_type, obb):
-    """Test stoch."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.stoch(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "index": "",
-                "length": "",
-                "scalar": "",
-                "mamode": "",
-                "offset": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "index": "date",
-                "length": "22",
-                "scalar": "24",
-                "mamode": "sma",
-                "offset": "5",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_kc(params, data_type, obb):
-    """Test kc."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.kc(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        ({"data": "", "index": "", "length": ""}, "stocks"),
-        ({"data": "", "index": "date", "length": "20"}, "crypto"),
-    ],
-)
-@pytest.mark.integration
-def test_technical_cg(params, data_type, obb):
-    """Test cg."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.cg(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "index": "",
-                "lower_q": "",
-                "upper_q": "",
-                "model": "",
-                "is_crypto": "",
-                "trading_periods": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "index": "date",
-                "lower_q": "0.3",
-                "upper_q": "0.7",
-                "model": "parkinson",
-                "is_crypto": "True",
-                "trading_periods": "",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_cones(params, data_type, obb):
-    """Test cones."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.cones(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params, data_type",
-    [
-        (
-            {
-                "data": "",
-                "target": "close",
-                "index": "date",
-                "length": "",
-                "offset": "",
-            },
-            "stocks",
-        ),
-        (
-            {
-                "data": "",
-                "target": "high",
-                "index": "",
-                "length": "60",
-                "offset": "10",
-            },
-            "crypto",
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_ema(params, data_type, obb):
-    """Test ema."""
-    params = {p: v for p, v in params.items() if v}
-    params["data"] = get_data(data_type)
-
-    result = obb.technical.ema(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "data": "",
-                "study": "price",
-                "benchmark": "SPY",
-                "long_period": 252,
-                "short_period": 21,
-                "window": 21,
-                "trading_periods": 252,
-                "chart_params": {"show_tails": False},
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_technical_relative_rotation(params, obb):
-    """Test relative rotation."""
-    params["data"] = obb.equity.price.historical(
-        "AAPL,MSFT,GOOGL,AMZN,SPY",
-        provider="yfinance",
-        start_date="2022-01-01",
-        end_date="2024-01-01",
-    ).results
-    result = obb.technical.relative_rotation(
-        data=params["data"],
-        benchmark=params["benchmark"],
-        study=params["study"],
-        long_period=params["long_period"],
-        short_period=params["short_period"],
-        window=params["window"],
-        trading_periods=params["trading_periods"],
+
+def _assert_obbject(result, *, allow_empty: bool = False) -> None:
+    """Assert ``result`` is an OBBject with usable ``results``."""
+    assert isinstance(result, OBBject), f"expected OBBject, got {type(result).__name__}"
+    res = result.results
+    assert res is not None, "OBBject.results is None"
+    if not allow_empty and isinstance(res, list):
+        assert len(res) > 0, "OBBject.results is empty list"
+
+
+# --------------------------------------------------------------------------- #
+# Overlays                                                                    #
+# --------------------------------------------------------------------------- #
+
+
+class TestOverlays:
+    def test_sma(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.sma(data=spy_daily_or_intraday, length=20))
+
+    def test_ema(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.ema(data=spy_daily_or_intraday, length=20))
+
+    def test_hma(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.hma(data=spy_daily_or_intraday, length=20))
+
+    def test_wma(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.wma(data=spy_daily_or_intraday, length=20))
+
+    def test_zlma(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.zlma(data=spy_daily_or_intraday, length=20))
+
+    def test_tema(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.tema(data=spy_daily_or_intraday, length=10))
+
+    def test_dema(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.dema(data=spy_daily_or_intraday, length=10))
+
+    def test_kama(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.kama(data=spy_daily_or_intraday, length=10))
+
+    def test_frama(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.frama(data=spy_daily_or_intraday, length=16))
+
+    def test_vwma(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.vwma(data=spy_daily_or_intraday, length=20))
+
+    def test_bbands(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.bbands(data=spy_daily_or_intraday, length=20))
+
+    def test_donchian(self, obb, spy_daily_or_intraday):
+        _assert_obbject(
+            obb.technical.donchian(
+                data=spy_daily_or_intraday, lower_length=20, upper_length=20
+            )
+        )
+
+    def test_kc(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.kc(data=spy_daily_or_intraday, length=20))
+
+    def test_ichimoku(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.ichimoku(data=spy_daily_or_intraday))
+
+    def test_supertrend(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.supertrend(data=spy_daily_or_intraday, length=10))
+
+
+# --------------------------------------------------------------------------- #
+# Oscillators                                                                 #
+# --------------------------------------------------------------------------- #
+
+
+class TestOscillators:
+    def test_rsi(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.rsi(data=spy_daily_or_intraday, length=14))
+
+    def test_stoch(self, obb, spy_daily_or_intraday):
+        _assert_obbject(
+            obb.technical.stoch(
+                data=spy_daily_or_intraday,
+                fast_k_period=14,
+                slow_d_period=3,
+                slow_k_period=3,
+            )
+        )
+
+    def test_cci(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.cci(data=spy_daily_or_intraday, length=20))
+
+    def test_fisher(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.fisher(data=spy_daily_or_intraday, length=9))
+
+    def test_cg(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.cg(data=spy_daily_or_intraday, length=14))
+
+    def test_williams_r(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.williams_r(data=spy_daily_or_intraday, length=14))
+
+    def test_mfi(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.mfi(data=spy_daily_or_intraday, length=14))
+
+    def test_trix(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.trix(data=spy_daily_or_intraday, length=15))
+
+    def test_ultimate_oscillator(self, obb, spy_daily_or_intraday):
+        _assert_obbject(
+            obb.technical.ultimate_oscillator(
+                data=spy_daily_or_intraday, fast=7, medium=14, slow=28
+            )
+        )
+
+    def test_awesome_oscillator(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.awesome_oscillator(data=spy_daily_or_intraday))
+
+
+# --------------------------------------------------------------------------- #
+# Trend                                                                       #
+# --------------------------------------------------------------------------- #
+
+
+class TestTrend:
+    def test_macd(self, obb, spy_daily_or_intraday):
+        _assert_obbject(
+            obb.technical.macd(data=spy_daily_or_intraday, fast=12, slow=26, signal=9)
+        )
+
+    def test_adx(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.adx(data=spy_daily_or_intraday, length=14))
+
+    def test_di(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.di(data=spy_daily_or_intraday, length=14))
+
+    def test_aroon(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.aroon(data=spy_daily_or_intraday, length=14))
+
+    def test_choppiness(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.choppiness(data=spy_daily_or_intraday, length=14))
+
+
+# --------------------------------------------------------------------------- #
+# Volume                                                                      #
+# --------------------------------------------------------------------------- #
+
+
+class TestVolume:
+    def test_obv(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.obv(data=spy_daily_or_intraday))
+
+    def test_ad(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.ad(data=spy_daily_or_intraday))
+
+    def test_adosc(self, obb, spy_daily_or_intraday):
+        _assert_obbject(
+            obb.technical.adosc(data=spy_daily_or_intraday, fast=3, slow=10)
+        )
+
+    def test_vwap(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.vwap(data=spy_daily_or_intraday))
+
+
+# --------------------------------------------------------------------------- #
+# Volatility                                                                  #
+# --------------------------------------------------------------------------- #
+
+
+class TestVolatility:
+    def test_atr(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.atr(data=spy_daily_or_intraday, length=14))
+
+    def test_realized_volatility(self, obb, spy_daily_or_intraday):
+        _assert_obbject(
+            obb.technical.realized_volatility(
+                data=spy_daily_or_intraday, model="yang_zhang", window=30
+            )
+        )
+
+    def test_realized_volatility_compare(self, obb, spy_daily_or_intraday):
+        _assert_obbject(
+            obb.technical.realized_volatility_compare(
+                data=spy_daily_or_intraday, window=30
+            )
+        )
+
+    def test_cones(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.cones(data=spy_daily_or_intraday, model="std"))
+
+
+# --------------------------------------------------------------------------- #
+# Structure                                                                   #
+# --------------------------------------------------------------------------- #
+
+
+class TestStructure:
+    def test_fib(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.fib(data=spy_daily_or_intraday, period=120))
+
+    def test_demark(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.demark(data=spy_daily_or_intraday))
+
+    @pytest.mark.parametrize(
+        "method", ["classic", "fibonacci", "woodie", "camarilla", "demark"]
     )
-    assert result
-    assert isinstance(result, OBBject)
-    assert hasattr(result.results, "rs_ratios")
-    assert len(result.results.rs_ratios) > 0  # type: ignore
-    assert hasattr(result.results, "rs_momentum")
-    assert len(result.results.rs_momentum) > 0  # type: ignore
+    def test_pivot_points(self, obb, spy_1d, method):
+        _assert_obbject(obb.technical.pivot_points(data=spy_1d, method=method))
+
+
+# --------------------------------------------------------------------------- #
+# Statistics                                                                  #
+# --------------------------------------------------------------------------- #
+
+
+class TestStatistics:
+    def test_clenow(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.clenow(data=spy_daily_or_intraday, period=90))
+
+    def test_drawdown(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.drawdown(data=spy_daily_or_intraday))
+
+    def test_returns_stats(self, obb, spy_daily_or_intraday):
+        _assert_obbject(
+            obb.technical.returns_stats(data=spy_daily_or_intraday, frequency="daily")
+        )
+
+    def test_stationarity(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.stationarity(data=spy_daily_or_intraday))
+
+    def test_hurst(self, obb, spy_daily_or_intraday):
+        _assert_obbject(obb.technical.hurst(data=spy_daily_or_intraday))
+
+    def test_autocorrelation(self, obb, spy_daily_or_intraday):
+        _assert_obbject(
+            obb.technical.autocorrelation(data=spy_daily_or_intraday, max_lag=20)
+        )
+
+
+# --------------------------------------------------------------------------- #
+# Signals (/signals subrouter)                                                #
+# --------------------------------------------------------------------------- #
+
+
+class TestSignals:
+    def test_crossovers(self, obb, spy_daily_or_intraday):
+        _assert_obbject(
+            obb.technical.signals.crossovers(
+                data=spy_daily_or_intraday,
+                fast_length=20,
+                slow_length=50,
+                mamode="sma",
+            ),
+            allow_empty=True,
+        )
+
+    @pytest.mark.parametrize("indicator", ["rsi", "mfi", "stoch", "williams_r", "cci"])
+    def test_oscillator_signals(self, obb, spy_1d, indicator):
+        _assert_obbject(
+            obb.technical.signals.oscillator_signals(
+                data=spy_1d, indicator=indicator, length=14
+            )
+        )
+
+    @pytest.mark.parametrize("method", ["donchian", "bollinger"])
+    def test_breakouts(self, obb, spy_1d, method):
+        _assert_obbject(
+            obb.technical.signals.breakouts(data=spy_1d, method=method, length=20),
+            allow_empty=True,
+        )
+
+    @pytest.mark.parametrize("indicator", ["rsi", "macd", "stoch", "cci"])
+    def test_divergences(self, obb, spy_1d, indicator):
+        _assert_obbject(
+            obb.technical.signals.divergences(
+                data=spy_1d,
+                indicator=indicator,
+                indicator_length=14,
+                lookback=60,
+            ),
+            allow_empty=True,
+        )
+
+    def test_candlestick_patterns(self, obb, spy_daily_or_intraday):
+        _assert_obbject(
+            obb.technical.signals.candlestick_patterns(data=spy_daily_or_intraday),
+            allow_empty=True,
+        )
+
+    def test_regime(self, obb, spy_daily_or_intraday):
+        _assert_obbject(
+            obb.technical.signals.regime(data=spy_daily_or_intraday, length=14)
+        )
+
+
+# --------------------------------------------------------------------------- #
+# Multi-symbol endpoints (/multi subrouter + relative_rotation)               #
+# --------------------------------------------------------------------------- #
+
+
+class TestMultiSymbol:
+    def test_correlation_pearson(self, obb, dow30_multi):
+        _assert_obbject(
+            obb.technical.correlation(
+                data=dow30_multi,
+                pairs=[("AAPL", "MSFT")],
+                method="pearson",
+            )
+        )
+
+    @pytest.mark.parametrize("method", ["pearson", "spearman", "kendall"])
+    def test_correlation_methods(self, obb, dow30_multi, method):
+        _assert_obbject(
+            obb.technical.correlation(
+                data=dow30_multi,
+                pairs=[("AAPL", "MSFT"), ("AAPL", "NVDA")],
+                method=method,
+            )
+        )
+
+    def test_correlation_matrix(self, obb, dow30_multi):
+        _assert_obbject(obb.technical.correlation_matrix(data=dow30_multi))
+
+    def test_correlation_matrix_window(self, obb, dow30_multi):
+        _assert_obbject(obb.technical.correlation_matrix(data=dow30_multi, window=60))
+
+    def test_screen_oversold_rsi(self, obb, dow30_multi):
+        result = obb.technical.screen(
+            data=dow30_multi,
+            conditions=[
+                {
+                    "indicator": "rsi",
+                    "column": "close_RSI_14",
+                    "operator": "lt",
+                    "value": 100.0,
+                }
+            ],
+        )
+        _assert_obbject(result, allow_empty=True)
+
+    def test_screen_between(self, obb, dow30_multi):
+        result = obb.technical.screen(
+            data=dow30_multi,
+            conditions=[
+                {
+                    "indicator": "rsi",
+                    "column": "close_RSI_14",
+                    "operator": "between",
+                    "value": [0.0, 100.0],
+                }
+            ],
+        )
+        _assert_obbject(result, allow_empty=True)
+
+    def test_screen_and_combine(self, obb, dow30_multi):
+        result = obb.technical.screen(
+            data=dow30_multi,
+            conditions=[
+                {
+                    "indicator": "rsi",
+                    "column": "close_RSI_14",
+                    "operator": "lt",
+                    "value": 100.0,
+                },
+                {
+                    "indicator": "sma",
+                    "column": "close_SMA_20",
+                    "operator": "gt",
+                    "value": 0.0,
+                },
+            ],
+            combine="and",
+        )
+        _assert_obbject(result, allow_empty=True)
+
+    def test_relative_rotation(self, obb, dow30_multi):
+        # relative_rotation requires daily data with >252 bars; multi.csv is daily
+        # with ~1600 bars per symbol so it satisfies the constraint.
+        _assert_obbject(
+            obb.technical.relative_rotation(
+                data=dow30_multi,
+                benchmark="AAPL",
+            )
+        )
+
+
+# --------------------------------------------------------------------------- #
+# Multi-indicator compose                                                     #
+# --------------------------------------------------------------------------- #
+
+
+class TestMultiCompose:
+    def test_multi_two_indicators(self, obb, spy_1d):
+        result = obb.technical.multi(
+            data=spy_1d,
+            indicators=[
+                {"indicator": "rsi", "params": {"length": 14}},
+                {"indicator": "sma", "params": {"length": 50}},
+            ],
+        )
+        _assert_obbject(result)
+
+    def test_multi_intraday(self, obb, spy_30m):
+        result = obb.technical.multi(
+            data=spy_30m,
+            indicators=[
+                {"indicator": "ema", "params": {"length": 20}},
+                {"indicator": "macd", "params": {"fast": 12, "slow": 26, "signal": 9}},
+            ],
+        )
+        _assert_obbject(result)
+
+
+# --------------------------------------------------------------------------- #
+# Catalog                                                                     #
+# --------------------------------------------------------------------------- #
+
+
+class TestCatalog:
+    def test_indicators_all(self, obb):
+        result = obb.technical.indicators(category="all")
+        _assert_obbject(result)
+
+    @pytest.mark.parametrize(
+        "category",
+        [
+            "overlay",
+            "oscillator",
+            "volatility",
+            "volume",
+            "trend",
+            "signal",
+            "structure",
+            "stats",
+            "multi",
+        ],
+    )
+    def test_indicators_by_category(self, obb, category):
+        result = obb.technical.indicators(category=category)
+        _assert_obbject(result)

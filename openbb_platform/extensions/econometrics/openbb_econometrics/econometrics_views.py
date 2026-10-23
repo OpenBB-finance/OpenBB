@@ -1,6 +1,6 @@
 """Views for the Econometrics Extension."""
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 if TYPE_CHECKING:
     from openbb_charting.core.openbb_figure import (
@@ -33,7 +33,7 @@ class EconometricsViews:
         layout_kwargs : Dict[str, Any]
             Additional keyword arguments to apply with figure.update_layout(), by default None.
         """
-        # pylint: disable=import-outside-toplevel
         from openbb_charting.charts.correlation_matrix import correlation_matrix
 
-        return correlation_matrix(**kwargs)  # type: ignore
+        figure, content = correlation_matrix(**kwargs)
+        return cast("OpenBBFigure", figure), content

@@ -1,10 +1,5 @@
 """The Commodity router."""
 
-# pylint: disable=unused-argument,unused-import
-# flake8: noqa: F401
-
-# pylint: disable=unused-argument
-
 from datetime import datetime
 
 from openbb_core.app.model.command_context import CommandContext

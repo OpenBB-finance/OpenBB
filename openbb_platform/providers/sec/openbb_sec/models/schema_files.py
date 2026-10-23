@@ -1,7 +1,5 @@
 """SEC XBRL Taxonomy Explorer Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any, Literal
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -18,7 +16,8 @@ TAXONOMY_CHOICES = Literal[
     "cyd",
     "ffd",
     "ifrs",
-    "hmrc-dpl",
+    "frc-core",
+    "frc-dpl",
     "rxp",
     "spac",
     "cef",
@@ -235,7 +234,6 @@ class SecSchemaFilesFetcher(
         2. taxonomy (+ optional year, no component) → auto-resolve year if needed, return all components
         3. taxonomy + component (+ optional year) → return one component's structure
         """
-        # pylint: disable=import-outside-toplevel
         from openbb_sec.utils.xbrl_taxonomy_helper import XBRLManager
 
         manager = XBRLManager()

@@ -1,6 +1,9 @@
 """FRED provider module."""
 
+from importlib.util import find_spec
+
 from openbb_core.provider.abstract.provider import Provider
+
 from openbb_fred.models.ameribor import FredAmeriborFetcher
 from openbb_fred.models.balance_of_payments import FredBalanceOfPaymentsFetcher
 from openbb_fred.models.bond_indices import FredBondIndicesFetcher
@@ -56,6 +59,16 @@ from openbb_fred.models.tmc import FREDTreasuryConstantMaturityFetcher
 from openbb_fred.models.university_of_michigan import FredUofMichiganFetcher
 from openbb_fred.models.yield_curve import FREDYieldCurveFetcher
 
+COMMODITY_INSTALLED = find_spec("openbb_commodity") is not None
+ECONOMY_INSTALLED = find_spec("openbb_economy") is not None
+FIXEDINCOME_INSTALLED = find_spec("openbb_fixedincome") is not None
+
+
+def _key(standard: str, alias: str, installed: bool) -> str:
+    """Return the standard key when the extension owning it is installed, else the alias."""
+    return standard if installed else alias
+
+
 fred_provider = Provider(
     name="fred",
     website="https://fred.stlouisfed.org",
@@ -64,44 +77,116 @@ Research division of the Federal Reserve Bank of St. Louis that has more than
 816,000 economic time series from various sources.""",
     credentials=["api_key"],
     fetcher_dict={
-        "BalanceOfPayments": FredBalanceOfPaymentsFetcher,
-        "BondIndices": FredBondIndicesFetcher,
-        "CommoditySpotPrices": FredCommoditySpotPricesFetcher,
-        "ConsumerPriceIndex": FREDConsumerPriceIndexFetcher,
-        "SOFR": FREDSOFRFetcher,
-        "EuroShortTermRate": FredEuroShortTermRateFetcher,
-        "SONIA": FREDSONIAFetcher,
-        "Ameribor": FredAmeriborFetcher,
-        "FederalFundsRate": FredFederalFundsRateFetcher,
-        "PROJECTIONS": FREDPROJECTIONFetcher,
-        "IORB": FREDIORBFetcher,
-        "DiscountWindowPrimaryCreditRate": FREDDiscountWindowPrimaryCreditRateFetcher,
-        "EconomicCalendar": FredEconomicCalendarFetcher,
-        "EuropeanCentralBankInterestRates": FREDEuropeanCentralBankInterestRatesFetcher,
-        "ManufacturingOutlookNY": FredManufacturingOutlookNYFetcher,
-        "ManufacturingOutlookTexas": FredManufacturingOutlookTexasFetcher,
-        "MortgageIndices": FredMortgageIndicesFetcher,
-        "NonFarmPayrolls": FredNonFarmPayrollsFetcher,
-        "OvernightBankFundingRate": FredOvernightBankFundingRateFetcher,
-        "PersonalConsumptionExpenditures": FredPersonalConsumptionExpendituresFetcher,
-        "CommercialPaper": FREDCommercialPaperFetcher,
+        _key(
+            "BalanceOfPayments", "FredBalanceOfPayments", ECONOMY_INSTALLED
+        ): FredBalanceOfPaymentsFetcher,
+        _key(
+            "BondIndices", "FredBondIndices", FIXEDINCOME_INSTALLED
+        ): FredBondIndicesFetcher,
+        _key(
+            "CommoditySpotPrices", "FredCommoditySpotPrices", COMMODITY_INSTALLED
+        ): FredCommoditySpotPricesFetcher,
+        _key(
+            "ConsumerPriceIndex", "FredConsumerPriceIndex", ECONOMY_INSTALLED
+        ): FREDConsumerPriceIndexFetcher,
+        _key("SOFR", "FredSOFR", FIXEDINCOME_INSTALLED): FREDSOFRFetcher,
+        _key(
+            "EuroShortTermRate", "FredEuroShortTermRate", FIXEDINCOME_INSTALLED
+        ): FredEuroShortTermRateFetcher,
+        _key("SONIA", "FredSONIA", FIXEDINCOME_INSTALLED): FREDSONIAFetcher,
+        _key("Ameribor", "FredAmeribor", FIXEDINCOME_INSTALLED): FredAmeriborFetcher,
+        _key(
+            "FederalFundsRate", "FredFederalFundsRate", FIXEDINCOME_INSTALLED
+        ): FredFederalFundsRateFetcher,
+        _key(
+            "PROJECTIONS", "FredPROJECTIONS", FIXEDINCOME_INSTALLED
+        ): FREDPROJECTIONFetcher,
+        _key("IORB", "FredIORB", FIXEDINCOME_INSTALLED): FREDIORBFetcher,
+        _key(
+            "DiscountWindowPrimaryCreditRate",
+            "FredDiscountWindowPrimaryCreditRate",
+            FIXEDINCOME_INSTALLED,
+        ): FREDDiscountWindowPrimaryCreditRateFetcher,
+        _key(
+            "EconomicCalendar", "FredEconomicCalendar", ECONOMY_INSTALLED
+        ): FredEconomicCalendarFetcher,
+        _key(
+            "EuropeanCentralBankInterestRates",
+            "FredEuropeanCentralBankInterestRates",
+            FIXEDINCOME_INSTALLED,
+        ): FREDEuropeanCentralBankInterestRatesFetcher,
+        _key(
+            "ManufacturingOutlookNY", "FredManufacturingOutlookNY", ECONOMY_INSTALLED
+        ): FredManufacturingOutlookNYFetcher,
+        _key(
+            "ManufacturingOutlookTexas",
+            "FredManufacturingOutlookTexas",
+            ECONOMY_INSTALLED,
+        ): FredManufacturingOutlookTexasFetcher,
+        _key(
+            "MortgageIndices", "FredMortgageIndices", FIXEDINCOME_INSTALLED
+        ): FredMortgageIndicesFetcher,
+        _key(
+            "NonFarmPayrolls", "FredNonFarmPayrolls", ECONOMY_INSTALLED
+        ): FredNonFarmPayrollsFetcher,
+        _key(
+            "OvernightBankFundingRate",
+            "FredOvernightBankFundingRate",
+            FIXEDINCOME_INSTALLED,
+        ): FredOvernightBankFundingRateFetcher,
+        _key(
+            "PersonalConsumptionExpenditures",
+            "FredPersonalConsumptionExpenditures",
+            ECONOMY_INSTALLED,
+        ): FredPersonalConsumptionExpendituresFetcher,
+        _key(
+            "CommercialPaper", "FredCommercialPaper", FIXEDINCOME_INSTALLED
+        ): FREDCommercialPaperFetcher,
         "FredReleaseTable": FredReleaseTableFetcher,
         "FredSearch": FredSearchFetcher,
         "FredSeries": FredSeriesFetcher,
         "FredRegional": FredRegionalDataFetcher,
-        "RetailPrices": FredRetailPricesFetcher,
-        "SeniorLoanOfficerSurvey": FredSeniorLoanOfficerSurveyFetcher,
-        "SpotRate": FREDSpotRateFetcher,
-        "HighQualityMarketCorporateBond": FredHighQualityMarketCorporateBondFetcher,
-        "TreasuryConstantMaturity": FREDTreasuryConstantMaturityFetcher,
-        "SelectedTreasuryConstantMaturity": FREDSelectedTreasuryConstantMaturityFetcher,
-        "SelectedTreasuryBill": FREDSelectedTreasuryBillFetcher,
-        "SurveyOfEconomicConditionsChicago": FredSurveyOfEconomicConditionsChicagoFetcher,
-        "TipsYields": FredTipsYieldsFetcher,
-        "UniversityOfMichigan": FredUofMichiganFetcher,
-        "YieldCurve": FREDYieldCurveFetcher,
+        _key(
+            "RetailPrices", "FredRetailPrices", ECONOMY_INSTALLED
+        ): FredRetailPricesFetcher,
+        _key(
+            "SeniorLoanOfficerSurvey", "FredSeniorLoanOfficerSurvey", ECONOMY_INSTALLED
+        ): FredSeniorLoanOfficerSurveyFetcher,
+        _key("SpotRate", "FredSpotRate", FIXEDINCOME_INSTALLED): FREDSpotRateFetcher,
+        _key(
+            "HighQualityMarketCorporateBond",
+            "FredHighQualityMarketCorporateBond",
+            FIXEDINCOME_INSTALLED,
+        ): FredHighQualityMarketCorporateBondFetcher,
+        _key(
+            "TreasuryConstantMaturity",
+            "FredTreasuryConstantMaturity",
+            FIXEDINCOME_INSTALLED,
+        ): FREDTreasuryConstantMaturityFetcher,
+        _key(
+            "SelectedTreasuryConstantMaturity",
+            "FredSelectedTreasuryConstantMaturity",
+            FIXEDINCOME_INSTALLED,
+        ): FREDSelectedTreasuryConstantMaturityFetcher,
+        _key(
+            "SelectedTreasuryBill", "FredSelectedTreasuryBill", FIXEDINCOME_INSTALLED
+        ): FREDSelectedTreasuryBillFetcher,
+        _key(
+            "SurveyOfEconomicConditionsChicago",
+            "FredSurveyOfEconomicConditionsChicago",
+            ECONOMY_INSTALLED,
+        ): FredSurveyOfEconomicConditionsChicagoFetcher,
+        _key(
+            "TipsYields", "FredTipsYields", FIXEDINCOME_INSTALLED
+        ): FredTipsYieldsFetcher,
+        _key(
+            "UniversityOfMichigan", "FredUniversityOfMichigan", ECONOMY_INSTALLED
+        ): FredUofMichiganFetcher,
+        _key(
+            "YieldCurve", "FredYieldCurve", FIXEDINCOME_INSTALLED
+        ): FREDYieldCurveFetcher,
     },
     repr_name="Federal Reserve Economic Data | St. Louis FED (FRED)",
     deprecated_credentials={"API_FRED_KEY": "fred_api_key"},
-    instructions='Go to: https://fred.stlouisfed.org\n\n![FRED](https://user-images.githubusercontent.com/46355364/207827137-d143ba4c-72cb-467d-a7f4-5cc27c597aec.png)\n\nClick on, "My Account", create a new account or sign in with Google:\n\n![FRED](https://user-images.githubusercontent.com/46355364/207827011-65cdd501-27e3-436f-bd9d-b0d8381d46a7.png)\n\nAfter completing the sign-up, go to "My Account", and select "API Keys". Then, click on, "Request API Key".\n\n![FRED](https://user-images.githubusercontent.com/46355364/207827577-c869f989-4ef4-4949-ab57-6f3931f2ae9d.png)\n\nFill in the box for information about the use-case for FRED, and by clicking, "Request API key", at the bottom of the page, the API key will be issued.\n\n![FRED](https://user-images.githubusercontent.com/46355364/207828032-0a32d3b8-1378-4db2-9064-aa1eb2111632.png)',  # noqa: E501  pylint: disable=line-too-long
+    instructions='Go to: https://fred.stlouisfed.org\n\n![FRED](https://user-images.githubusercontent.com/46355364/207827137-d143ba4c-72cb-467d-a7f4-5cc27c597aec.png)\n\nClick on, "My Account", create a new account or sign in with Google:\n\n![FRED](https://user-images.githubusercontent.com/46355364/207827011-65cdd501-27e3-436f-bd9d-b0d8381d46a7.png)\n\nAfter completing the sign-up, go to "My Account", and select "API Keys". Then, click on, "Request API Key".\n\n![FRED](https://user-images.githubusercontent.com/46355364/207827577-c869f989-4ef4-4949-ab57-6f3931f2ae9d.png)\n\nFill in the box for information about the use-case for FRED, and by clicking, "Request API key", at the bottom of the page, the API key will be issued.\n\n![FRED](https://user-images.githubusercontent.com/46355364/207828032-0a32d3b8-1378-4db2-9064-aa1eb2111632.png)',  # noqa: E501
 )

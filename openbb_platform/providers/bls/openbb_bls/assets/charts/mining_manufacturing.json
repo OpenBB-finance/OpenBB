@@ -1,0 +1,1070 @@
+{
+  "mm-productivity-change": {
+    "slug": "percent-change-in-productivity",
+    "label": "Percent Change in Productivity by Industry",
+    "kind": "industry",
+    "chart_type": "bar",
+    "fields": [
+      [
+        "productivity_1_year_percent_change_2024",
+        "Productivity 1-year percent change, 2024",
+        "pct"
+      ],
+      [
+        "productivity_annual_percent_change_1987_2024",
+        "Productivity annual percent change, 1987-2024",
+        "pct"
+      ]
+    ]
+  },
+  "mm-productivity-by-period": {
+    "slug": "percent-change-in-productivity-by-select-periods",
+    "label": "Percent Change in Productivity by Select Periods",
+    "kind": "period",
+    "chart_type": "bar",
+    "fields": [
+      [
+        "mining",
+        "Mining",
+        "pct"
+      ],
+      [
+        "oil_and_gas_extraction",
+        "Oil and gas extraction",
+        "pct"
+      ],
+      [
+        "mining_except_oil_and_gas",
+        "Mining, except oil and gas",
+        "pct"
+      ],
+      [
+        "coal_mining",
+        "Coal mining",
+        "pct"
+      ],
+      [
+        "metal_ore_mining",
+        "Metal ore mining",
+        "pct"
+      ],
+      [
+        "nonmetallic_mineral_mining_and_quarrying",
+        "Nonmetallic mineral mining and quarrying",
+        "pct"
+      ],
+      [
+        "support_activities_for_mining",
+        "Support activities for mining",
+        "pct"
+      ],
+      [
+        "food",
+        "Food",
+        "pct"
+      ],
+      [
+        "beverages_and_tobacco_products",
+        "Beverages and tobacco products",
+        "pct"
+      ],
+      [
+        "textile_mills",
+        "Textile mills",
+        "pct"
+      ],
+      [
+        "textile_product_mills",
+        "Textile product mills",
+        "pct"
+      ],
+      [
+        "apparel",
+        "Apparel",
+        "pct"
+      ],
+      [
+        "leather_and_allied_products",
+        "Leather and allied products",
+        "pct"
+      ],
+      [
+        "paper",
+        "Paper",
+        "pct"
+      ],
+      [
+        "printing_and_related_support_activities",
+        "Printing and related support activities",
+        "pct"
+      ],
+      [
+        "petroleum_and_coal_products",
+        "Petroleum and coal products",
+        "pct"
+      ],
+      [
+        "chemicals",
+        "Chemicals",
+        "pct"
+      ],
+      [
+        "plastics_and_rubber_products",
+        "Plastics and rubber products",
+        "pct"
+      ],
+      [
+        "wood_products",
+        "Wood products",
+        "pct"
+      ],
+      [
+        "nonmetallic_mineral_products",
+        "Nonmetallic mineral products",
+        "pct"
+      ],
+      [
+        "primary_metals",
+        "Primary metals",
+        "pct"
+      ],
+      [
+        "fabricated_metal_products",
+        "Fabricated metal products",
+        "pct"
+      ],
+      [
+        "machinery",
+        "Machinery",
+        "pct"
+      ],
+      [
+        "computer_and_electronic_products",
+        "Computer and electronic products",
+        "pct"
+      ],
+      [
+        "electrical_equipment_and_appliances",
+        "Electrical equipment and appliances",
+        "pct"
+      ],
+      [
+        "transportation_equipment",
+        "Transportation equipment",
+        "pct"
+      ],
+      [
+        "furniture_and_related_products",
+        "Furniture and related products",
+        "pct"
+      ],
+      [
+        "miscellaneous_manufacturing",
+        "Miscellaneous manufacturing",
+        "pct"
+      ]
+    ]
+  },
+  "mm-indexes-by-industry": {
+    "slug": "indexes-by-industry",
+    "label": "Output, Hours, and Productivity Indexes by Industry (1987=100)",
+    "kind": "ts",
+    "chart_type": "line",
+    "fields": [
+      [
+        "mining_productivity_output_per_hour",
+        "Mining Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "mining_output",
+        "Mining Output",
+        "num"
+      ],
+      [
+        "mining_hours_worked",
+        "Mining Hours worked",
+        "num"
+      ],
+      [
+        "oil_and_gas_extraction_productivity_output_per_hour",
+        "Oil and gas extraction Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "oil_and_gas_extraction_output",
+        "Oil and gas extraction Output",
+        "num"
+      ],
+      [
+        "oil_and_gas_extraction_hours_worked",
+        "Oil and gas extraction Hours worked",
+        "num"
+      ],
+      [
+        "mining_except_oil_and_gas_productivity_output_per_hour",
+        "Mining, except oil and gas Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "mining_except_oil_and_gas_output",
+        "Mining, except oil and gas Output",
+        "num"
+      ],
+      [
+        "mining_except_oil_and_gas_hours_worked",
+        "Mining, except oil and gas Hours worked",
+        "num"
+      ],
+      [
+        "coal_mining_productivity_output_per_hour",
+        "Coal mining Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "coal_mining_output",
+        "Coal mining Output",
+        "num"
+      ],
+      [
+        "coal_mining_hours_worked",
+        "Coal mining Hours worked",
+        "num"
+      ],
+      [
+        "metal_ore_mining_productivity_output_per_hour",
+        "Metal ore mining Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "metal_ore_mining_output",
+        "Metal ore mining Output",
+        "num"
+      ],
+      [
+        "metal_ore_mining_hours_worked",
+        "Metal ore mining Hours worked",
+        "num"
+      ],
+      [
+        "nonmetallic_mineral_mining_and_quarrying_productivity_output_per_hour",
+        "Nonmetallic mineral mining and quarrying Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "nonmetallic_mineral_mining_and_quarrying_output",
+        "Nonmetallic mineral mining and quarrying Output",
+        "num"
+      ],
+      [
+        "nonmetallic_mineral_mining_and_quarrying_hours_worked",
+        "Nonmetallic mineral mining and quarrying Hours worked",
+        "num"
+      ],
+      [
+        "support_activities_for_mining_productivity_output_per_hour",
+        "Support activities for mining Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "support_activities_for_mining_output",
+        "Support activities for mining Output",
+        "num"
+      ],
+      [
+        "support_activities_for_mining_hours_worked",
+        "Support activities for mining Hours worked",
+        "num"
+      ],
+      [
+        "food_productivity_output_per_hour",
+        "Food Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "food_output",
+        "Food Output",
+        "num"
+      ],
+      [
+        "food_hours_worked",
+        "Food Hours worked",
+        "num"
+      ],
+      [
+        "beverages_and_tobacco_products_productivity_output_per_hour",
+        "Beverages and tobacco products Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "beverages_and_tobacco_products_output",
+        "Beverages and tobacco products Output",
+        "num"
+      ],
+      [
+        "beverages_and_tobacco_products_hours_worked",
+        "Beverages and tobacco products Hours worked",
+        "num"
+      ],
+      [
+        "textile_mills_productivity_output_per_hour",
+        "Textile mills Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "textile_mills_output",
+        "Textile mills Output",
+        "num"
+      ],
+      [
+        "textile_mills_hours_worked",
+        "Textile mills Hours worked",
+        "num"
+      ],
+      [
+        "textile_product_mills_productivity_output_per_hour",
+        "Textile product mills Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "textile_product_mills_output",
+        "Textile product mills Output",
+        "num"
+      ],
+      [
+        "textile_product_mills_hours_worked",
+        "Textile product mills Hours worked",
+        "num"
+      ],
+      [
+        "apparel_productivity_output_per_hour",
+        "Apparel Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "apparel_output",
+        "Apparel Output",
+        "num"
+      ],
+      [
+        "apparel_hours_worked",
+        "Apparel Hours worked",
+        "num"
+      ],
+      [
+        "leather_and_allied_products_productivity_output_per_hour",
+        "Leather and allied products Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "leather_and_allied_products_output",
+        "Leather and allied products Output",
+        "num"
+      ],
+      [
+        "leather_and_allied_products_hours_worked",
+        "Leather and allied products Hours worked",
+        "num"
+      ],
+      [
+        "paper_productivity_output_per_hour",
+        "Paper Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "paper_output",
+        "Paper Output",
+        "num"
+      ],
+      [
+        "paper_hours_worked",
+        "Paper Hours worked",
+        "num"
+      ],
+      [
+        "printing_and_related_support_activities_productivity_output_per_hour",
+        "Printing and related support activities Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "printing_and_related_support_activities_output",
+        "Printing and related support activities Output",
+        "num"
+      ],
+      [
+        "printing_and_related_support_activities_hours_worked",
+        "Printing and related support activities Hours worked",
+        "num"
+      ],
+      [
+        "petroleum_and_coal_products_productivity_output_per_hour",
+        "Petroleum and coal products Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "petroleum_and_coal_products_output",
+        "Petroleum and coal products Output",
+        "num"
+      ],
+      [
+        "petroleum_and_coal_products_hours_worked",
+        "Petroleum and coal products Hours worked",
+        "num"
+      ],
+      [
+        "chemicals_productivity_output_per_hour",
+        "Chemicals Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "chemicals_output",
+        "Chemicals Output",
+        "num"
+      ],
+      [
+        "chemicals_hours_worked",
+        "Chemicals Hours worked",
+        "num"
+      ],
+      [
+        "plastics_and_rubber_products_productivity_output_per_hour",
+        "Plastics and rubber products Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "plastics_and_rubber_products_output",
+        "Plastics and rubber products Output",
+        "num"
+      ],
+      [
+        "plastics_and_rubber_products_hours_worked",
+        "Plastics and rubber products Hours worked",
+        "num"
+      ],
+      [
+        "wood_products_productivity_output_per_hour",
+        "Wood products Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "wood_products_output",
+        "Wood products Output",
+        "num"
+      ],
+      [
+        "wood_products_hours_worked",
+        "Wood products Hours worked",
+        "num"
+      ],
+      [
+        "nonmetallic_mineral_products_productivity_output_per_hour",
+        "Nonmetallic mineral products Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "nonmetallic_mineral_products_output",
+        "Nonmetallic mineral products Output",
+        "num"
+      ],
+      [
+        "nonmetallic_mineral_products_hours_worked",
+        "Nonmetallic mineral products Hours worked",
+        "num"
+      ],
+      [
+        "primary_metals_productivity_output_per_hour",
+        "Primary metals Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "primary_metals_output",
+        "Primary metals Output",
+        "num"
+      ],
+      [
+        "primary_metals_hours_worked",
+        "Primary metals Hours worked",
+        "num"
+      ],
+      [
+        "fabricated_metal_products_productivity_output_per_hour",
+        "Fabricated metal products Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "fabricated_metal_products_output",
+        "Fabricated metal products Output",
+        "num"
+      ],
+      [
+        "fabricated_metal_products_hours_worked",
+        "Fabricated metal products Hours worked",
+        "num"
+      ],
+      [
+        "machinery_productivity_output_per_hour",
+        "Machinery Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "machinery_output",
+        "Machinery Output",
+        "num"
+      ],
+      [
+        "machinery_hours_worked",
+        "Machinery Hours worked",
+        "num"
+      ],
+      [
+        "computer_and_electronic_products_productivity_output_per_hour",
+        "Computer and electronic products Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "computer_and_electronic_products_output",
+        "Computer and electronic products Output",
+        "num"
+      ],
+      [
+        "computer_and_electronic_products_hours_worked",
+        "Computer and electronic products Hours worked",
+        "num"
+      ],
+      [
+        "electrical_equipment_and_appliances_productivity_output_per_hour",
+        "Electrical equipment and appliances Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "electrical_equipment_and_appliances_output",
+        "Electrical equipment and appliances Output",
+        "num"
+      ],
+      [
+        "electrical_equipment_and_appliances_hours_worked",
+        "Electrical equipment and appliances Hours worked",
+        "num"
+      ],
+      [
+        "transportation_equipment_productivity_output_per_hour",
+        "Transportation equipment Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "transportation_equipment_output",
+        "Transportation equipment Output",
+        "num"
+      ],
+      [
+        "transportation_equipment_hours_worked",
+        "Transportation equipment Hours worked",
+        "num"
+      ],
+      [
+        "furniture_and_related_products_productivity_output_per_hour",
+        "Furniture and related products Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "furniture_and_related_products_output",
+        "Furniture and related products Output",
+        "num"
+      ],
+      [
+        "furniture_and_related_products_hours_worked",
+        "Furniture and related products Hours worked",
+        "num"
+      ],
+      [
+        "miscellaneous_manufacturing_productivity_output_per_hour",
+        "Miscellaneous manufacturing Productivity (output per hour)",
+        "num"
+      ],
+      [
+        "miscellaneous_manufacturing_output",
+        "Miscellaneous manufacturing Output",
+        "num"
+      ],
+      [
+        "miscellaneous_manufacturing_hours_worked",
+        "Miscellaneous manufacturing Hours worked",
+        "num"
+      ]
+    ]
+  },
+  "mm-1yr-change": {
+    "slug": "1-year-percent-change-hours-and-output-and-employment",
+    "label": "1-Year % Change in Hours and Output, and Employment Level",
+    "kind": "industry",
+    "chart_type": "bar",
+    "fields": [
+      [
+        "hours",
+        "Hours",
+        "pct"
+      ],
+      [
+        "output",
+        "Output",
+        "pct"
+      ],
+      [
+        "employment_level",
+        "Employment level",
+        "num"
+      ]
+    ]
+  },
+  "mm-longterm-change": {
+    "slug": "long-term-percent-change-hours-and-output-and-employment",
+    "label": "Long-Term % Change in Hours and Output, and Employment Level",
+    "kind": "industry",
+    "chart_type": "bar",
+    "fields": [
+      [
+        "hours",
+        "Hours",
+        "pct"
+      ],
+      [
+        "output",
+        "Output",
+        "pct"
+      ],
+      [
+        "employment_level",
+        "Employment level",
+        "num"
+      ]
+    ]
+  },
+  "mm-labor-cost-by-industry": {
+    "slug": "labor-cost-indexes-by-industry",
+    "label": "Labor Productivity, Unit Labor Costs, and Hourly Compensation Indexes by Industry (1987=100)",
+    "kind": "ts",
+    "chart_type": "line",
+    "fields": [
+      [
+        "mining_productivity_output_per_hour",
+        "Mining productivity (output per hour)",
+        "num"
+      ],
+      [
+        "mining_unit_labor_costs",
+        "Mining unit labor costs",
+        "num"
+      ],
+      [
+        "mining_hourly_compensation",
+        "Mining hourly compensation",
+        "num"
+      ],
+      [
+        "oil_and_gas_extraction_productivity_output_per_hour",
+        "Oil and gas extraction productivity (output per hour)",
+        "num"
+      ],
+      [
+        "oil_and_gas_extraction_unit_labor_costs",
+        "Oil and gas extraction unit labor costs",
+        "num"
+      ],
+      [
+        "oil_and_gas_extraction_hourly_compensation",
+        "Oil and gas extraction hourly compensation",
+        "num"
+      ],
+      [
+        "mining_except_oil_and_gas_productivity_output_per_hour",
+        "Mining, except oil and gas productivity (output per hour)",
+        "num"
+      ],
+      [
+        "mining_except_oil_and_gas_unit_labor_costs",
+        "Mining, except oil and gas unit labor costs",
+        "num"
+      ],
+      [
+        "mining_except_oil_and_gas_hourly_compensation",
+        "Mining, except oil and gas hourly compensation",
+        "num"
+      ],
+      [
+        "coal_mining_productivity_output_per_hour",
+        "Coal mining productivity (output per hour)",
+        "num"
+      ],
+      [
+        "coal_mining_unit_labor_costs",
+        "Coal mining unit labor costs",
+        "num"
+      ],
+      [
+        "coal_mining_hourly_compensation",
+        "Coal mining hourly compensation",
+        "num"
+      ],
+      [
+        "metal_ore_mining_productivity_output_per_hour",
+        "Metal ore mining productivity (output per hour)",
+        "num"
+      ],
+      [
+        "metal_ore_mining_unit_labor_costs",
+        "Metal ore mining unit labor costs",
+        "num"
+      ],
+      [
+        "metal_ore_mining_hourly_compensation",
+        "Metal ore mining hourly compensation",
+        "num"
+      ],
+      [
+        "nonmetallic_mineral_mining_and_quarrying_productivity_output_per_hour",
+        "Nonmetallic mineral mining and quarrying productivity (output per hour)",
+        "num"
+      ],
+      [
+        "nonmetallic_mineral_mining_and_quarrying_unit_labor_costs",
+        "Nonmetallic mineral mining and quarrying unit labor costs",
+        "num"
+      ],
+      [
+        "nonmetallic_mineral_mining_and_quarrying_hourly_compensation",
+        "Nonmetallic mineral mining and quarrying hourly compensation",
+        "num"
+      ],
+      [
+        "support_activities_for_mining_productivity_output_per_hour",
+        "Support activities for mining productivity (output per hour)",
+        "num"
+      ],
+      [
+        "support_activities_for_mining_unit_labor_costs",
+        "Support activities for mining unit labor costs",
+        "num"
+      ],
+      [
+        "support_activities_for_mining_hourly_compensation",
+        "Support activities for mining hourly compensation",
+        "num"
+      ],
+      [
+        "food_productivity_output_per_hour",
+        "Food productivity (output per hour)",
+        "num"
+      ],
+      [
+        "food_unit_labor_costs",
+        "Food unit labor costs",
+        "num"
+      ],
+      [
+        "food_hourly_compensation",
+        "Food hourly compensation",
+        "num"
+      ],
+      [
+        "beverages_and_tobacco_products_productivity_output_per_hour",
+        "Beverages and tobacco products productivity (output per hour)",
+        "num"
+      ],
+      [
+        "beverages_and_tobacco_products_unit_labor_costs",
+        "Beverages and tobacco products unit labor costs",
+        "num"
+      ],
+      [
+        "beverages_and_tobacco_products_hourly_compensation",
+        "Beverages and tobacco products hourly compensation",
+        "num"
+      ],
+      [
+        "textile_mills_productivity_output_per_hour",
+        "Textile mills productivity (output per hour)",
+        "num"
+      ],
+      [
+        "textile_mills_unit_labor_costs",
+        "Textile mills unit labor costs",
+        "num"
+      ],
+      [
+        "textile_mills_hourly_compensation",
+        "Textile mills hourly compensation",
+        "num"
+      ],
+      [
+        "textile_product_mills_productivity_output_per_hour",
+        "Textile product mills productivity (output per hour)",
+        "num"
+      ],
+      [
+        "textile_product_mills_unit_labor_costs",
+        "Textile product mills unit labor costs",
+        "num"
+      ],
+      [
+        "textile_product_mills_hourly_compensation",
+        "Textile product mills hourly compensation",
+        "num"
+      ],
+      [
+        "apparel_productivity_output_per_hour",
+        "Apparel productivity (output per hour)",
+        "num"
+      ],
+      [
+        "apparel_unit_labor_costs",
+        "Apparel unit labor costs",
+        "num"
+      ],
+      [
+        "apparel_hourly_compensation",
+        "Apparel hourly compensation",
+        "num"
+      ],
+      [
+        "leather_and_allied_products_productivity_output_per_hour",
+        "Leather and allied products productivity (output per hour)",
+        "num"
+      ],
+      [
+        "leather_and_allied_products_unit_labor_costs",
+        "Leather and allied products unit labor costs",
+        "num"
+      ],
+      [
+        "leather_and_allied_products_hourly_compensation",
+        "Leather and allied products hourly compensation",
+        "num"
+      ],
+      [
+        "paper_productivity_output_per_hour",
+        "Paper productivity (output per hour)",
+        "num"
+      ],
+      [
+        "paper_unit_labor_costs",
+        "Paper unit labor costs",
+        "num"
+      ],
+      [
+        "paper_hourly_compensation",
+        "Paper hourly compensation",
+        "num"
+      ],
+      [
+        "printing_and_related_support_activities_productivity_output_per_hour",
+        "Printing and related support activities productivity (output per hour)",
+        "num"
+      ],
+      [
+        "printing_and_related_support_activities_unit_labor_costs",
+        "Printing and related support activities unit labor costs",
+        "num"
+      ],
+      [
+        "printing_and_related_support_activities_hourly_compensation",
+        "Printing and related support activities hourly compensation",
+        "num"
+      ],
+      [
+        "petroleum_and_coal_products_productivity_output_per_hour",
+        "Petroleum and coal products productivity (output per hour)",
+        "num"
+      ],
+      [
+        "petroleum_and_coal_products_unit_labor_costs",
+        "Petroleum and coal products unit labor costs",
+        "num"
+      ],
+      [
+        "petroleum_and_coal_products_hourly_compensation",
+        "Petroleum and coal products hourly compensation",
+        "num"
+      ],
+      [
+        "chemicals_productivity_output_per_hour",
+        "Chemicals productivity (output per hour)",
+        "num"
+      ],
+      [
+        "chemicals_unit_labor_costs",
+        "Chemicals unit labor costs",
+        "num"
+      ],
+      [
+        "chemicals_hourly_compensation",
+        "Chemicals hourly compensation",
+        "num"
+      ],
+      [
+        "plastics_and_rubber_products_productivity_output_per_hour",
+        "Plastics and rubber products productivity (output per hour)",
+        "num"
+      ],
+      [
+        "plastics_and_rubber_products_unit_labor_costs",
+        "Plastics and rubber products unit labor costs",
+        "num"
+      ],
+      [
+        "plastics_and_rubber_products_hourly_compensation",
+        "Plastics and rubber products hourly compensation",
+        "num"
+      ],
+      [
+        "wood_products_productivity_output_per_hour",
+        "Wood products productivity (output per hour)",
+        "num"
+      ],
+      [
+        "wood_products_unit_labor_costs",
+        "Wood products unit labor costs",
+        "num"
+      ],
+      [
+        "wood_products_hourly_compensation",
+        "Wood products hourly compensation",
+        "num"
+      ],
+      [
+        "nonmetallic_mineral_products_productivity_output_per_hour",
+        "Nonmetallic mineral products productivity (output per hour)",
+        "num"
+      ],
+      [
+        "nonmetallic_mineral_products_unit_labor_costs",
+        "Nonmetallic mineral products unit labor costs",
+        "num"
+      ],
+      [
+        "nonmetallic_mineral_products_hourly_compensation",
+        "Nonmetallic mineral products hourly compensation",
+        "num"
+      ],
+      [
+        "primary_metals_productivity_output_per_hour",
+        "Primary metals productivity (output per hour)",
+        "num"
+      ],
+      [
+        "primary_metals_unit_labor_costs",
+        "Primary metals unit labor costs",
+        "num"
+      ],
+      [
+        "primary_metals_hourly_compensation",
+        "Primary metals hourly compensation",
+        "num"
+      ],
+      [
+        "fabricated_metal_products_productivity_output_per_hour",
+        "Fabricated metal products productivity (output per hour)",
+        "num"
+      ],
+      [
+        "fabricated_metal_products_unit_labor_costs",
+        "Fabricated metal products unit labor costs",
+        "num"
+      ],
+      [
+        "fabricated_metal_products_hourly_compensation",
+        "Fabricated metal products hourly compensation",
+        "num"
+      ],
+      [
+        "machinery_productivity_output_per_hour",
+        "Machinery productivity (output per hour)",
+        "num"
+      ],
+      [
+        "machinery_unit_labor_costs",
+        "Machinery unit labor costs",
+        "num"
+      ],
+      [
+        "machinery_hourly_compensation",
+        "Machinery hourly compensation",
+        "num"
+      ],
+      [
+        "computer_and_electronic_products_productivity_output_per_hour",
+        "Computer and electronic products productivity (output per hour)",
+        "num"
+      ],
+      [
+        "computer_and_electronic_products_unit_labor_costs",
+        "Computer and electronic products unit labor costs",
+        "num"
+      ],
+      [
+        "computer_and_electronic_products_hourly_compensation",
+        "Computer and electronic products hourly compensation",
+        "num"
+      ],
+      [
+        "electrical_equipment_and_appliances_productivity_output_per_hour",
+        "Electrical equipment and appliances productivity (output per hour)",
+        "num"
+      ],
+      [
+        "electrical_equipment_and_appliances_unit_labor_costs",
+        "Electrical equipment and appliances unit labor costs",
+        "num"
+      ],
+      [
+        "electrical_equipment_and_appliances_hourly_compensation",
+        "Electrical equipment and appliances hourly compensation",
+        "num"
+      ],
+      [
+        "transportation_equipment_productivity_output_per_hour",
+        "Transportation equipment productivity (output per hour)",
+        "num"
+      ],
+      [
+        "transportation_equipment_unit_labor_costs",
+        "Transportation equipment unit labor costs",
+        "num"
+      ],
+      [
+        "transportation_equipment_hourly_compensation",
+        "Transportation equipment hourly compensation",
+        "num"
+      ],
+      [
+        "furniture_and_related_products_productivity_output_per_hour",
+        "Furniture and related products productivity (output per hour)",
+        "num"
+      ],
+      [
+        "furniture_and_related_products_unit_labor_costs",
+        "Furniture and related products unit labor costs",
+        "num"
+      ],
+      [
+        "furniture_and_related_products_hourly_compensation",
+        "Furniture and related products hourly compensation",
+        "num"
+      ],
+      [
+        "miscellaneous_manufacturing_productivity_output_per_hour",
+        "Miscellaneous manufacturing productivity (output per hour)",
+        "num"
+      ],
+      [
+        "miscellaneous_manufacturing_unit_labor_costs",
+        "Miscellaneous manufacturing unit labor costs",
+        "num"
+      ],
+      [
+        "miscellaneous_manufacturing_hourly_compensation",
+        "Miscellaneous manufacturing hourly compensation",
+        "num"
+      ]
+    ]
+  }
+}

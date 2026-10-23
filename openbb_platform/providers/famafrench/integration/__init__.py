@@ -1,0 +1,1 @@
+"""openbb-famafrench integration tests."""

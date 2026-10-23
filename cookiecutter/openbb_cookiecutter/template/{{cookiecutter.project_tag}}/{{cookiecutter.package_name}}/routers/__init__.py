@@ -1,1 +1,1 @@
-"""{{ cookiecutter.project_name}} routers module."""
+"""{{ cookiecutter.project_name }} routers."""

@@ -4,13 +4,14 @@ from datetime import (
     date as dateType,
 )
 
+from pydantic import Field
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field
 
 
 class MortgageIndicesQueryParams(QueryParams):
@@ -27,18 +28,13 @@ class MortgageIndicesQueryParams(QueryParams):
 
 
 class MortgageIndicesData(Data):
-    """Mortgage Indices Data."""
+    """Mortgage Indices Data.
+
+    Attributes
+    ----------
+    date : dateType
+        The observation date. Every index requested is carried as its own
+        column, named for the index it reports.
+    """
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    symbol: str | None = Field(
-        default=None,
-        description=DATA_DESCRIPTIONS.get("symbol", ""),
-    )
-    name: str | None = Field(
-        default=None,
-        description="Name of the index.",
-    )
-    rate: float = Field(
-        description="Mortgage rate.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-    )

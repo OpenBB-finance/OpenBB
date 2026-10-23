@@ -1,7 +1,5 @@
 """FRED Nonfarm Payrolls Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import date as dateType
 from typing import Any, Literal
 
@@ -12,6 +10,9 @@ from openbb_core.provider.standard_models.non_farm_payrolls import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field, field_validator
+
+from openbb_fred.utils.query import UseCacheQueryParams
+from openbb_fred.utils.release_tables import get_units, shown, tree
 
 EstablishmentData = {
     "employees_nsa": "5645",
@@ -182,7 +183,7 @@ NFP_SECTOR_ORDER = [
 ]
 
 
-class FredNonFarmPayrollsQueryParams(NonFarmPayrollsQueryParams):
+class FredNonFarmPayrollsQueryParams(UseCacheQueryParams, NonFarmPayrollsQueryParams):
     """FRED NonFarm Payrolls Query."""
 
     __json_schema_extra__ = {"date": {"multiple_items_allowed": True}}
@@ -214,22 +215,10 @@ class FredNonFarmPayrollsQueryParams(NonFarmPayrollsQueryParams):
     @field_validator("date", mode="before", check_fields=False)
     @classmethod
     def validate_date(cls, v):
-        """Validate the dates entered."""
-        if v is None:
-            return None
-        if isinstance(v, (list, dateType)):
-            return v
-        new_dates: list = []
-        date_param = v
-        if isinstance(date_param, str):
-            new_dates = date_param.split(",")
-        elif isinstance(date_param, dateType):
-            new_dates.append(date_param.strftime("%Y-%m-%d"))
-        elif isinstance(date_param, list) and isinstance(date_param[0], dateType):
-            new_dates = [d.strftime("%Y-%m-%d") for d in new_dates]
-        else:
-            new_dates = date_param
-        return ",".join(new_dates) if len(new_dates) > 1 else new_dates[0]
+        """Normalize the dates entered to comma-separated ISO dates."""
+        from openbb_fred.utils.query import join_dates
+
+        return join_dates(v)
 
 
 class FredNonFarmPayrollsData(NonFarmPayrollsData):
@@ -241,21 +230,43 @@ class FredNonFarmPayrollsData(NonFarmPayrollsData):
         "symbol": "series_id",
     }
 
+    date: dateType = Field(
+        description="The date of the observation.",
+        json_schema_extra=shown("date"),
+    )
+    symbol: str = Field(
+        description="The series id of the observation.",
+        json_schema_extra=shown("symbol"),
+    )
+    value: float = Field(
+        description="The observed value.",
+        json_schema_extra=shown("value"),
+    )
     name: str = Field(
         description="The name of the series.",
+        json_schema_extra=shown("name"),
+    )
+    units: str | None = Field(
+        default=None,
+        description="The unit of measure the series is published in.",
+        json_schema_extra=shown("units"),
     )
     element_id: str = Field(
         description="The element id in the parent/child relationship.",
+        json_schema_extra=tree(),
     )
     parent_id: str = Field(
         description="The parent id in the parent/child relationship.",
+        json_schema_extra=tree(),
     )
     children: str | None = Field(
         default=None,
         description="The element_id of each child, as a comma-separated string.",
+        json_schema_extra=tree(),
     )
     level: int = Field(
         description="The indentation level of the element.",
+        json_schema_extra=tree(),
     )
 
 
@@ -276,36 +287,28 @@ class FredNonFarmPayrollsFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Extract data."""
-        # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
+        from openbb_fred.utils.api import observation_dates, release_tables_url
         from openbb_fred.utils.rate_limiter import fred_get
         from numpy import nan
         from pandas import DataFrame, to_datetime
 
         api_key = credentials.get("fred_api_key") if credentials else ""
         element_id = EstablishmentData[query.category]
-        dates: list = [""]
-
-        if query.date:
-            if query.date and isinstance(query.date, dateType):
-                query.date = query.date.strftime("%Y-%m-%d")
-            dates = query.date.split(",")  # type: ignore
-            dates = [d.replace(d[-2:], "01") if len(d) == 10 else d for d in dates]
-            dates = list(set(dates))
-            dates = [f"&observation_date={date}" for date in dates if date] if dates else ""  # type: ignore
-
         URLS = [
-            f"https://api.stlouisfed.org/fred/release/tables?release_id=50&element_id={element_id}"
-            + f"{date}&include_observation_values=true&api_key={api_key}"
-            + "&file_type=json"
-            for date in dates
+            release_tables_url("50", element_id, api_key, date)
+            for date in observation_dates(query.date)
         ]
         results: list = []
 
         async def get_one(URL):
             """Get the observations for a single date."""
-            response = await fred_get(URL)
-            data = [v for v in response.get("elements", {}).values() if v.get("observation_value") != "."]  # type: ignore
+            response = await fred_get(URL, use_cache=query.use_cache)
+            data = [
+                v
+                for v in response.get("elements", {}).values()
+                if v.get("observation_value") != "."
+            ]
             if data:
                 df = (
                     DataFrame(data)
@@ -330,8 +333,6 @@ class FredNonFarmPayrollsFetcher(
                     "employees"
                 ) and not query.category.endswith("percent"):
                     df["observation_value"] = df.observation_value * 1000
-                elif query.category.endswith("percent"):
-                    df["observation_value"] = df.observation_value / 100
 
                 df["observation_date"] = to_datetime(
                     df["observation_date"], format="%b %Y"
@@ -352,6 +353,11 @@ class FredNonFarmPayrollsFetcher(
                 results.extend(df.to_dict("records"))
 
         await asyncio.gather(*[get_one(URL) for URL in URLS])
+
+        units = await get_units(50, credentials)
+
+        for row in results:
+            row["units"] = units.get(row.get("series_id"))
 
         return results
 

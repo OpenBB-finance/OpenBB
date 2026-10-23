@@ -1,0 +1,363 @@
+{
+  "unemp-per-opening": {
+    "slug": "unemp-per-job-opening",
+    "label": "Unemployed Persons per Job Opening (SA)",
+    "kind": "ts",
+    "chart_type": "line",
+    "fields": [
+      [
+        "number_of_unemployed_persons_per_job_opening",
+        "Number of unemployed persons per job opening",
+        "num"
+      ]
+    ]
+  },
+  "openings-hires-seps-levels": {
+    "slug": "opening-hire-seps-level",
+    "label": "Job Openings, Hires, and Separations — Levels (SA, thousands)",
+    "kind": "ts",
+    "chart_type": "line",
+    "fields": [
+      [
+        "total_nonfarm_job_openings",
+        "Total nonfarm job openings",
+        "num"
+      ],
+      [
+        "total_nonfarm_hires",
+        "Total nonfarm hires",
+        "num"
+      ],
+      [
+        "total_nonfarm_separations",
+        "Total nonfarm separations",
+        "num"
+      ],
+      [
+        "total_private_job_openings",
+        "Total private job openings",
+        "num"
+      ],
+      [
+        "total_private_hires",
+        "Total private hires",
+        "num"
+      ],
+      [
+        "total_private_separations",
+        "Total private separations",
+        "num"
+      ],
+      [
+        "government_job_openings",
+        "Government job openings",
+        "num"
+      ],
+      [
+        "government_hires",
+        "Government hires",
+        "num"
+      ],
+      [
+        "government_separations",
+        "Government separations",
+        "num"
+      ]
+    ]
+  },
+  "openings-hires-seps-rates": {
+    "slug": "opening-hire-seps-rates",
+    "label": "Job Openings, Hires, and Separations — Rates (SA)",
+    "kind": "ts",
+    "chart_type": "line",
+    "fields": [
+      [
+        "total_nonfarm_job_openings",
+        "Total nonfarm job openings",
+        "pct"
+      ],
+      [
+        "total_nonfarm_hires",
+        "Total nonfarm hires",
+        "pct"
+      ],
+      [
+        "total_nonfarm_separations",
+        "Total nonfarm separations",
+        "pct"
+      ],
+      [
+        "total_private_job_openings",
+        "Total private job openings",
+        "pct"
+      ],
+      [
+        "total_private_hires",
+        "Total private hires",
+        "pct"
+      ],
+      [
+        "total_private_separations",
+        "Total private separations",
+        "pct"
+      ],
+      [
+        "government_job_openings",
+        "Government job openings",
+        "pct"
+      ],
+      [
+        "government_hires",
+        "Government hires",
+        "pct"
+      ],
+      [
+        "government_separations",
+        "Government separations",
+        "pct"
+      ]
+    ]
+  },
+  "hires-seps-rates": {
+    "slug": "hire-seps-rates",
+    "label": "Total Nonfarm Hires and Separations Rates (SA)",
+    "kind": "ts",
+    "chart_type": "line",
+    "fields": [
+      [
+        "hires",
+        "Hires",
+        "pct"
+      ],
+      [
+        "total_separations",
+        "Total separations",
+        "pct"
+      ],
+      [
+        "quits",
+        "Quits",
+        "pct"
+      ],
+      [
+        "layoffs_and_discharges",
+        "Layoffs and discharges",
+        "pct"
+      ],
+      [
+        "other_separations",
+        "Other separations",
+        "pct"
+      ]
+    ]
+  },
+  "openings-by-industry": {
+    "slug": "opening-industry",
+    "label": "Job Openings Rates by Industry (SA)",
+    "kind": "ts",
+    "chart_type": "line",
+    "fields": [
+      [
+        "total_nonfarm",
+        "Total nonfarm",
+        "pct"
+      ],
+      [
+        "mining_and_logging",
+        "Mining and logging",
+        "pct"
+      ],
+      [
+        "construction",
+        "Construction",
+        "pct"
+      ],
+      [
+        "durable_goods_manufacturing",
+        "Durable goods manufacturing",
+        "pct"
+      ],
+      [
+        "nondurable_goods_manufacturing",
+        "Nondurable goods manufacturing",
+        "pct"
+      ],
+      [
+        "wholesale_trade",
+        "Wholesale trade",
+        "pct"
+      ],
+      [
+        "retail_trade",
+        "Retail trade",
+        "pct"
+      ],
+      [
+        "transportation_warehousing_and_utilities",
+        "Transportation, warehousing, and utilities",
+        "pct"
+      ],
+      [
+        "information",
+        "Information",
+        "pct"
+      ],
+      [
+        "finance_and_insurance",
+        "Finance and insurance",
+        "pct"
+      ],
+      [
+        "real_estate_and_rental_and_leasing",
+        "Real estate and rental and leasing",
+        "pct"
+      ],
+      [
+        "professional_and_business_services",
+        "Professional and business services",
+        "pct"
+      ],
+      [
+        "private_educational_services",
+        "Private educational services",
+        "pct"
+      ],
+      [
+        "health_care_and_social_assistance",
+        "Health care and social assistance",
+        "pct"
+      ],
+      [
+        "arts_entertainment_and_recreation",
+        "Arts, entertainment, and recreation",
+        "pct"
+      ],
+      [
+        "accommodation_and_food_services",
+        "Accommodation and food services",
+        "pct"
+      ],
+      [
+        "other_services",
+        "Other services",
+        "pct"
+      ],
+      [
+        "federal_government",
+        "Federal government",
+        "pct"
+      ],
+      [
+        "state_and_local_government_education",
+        "State and local government education",
+        "pct"
+      ],
+      [
+        "state_and_local_government_excluding_education",
+        "State and local government, excluding education",
+        "pct"
+      ]
+    ]
+  },
+  "openings-hires-seps-by-region": {
+    "slug": "opening-hire-seps-region",
+    "label": "Job Openings, Hires, and Separations Rates by Region (SA)",
+    "kind": "ts",
+    "chart_type": "line",
+    "fields": [
+      [
+        "u_s_job_openings",
+        "U.S. job openings",
+        "pct"
+      ],
+      [
+        "u_s_hires",
+        "U.S. hires",
+        "pct"
+      ],
+      [
+        "u_s_separations",
+        "U.S. separations",
+        "pct"
+      ],
+      [
+        "northeast_job_openings",
+        "Northeast job openings",
+        "pct"
+      ],
+      [
+        "northeast_hires",
+        "Northeast hires",
+        "pct"
+      ],
+      [
+        "northeast_separations",
+        "Northeast separations",
+        "pct"
+      ],
+      [
+        "south_job_openings",
+        "South job openings",
+        "pct"
+      ],
+      [
+        "south_hires",
+        "South hires",
+        "pct"
+      ],
+      [
+        "south_separations",
+        "South separations",
+        "pct"
+      ],
+      [
+        "midwest_job_openings",
+        "Midwest job openings",
+        "pct"
+      ],
+      [
+        "midwest_hires",
+        "Midwest hires",
+        "pct"
+      ],
+      [
+        "midwest_separations",
+        "Midwest separations",
+        "pct"
+      ],
+      [
+        "west_job_openings",
+        "West job openings",
+        "pct"
+      ],
+      [
+        "west_hires",
+        "West hires",
+        "pct"
+      ],
+      [
+        "west_separations",
+        "West separations",
+        "pct"
+      ]
+    ]
+  },
+  "beveridge-curve": {
+    "slug": "job-openings-unemployment-beveridge-curve",
+    "label": "Beveridge Curve — Job Openings Rate vs. Unemployment Rate (SA)",
+    "kind": "ts",
+    "chart_type": "line",
+    "fields": [
+      [
+        "job_openings_rate",
+        "Job openings rate",
+        "pct"
+      ],
+      [
+        "unemployment_rate",
+        "Unemployment rate",
+        "pct"
+      ]
+    ]
+  }
+}

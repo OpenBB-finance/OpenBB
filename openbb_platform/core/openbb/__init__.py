@@ -3,8 +3,10 @@
 # flake8: noqa
 
 from pathlib import Path
+from importlib import import_module
 from typing import List, Optional, Union
 
+from openbb_core.app.config import load_layered_config as _load_layered_config
 from openbb_core.app.static.app_factory import (
     BaseApp as _BaseApp,
     create_app as _create_app,
@@ -39,12 +41,19 @@ def build(
 _PackageBuilder(_this_dir).auto_build()
 _ReferenceLoader(_this_dir)
 
-try:
-    # pylint: disable=import-outside-toplevel
-    from openbb.package.__extensions__ import Extensions as _Extensions  # type: ignore
+# Runs the same layered TOML cascade the launchers (openbb-api, openbb-mcp,
+# openbb-cli) bootstrap explicitly, so `openbb.toml` / `OPENBB_*` env vars
+# take effect for a bare `from openbb import obb` too. Best-effort by
+# construction — every cascade layer is independently optional, so this is a
+# no-op when no config file is present anywhere in the cascade.
+_load_layered_config()
 
-    obb: Union[_BaseApp, _Extensions] = _create_app(_Extensions)  # type: ignore
+try:
+    _extensions_module = import_module("openbb.package.__extensions__")
+    _Extensions = _extensions_module.Extensions
+
+    obb = _create_app(_Extensions)
     sdk = obb
-except (ImportError, ModuleNotFoundError):
+except (AttributeError, ImportError, ModuleNotFoundError):
     print("Failed to import extensions. Are any installed?")
-    obb = sdk = _create_app()  # type: ignore
+    obb = sdk = _create_app()

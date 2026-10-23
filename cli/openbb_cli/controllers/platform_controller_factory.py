@@ -1,56 +1,82 @@
-"""Platform controller factory to create a platform controller."""
+"""Platform controller factory."""
 
-from openbb_cli.argparse_translator.argparse_class_processor import (
-    ArgparseClassProcessor,
-)
+from __future__ import annotations
+
+from typing import Any
+
+from openbb_cli.backend import Backend, LocalBackend
 from openbb_cli.controllers.base_platform_controller import PlatformController
 
 
 class PlatformControllerFactory:
-    """Factory to create a platform controller."""
+    """Factory to create a platform controller from a ``Backend``."""
 
-    def __init__(self, platform_router: type, **kwargs):
-        """Create the controller name."""
-        self.platform_router = platform_router
-        self._translated_target = ArgparseClassProcessor(
-            target_class=self.platform_router, reference=kwargs.get("reference", {})
+    def __init__(
+        self,
+        platform_router: type | None = None,
+        *,
+        backend: Backend | None = None,
+        router_name: str | None = None,
+        reference: dict[str, Any] | None = None,
+    ) -> None:
+        if backend is None and platform_router is None:
+            raise ValueError("Either ``backend`` or ``platform_router`` is required.")
+
+        if backend is not None:
+            if router_name is None:
+                raise ValueError("``router_name`` is required when ``backend`` is set.")
+            self._backend: Backend = backend
+            self._router_name: str = router_name
+        else:
+            del reference
+            assert platform_router is not None  # noqa: S101
+            self._backend = LocalBackend()
+            self._router_name = _derive_router_name(platform_router)
+
+        self._translators, self._paths = self._backend.get_translators_for_path(
+            self._router_name
         )
-        self.router_name = (
-            str(type(self.platform_router))
-            .rsplit(".", maxsplit=1)[-1]
-            .replace("'>", "")
-            .replace("ROUTER_", "")
-            .lower()
-        )
-        self.controller_name = f"{self.router_name.capitalize()}Controller"
+
+    @property
+    def router_name(self) -> str:
+        return self._router_name
+
+    @property
+    def controller_name(self) -> str:
+        return f"{self._router_name.capitalize()}Controller"
 
     def create(self) -> type:
-        """Create the platform controller."""
-        ClassName = self.controller_name
-        Parents = (PlatformController,)
-        Attributes: dict[str, bool | list[str]] = {"CHOICES_GENERATION": True}
-
-        # Menu and Command choices generation
+        """Create the platform controller class for this router."""
         choices_menus: list[str] = []
         choices_commands: list[str] = []
-        translators = self._translated_target.translators
-        paths = self._translated_target.paths
-        # menus
-        for key, value in paths.items():
+        for key, value in self._paths.items():
             if value == "path":
                 continue
             choices_menus.append(key)
-        # commands
-        for name, _ in translators.items():
-            if any(f"{self.router_name}_{path}" in name for path in paths):
+        for name in self._translators:
+            if any(
+                f"{self._router_name}_{path}_" in f"{name}_" for path in self._paths
+            ):
                 continue
-            new_name = name.replace(f"{self.router_name}_", "")
-            choices_commands.append(new_name)
+            choices_commands.append(name.replace(f"{self._router_name}_", ""))
 
-        Attributes["CHOICES_MENUS"] = choices_menus
-        Attributes["CHOICES_COMMANDS"] = choices_commands
+        attributes: dict[str, Any] = {
+            "CHOICES_GENERATION": True,
+            "CHOICES_MENUS": choices_menus,
+            "CHOICES_COMMANDS": choices_commands,
+            "_factory_backend": self._backend,
+            "_factory_translators": self._translators,
+            "_factory_paths": self._paths,
+        }
+        return type(self.controller_name, (PlatformController,), attributes)
 
-        # Use type to create the class
-        DynamicClass = type(ClassName, Parents, Attributes)
 
-        return DynamicClass
+def _derive_router_name(platform_router: type) -> str:
+    """Replicate the legacy class-name → router-name derivation."""
+    return (
+        str(type(platform_router))
+        .rsplit(".", maxsplit=1)[-1]
+        .replace("'>", "")
+        .replace("ROUTER_", "")
+        .lower()
+    )

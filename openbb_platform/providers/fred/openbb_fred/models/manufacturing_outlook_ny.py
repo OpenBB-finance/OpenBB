@@ -1,7 +1,5 @@
 """FRED Manufacturing Outlook - New York - Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any, Literal
 from warnings import warn
 
@@ -13,6 +11,10 @@ from openbb_core.provider.standard_models.manufacturing_outlook_texas import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError, OpenBBError
 from pydantic import Field, field_validator
+
+from openbb_fred.utils.query import UseCacheQueryParams
+
+PERCENT_COLUMN: dict[str, Any] = {"x-unit_measurement": "percent"}
 
 NY_MANUFACTURING_OUTLOOK = {
     "current_hours_worked": {
@@ -227,7 +229,7 @@ NY_MANUFACTURING_OUTLOOK = {
     },
     "current_new_orders": {
         "sa": {
-            "diffusion_index": "NOCDINA066MNFRBNY",
+            "diffusion_index": "NOCDISA066MSFRBNY",
             "percent_reporting_increase": "NOCISA156MSFRBNY",
             "percent_reporting_decrease": "NOCDSA156MSFRBNY",
             "percent_reporting_no_change": "NOCNSA156MSFRBNY",
@@ -350,7 +352,9 @@ NyManufacturingOutlookChoices = Literal[
 ]
 
 
-class FredManufacturingOutlookNYQueryParams(ManufacturingOutlookTexasQueryParams):
+class FredManufacturingOutlookNYQueryParams(
+    UseCacheQueryParams, ManufacturingOutlookTexasQueryParams
+):
     """FRED Manufacturing Outlook - New York - Query Params."""
 
     __json_schema_extra__ = {
@@ -428,6 +432,22 @@ class FredManufacturingOutlookNYQueryParams(ManufacturingOutlookTexasQueryParams
 class FredManufacturingOutlookNYData(ManufacturingOutlookTexasData):
     """FRED Manufacturing Outlook - New York - Data."""
 
+    percent_reporting_increase: float | None = Field(
+        default=None,
+        description="Percent of respondents reporting an increase over the last month.",
+        json_schema_extra=PERCENT_COLUMN,
+    )
+    percent_reporting_decrease: float | None = Field(
+        default=None,
+        description="Percent of respondents reporting a decrease over the last month.",
+        json_schema_extra=PERCENT_COLUMN,
+    )
+    percent_reporting_no_change: float | None = Field(
+        default=None,
+        description="Percent of respondents reporting no change over the last month.",
+        json_schema_extra=PERCENT_COLUMN,
+    )
+
 
 class FredManufacturingOutlookNYFetcher(
     Fetcher[
@@ -451,8 +471,8 @@ class FredManufacturingOutlookNYFetcher(
         **kwargs: Any,
     ) -> dict:
         """Fetch data."""
-        # pylint: disable=import-outside-toplevel
         from openbb_fred.models.series import FredSeriesFetcher
+        from openbb_fred.utils.api import unwrap_series
 
         ids: list = []
         topics = query.topic.split(",")
@@ -485,6 +505,7 @@ class FredManufacturingOutlookNYFetcher(
                     transform=query.transform,
                     frequency=frequency,
                     aggregation_method=query.aggregation_method,
+                    use_cache=query.use_cache,
                 ),
                 credentials,
             )
@@ -492,9 +513,11 @@ class FredManufacturingOutlookNYFetcher(
             message = str(e) or f"FRED request failed ({type(e).__name__})."
             raise OpenBBError(message) from e
 
+        rows, metadata = unwrap_series(response)
+
         return {
-            "metadata": response.metadata,
-            "data": [d.model_dump() for d in response.result],
+            "metadata": metadata,
+            "data": [d.model_dump() for d in rows],
         }
 
     @staticmethod
@@ -504,7 +527,6 @@ class FredManufacturingOutlookNYFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[list[FredManufacturingOutlookNYData]]:
         """Transform data."""
-        # pylint: disable=import-outside-toplevel
         from numpy import nan
         from pandas import Categorical, DataFrame
 
@@ -545,10 +567,7 @@ class FredManufacturingOutlookNYFetcher(
                 "percent_reporting_decrease",
                 "percent_reporting_no_change",
             ]:
-                df[col] = df[col] / 100
-
-        if query.transform in ["pch", "pc1", "pca", "cch", "cca"]:
-            df.diffusion_index = df.diffusion_index / 100
+                df[col] = df[col].astype(float)
 
         records = df.to_dict(orient="records")
 

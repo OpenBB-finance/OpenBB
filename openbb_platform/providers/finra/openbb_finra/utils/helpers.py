@@ -1,356 +1,284 @@
-"""Helper functions for FINRA API."""
+"""Value parsing helpers for the FINRA data services."""
 
-import datetime
-
-# pylint: disable=W0621
-
-
-def get_finra_weeks(tier: str = "T1", is_ats: bool = True, **kwargs):
-    """Fetch the available weeks from FINRA that can be used."""
-    # pylint: disable=import-outside-toplevel
-    from openbb_core.provider.utils.helpers import get_requests_session, make_request
-
-    session = kwargs.get("session", get_requests_session())
-
-    request_header = {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-    }
-
-    request_data = {
-        "compareFilters": [
-            {
-                "compareType": "EQUAL",
-                "fieldName": "summaryTypeCode",
-                "fieldValue": "ATS_W_SMBL" if is_ats else "OTC_W_SMBL",
-            },
-            {
-                "compareType": "EQUAL",
-                "fieldName": "tierIdentifier",
-                "fieldValue": tier,
-            },
-        ],
-        "delimiter": "|",
-        "fields": ["weekStartDate"],
-        "limit": 52,
-        "quoteValues": False,
-        "sortFields": ["-weekStartDate"],
-    }
-
-    response = make_request(
-        method="POST",
-        url="https://api.finra.org/data/group/otcMarket/name/weeklyDownloadDetails",
-        headers=request_header,
-        json=request_data,
-        timeout=20,
-        session=session,
-    )
-
-    return response.json() if response.status_code == 200 else []
+from datetime import date, datetime
+from functools import lru_cache
+from typing import Any
 
 
-def get_finra_data(symbol, week_start, tier: str = "T1", is_ats: bool = True, **kwargs):
-    """Get the data for a symbol from FINRA."""
-    # pylint: disable=import-outside-toplevel
-    from openbb_core.provider.utils.helpers import get_requests_session, make_request
+def clean(value: Any) -> str | None:
+    """Return a stripped string, or None for a blank or not-available value.
 
-    session = kwargs.get("session", get_requests_session())
+    Parameters
+    ----------
+    value : Any
+        The raw value.
 
-    req_hdr = {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-    }
+    Returns
+    -------
+    str | None
+        The stripped text, or None.
+    """
+    from openbb_finra.utils.constants import NA_TOKENS
 
-    filters = [
-        {
-            "compareType": "EQUAL",
-            "fieldName": "weekStartDate",
-            "fieldValue": week_start,
-        },
-        {"compareType": "EQUAL", "fieldName": "tierIdentifier", "fieldValue": tier},
-        {
-            "compareType": "EQUAL",
-            "description": "",
-            "fieldName": "summaryTypeCode",
-            "fieldValue": "ATS_W_SMBL" if is_ats else "OTC_W_SMBL",
-        },
-    ]
+    if value is None:
+        return None
 
-    if symbol:
-        filters.append(
-            {
-                "compareType": "EQUAL",
-                "fieldName": "issueSymbolIdentifier",
-                "fieldValue": symbol,
-            }
-        )
+    text = str(value).strip()
 
-    req_data = {
-        "compareFilters": filters,
-        "delimiter": "|",
-        "fields": [
-            "issueSymbolIdentifier",
-            "totalWeeklyShareQuantity",
-            "totalWeeklyTradeCount",
-            "lastUpdateDate",
-        ],
-        "limit": 5000,
-        "quoteValues": False,
-        "sortFields": ["totalWeeklyShareQuantity"],
-    }
-    response = make_request(
-        url="https://api.finra.org/data/group/otcMarket/name/weeklySummary",
-        method="POST",
-        headers=req_hdr,
-        json=req_data,
-        timeout=20,
-        session=session,
-    )
-    return response
+    return None if text.upper() in NA_TOKENS else text
 
 
-def get_full_data(symbol, tier: str = "T1", is_ats: bool = True):
-    """Get the full data for a symbol from FINRA."""
-    # pylint: disable=import-outside-toplevel
-    from openbb_core.provider.utils.helpers import get_requests_session
+def to_float(value: Any) -> float | None:
+    """Return the value as a float, or None when it is not a number.
 
-    session = get_requests_session()
+    Parameters
+    ----------
+    value : Any
+        The raw value.
 
-    # We make a pre-flight request to the FINRA website to establish a session.
-    # This is to avoid the TooManyRedirects error that occurs when the FINRA
-    # API redirects to the FINRA website to establish a session.
-    session.get("https://www.finra.org/finra-data", timeout=10)
+    Returns
+    -------
+    float | None
+        The parsed number, or None.
+    """
+    if value is None or isinstance(value, bool):
+        return None
 
-    weeks = [
-        week["weekStartDate"] for week in get_finra_weeks(tier, is_ats, session=session)
-    ]
+    if isinstance(value, (int, float)):
+        return float(value)
 
-    data = []
-    for week in weeks:
-        response = get_finra_data(symbol, week, tier, is_ats, session=session)
-        r_json = response.json()
-        if response.status_code == 200 and r_json:
-            data.extend(r_json)
+    text = clean(value)
 
-    return data
-
-
-async def aget_finra_weeks(tier: str = "T1", is_ats: bool = True, **kwargs):
-    """Fetch the available weeks from FINRA asynchronously."""
-    # pylint: disable=import-outside-toplevel
-    from openbb_core.provider.utils.helpers import amake_request
-
-    session = kwargs.pop("session", None)
-
-    request_header = {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-    }
-
-    request_data = {
-        "compareFilters": [
-            {
-                "compareType": "EQUAL",
-                "fieldName": "summaryTypeCode",
-                "fieldValue": "ATS_W_SMBL" if is_ats else "OTC_W_SMBL",
-            },
-            {
-                "compareType": "EQUAL",
-                "fieldName": "tierIdentifier",
-                "fieldValue": tier,
-            },
-        ],
-        "delimiter": "|",
-        "fields": ["weekStartDate"],
-        "limit": 52,
-        "quoteValues": False,
-        "sortFields": ["-weekStartDate"],
-    }
-
-    kwargs_for_request = {
-        "headers": request_header,
-        "json": request_data,
-        "timeout": 20,
-    }
-    if session is not None:
-        kwargs_for_request["session"] = session
-
-    result = await amake_request(
-        url="https://api.finra.org/data/group/otcMarket/name/weeklyDownloadDetails",
-        method="POST",
-        **kwargs_for_request,  # type: ignore
-    )
-
-    return result if isinstance(result, list) else []
-
-
-async def aget_finra_data(
-    symbol, week_start, tier: str = "T1", is_ats: bool = True, **kwargs
-):
-    """Get the data for a symbol from FINRA asynchronously."""
-    # pylint: disable=import-outside-toplevel
-    from openbb_core.provider.utils.helpers import amake_request
-
-    session = kwargs.pop("session", None)
-
-    filters = [
-        {
-            "compareType": "EQUAL",
-            "fieldName": "weekStartDate",
-            "fieldValue": week_start,
-        },
-        {"compareType": "EQUAL", "fieldName": "tierIdentifier", "fieldValue": tier},
-        {
-            "compareType": "EQUAL",
-            "description": "",
-            "fieldName": "summaryTypeCode",
-            "fieldValue": "ATS_W_SMBL" if is_ats else "OTC_W_SMBL",
-        },
-    ]
-
-    if symbol:
-        filters.append(
-            {
-                "compareType": "EQUAL",
-                "fieldName": "issueSymbolIdentifier",
-                "fieldValue": symbol,
-            }
-        )
-
-    req_data = {
-        "compareFilters": filters,
-        "delimiter": "|",
-        "fields": [
-            "issueSymbolIdentifier",
-            "totalWeeklyShareQuantity",
-            "totalWeeklyTradeCount",
-            "lastUpdateDate",
-        ],
-        "limit": 5000,
-        "quoteValues": False,
-        "sortFields": ["totalWeeklyShareQuantity"],
-    }
-
-    req_hdr = {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-    }
-
-    kwargs_for_request = {"headers": req_hdr, "json": req_data, "timeout": 20}
-    if session is not None:
-        kwargs_for_request["session"] = session
-
-    return await amake_request(
-        url="https://api.finra.org/data/group/otcMarket/name/weeklySummary",
-        method="POST",
-        **kwargs_for_request,  # type: ignore
-    )
-
-
-async def aget_full_data(symbol, tier: str = "T1", is_ats: bool = True):
-    """Get the full data for a symbol from FINRA asynchronously."""
-    # pylint: disable=import-outside-toplevel
-    import asyncio
-
-    from openbb_core.provider.utils.helpers import get_async_requests_session
-
-    session = await get_async_requests_session()
+    if text is None:
+        return None
 
     try:
-        await session.request("GET", "https://www.finra.org/finra-data", timeout=10)
-
-        weeks_data = await aget_finra_weeks(tier, is_ats, session=session)
-        weeks = [week["weekStartDate"] for week in weeks_data]
-
-        async def fetch_week(week_start):
-            result = await aget_finra_data(
-                symbol, week_start, tier, is_ats, session=session
-            )
-            if isinstance(result, list) and result:
-                return result
-            if isinstance(result, dict) and result:
-                return [result]
-            return []
-
-        results = await asyncio.gather(
-            *[fetch_week(w) for w in weeks], return_exceptions=True
-        )
-
-        flat_results = []
-        for r in results:
-            if isinstance(r, list):
-                flat_results.extend(r)
-
-        return flat_results
-    finally:
-        await session.close()
+        return float(text.replace(",", ""))
+    except ValueError:
+        return None
 
 
-def get_adjusted_date(year, month, day):
-    """Find the closest date if the date falls on a weekend."""
-    # Get the date
-    date = datetime.date(year, month, day)
+def to_bool(value: Any) -> bool | None:
+    """Return the value as a bool, or None when it is not a recognised flag.
 
-    # If the date is a Saturday, subtract one day
-    if date.weekday() == 5:
-        date -= datetime.timedelta(days=1)
-    # If the date is a Sunday, subtract two days
-    elif date.weekday() == 6:
-        date -= datetime.timedelta(days=2)
+    Parameters
+    ----------
+    value : Any
+        The raw value.
 
-    return date
-
-
-def get_short_interest_dates() -> list[str]:
-    """Get a list of dates for which the short interest data is available.
-
-    It is reported on the 15th and the last day of each month,but if the date falls on a weekend,
-    the date is adjusted to the closest friday.
+    Returns
+    -------
+    bool | None
+        The parsed flag, or None.
     """
+    if isinstance(value, bool):
+        return value
 
-    def get_adjusted_date(year, month, day):
-        """Find the closest date if the date falls on a weekend."""
-        # Get the date
-        date = datetime.date(year, month, day)
+    text = clean(value)
 
-        # If the date is a Saturday, subtract one day
-        if date.weekday() == 5:
-            date -= datetime.timedelta(days=1)
-        # If the date is a Sunday, subtract two days
-        elif date.weekday() == 6:
-            date -= datetime.timedelta(days=2)
+    if text is None:
+        return None
 
-        return date
+    upper = text.upper()
 
-    start_year = 2021
-    today = datetime.date.today()  # Get today's date
-    end_year = today.year
-    dates_list = []
+    if upper in {"Y", "YES", "TRUE", "T", "1"}:
+        return True
 
-    for yr in range(start_year, end_year + 1):
-        start_month = 7 if yr == start_year else 1
-        end_month = 12 if yr < today.year else today.month - 1
-        for month in range(start_month, end_month + 1):  # Start from July for 2021
-            # Date for the 15th of the month
-            date_15 = get_adjusted_date(yr, month, 15)
-            dates_list.append(date_15.strftime("%Y%m%d"))
+    if upper in {"N", "NO", "FALSE", "F", "0"}:
+        return False
 
-            # Date for the last day of the month
-            if month == 2:  # February
-                last_day = (
-                    29 if (yr % 4 == 0 and yr % 100 != 0) or (yr % 400 == 0) else 28
-                )
-            elif month in [4, 6, 9, 11]:  # Months with 30 days
-                last_day = 30
-            else:  # Months with 31 days
-                last_day = 31
+    return None
 
-            last_date = get_adjusted_date(yr, month, last_day)
-            dates_list.append(last_date.strftime("%Y%m%d"))
 
-    # Manually replace '20220415' with '20220414' due to holiday
-    if "20220415" in dates_list:
-        index = dates_list.index("20220415")
-        dates_list[index] = "20220414"
+def to_date(value: Any) -> str | None:
+    """Return the value as an ISO date string, or None when it is not a date.
 
-    return dates_list
+    Parameters
+    ----------
+    value : Any
+        A date, or text as YYYY-MM-DD, YYYYMMDD, or MM/DD/YYYY.
+
+    Returns
+    -------
+    str | None
+        The date as YYYY-MM-DD, or None.
+    """
+    import re
+
+    if isinstance(value, (datetime, date)):
+        return (value.date() if isinstance(value, datetime) else value).isoformat()
+
+    text = clean(value) or ""
+
+    if len(text) >= 10 and text[4] == "-" and text[7] == "-":
+        return text[:10]
+
+    if len(text) == 8 and text.isdigit():
+        return f"{text[:4]}-{text[4:6]}-{text[6:]}"
+
+    match = re.match(r"^(\d{2})[-/](\d{2})[-/](\d{4})(?:\s.*)?$", text)
+
+    return f"{match[3]}-{match[1]}-{match[2]}" if match else None
+
+
+def first(*values: Any) -> Any:
+    """Return the first value that is not blank.
+
+    Parameters
+    ----------
+    *values : Any
+        The candidate values, in order of preference.
+
+    Returns
+    -------
+    Any
+        The first value that is not None or a not-available token.
+    """
+    for value in values:
+        if clean(value) is not None:
+            return value
+
+    return None
+
+
+def decode(table: dict[str, str], value: Any) -> str | None:
+    """Return the description of a code, or the code when it has none.
+
+    Parameters
+    ----------
+    table : dict[str, str]
+        The descriptions, keyed by upper-case code.
+    value : Any
+        The raw code.
+
+    Returns
+    -------
+    str | None
+        The description, the code itself when it is not in the table, or None.
+    """
+    text = clean(value)
+
+    return None if text is None else table.get(text.upper(), text)
+
+
+@lru_cache(maxsize=1)
+def market_names() -> dict[str, str]:
+    """Return the Market Data Center's names for its exchange ids.
+
+    Returns
+    -------
+    dict[str, str]
+        The exchange names keyed by exchange id.
+    """
+    import json
+    from pathlib import Path
+
+    path = Path(__file__).resolve().parents[1] / "assets" / "market_data_exchanges.json"
+
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def split_symbols(value: str) -> list[str]:
+    """Return the distinct, upper-cased symbols of a comma-separated string.
+
+    Parameters
+    ----------
+    value : str
+        One symbol, or several separated by commas.
+
+    Returns
+    -------
+    list[str]
+        The symbols, in the order given.
+    """
+    symbols = [part.strip().upper() for part in value.split(",")]
+
+    return list(dict.fromkeys(symbol for symbol in symbols if symbol))
+
+
+def drop_none(record: dict) -> dict:
+    """Return the record without the keys whose value is None.
+
+    Parameters
+    ----------
+    record : dict
+        The record.
+
+    Returns
+    -------
+    dict
+        The record with only the populated keys.
+    """
+    return {key: value for key, value in record.items() if value is not None}
+
+
+def normalize_trace_record(record: dict, bond_type: str | None = None) -> dict:
+    """Return a TRACE record with typed values and decoded codes.
+
+    Parameters
+    ----------
+    record : dict
+        The raw record, keyed by the camelCase TRACE field names.
+    bond_type : str | None
+        The bond type the record came from, used to decode the coupon type.
+
+    Returns
+    -------
+    dict
+        The record keyed by the same field names, with parsed values.
+    """
+    from openbb_finra.utils.constants import (
+        AMORTIZATION_TYPES,
+        COUPON_TYPES,
+        INDUSTRY_GROUPS,
+        INTEREST_TYPES,
+        MONTHS,
+        MORTGAGE_PRODUCTS,
+        PRICE_TYPES,
+        PRODUCT_SUB_TYPES,
+        PRODUCT_TYPES,
+        SUB_PRODUCT_TYPES,
+        TRACE_BOOL_FIELDS,
+        TRACE_DATE_FIELDS,
+        TRACE_GRADES,
+        TRACE_NUMBER_FIELDS,
+    )
+
+    decodes: dict[str, dict[str, str]] = {
+        "couponType": COUPON_TYPES.get(bond_type or "", {}),
+        "industryGroup": INDUSTRY_GROUPS,
+        "traceGradeCode": TRACE_GRADES,
+        "productSubTypeCode": PRODUCT_SUB_TYPES,
+        "subProductType": SUB_PRODUCT_TYPES,
+        "interestType": INTEREST_TYPES,
+        "mortgageProduct": MORTGAGE_PRODUCTS,
+        "amortizationType": AMORTIZATION_TYPES,
+        "settlementDateMonth": MONTHS,
+        "priceType": PRICE_TYPES,
+        "productType": PRODUCT_TYPES,
+    }
+    output: dict = {}
+
+    for field, value in record.items():
+        if field in TRACE_NUMBER_FIELDS:
+            output[field] = to_float(value)
+        elif field == "isPerpetual" and isinstance(value, str):
+            flag = value.strip().upper()
+            output[field] = (
+                flag in {"PERPETUAL", "Y"}
+                if flag in {"PERPETUAL", "NOT PERPETUAL", "Y", "N"}
+                else None
+            )
+        elif field in TRACE_BOOL_FIELDS:
+            output[field] = to_bool(value)
+        elif field in TRACE_DATE_FIELDS:
+            output[field] = to_date(value)
+        else:
+            text = clean(value)
+            output[field] = (
+                decodes[field].get(text.upper(), text)
+                if text is not None and field in decodes
+                else text
+            )
+
+    return drop_none(output)

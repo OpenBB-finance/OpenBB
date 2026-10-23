@@ -1,8 +1,7 @@
 """Test the Data."""
 
-# pylint: disable=C2801
-
 import pytest
+
 from openbb_core.provider.abstract.data import Data, check_int
 
 

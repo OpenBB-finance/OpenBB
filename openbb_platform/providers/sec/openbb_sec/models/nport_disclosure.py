@@ -1,9 +1,7 @@
 """SEC NPORT Holings Model."""
 
-# pylint: disable =[unused-argument,too-many-locals,too-many-branches]
-
 from datetime import date as dateType
-from typing import Any
+from typing import Any, cast
 from warnings import warn
 
 from openbb_core.app.model.abstract.error import OpenBBError
@@ -23,6 +21,11 @@ class SecNportDisclosureQueryParams(NportDisclosureQueryParams):
     Source: https://www.sec.gov/Archives/edgar/data/
     """
 
+    date: dateType | None = Field(
+        default=None,
+        description="Specific filing period (period end date) to retrieve."
+        " Defaults to the most recent filing. Overrides year and quarter.",
+    )
     use_cache: bool = Field(
         description="Whether or not to use cache for the request.",
         default=True,
@@ -245,13 +248,9 @@ class SecNportDisclosureFetcher(
         **kwargs: Any,
     ) -> dict:
         """Return the raw data from the SEC endpoint."""
-        # pylint: disable=import-outside-toplevel
         import asyncio  # noqa
         import xmltodict
-        from aiohttp_client_cache import SQLiteBackend
-        from aiohttp_client_cache.session import CachedSession
-        from openbb_core.app.utils import get_user_cache_directory
-        from openbb_core.provider.utils.helpers import amake_request
+        from openbb_sec.utils.cache import cached_request
         from openbb_sec.utils.helpers import HEADERS, get_nport_candidates
         from pandas import DataFrame, Series, Timestamp, offsets, to_datetime
 
@@ -280,16 +279,24 @@ class SecNportDisclosureFetcher(
         dates = filing_candidates.period_ending.to_list()
         new_date: str = ""
 
-        if query.year is not None and query.quarter is None:
-            query.quarter = 4 if query.year < max(dates).year else 1
-
-        if query.quarter is not None and query.year is not None:
+        if query.date is not None:
+            target = str(query.date)[:10]
+            period = filing_candidates["period_ending"].astype(str).str[:10]
+            matched = filing_candidates[period == target]
+            filing_url = (
+                matched["primary_doc"].values[0]
+                if not matched.empty
+                else filing_candidates["primary_doc"].values[0]
+            )
+        elif query.year is not None:
+            if query.quarter is None:
+                query.quarter = 4 if query.year < to_datetime(dates).max().year else 1
             date = (
                 Timestamp(f"{query.year}-Q{query.quarter}") + offsets.QuarterEnd()
             ).date()
             # Gets the URL for the nearest date to the requested date.
             __dates = Series(to_datetime(dates))
-            __date = to_datetime(date)
+            __date = to_datetime(str(date))
             __nearest = DataFrame(__dates - __date)
             __nearest_date = abs(__nearest[0].astype("int64")).idxmin()
             new_date = __dates[__nearest_date].strftime("%Y-%m-%d")
@@ -304,30 +311,16 @@ class SecNportDisclosureFetcher(
             """Response callback for the request."""
             return await response.read()
 
-        response: dict | list[dict] = []
-        if query.use_cache is True:
-            cache_dir = f"{get_user_cache_directory()}/http/sec_etf"
-            async with CachedSession(cache=SQLiteBackend(cache_dir)) as session:
-                try:
-                    response = await amake_request(
-                        filing_url,
-                        headers=HEADERS,
-                        session=session,
-                        response_callback=callback,  # type: ignore
-                    )
-                finally:
-                    await session.close()
-        else:
-            response = await amake_request(
-                filing_url,
-                headers=HEADERS,
-                response_callback=callback,  # type: ignore
-            )
-        results = xmltodict.parse(response)  # type: ignore
+        response = await cached_request(
+            filing_url,
+            headers=HEADERS,
+            response_callback=callback,
+            use_cache=query.use_cache,
+        )
+        results = xmltodict.parse(response)
 
         return results
 
-    # pylint: disable=too-many-statements
     @staticmethod
     def transform_data(  # noqa: PLR0912
         query: SecNportDisclosureQueryParams,
@@ -335,7 +328,6 @@ class SecNportDisclosureFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[list[SecNportDisclosureData]]:
         """Transform the data."""
-        # pylint: disable=import-outside-toplevel
         from pandas import DataFrame, to_datetime
         from pandas.tseries.offsets import MonthEnd
 
@@ -345,6 +337,24 @@ class SecNportDisclosureFetcher(
 
         response = data
 
+        submission_type = (
+            response.get("edgarSubmission", {})
+            .get("headerData", {})
+            .get("submissionType", "")
+        )
+        if submission_type.startswith("N-MFP"):
+            from openbb_sec.utils.nmfp import parse_nmfp
+
+            holdings, metadata = parse_nmfp(response)
+            if not holdings:
+                raise EmptyDataError(
+                    f"No holdings were found for the symbol, {query.symbol}"
+                )
+            return AnnotatedResult(
+                result=[SecNportDisclosureData.model_validate(h) for h in holdings],
+                metadata=metadata,
+            )
+
         # Parse the response if it is a NPORT-P filing.
         if (
             "edgarSubmission" in response
@@ -353,286 +363,247 @@ class SecNportDisclosureFetcher(
             and "invstOrSecs" in response["edgarSubmission"]["formData"]
             and "invstOrSec" in response["edgarSubmission"]["formData"]["invstOrSecs"]
         ):
-            df = DataFrame.from_records(
-                response["edgarSubmission"]["formData"]["invstOrSecs"]["invstOrSec"]
-            )
-            # Conditionally flatten deeply nested values.
-            for i in df.index:
-                if "isin" in df.iloc[i]["identifiers"]:
-                    df.loc[i, "isin"] = df.iloc[i]["identifiers"]["isin"].get("@value")
+            invst = response["edgarSubmission"]["formData"]["invstOrSecs"]["invstOrSec"]
+            if isinstance(invst, dict):
+                invst = [invst]
+            for rec in invst:
+                if "isin" in rec["identifiers"]:
+                    rec["isin"] = rec["identifiers"]["isin"].get("@value")
 
                 if (
-                    "other" in df.iloc[i]["identifiers"]
-                    and "@value" in df.iloc[i]["identifiers"]["other"]
+                    "other" in rec["identifiers"]
+                    and "@value" in rec["identifiers"]["other"]
                 ):
-                    df.loc[i, "other_id"] = df.iloc[i]["identifiers"]["other"].get(
-                        "@value"
-                    )
+                    rec["other_id"] = rec["identifiers"]["other"].get("@value")
 
-                if "securityLending" in df.iloc[i]:
-                    security_lending = df.iloc[i]["securityLending"]
+                if "securityLending" in rec:
+                    security_lending = rec["securityLending"]
                     if "loanByFundCondition" in security_lending:
                         loan_by_fund_condition = security_lending["loanByFundCondition"]
-                        df.loc[i, "isLoanByFund"] = loan_by_fund_condition.get(
+                        rec["isLoanByFund"] = loan_by_fund_condition.get(
                             "@isLoanByFund"
                         )
-                        df.loc[i, "loanVal"] = loan_by_fund_condition.get("@loanVal")
+                        rec["loanVal"] = loan_by_fund_condition.get("@loanVal")
                     if "isCashCollateral" in security_lending:
-                        df.loc[i, "isCashCollateral"] = security_lending.get(
+                        rec["isCashCollateral"] = security_lending.get(
                             "isCashCollateral"
                         )
                     if "isNonCashCollateral" in security_lending:
-                        df.loc[i, "isNonCashCollateral"] = security_lending.get(
+                        rec["isNonCashCollateral"] = security_lending.get(
                             "isNonCashCollateral"
                         )
 
-                if "debtSec" in df.iloc[i] and isinstance(df.loc[i]["debtSec"], dict):
-                    debt_sec = df.iloc[i]["debtSec"]
-                    df.loc[i, "maturity_date"] = debt_sec.get("maturityDt")
-                    df.loc[i, "coupon_kind"] = debt_sec.get("couponKind")
-                    df.loc[i, "annualized_return"] = debt_sec.get("annualizedRt")
-                    df.loc[i, "is_default"] = debt_sec.get("isDefault")
-                    df.loc[i, "in_arrears"] = debt_sec.get("areIntrstPmntsInArrs")
-                    df.loc[i, "is_paid_kind"] = debt_sec.get("isPaidKind")
+                if "debtSec" in rec and isinstance(rec["debtSec"], dict):
+                    debt_sec = rec["debtSec"]
+                    rec["maturity_date"] = debt_sec.get("maturityDt")
+                    rec["coupon_kind"] = debt_sec.get("couponKind")
+                    rec["annualized_return"] = debt_sec.get("annualizedRt")
+                    rec["is_default"] = debt_sec.get("isDefault")
+                    rec["in_arrears"] = debt_sec.get("areIntrstPmntsInArrs")
+                    rec["is_paid_kind"] = debt_sec.get("isPaidKind")
 
-                if "issuerConditional" in df.iloc[i] and isinstance(
-                    df.iloc[i]["issuerConditional"], dict
+                if "issuerConditional" in rec and isinstance(
+                    rec["issuerConditional"], dict
                 ):
-                    df.loc[i, "issuer_conditional"] = df.iloc[i][
-                        "issuerConditional"
-                    ].get("@desc")
+                    rec["issuer_conditional"] = rec["issuerConditional"].get("@desc")
 
-                if "assetConditional" in df.iloc[i] and isinstance(
-                    df.iloc[i]["assetConditional"], dict
+                if "assetConditional" in rec and isinstance(
+                    rec["assetConditional"], dict
                 ):
-                    df.loc[i, "asset_conditional"] = df.iloc[i]["assetConditional"].get(
-                        "@desc"
-                    )
+                    rec["asset_conditional"] = rec["assetConditional"].get("@desc")
 
-                if "derivativeInfo" in df.iloc[i] and isinstance(
-                    df.iloc[i]["derivativeInfo"], dict
-                ):
-                    derivative_info = df.iloc[i]["derivativeInfo"]
+                if "derivativeInfo" in rec and isinstance(rec["derivativeInfo"], dict):
+                    derivative_info = rec["derivativeInfo"]
 
                     if "optionSwaptionWarrantDeriv" in derivative_info:
                         option_swaption_warrant_deriv = derivative_info[
                             "optionSwaptionWarrantDeriv"
                         ]
-                        df.loc[i, "derivative_category"] = (
-                            option_swaption_warrant_deriv.get("@derivCat")
+                        rec["derivative_category"] = option_swaption_warrant_deriv.get(
+                            "@derivCat"
                         )
-                        df.loc[i, "counterparty"] = option_swaption_warrant_deriv[
+                        rec["counterparty"] = option_swaption_warrant_deriv[
                             "counterparties"
                         ].get("counterpartyName")
-                        df.loc[i, "lei"] = option_swaption_warrant_deriv[
+                        rec["lei"] = option_swaption_warrant_deriv[
                             "counterparties"
                         ].get("counterpartyLei")
-                        df.loc[i, "underlying_name"] = (
+                        rec["underlying_name"] = (
                             option_swaption_warrant_deriv["descRefInstrmnt"]
                             .get("otherRefInst", {})
                             .get("issueTitle")
                         )
-                        df.loc[i, "underlying_name"] = option_swaption_warrant_deriv[
+                        rec["underlying_name"] = option_swaption_warrant_deriv[
                             "descRefInstrmnt"
                         ].get("nestedDerivInfo", {}).get("fwdDeriv", {}).get(
                             "derivAddlInfo", {}
-                        ).get(
-                            "title"
-                        ) or option_swaption_warrant_deriv[
+                        ).get("title") or option_swaption_warrant_deriv[
                             "descRefInstrmnt"
-                        ].get(
-                            "otherRefInst", {}
-                        ).get(
-                            "issueTitle"
-                        )
-                        df.loc[i, "option_type"] = option_swaption_warrant_deriv.get(
+                        ].get("otherRefInst", {}).get("issueTitle")
+                        rec["option_type"] = option_swaption_warrant_deriv.get(
                             "putOrCall"
                         )
-                        df.loc[i, "derivative_payoff"] = (
-                            option_swaption_warrant_deriv.get("writtenOrPur")
+                        rec["derivative_payoff"] = option_swaption_warrant_deriv.get(
+                            "writtenOrPur"
                         )
-                        df.loc[i, "expiry_date"] = option_swaption_warrant_deriv.get(
-                            "expDt"
-                        )
-                        df.loc[i, "exercise_price"] = option_swaption_warrant_deriv.get(
+                        rec["expiry_date"] = option_swaption_warrant_deriv.get("expDt")
+                        rec["exercise_price"] = option_swaption_warrant_deriv.get(
                             "exercisePrice"
                         )
-                        df.loc[i, "exercise_currency"] = (
-                            option_swaption_warrant_deriv.get("exercisePriceCurCd")
+                        rec["exercise_currency"] = option_swaption_warrant_deriv.get(
+                            "exercisePriceCurCd"
                         )
-                        df.loc[i, "shares_per_contract"] = (
-                            option_swaption_warrant_deriv.get("shareNo")
+                        rec["shares_per_contract"] = option_swaption_warrant_deriv.get(
+                            "shareNo"
                         )
                         if option_swaption_warrant_deriv.get("delta") != "XXXX":
-                            df.loc[i, "delta"] = option_swaption_warrant_deriv.get(
-                                "delta"
-                            )
-                        df.loc[i, "unrealized_gain"] = float(
+                            rec["delta"] = option_swaption_warrant_deriv.get("delta")
+                        rec["unrealized_gain"] = float(
                             option_swaption_warrant_deriv.get("unrealizedAppr")
                         )
 
                     if "futrDeriv" in derivative_info:
                         futr_deriv = derivative_info["futrDeriv"]
-                        df.loc[i, "derivative_category"] = futr_deriv.get("@derivCat")
+                        rec["derivative_category"] = futr_deriv.get("@derivCat")
                         if isinstance(futr_deriv.get("counterparties"), dict):
-                            df.loc[i, "counterparty"] = futr_deriv[
-                                "counterparties"
-                            ].get("counterpartyName")
-                            df.loc[i, "lei"] = futr_deriv["counterparties"].get(
+                            rec["counterparty"] = futr_deriv["counterparties"].get(
+                                "counterpartyName"
+                            )
+                            rec["lei"] = futr_deriv["counterparties"].get(
                                 "counterpartyLei"
                             )
-                        df.loc[i, "underlying_name"] = (
+                        rec["underlying_name"] = (
                             futr_deriv["descRefInstrmnt"]
                             .get("indexBasketInfo", {})
                             .get("indexName")
                         )
-                        df.loc[i, "other_id"] = (
+                        rec["other_id"] = (
                             futr_deriv["descRefInstrmnt"]
                             .get("indexBasketInfo", {})
                             .get("indexIdentifier")
                         )
-                        df.loc[i, "derivative_payoff"] = futr_deriv.get("payOffProf")
-                        df.loc[i, "expiry_date"] = futr_deriv.get(
-                            "expDt"
-                        ) or futr_deriv.get("expDate")
-                        df.loc[i, "notional_amount"] = float(
-                            futr_deriv.get("notionalAmt")
+                        rec["derivative_payoff"] = futr_deriv.get("payOffProf")
+                        rec["expiry_date"] = futr_deriv.get("expDt") or futr_deriv.get(
+                            "expDate"
                         )
-                        df.loc[i, "notional_currency"] = futr_deriv.get("curCd")
-                        df.loc[i, "unrealized_gain"] = float(
-                            futr_deriv.get("unrealizedAppr")
-                        )
+                        rec["notional_amount"] = float(futr_deriv.get("notionalAmt"))
+                        rec["notional_currency"] = futr_deriv.get("curCd")
+                        rec["unrealized_gain"] = float(futr_deriv.get("unrealizedAppr"))
 
                     if "fwdDeriv" in derivative_info:
                         fwd_deriv = derivative_info["fwdDeriv"]
-                        df.loc[i, "derivative_category"] = fwd_deriv.get("@derivCat")
-                        df.loc[i, "counterparty"] = fwd_deriv["counterparties"].get(
+                        rec["derivative_category"] = fwd_deriv.get("@derivCat")
+                        rec["counterparty"] = fwd_deriv["counterparties"].get(
                             "counterpartyName"
                         )
-                        df.loc[i, "currency_sold"] = fwd_deriv.get("curSold")
-                        df.loc[i, "currency_amount_sold"] = float(
-                            fwd_deriv.get("amtCurSold")
-                        )
-                        df.loc[i, "currency_bought"] = fwd_deriv.get("curPur")
-                        df.loc[i, "currency_amount_bought"] = float(
+                        rec["currency_sold"] = fwd_deriv.get("curSold")
+                        rec["currency_amount_sold"] = float(fwd_deriv.get("amtCurSold"))
+                        rec["currency_bought"] = fwd_deriv.get("curPur")
+                        rec["currency_amount_bought"] = float(
                             fwd_deriv.get("amtCurPur")
                         )
-                        df.loc[i, "expiry_date"] = fwd_deriv.get("settlementDt")
-                        df.loc[i, "unrealized_gain"] = float(
-                            fwd_deriv.get("unrealizedAppr")
-                        )
+                        rec["expiry_date"] = fwd_deriv.get("settlementDt")
+                        rec["unrealized_gain"] = float(fwd_deriv.get("unrealizedAppr"))
 
-                    if "swapDeriv" in df.iloc[i]["derivativeInfo"]:
-                        swap_deriv = df.iloc[i]["derivativeInfo"]["swapDeriv"]
-                        df.loc[i, "derivative_category"] = swap_deriv.get("@derivCat")
-                        df.loc[i, "counterparty"] = swap_deriv["counterparties"].get(
+                    if "swapDeriv" in rec["derivativeInfo"]:
+                        swap_deriv = rec["derivativeInfo"]["swapDeriv"]
+                        rec["derivative_category"] = swap_deriv.get("@derivCat")
+                        rec["counterparty"] = swap_deriv["counterparties"].get(
                             "counterpartyName"
                         )
-                        df.loc[i, "lei"] = swap_deriv["counterparties"].get(
-                            "counterpartyLei"
-                        )
+                        rec["lei"] = swap_deriv["counterparties"].get("counterpartyLei")
                         if "otherRefInst" in swap_deriv["descRefInstrmnt"]:
-                            df.loc[i, "underlying_name"] = swap_deriv[
-                                "descRefInstrmnt"
-                            ]["otherRefInst"].get("issueTitle")
+                            rec["underlying_name"] = swap_deriv["descRefInstrmnt"][
+                                "otherRefInst"
+                            ].get("issueTitle")
                         if "indexBasketInfo" in swap_deriv["descRefInstrmnt"]:
-                            df.loc[i, "underlying_name"] = swap_deriv[
-                                "descRefInstrmnt"
-                            ]["indexBasketInfo"].get("indexName")
-                            df.loc[i, "other_id"] = swap_deriv["descRefInstrmnt"][
+                            rec["underlying_name"] = swap_deriv["descRefInstrmnt"][
+                                "indexBasketInfo"
+                            ].get("indexName")
+                            rec["other_id"] = swap_deriv["descRefInstrmnt"][
                                 "indexBasketInfo"
                             ].get("indexIdentifier")
-                        df.loc[i, "swap_description"] = (
+                        rec["swap_description"] = (
                             swap_deriv["otherRecDesc"].get("#text")
                             if "otherRecDesc" in swap_deriv["descRefInstrmnt"]
                             else None
                         )
                         if "floatingRecDesc" in swap_deriv:
-                            df.loc[i, "rate_type_rec"] = swap_deriv[
-                                "floatingRecDesc"
-                            ].get("@fixedOrFloating")
-                            df.loc[i, "floating_rate_index_rec"] = swap_deriv[
+                            rec["rate_type_rec"] = swap_deriv["floatingRecDesc"].get(
+                                "@fixedOrFloating"
+                            )
+                            rec["floating_rate_index_rec"] = swap_deriv[
                                 "floatingRecDesc"
                             ].get("@floatingRtIndex")
-                            df.loc[i, "floating_rate_spread_rec"] = float(
+                            rec["floating_rate_spread_rec"] = float(
                                 swap_deriv["floatingRecDesc"].get("@floatingRtSpread")
                             )
-                            df.loc[i, "payment_amount_rec"] = float(
+                            rec["payment_amount_rec"] = float(
                                 swap_deriv["floatingRecDesc"].get("@pmntAmt")
                             )
-                            df.loc[i, "rate_tenor_rec"] = swap_deriv["floatingRecDesc"][
+                            rec["rate_tenor_rec"] = swap_deriv["floatingRecDesc"][
                                 "rtResetTenors"
                             ]["rtResetTenor"].get("@rateTenor")
-                            df.loc[i, "rate_tenor_unit_rec"] = swap_deriv[
-                                "floatingRecDesc"
-                            ]["rtResetTenors"]["rtResetTenor"].get("@rateTenorUnit")
-                            df.loc[i, "reset_date_rec"] = swap_deriv["floatingRecDesc"][
+                            rec["rate_tenor_unit_rec"] = swap_deriv["floatingRecDesc"][
+                                "rtResetTenors"
+                            ]["rtResetTenor"].get("@rateTenorUnit")
+                            rec["reset_date_rec"] = swap_deriv["floatingRecDesc"][
                                 "rtResetTenors"
                             ]["rtResetTenor"].get("@resetDt")
-                            df.loc[i, "reset_date_unit_rec"] = swap_deriv[
-                                "floatingRecDesc"
-                            ]["rtResetTenors"]["rtResetTenor"].get("@resetDtUnit")
+                            rec["reset_date_unit_rec"] = swap_deriv["floatingRecDesc"][
+                                "rtResetTenors"
+                            ]["rtResetTenor"].get("@resetDtUnit")
                         if "floatingPmntDesc" in swap_deriv:
-                            df.loc[i, "rate_type_pmnt"] = swap_deriv[
-                                "floatingPmntDesc"
-                            ].get("@fixedOrFloating")
-                            df.loc[i, "floating_rate_index_pmnt"] = swap_deriv[
+                            rec["rate_type_pmnt"] = swap_deriv["floatingPmntDesc"].get(
+                                "@fixedOrFloating"
+                            )
+                            rec["floating_rate_index_pmnt"] = swap_deriv[
                                 "floatingPmntDesc"
                             ].get("@floatingRtIndex")
-                            df.loc[i, "floating_rate_spread_pmnt"] = float(
+                            rec["floating_rate_spread_pmnt"] = float(
                                 swap_deriv["floatingPmntDesc"].get("@floatingRtSpread")
                             )
-                            df.loc[i, "payment_amount_pmnt"] = float(
+                            rec["payment_amount_pmnt"] = float(
                                 swap_deriv["floatingPmntDesc"].get("@pmntAmt")
                             )
-                            df.loc[i, "rate_tenor_pmnt"] = swap_deriv[
-                                "floatingPmntDesc"
-                            ]["rtResetTenors"]["rtResetTenor"].get("@rateTenor")
-                            df.loc[i, "rate_tenor_unit_pmnt"] = swap_deriv[
+                            rec["rate_tenor_pmnt"] = swap_deriv["floatingPmntDesc"][
+                                "rtResetTenors"
+                            ]["rtResetTenor"].get("@rateTenor")
+                            rec["rate_tenor_unit_pmnt"] = swap_deriv[
                                 "floatingPmntDesc"
                             ]["rtResetTenors"]["rtResetTenor"].get("@rateTenorUnit")
-                            df.loc[i, "reset_date_pmnt"] = swap_deriv[
-                                "floatingPmntDesc"
-                            ]["rtResetTenors"]["rtResetTenor"].get("@resetDt")
-                            df.loc[i, "reset_date_unit_rec"] = swap_deriv[
-                                "floatingPmntDesc"
-                            ]["rtResetTenors"]["rtResetTenor"].get("@resetDtUnit")
-                        df.loc[i, "expiry_date"] = swap_deriv.get("terminationDt")
-                        df.loc[i, "upfront_payment"] = float(
-                            swap_deriv.get("upfrontPmnt")
-                        )
-                        df.loc[i, "payment_currency"] = swap_deriv.get("pmntCurCd")
-                        df.loc[i, "upfront_receive"] = float(
-                            swap_deriv.get("upfrontRcpt")
-                        )
-                        df.loc[i, "receive_currency"] = swap_deriv.get("rcptCurCd")
-                        df.loc[i, "notional_amount"] = float(
-                            swap_deriv.get("notionalAmt")
-                        )
-                        df.loc[i, "notional_currency"] = swap_deriv.get("curCd")
-                        df.loc[i, "unrealized_gain"] = float(
-                            swap_deriv.get("unrealizedAppr")
-                        )
+                            rec["reset_date_pmnt"] = swap_deriv["floatingPmntDesc"][
+                                "rtResetTenors"
+                            ]["rtResetTenor"].get("@resetDt")
+                            rec["reset_date_unit_rec"] = swap_deriv["floatingPmntDesc"][
+                                "rtResetTenors"
+                            ]["rtResetTenor"].get("@resetDtUnit")
+                        rec["expiry_date"] = swap_deriv.get("terminationDt")
+                        rec["upfront_payment"] = float(swap_deriv.get("upfrontPmnt"))
+                        rec["payment_currency"] = swap_deriv.get("pmntCurCd")
+                        rec["upfront_receive"] = float(swap_deriv.get("upfrontRcpt"))
+                        rec["receive_currency"] = swap_deriv.get("rcptCurCd")
+                        rec["notional_amount"] = float(swap_deriv.get("notionalAmt"))
+                        rec["notional_currency"] = swap_deriv.get("curCd")
+                        rec["unrealized_gain"] = float(swap_deriv.get("unrealizedAppr"))
 
-                if "repurchaseAgrmt" in df.iloc[i] and isinstance(
-                    df.iloc[i]["repurchaseAgrmt"], dict
+                if "repurchaseAgrmt" in rec and isinstance(
+                    rec["repurchaseAgrmt"], dict
                 ):
-                    repurchase_agrmt = df.iloc[i]["repurchaseAgrmt"]
-                    df.loc[i, "repo_type"] = repurchase_agrmt.get("transCat")
+                    repurchase_agrmt = rec["repurchaseAgrmt"]
+                    rec["repo_type"] = repurchase_agrmt.get("transCat")
 
                     if "clearedCentCparty" in repurchase_agrmt and isinstance(
                         repurchase_agrmt["clearedCentCparty"], dict
                     ):
                         cleared_cent_cparty = repurchase_agrmt["clearedCentCparty"]
-                        df.loc[i, "is_cleared"] = cleared_cent_cparty.get("@isCleared")
-                        df.loc[i, "counterparty"] = cleared_cent_cparty.get(
+                        rec["is_cleared"] = cleared_cent_cparty.get("@isCleared")
+                        rec["counterparty"] = cleared_cent_cparty.get(
                             "@centralCounterparty"
                         )
-                    df.loc[i, "is_tri_party"] = repurchase_agrmt.get("isTriParty")
-                    df.loc[i, "annualized_return"] = repurchase_agrmt.get(
-                        "repurchaseRt"
-                    )
-                    df.loc[i, "maturity_date"] = repurchase_agrmt.get("maturityDt")
+                    rec["is_tri_party"] = repurchase_agrmt.get("isTriParty")
+                    rec["annualized_return"] = repurchase_agrmt.get("repurchaseRt")
+                    rec["maturity_date"] = repurchase_agrmt.get("maturityDt")
 
                     if (
                         "repurchaseCollaterals" in repurchase_agrmt
@@ -642,30 +613,28 @@ class SecNportDisclosureFetcher(
                         repurchase_collateral = repurchase_agrmt[
                             "repurchaseCollaterals"
                         ]["repurchaseCollateral"]
-                        df.loc[i, "principal_amount"] = float(
+                        rec["principal_amount"] = float(
                             repurchase_collateral.get("principalAmt")
                         )
-                        df.loc[i, "principal_currency"] = repurchase_collateral.get(
+                        rec["principal_currency"] = repurchase_collateral.get(
                             "@principalCd"
                         )
-                        df.loc[i, "collateral_amount"] = float(
+                        rec["collateral_amount"] = float(
                             repurchase_collateral.get("collateralVal")
                         )
-                        df.loc[i, "collateral_currency"] = repurchase_collateral.get(
+                        rec["collateral_currency"] = repurchase_collateral.get(
                             "@collateralCd"
                         )
-                        df.loc[i, "collateral_type"] = repurchase_collateral.get(
-                            "@invstCat"
-                        )
+                        rec["collateral_type"] = repurchase_collateral.get("@invstCat")
 
-                if "currencyConditional" in df.iloc[i] and isinstance(
-                    df.iloc[i]["currencyConditional"], dict
+                if "currencyConditional" in rec and isinstance(
+                    rec["currencyConditional"], dict
                 ):
-                    currency_conditional = df.iloc[i]["currencyConditional"]
-                    df.loc[i, "exchange_currency"] = currency_conditional.get("@curCd")
-                    df.loc[i, "exchange_rate"] = currency_conditional.get("@exchangeRt")
+                    currency_conditional = rec["currencyConditional"]
+                    rec["exchange_currency"] = currency_conditional.get("@curCd")
+                    rec["exchange_rate"] = currency_conditional.get("@exchangeRt")
 
-            # Drop the flattened columns
+            df = DataFrame.from_records(invst)
             to_drop = [
                 "identifiers",
                 "securityLending",
@@ -681,30 +650,38 @@ class SecNportDisclosureFetcher(
                     df = df.drop(col, axis=1)
 
             df["pctVal"] = df["pctVal"].astype(float)
-            results = (
-                df.fillna("N/A")
-                .replace("N/A", None)
-                .sort_values(by="pctVal", ascending=False)
-                .to_dict(orient="records")
+            df = df.sort_values(by="pctVal", ascending=False)
+            records = (
+                df.astype(object).where(df.notna(), None).to_dict(orient="records")
             )
+            results = [
+                {
+                    key: (
+                        None if isinstance(value, str) and not value.strip() else value
+                    )
+                    for key, value in record.items()
+                }
+                for record in records
+            ]
         # Extract additional information from the form that doesn't belong in the holdings table.
         metadata = {}
         month_1: str = ""
         month_2: str = ""
         month_3: str = ""
         try:
-            gen_info = response["edgarSubmission"]["formData"].get("genInfo", {})  # type: ignore
+            gen_info = response["edgarSubmission"]["formData"].get("genInfo", {})
             if gen_info:
+                period_ending = gen_info.get("repPdDate")
                 metadata["fund_name"] = gen_info.get("seriesName")
                 metadata["series_id"] = gen_info.get("seriesId")
                 metadata["lei"] = gen_info.get("seriesLei")
-                metadata["period_ending"] = gen_info.get("repPdDate")
+                metadata["period_ending"] = period_ending
                 metadata["fiscal_year_end"] = gen_info.get("repPdEnd")
-                current_month = to_datetime(metadata["period_ending"])
+                current_month = to_datetime(cast(Any, period_ending))
                 month_1 = (current_month - MonthEnd(2)).date().strftime("%Y-%m-%d")
                 month_2 = (current_month - MonthEnd(1)).date().strftime("%Y-%m-%d")
                 month_3 = current_month.strftime("%Y-%m-%d")
-            fund_info = response["edgarSubmission"]["formData"].get("fundInfo", {})  # type: ignore
+            fund_info = response["edgarSubmission"]["formData"].get("fundInfo", {})
             if fund_info:
                 metadata["total_assets"] = float(fund_info.pop("totAssets", None))
                 metadata["total_liabilities"] = float(fund_info.pop("totLiabs", None))
@@ -712,8 +689,12 @@ class SecNportDisclosureFetcher(
                 metadata["cash_and_equivalents"] = fund_info.pop(
                     "cshNotRptdInCorD", None
                 )
-                return_info = fund_info["returnInfo"]["monthlyTotReturns"].get(
-                    "monthlyTotReturn", {}
+                monthly = (
+                    fund_info["returnInfo"]["monthlyTotReturns"].get("monthlyTotReturn")
+                    or {}
+                )
+                return_info: Any = (
+                    monthly[0] if isinstance(monthly, list) and monthly else monthly
                 )
                 returns = {
                     month_1: float(return_info.get("@rtn1")) / 100,
@@ -781,7 +762,7 @@ class SecNportDisclosureFetcher(
                     },
                 }
                 metadata["gains"] = gains
-                _borrowers = fund_info["borrowers"].get("borrower", [])
+                _borrowers = (fund_info.get("borrowers") or {}).get("borrower", [])
                 if _borrowers:
                     borrowers = [
                         {
@@ -792,7 +773,7 @@ class SecNportDisclosureFetcher(
                         for d in _borrowers
                     ]
                     metadata["borrowers"] = borrowers
-        except Exception as e:  # pylint: disable=W0718
+        except Exception as e:
             warn(f"Error extracting metadata: {e}")
         return AnnotatedResult(
             result=[SecNportDisclosureData.model_validate(d) for d in results],

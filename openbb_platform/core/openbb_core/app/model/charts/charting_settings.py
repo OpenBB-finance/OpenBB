@@ -11,7 +11,6 @@ if TYPE_CHECKING:
     from openbb_core.app.model.user_settings import UserSettings
 
 
-# pylint: disable=too-many-instance-attributes
 class ChartingSettings:
     """Charting settings."""
 

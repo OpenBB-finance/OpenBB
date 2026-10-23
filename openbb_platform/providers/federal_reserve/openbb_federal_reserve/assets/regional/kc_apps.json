@@ -1,0 +1,151 @@
+[
+  {
+    "name": "Kansas City Fed",
+    "img": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Federal_Reserve_KC.jpg/960px-Federal_Reserve_KC.jpg",
+    "img_dark": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Federal_Reserve_KC.jpg/960px-Federal_Reserve_KC.jpg",
+    "img_light": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Federal_Reserve_KC.jpg/960px-Federal_Reserve_KC.jpg",
+    "description": "The Kansas City Fed's financial-stress and labor gauges plus agricultural finance - the KCFSI Financial Stress Index, the Risk-On/Risk-Off and Policy Rate Uncertainty indexes, model-based natural rates, the Labor Market Conditions Indicators, and the Agricultural Credit Survey and Finance Databook.",
+    "allowCustomization": true,
+    "tabs": {
+      "financial-policy": {
+        "id": "financial-policy",
+        "name": "Financial & Policy",
+        "layout": [
+          {
+            "i": "kc_financial_stress_index_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "kc_risk_index_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "kc_policy_rate_uncertainty_federal_reserve_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "kc_natural_rate_federal_reserve_obb",
+            "x": 0,
+            "y": 54,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "kc_divisional_lmci_federal_reserve_obb",
+            "x": 0,
+            "y": 72,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "agricultural-credit": {
+        "id": "agricultural-credit",
+        "name": "Agricultural Credit",
+        "layout": [
+          {
+            "i": "kc_ag_credit_survey_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "kc_ag_interest_rates_federal_reserve_obb",
+            "x": 0,
+            "y": 18,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "kc_ag_finance_databook_federal_reserve_obb",
+            "x": 0,
+            "y": 36,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "kc_ag_terms_of_lending_federal_reserve_obb",
+            "x": 0,
+            "y": 54,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "kc_ag_district_surveys_federal_reserve_obb",
+            "x": 0,
+            "y": 72,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          },
+          {
+            "i": "kc_ag_databook_archived_federal_reserve_obb",
+            "x": 0,
+            "y": 90,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      },
+      "publications-reports": {
+        "id": "publications-reports",
+        "name": "Publications & Reports",
+        "layout": [
+          {
+            "i": "kc_publications_federal_reserve_obb",
+            "x": 0,
+            "y": 0,
+            "w": 40,
+            "h": 18,
+            "state": {
+              "params": {}
+            }
+          }
+        ]
+      }
+    },
+    "groups": []
+  }
+]

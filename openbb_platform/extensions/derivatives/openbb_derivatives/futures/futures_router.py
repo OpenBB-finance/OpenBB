@@ -14,7 +14,6 @@ from openbb_core.app.router import Router
 router = Router(prefix="/futures")
 
 
-# pylint: disable=unused-argument
 @router.command(
     model="FuturesHistorical",
     examples=[

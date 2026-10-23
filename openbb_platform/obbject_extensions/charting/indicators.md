@@ -30,20 +30,23 @@ As starting points, they can be refined to perfection by manipulating the figure
 ```python
 from datetime import datetime, timedelta
 from openbb import obb
+
 data = obb.equity.price.historical(
     "TSLA",
     provider="yfinance",
     interval="15m",
-    start_date=(datetime.now()-timedelta(days=21)).date(),
+    start_date=(datetime.now() - timedelta(days=21)).date(),
     chart=True,
     chart_params=dict(
         heikin_ashi=True,
-        indicators=(dict(
-            ema=dict(length=[8,32]),
-            srlines={}, # For indicators, an empty dictionary implies the default state.
-            rsi=dict(length=32)
-        ))
-    )
+        indicators=(
+            dict(
+                ema=dict(length=[8, 32]),
+                srlines={},  # For indicators, an empty dictionary implies the default state.
+                rsi=dict(length=32),
+            )
+        ),
+    ),
 )
 data.show()
 ```
@@ -364,15 +367,17 @@ The chart below is built from the same object as the one above.
 
 ```python
 indicators = data.charting.indicators().dict()
-macd=indicators.get("macd")
-kc=indicators.get("kc")
-chart_params=dict(
+macd = indicators.get("macd")
+kc = indicators.get("kc")
+chart_params = dict(
     candles=False,
     title="My New Chart",
-    indicators=(dict(
-        macd=macd,
-        kc=kc,
-    ))
+    indicators=(
+        dict(
+            macd=macd,
+            kc=kc,
+        )
+    ),
 )
 data.charting.to_chart(**chart_params)
 ```

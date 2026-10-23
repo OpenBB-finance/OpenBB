@@ -1,7 +1,5 @@
 """FRED Survey Of Economic Conditions - Chicago - Model"""
 
-# pylint: disable=unused-argument
-
 from typing import Any, Literal
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -11,24 +9,27 @@ from openbb_core.provider.standard_models.survey_of_economic_conditions_chicago 
     SurveyOfEconomicConditionsChicagoQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_fred.models.series import FredSeriesFetcher
 from pydantic import Field
+
+from openbb_fred.models.series import FredSeriesFetcher
+from openbb_fred.utils.api import unwrap_series
+from openbb_fred.utils.query import UseCacheQueryParams
 
 ID_TO_FIELD = {
     "CFSBCACTIVITY": "activity_index",
     "CFSBCOUTLOOK": "one_year_outlook",
     "CFSBCACTIVITYMFG": "manufacturing_activity",
     "CFSBCACTIVITYNMFG": "non_manufacturing_activity",
-    "CFSBCCAPXEXP": "capital_spending_expectations",
+    "CFSBCCAPXEXP": "capital_expenditures_expectations",
     "CFSBCHIRINGEXP": "hiring_expectations",
-    "CFSBCHIRING": "current_hiring_index",
-    "CFSBCLABORCOSTS": "labor_costs_index",
-    "CFSBCNONLABORCOSTS": "non_labor_costs_index",
+    "CFSBCHIRING": "current_hiring",
+    "CFSBCLABORCOSTS": "labor_costs",
+    "CFSBCNONLABORCOSTS": "non_labor_costs",
 }
 
 
 class FredSurveyOfEconomicConditionsChicagoQueryParams(
-    SurveyOfEconomicConditionsChicagoQueryParams
+    UseCacheQueryParams, SurveyOfEconomicConditionsChicagoQueryParams
 ):
     """FRED Survey Of Economic Conditions - Chicago - Query Params."""
 
@@ -95,7 +96,7 @@ class FredSurveyOfEconomicConditionsChicagoFetcher(
     async def aextract_data(
         query: FredSurveyOfEconomicConditionsChicagoQueryParams,
         credentials: dict[str, str] | None,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> dict:
         """Extract data."""
         ids = list(ID_TO_FIELD.keys())
@@ -109,25 +110,27 @@ class FredSurveyOfEconomicConditionsChicagoFetcher(
                     transform=query.transform,
                     frequency=frequency,
                     aggregation_method=query.aggregation_method,
+                    use_cache=query.use_cache,
                 ),
                 credentials,
             )
         except Exception as e:
             raise e from e
 
+        rows, metadata = unwrap_series(response)
+
         return {
-            "metadata": response.metadata,
-            "data": [d.model_dump() for d in response.result],
+            "metadata": metadata,
+            "data": [d.model_dump() for d in rows],
         }
 
     @staticmethod
     def transform_data(
         query: FredSurveyOfEconomicConditionsChicagoQueryParams,
         data: dict,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> AnnotatedResult[list[FredSurveyOfEconomicConditionsChicagoData]]:
         """Transform data."""
-        # pylint: disable=import-outside-toplevel
         from pandas import DataFrame
 
         df = DataFrame(data["data"])
@@ -138,8 +141,6 @@ class FredSurveyOfEconomicConditionsChicagoFetcher(
             )
         df = df.set_index("date").sort_index()
         df.columns = [ID_TO_FIELD.get(c, c) for c in df.columns]
-        if query.transform in ["pch", "pc1", "pca", "cch", "cca"]:
-            df = df / 100
         df = df.reset_index().fillna("N/A").replace("N/A", None)
         records = df.to_dict(orient="records")
         return AnnotatedResult(

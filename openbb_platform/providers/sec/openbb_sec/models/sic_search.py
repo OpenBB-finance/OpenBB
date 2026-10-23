@@ -1,7 +1,5 @@
 """SEC Standard Industrial Classification Code (SIC) Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any
 
 from openbb_core.provider.abstract.data import Data
@@ -19,7 +17,7 @@ class SecSicSearchQueryParams(QueryParams):
     query: str = Field(
         description="Search query to match against SIC code, industry title, or office."
     )
-    use_cache: bool | None = Field(
+    use_cache: bool = Field(
         default=True,
         description="Whether or not to use cache.",
     )
@@ -63,37 +61,26 @@ class SecSicSearchFetcher(
         **kwargs: Any,
     ) -> list[dict]:
         """Extract data from the SEC website table."""
-        # pylint: disable=import-outside-toplevel
-        from aiohttp_client_cache import SQLiteBackend  # noqa
-        from aiohttp_client_cache.session import CachedSession
         from io import StringIO
-        from openbb_core.app.utils import get_user_cache_directory
-        from openbb_core.provider.utils.helpers import amake_request
-        from openbb_sec.utils.helpers import SEC_HEADERS, sec_callback
+
         from pandas import DataFrame, read_html
+
+        from openbb_sec.utils.cache import cached_request
+        from openbb_sec.utils.helpers import SEC_HEADERS, sec_callback
 
         data = DataFrame()
         results: list[dict] = []
         url = "https://www.sec.gov/corpfin/division-of-corporation-finance-standard-industrial-classification-sic-code-list"
-        response: dict | list[dict] | str = {}
-        if query.use_cache is True:
-            cache_dir = f"{get_user_cache_directory()}/http/sec_sic"
-            async with CachedSession(
-                cache=SQLiteBackend(cache_dir, expire_after=3600 * 24 * 30)
-            ) as session:
-                try:
-                    response = await amake_request(
-                        url,
-                        headers=SEC_HEADERS,
-                        session=session,
-                        response_callback=sec_callback,  # type: ignore
-                    )
-                finally:
-                    await session.close()
-        else:
-            response = await amake_request(url, headers=SEC_HEADERS, response_callback=sec_callback)  # type: ignore
+        # The SIC code list changes rarely; refresh monthly.
+        response = await cached_request(
+            url,
+            headers=SEC_HEADERS,
+            response_callback=sec_callback,
+            use_cache=query.use_cache,
+            expire=3600 * 24 * 30,
+        )
 
-        data = read_html(StringIO(response))[0].astype(str)  # type: ignore
+        data = read_html(StringIO(response))[0].astype(str)
         if len(data) == 0:
             return results
         if query:

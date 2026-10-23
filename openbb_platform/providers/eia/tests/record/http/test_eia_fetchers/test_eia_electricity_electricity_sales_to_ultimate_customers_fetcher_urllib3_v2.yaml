@@ -1,0 +1,66 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.eia.gov/v2/electricity/retail-sales/data/?api_key=MOCK_API_KEY&data%5B0%5D=customers&data%5B1%5D=price&data%5B2%5D=revenue&data%5B3%5D=sales&end=2001-01&facets%5Bsectorid%5D%5B%5D=ALL&facets%5Bstateid%5D%5B%5D=AK&frequency=monthly&length=5000&offset=0&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=asc&start=2001-01
+  response:
+    body:
+      string: '{"response":{"total":"1","dateFormat":"YYYY-MM","frequency":"monthly","data":[{"period":"2001-01","stateid":"AK","stateDescription":"Alaska","sectorid":"ALL","sectorName":"all
+        sectors","customers":null,"price":"9.97","revenue":"51.96404","sales":"521.03566","customers-units":"number
+        of customers","price-units":"cents per kilowatt-hour","revenue-units":"million
+        dollars","sales-units":"million kilowatt hours"}],"description":"Electricity
+        sales to ultimate customer by state and sector (number of customers, average
+        price, revenue, and megawatthours of sales).  \n    Sources: Forms EIA-826,
+        EIA-861, EIA-861M"},"request":{"command":"\/v2\/electricity\/retail-sales\/data\/","params":{"api_key":"MOCK_API_KEY","frequency":"monthly","data":["customers","price","revenue","sales"],"facets":{"stateid":["AK"],"sectorid":["ALL"]},"start":"2001-01","end":"2001-01","sort":[{"column":"period","direction":"asc"}],"offset":"0","length":"5000"}},"apiVersion":"2.1.13","ExcelAddInVersion":"2.1.0"}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept, Authorization, X-Params
+      Access-Control-Allow-Methods:
+      - GET,POST,PATCH,PUT,DELETE,OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '1'
+      Alt-Svc:
+      - h3=":443"; ma=93600
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 09 Jul 2026 02:59:24 GMT
+      Etag: null
+      Expires:
+      - Thu, 09 Jul 2026 02:59:24 GMT
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      Via: null
+      X-Amz-Cf-Id: null
+      X-Amz-Cf-Pop: null
+      X-Api-Umbrella-Request-Id: null
+      X-Cache: null
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Vcap-Request-Id: null
+      content-length:
+      - '1017'
+    status:
+      code: 200
+      message: OK
+version: 1

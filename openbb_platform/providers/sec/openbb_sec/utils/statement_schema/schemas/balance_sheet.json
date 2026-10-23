@@ -534,10 +534,6 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
-        },
-        {
-          "tag": "Land",
-          "namespace": "us-gaap"
         }
       ]
     },
@@ -669,6 +665,12 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
+        },
+        {
+          "tag": "EquityMethodInvestments",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2027
         },
         {
           "tag": "InvestmentAccountedForUsingEquityMethod",
@@ -1121,6 +1123,12 @@
           "last_year": 2026
         },
         {
+          "tag": "LongTermDebtAndCapitalLeaseObligationsCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
           "tag": "CurrentPortionOfLongTermDebt",
           "namespace": "us-gaap"
         },
@@ -1415,7 +1423,7 @@
       "tag": "other_taxes_payable",
       "label": "Other Taxes Payable",
       "description": "Carrying value as of the balance sheet date of obligations incurred and payable for statutory income, sales, use, payroll, excise, real, property and other taxes. Used to reflect the current portion of the liabilities (due within one year or within the normal operating cycle if longer).",
-      "parent": "other_current_liabilities",
+      "parent": "total_current_liabilities",
       "sequence": 38,
       "factor": "+",
       "balance": "credit",
@@ -2133,12 +2141,10 @@
           "namespace": "us-gaap"
         },
         {
-          "tag": "RedeemablePreferredStockCarryingAmount",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "TemporaryEquityValueExcludingAdditionalPaidInCapital",
-          "namespace": "us-gaap"
+          "tag": "TemporaryEquityCarryingAmount",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2012
         }
       ]
     },
@@ -2156,6 +2162,16 @@
         {
           "tag": "TemporaryEquityCarryingAmountAttributableToParent",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "RedeemablePreferredStockCarryingAmount",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "RedeemablePreferredStockCarryingAmountOrRedemptionValue",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -2163,7 +2179,7 @@
       "tag": "redeemable_noncontrolling_interest",
       "label": "Redeemable Noncontrolling Interest",
       "description": "As of the reporting date, the aggregate carrying amount of all noncontrolling interests which are redeemable by the (parent) entity (1) at a fixed or determinable price on a fixed or determinable date, (2) at the option of the holder of the noncontrolling interest, or (3) upon occurrence of an event that is not solely within the control of the (parent) entity. This item includes noncontrolling interest holder's ownership (or holders' ownership) regardless of the type of equity interest (common, preferred, other) including all potential organizational (legal) forms of the investee entity.",
-      "parent": "total_liabilities_and_equity",
+      "parent": "temporary_equity",
       "sequence": 58,
       "factor": "+",
       "balance": "credit",
@@ -2201,34 +2217,10 @@
           "last_year": 2026
         },
         {
-          "tag": "RedeemablePreferredStockCarryingAmountOrRedemptionValue",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests",
+          "tag": "TemporaryEquityCarryingAmountAttributableToNoncontrollingInterest",
           "namespace": "us-gaap",
           "first_year": 2012,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityRedemptionValue",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityValueExcludingAdditionalPaidInCapital",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityCarryingAmountAttributableToParent",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
+          "last_year": 2014
         }
       ]
     },
@@ -2299,6 +2291,24 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockValueOutstanding",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockIncludingAdditionalPaidInCapital",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockIncludingAdditionalPaidInCapitalNetOfDiscount",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2025
         }
       ]
     },
@@ -2435,6 +2445,12 @@
           "last_year": 2026
         },
         {
+          "tag": "TreasuryStockCommonValue",
+          "namespace": "us-gaap",
+          "first_year": 2016,
+          "last_year": 2026
+        },
+        {
           "tag": "TreasuryShares",
           "namespace": "ifrs-full",
           "first_year": 2020,
@@ -2486,7 +2502,7 @@
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
-      "period_type": "duration",
+      "period_type": "instant",
       "xbrl_tags": [
         {
           "tag": "StockholdersEquityOther",
@@ -2859,16 +2875,7 @@
       "unit": "monetary",
       "period_type": "instant",
       "xbrl_tags": [
-        {
-          "tag": "TimeDepositsAtCarryingValue",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "TimeDeposits",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        }
+
       ]
     },
     {
@@ -2929,6 +2936,12 @@
         },
         {
           "tag": "LoansAndLeasesReceivableGrossCarryingAmount",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2021
+        },
+        {
+          "tag": "LoansAndLeasesReceivableNetOfDeferredIncome",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2021
@@ -3027,10 +3040,10 @@
       "period_type": "instant",
       "xbrl_tags": [
         {
-          "tag": "LoansAndLeasesReceivableNetOfDeferredIncome",
+          "tag": "LoansReceivableHeldForSaleNetNotPartOfDisposalGroup",
           "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2021
+          "first_year": 2015,
+          "last_year": 2026
         }
       ]
     },
@@ -3253,6 +3266,12 @@
         {
           "tag": "HeldToMaturitySecuritiesNoncurrent",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "EquityMethodInvestments",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2027
         },
         {
           "tag": "FinancialAssetsAtFairValueThroughOtherComprehensiveIncome",
@@ -3645,6 +3664,12 @@
           "tag": "LongTermDebtCurrent",
           "namespace": "us-gaap",
           "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "LongTermDebtAndCapitalLeaseObligationsCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2009,
           "last_year": 2026
         },
         {
@@ -4247,12 +4272,10 @@
           "namespace": "us-gaap"
         },
         {
-          "tag": "RedeemablePreferredStockCarryingAmount",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "TemporaryEquityValueExcludingAdditionalPaidInCapital",
-          "namespace": "us-gaap"
+          "tag": "TemporaryEquityCarryingAmount",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2012
         }
       ]
     },
@@ -4270,6 +4293,16 @@
         {
           "tag": "TemporaryEquityCarryingAmountAttributableToParent",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "RedeemablePreferredStockCarryingAmount",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "RedeemablePreferredStockCarryingAmountOrRedemptionValue",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -4277,7 +4310,7 @@
       "tag": "redeemable_noncontrolling_interest",
       "label": "Redeemable Noncontrolling Interest",
       "description": "As of the reporting date, the aggregate carrying amount of all noncontrolling interests which are redeemable by the (parent) entity (1) at a fixed or determinable price on a fixed or determinable date, (2) at the option of the holder of the noncontrolling interest, or (3) upon occurrence of an event that is not solely within the control of the (parent) entity. This item includes noncontrolling interest holder's ownership (or holders' ownership) regardless of the type of equity interest (common, preferred, other) including all potential organizational (legal) forms of the investee entity.",
-      "parent": "total_liabilities_and_equity",
+      "parent": "temporary_equity",
       "sequence": 53,
       "factor": "+",
       "balance": "credit",
@@ -4315,34 +4348,10 @@
           "last_year": 2026
         },
         {
-          "tag": "RedeemablePreferredStockCarryingAmountOrRedemptionValue",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests",
+          "tag": "TemporaryEquityCarryingAmountAttributableToNoncontrollingInterest",
           "namespace": "us-gaap",
           "first_year": 2012,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityRedemptionValue",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityValueExcludingAdditionalPaidInCapital",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityCarryingAmountAttributableToParent",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
+          "last_year": 2014
         }
       ]
     },
@@ -4413,6 +4422,24 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockValueOutstanding",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockIncludingAdditionalPaidInCapital",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockIncludingAdditionalPaidInCapitalNetOfDiscount",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2025
         }
       ]
     },
@@ -4549,6 +4576,12 @@
           "last_year": 2026
         },
         {
+          "tag": "TreasuryStockCommonValue",
+          "namespace": "us-gaap",
+          "first_year": 2016,
+          "last_year": 2026
+        },
+        {
           "tag": "TreasuryShares",
           "namespace": "ifrs-full",
           "first_year": 2020,
@@ -4596,7 +4629,7 @@
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
-      "period_type": "duration",
+      "period_type": "instant",
       "xbrl_tags": [
         {
           "tag": "StockholdersEquityOther",
@@ -5319,10 +5352,6 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
-        },
-        {
-          "tag": "Land",
-          "namespace": "us-gaap"
         }
       ]
     },
@@ -5454,6 +5483,12 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
+        },
+        {
+          "tag": "EquityMethodInvestments",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2027
         },
         {
           "tag": "InvestmentAccountedForUsingEquityMethod",
@@ -5910,6 +5945,12 @@
           "last_year": 2026
         },
         {
+          "tag": "LongTermDebtAndCapitalLeaseObligationsCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
           "tag": "CurrentPortionOfLongTermDebt",
           "namespace": "us-gaap"
         },
@@ -6204,7 +6245,7 @@
       "tag": "other_taxes_payable",
       "label": "Other Taxes Payable",
       "description": "Carrying value as of the balance sheet date of obligations incurred and payable for statutory income, sales, use, payroll, excise, real, property and other taxes. Used to reflect the current portion of the liabilities (due within one year or within the normal operating cycle if longer).",
-      "parent": "other_current_liabilities",
+      "parent": "total_liabilities",
       "sequence": 38,
       "factor": "+",
       "balance": "credit",
@@ -6922,12 +6963,10 @@
           "namespace": "us-gaap"
         },
         {
-          "tag": "RedeemablePreferredStockCarryingAmount",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "TemporaryEquityValueExcludingAdditionalPaidInCapital",
-          "namespace": "us-gaap"
+          "tag": "TemporaryEquityCarryingAmount",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2012
         }
       ]
     },
@@ -6945,6 +6984,16 @@
         {
           "tag": "TemporaryEquityCarryingAmountAttributableToParent",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "RedeemablePreferredStockCarryingAmount",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "RedeemablePreferredStockCarryingAmountOrRedemptionValue",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -6952,7 +7001,7 @@
       "tag": "redeemable_noncontrolling_interest",
       "label": "Redeemable Noncontrolling Interest",
       "description": "As of the reporting date, the aggregate carrying amount of all noncontrolling interests which are redeemable by the (parent) entity (1) at a fixed or determinable price on a fixed or determinable date, (2) at the option of the holder of the noncontrolling interest, or (3) upon occurrence of an event that is not solely within the control of the (parent) entity. This item includes noncontrolling interest holder's ownership (or holders' ownership) regardless of the type of equity interest (common, preferred, other) including all potential organizational (legal) forms of the investee entity.",
-      "parent": "total_liabilities_and_equity",
+      "parent": "temporary_equity",
       "sequence": 58,
       "factor": "+",
       "balance": "credit",
@@ -6990,34 +7039,10 @@
           "last_year": 2026
         },
         {
-          "tag": "RedeemablePreferredStockCarryingAmountOrRedemptionValue",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests",
+          "tag": "TemporaryEquityCarryingAmountAttributableToNoncontrollingInterest",
           "namespace": "us-gaap",
           "first_year": 2012,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityRedemptionValue",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityValueExcludingAdditionalPaidInCapital",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityCarryingAmountAttributableToParent",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
+          "last_year": 2014
         }
       ]
     },
@@ -7088,6 +7113,24 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockValueOutstanding",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockIncludingAdditionalPaidInCapital",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockIncludingAdditionalPaidInCapitalNetOfDiscount",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2025
         }
       ]
     },
@@ -7224,6 +7267,12 @@
           "last_year": 2026
         },
         {
+          "tag": "TreasuryStockCommonValue",
+          "namespace": "us-gaap",
+          "first_year": 2016,
+          "last_year": 2026
+        },
+        {
           "tag": "TreasuryShares",
           "namespace": "ifrs-full",
           "first_year": 2020,
@@ -7275,7 +7324,7 @@
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
-      "period_type": "duration",
+      "period_type": "instant",
       "xbrl_tags": [
         {
           "tag": "StockholdersEquityOther",
@@ -7636,16 +7685,7 @@
       "unit": "monetary",
       "period_type": "instant",
       "xbrl_tags": [
-        {
-          "tag": "TimeDepositsAtCarryingValue",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "TimeDeposits",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        }
+
       ]
     },
     {
@@ -7698,6 +7738,12 @@
         },
         {
           "tag": "LoansAndLeasesReceivableGrossCarryingAmount",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2021
+        },
+        {
+          "tag": "LoansAndLeasesReceivableNetOfDeferredIncome",
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2021
@@ -7772,10 +7818,10 @@
       "period_type": "instant",
       "xbrl_tags": [
         {
-          "tag": "LoansAndLeasesReceivableNetOfDeferredIncome",
+          "tag": "LoansReceivableHeldForSaleNetNotPartOfDisposalGroup",
           "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2021
+          "first_year": 2015,
+          "last_year": 2026
         }
       ]
     },
@@ -7998,6 +8044,12 @@
         {
           "tag": "HeldToMaturitySecuritiesNoncurrent",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "EquityMethodInvestments",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2027
         },
         {
           "tag": "InvestmentAccountedForUsingEquityMethod",
@@ -8366,6 +8418,12 @@
           "tag": "LongTermDebtCurrent",
           "namespace": "us-gaap",
           "first_year": 2011,
+          "last_year": 2026
+        },
+        {
+          "tag": "LongTermDebtAndCapitalLeaseObligationsCurrent",
+          "namespace": "us-gaap",
+          "first_year": 2009,
           "last_year": 2026
         },
         {
@@ -8916,12 +8974,10 @@
           "namespace": "us-gaap"
         },
         {
-          "tag": "RedeemablePreferredStockCarryingAmount",
-          "namespace": "us-gaap"
-        },
-        {
-          "tag": "TemporaryEquityValueExcludingAdditionalPaidInCapital",
-          "namespace": "us-gaap"
+          "tag": "TemporaryEquityCarryingAmount",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2012
         }
       ]
     },
@@ -8939,6 +8995,16 @@
         {
           "tag": "TemporaryEquityCarryingAmountAttributableToParent",
           "namespace": "us-gaap"
+        },
+        {
+          "tag": "RedeemablePreferredStockCarryingAmount",
+          "namespace": "us-gaap"
+        },
+        {
+          "tag": "RedeemablePreferredStockCarryingAmountOrRedemptionValue",
+          "namespace": "us-gaap",
+          "first_year": 2011,
+          "last_year": 2026
         }
       ]
     },
@@ -8946,7 +9012,7 @@
       "tag": "redeemable_noncontrolling_interest",
       "label": "Redeemable Noncontrolling Interest",
       "description": "As of the reporting date, the aggregate carrying amount of all noncontrolling interests which are redeemable by the (parent) entity (1) at a fixed or determinable price on a fixed or determinable date, (2) at the option of the holder of the noncontrolling interest, or (3) upon occurrence of an event that is not solely within the control of the (parent) entity. This item includes noncontrolling interest holder's ownership (or holders' ownership) regardless of the type of equity interest (common, preferred, other) including all potential organizational (legal) forms of the investee entity.",
-      "parent": "total_liabilities_and_equity",
+      "parent": "temporary_equity",
       "sequence": 53,
       "factor": "+",
       "balance": "credit",
@@ -8984,34 +9050,10 @@
           "last_year": 2026
         },
         {
-          "tag": "RedeemablePreferredStockCarryingAmountOrRedemptionValue",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests",
+          "tag": "TemporaryEquityCarryingAmountAttributableToNoncontrollingInterest",
           "namespace": "us-gaap",
           "first_year": 2012,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityRedemptionValue",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityValueExcludingAdditionalPaidInCapital",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
-        },
-        {
-          "tag": "TemporaryEquityCarryingAmountAttributableToParent",
-          "namespace": "us-gaap",
-          "first_year": 2011,
-          "last_year": 2026
+          "last_year": 2014
         }
       ]
     },
@@ -9082,6 +9124,24 @@
           "namespace": "us-gaap",
           "first_year": 2011,
           "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockValueOutstanding",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockIncludingAdditionalPaidInCapital",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2026
+        },
+        {
+          "tag": "PreferredStockIncludingAdditionalPaidInCapitalNetOfDiscount",
+          "namespace": "us-gaap",
+          "first_year": 2009,
+          "last_year": 2025
         }
       ]
     },
@@ -9214,6 +9274,12 @@
           "last_year": 2026
         },
         {
+          "tag": "TreasuryStockCommonValue",
+          "namespace": "us-gaap",
+          "first_year": 2016,
+          "last_year": 2026
+        },
+        {
           "tag": "TreasuryShares",
           "namespace": "ifrs-full",
           "first_year": 2020,
@@ -9261,7 +9327,7 @@
       "factor": "+",
       "balance": "debit",
       "unit": "monetary",
-      "period_type": "duration",
+      "period_type": "instant",
       "xbrl_tags": [
         {
           "tag": "StockholdersEquityOther",

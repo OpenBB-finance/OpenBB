@@ -1,0 +1,1 @@
+"""EIA Natural Gas models."""

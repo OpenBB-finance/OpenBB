@@ -13,11 +13,9 @@ warnings.filterwarnings(
 
 def get_charting_module():
     """Get the Charting module."""
-    # pylint: disable=import-outside-toplevel
     import importlib
 
-    _Charting = importlib.import_module("openbb_charting.charting").Charting
-    return _Charting
+    return importlib.import_module("openbb_charting.charting").Charting
 
 
 ext = Extension(name="charting", description="Create custom charts from OBBject data.")

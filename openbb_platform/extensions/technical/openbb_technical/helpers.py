@@ -1,7 +1,5 @@
 """Technical Analysis Helpers."""
 
-# pylint: disable=too-many-arguments,too-many-locals,too-many-positional-arguments
-
 from typing import TYPE_CHECKING, Any, Literal
 from warnings import warn
 
@@ -50,7 +48,6 @@ def parkinson(
     DataFrame : results
         Dataframe with results.
     """
-    # pylint: disable=import-outside-toplevel
     from numpy import log
 
     if window < 1:
@@ -106,7 +103,6 @@ def standard_deviation(
     DataFrame : results
         Dataframe with results.
     """
-    # pylint: disable=import-outside-toplevel
     from numpy import log, sqrt
 
     if window < 2:
@@ -162,7 +158,6 @@ def garman_klass(
     DataFrame : results
         Dataframe with results.
     """
-    # pylint: disable=import-outside-toplevel
     from numpy import log
 
     if window < 1:
@@ -226,7 +221,6 @@ def hodges_tompkins(
     >>> data = obb.equity.price.historical('BTC-USD')
     >>> df = obb.technical.hodges_tompkins(data, is_crypto = True)
     """
-    # pylint: disable=import-outside-toplevel
     from numpy import log, sqrt
 
     if window < 2:
@@ -287,7 +281,6 @@ def rogers_satchell(
     Series : results
         Pandas Series with results.
     """
-    # pylint: disable=import-outside-toplevel
     from numpy import log
 
     if window < 1:
@@ -347,7 +340,6 @@ def yang_zhang(
     DataFrame : results
         Dataframe with results.
     """
-    # pylint: disable=import-outside-toplevel
     from numpy import log, sqrt
 
     if window < 2:
@@ -407,7 +399,6 @@ def calculate_cones(
     trading_periods: int | None = None,
 ) -> "DataFrame":
     """Calculate Cones."""
-    # pylint: disable=import-outside-toplevel
     from pandas import DataFrame
 
     estimator = DataFrame()
@@ -441,7 +432,7 @@ def calculate_cones(
     }
 
     for window in windows:
-        estimator = model_functions[model](  # type: ignore
+        estimator = model_functions[model](
             window=window,
             data=data,
             is_crypto=is_crypto,
@@ -451,12 +442,12 @@ def calculate_cones(
         if estimator.empty:
             continue
 
-        min_.append(estimator.min())  # type: ignore
-        max_.append(estimator.max())  # type: ignore
-        median.append(estimator.median())  # type: ignore
-        top_q.append(estimator.quantile(quantiles[1]))  # type: ignore
-        bottom_q.append(estimator.quantile(quantiles[0]))  # type: ignore
-        realized.append(estimator.iloc[-1])  # type: ignore
+        min_.append(estimator.min())
+        max_.append(estimator.max())
+        median.append(estimator.median())
+        top_q.append(estimator.quantile(quantiles[1]))
+        bottom_q.append(estimator.quantile(quantiles[0]))
+        realized.append(estimator.iloc[-1])
 
         allowed_windows.append(window)
 
@@ -501,27 +492,25 @@ def clenow_momentum(
     Series:
         Values for best fit line
     """
-    # pylint: disable=import-outside-toplevel
-    from numpy import arange, exp, log
+    from numpy import arange, exp, log, polyfit
     from pandas import Series
-    from sklearn.linear_model import LinearRegression
 
     if len(values) < window:
         raise ValueError(f"Calculation asks for at least last {window} days of data")
 
-    values = values[-window:]
+    y = log(values[-window:].to_numpy(dtype=float))
+    x = arange(len(y))
+    coef, intercept = polyfit(x, y, 1)
+    fit = coef * x + intercept
 
-    y = log(values)
-    X = arange(len(y)).reshape(-1, 1)  # pylint: disable=invalid-name
+    r2 = (
+        0.0
+        if y.max() == y.min()
+        else float(1 - ((y - fit) ** 2).sum() / ((y - y.mean()) ** 2).sum())
+    )
+    annualized_coef = float(exp(coef) ** 252 - 1)
 
-    lr = LinearRegression()
-    lr.fit(X, y)
-
-    r2 = lr.score(X, y)
-    coef = lr.coef_[0]
-    annualized_coef = (exp(coef) ** 252) - 1
-
-    return r2, annualized_coef, Series(lr.predict(X))
+    return r2, annualized_coef, Series(fit)
 
 
 def calculate_fib_levels(
@@ -559,7 +548,6 @@ def calculate_fib_levels(
     max_pr: float
         Price at max point
     """
-    # pylint: disable=import-outside-toplevel
     from pandas import DataFrame
 
     if close_col not in data.columns:

@@ -1,7 +1,5 @@
 """FRED Senior Loan Officer Opinion Survey Model."""
 
-# pylint: disable=unused-argument
-
 from typing import Any, Literal
 
 from openbb_core.provider.abstract.annotated_result import AnnotatedResult
@@ -11,8 +9,11 @@ from openbb_core.provider.standard_models.senior_loan_officer_survey import (
     SeniorLoanOfficerSurveyQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_fred.models.series import FredSeriesFetcher
 from pydantic import Field
+
+from openbb_fred.models.series import FredSeriesFetcher
+from openbb_fred.utils.api import unwrap_series
+from openbb_fred.utils.query import UseCacheQueryParams
 
 SLOOS_CATEGORIES = {
     "spreads": "DRISCFLM,DRISCFS,SUBLPDCLCTSNQ",
@@ -22,13 +23,15 @@ SLOOS_CATEGORIES = {
     "firms": "DRISCFLM,DRISCFS,DRTSCILM,DRTSCIS",
     "mortgage": "DRTSSP,SUBLPDHMSGNQ,SUBLPDHMSENQ,SUBLPDHMSJNQ,SUBLPDHMSQNQ,SUBLPDHMSMNQ",
     "commercial_real_estate": "SUBLPDRCSN,SUBLPDRCSM,SUBLPDRCDCLGNQ,SUBLPFRCSNQ",
-    "standards": "DRTSCILM,DRTSCIS,DRTSCLCC,STDSAUTO,DRTSSP,SUBLPDHMSGNQ,STDSOTHCONS,SUBLPDHMSENQ,SUBLPDHMSJNQ,SUBLPDHMSQNQ,SUBLPDHMSMNQ,SUBLPDCLHSNQ,SUBLPDRCSN,SUBLPDRCSM,SUBLPFRCSNQ,SUBLPFCISNQ,SUBLPDMBSXWBNQ",  # noqa: E501  # pylint: disable=line-too-long
+    "standards": "DRTSCILM,DRTSCIS,DRTSCLCC,STDSAUTO,DRTSSP,SUBLPDHMSGNQ,STDSOTHCONS,SUBLPDHMSENQ,SUBLPDHMSJNQ,SUBLPDHMSQNQ,SUBLPDHMSMNQ,SUBLPDCLHSNQ,SUBLPDRCSN,SUBLPDRCSM,SUBLPFRCSNQ,SUBLPFCISNQ,SUBLPDMBSXWBNQ",  # noqa: E501
     "demand": "DEMCC,DEMAUTO,SUBLPDMODXWBNQ,SUBLPDMBDXWBNQ,SUBLPDRCDCLGNQ",
     "foreign_banks": "SUBLPFRCSNQ,SUBLPFCISNQ",
 }
 
 
-class FredSeniorLoanOfficerSurveyQueryParams(SeniorLoanOfficerSurveyQueryParams):
+class FredSeniorLoanOfficerSurveyQueryParams(
+    UseCacheQueryParams, SeniorLoanOfficerSurveyQueryParams
+):
     """FRED Senior Loan Officer Opinion Survey Query Params."""
 
     category: Literal[
@@ -102,15 +105,18 @@ class FredSeniorLoanOfficerSurveyFetcher(
                     start_date=query.start_date,
                     end_date=query.end_date,
                     transform=query.transform,
+                    use_cache=query.use_cache,
                 ),
                 credentials,
             )
         except Exception as e:
             raise e from e
 
+        rows, metadata = unwrap_series(response)
+
         return {
-            "metadata": response.metadata,
-            "data": [d.model_dump() for d in response.result],
+            "metadata": metadata,
+            "data": [d.model_dump() for d in rows],
         }
 
     @staticmethod
@@ -120,21 +126,23 @@ class FredSeniorLoanOfficerSurveyFetcher(
         **kwargs: Any,
     ) -> AnnotatedResult[list[FredSeniorLoanOfficerSurveyData]]:
         """Transform data."""
-        # pylint: disable=import-outside-toplevel
         from pandas import DataFrame
 
         metadata = data.get("metadata", {})
-        df = DataFrame(data.get("data", [])).dropna()
+        df = DataFrame(data.get("data", []))
+
+        if not df.empty:
+            df = df.melt(id_vars="date", var_name="symbol", value_name="value").query(
+                "value.notnull()"
+            )
+
         if df.empty:
             raise EmptyDataError(
                 "There was an error with the request and it was returned empty."
             )
-        # Flatten data
-        df = df.melt(id_vars="date", var_name="symbol", value_name="value").query(
-            "value.notnull()"
-        )
+
         df["title"] = df.symbol.apply(lambda x: metadata[x].get("title", ""))
-        df["value"] = df["value"].astype(float) / 100
+        df["value"] = df["value"].astype(float)
         df = df.fillna("N/A").replace("N/A", None)
         records = df.sort_values(by="date").to_dict(orient="records")
 

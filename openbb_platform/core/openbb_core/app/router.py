@@ -15,6 +15,9 @@ from typing import (
 )
 
 from fastapi import APIRouter, Depends
+from pydantic import BaseModel
+from typing_extensions import ParamSpec
+
 from openbb_core.app.deprecation import DeprecationSummary, OpenBBDeprecationWarning
 from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
@@ -26,9 +29,8 @@ from openbb_core.app.provider_interface import (
     ProviderInterface,
     StandardParams,
 )
+from openbb_core.app.route_iter import iter_api_routes
 from openbb_core.env import Env
-from pydantic import BaseModel
-from typing_extensions import ParamSpec
 
 P = ParamSpec("P")
 
@@ -78,11 +80,11 @@ class Router:
 
     @overload
     def command(self, func: Callable[P, OBBject] | None) -> Callable[P, OBBject]:
-        pass
+        pass  # pragma: no cover
 
     @overload
     def command(self, **kwargs) -> Callable:
-        pass
+        pass  # pragma: no cover
 
     def command(
         self,
@@ -119,17 +121,25 @@ class Router:
             kwargs["operation_id"] = kwargs.get(
                 "operation_id", SignatureInspector.get_operation_id(func)
             )
-            kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
+            kwargs["path"] = kwargs.get(
+                "path",
+                f"/{func.__name__}",  # ty: ignore[unresolved-attribute]
+            )
             kwargs["endpoint"] = func
             kwargs["methods"] = kwargs.get("methods", ["GET"])
             kwargs["response_model"] = (
                 kwargs.get(
                     "response_model",
-                    func.__annotations__["return"],  # type: ignore
+                    func.__annotations__["return"],
                 )
                 if not no_validate
                 else func.__annotations__["return"]
             )
+            from openbb_core.app.model.stream import OBBStream
+
+            _ret = func.__annotations__.get("return")
+            if isclass(_ret) and issubclass(_ret, OBBStream):
+                kwargs["response_model"] = None
             kwargs["response_model_by_alias"] = kwargs.get(
                 "response_model_by_alias", False
             )
@@ -155,6 +165,12 @@ class Router:
                     },
                 },
             )
+
+            if isclass(_ret) and issubclass(_ret, OBBStream):
+                kwargs["responses"][200] = {
+                    "description": "Event stream",
+                    "content": {"text/event-stream": {"schema": {"type": "string"}}},
+                }
 
             # For custom deprecation
             if kwargs.get("deprecated", False):
@@ -232,8 +248,14 @@ class SignatureInspector:
         cls, func: Callable[P, OBBject], model: str
     ) -> Callable[P, OBBject] | None:
         """Complete function signature."""
-        if isclass(return_type := func.__annotations__["return"]) and not issubclass(
-            return_type, OBBject
+        from openbb_core.app.model.stream import OBBStream
+
+        return_type = func.__annotations__["return"]
+        is_stream = isclass(return_type) and issubclass(return_type, OBBStream)
+        if (
+            isclass(return_type)
+            and not issubclass(return_type, OBBject)
+            and not is_stream
         ):
             return func
 
@@ -243,7 +265,7 @@ class SignatureInspector:
             if model not in provider_interface.models:
                 if Env().DEBUG_MODE:
                     warnings.warn(
-                        message=f"\nSkipping api route '/{func.__name__}'.\n"
+                        message=f"\nSkipping api route '/{func.__name__}'.\n"  # ty: ignore[unresolved-attribute]
                         f"Model '{model}' not found.\n\n"
                         "Check available models in ProviderInterface().models",
                         category=OpenBBWarning,
@@ -276,10 +298,11 @@ class SignatureInspector:
                 callable_=provider_interface.params[model]["extra"],
             )
 
-            func = cls.inject_return_annotation(
-                func=func,
-                annotation=provider_interface.return_annotations[model],
-            )
+            if not is_stream:
+                func = cls.inject_return_annotation(
+                    func=func,
+                    annotation=provider_interface.return_annotations[model],
+                )
 
         else:
             func = cls.polish_return_schema(func)
@@ -326,12 +349,12 @@ class SignatureInspector:
         for k, v in expected.items():
             if k not in func.__annotations__:
                 raise AttributeError(
-                    f"Invalid signature: '{func.__name__}'. Missing '{k}' parameter."
+                    f"Invalid signature: '{func.__name__}'. Missing '{k}' parameter."  # ty: ignore[unresolved-attribute]
                 )
 
             if func.__annotations__[k] != v:
                 raise TypeError(
-                    f"Invalid signature: '{func.__name__}'. '{k}' parameter must be of type '{v.__name__}'."
+                    f"Invalid signature: '{func.__name__}'. '{k}' parameter must be of type '{v.__name__}'."  # ty: ignore[unresolved-attribute]
                 )
 
     @staticmethod
@@ -339,7 +362,7 @@ class SignatureInspector:
         func: Callable[P, OBBject], arg: str, callable_: Any
     ) -> Callable[P, OBBject]:
         """Annotate function with dependency injection."""
-        func.__annotations__[arg] = Annotated[callable_, Depends()]  # type: ignore
+        func.__annotations__[arg] = Annotated[callable_, Depends()]
         return func
 
     @staticmethod
@@ -368,7 +391,7 @@ class SignatureInspector:
         """Get operation id."""
         operation_id = [
             t.replace("_router", "").replace("openbb_", "")
-            for t in func.__module__.split(".") + [func.__name__]
+            for t in func.__module__.split(".") + [func.__name__]  # ty: ignore[unresolved-attribute]
         ]
         cleaned_id = sep.join({c: "" for c in operation_id if c}.keys())
         return cleaned_id
@@ -426,7 +449,9 @@ class CommandMap:
     ) -> dict[str, Callable]:
         """Get command map."""
         api_router = router.api_router
-        command_map = {route.path: route.endpoint for route in api_router.routes}  # type: ignore
+        command_map = {
+            route.path: route.endpoint for route in iter_api_routes(api_router)
+        }
         return command_map
 
     @staticmethod
@@ -439,11 +464,11 @@ class CommandMap:
         mapping = ProviderInterface().map
 
         coverage_map: dict[Any, Any] = {}
-        for route in api_router.routes:
+        for route in iter_api_routes(api_router):
             openapi_extra = getattr(route, "openapi_extra", None)
             if openapi_extra:
                 model = openapi_extra.get("model", None)
-                if model:
+                if model and model in mapping:
                     providers = list(mapping[model].keys())
                     if "openbb" in providers:
                         providers.remove("openbb")
@@ -452,9 +477,9 @@ class CommandMap:
                             coverage_map[provider] = []
                         if hasattr(route, "path"):
                             rp = (
-                                route.path  # type: ignore
+                                route.path
                                 if sep is None
-                                else route.path.replace("/", sep)  # type: ignore
+                                else route.path.replace("/", sep)
                             )
                             coverage_map[provider].append(rp)
 
@@ -470,18 +495,18 @@ class CommandMap:
         mapping = ProviderInterface().map
 
         coverage_map: dict[Any, Any] = {}
-        for route in api_router.routes:
+        for route in iter_api_routes(api_router):
             openapi_extra = getattr(route, "openapi_extra")
             if openapi_extra:
                 model = openapi_extra.get("model", None)
-                if model:
+                if model and model in mapping:
                     providers = list(mapping[model].keys())
                     if "openbb" in providers:
                         providers.remove("openbb")
 
                     if hasattr(route, "path"):
-                        rp = route.path if sep is None else route.path.replace("/", sep)  # type: ignore
-                        if route.path not in coverage_map:  # type: ignore
+                        rp = route.path if sep is None else route.path.replace("/", sep)
+                        if route.path not in coverage_map:
                             coverage_map[rp] = []
                         coverage_map[rp] = providers
         return coverage_map
@@ -492,13 +517,13 @@ class CommandMap:
         api_router = router.api_router
 
         coverage_map: dict[Any, Any] = {}
-        for route in api_router.routes:
+        for route in iter_api_routes(api_router):
             openapi_extra = getattr(route, "openapi_extra")
             if openapi_extra:
                 model = openapi_extra.get("model", None)
                 if model and hasattr(route, "path"):
-                    rp = route.path if sep is None else route.path.replace("/", sep)  # type: ignore
-                    if route.path not in coverage_map:  # type: ignore
+                    rp = route.path if sep is None else route.path.replace("/", sep)
+                    if route.path not in coverage_map:
                         coverage_map[rp] = []
                     coverage_map[rp] = model
         return coverage_map
