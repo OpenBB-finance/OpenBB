@@ -17,6 +17,13 @@ if TYPE_CHECKING:
     from numpy import ndarray
     from pandas import DataFrame, Series
 
+_MULTIINDEX_META = ("is_multiindex", "multiindex_names", "multiindex_columns")
+
+
+def _multiindex_columns(names: list) -> list:
+    """Get the column names that reset_index gives the levels of a MultiIndex."""
+    return [n if n is not None else f"level_{i}" for i, n in enumerate(names)]
+
 
 def basemodel_to_df(
     data: list[Data] | Data,
@@ -25,6 +32,7 @@ def basemodel_to_df(
     """Convert list of BaseModel to a Pandas DataFrame."""
     pd = require_optional("pandas")
     DataFrame, to_datetime = pd.DataFrame, pd.to_datetime  # type: ignore[union-attr]
+    is_numeric_dtype = pd.api.types.is_numeric_dtype  # type: ignore[union-attr]
 
     if isinstance(data, list):
         df = DataFrame(
@@ -40,20 +48,20 @@ def basemodel_to_df(
             )
 
     if "is_multiindex" in df.columns:
-        col_names = ast.literal_eval(df.multiindex_names.unique()[0])
-        # Unnamed levels are stored under the column names assigned by reset_index,
-        # so set the index from those and restore the original level names after.
+        names = ast.literal_eval(df.multiindex_names.unique()[0])
+        # The level columns follow the reset_index naming unless df_to_basemodel
+        # had to rename them to avoid a clash, in which case it stores them.
         if "multiindex_columns" in df.columns:
-            index_cols = ast.literal_eval(df.multiindex_columns.unique()[0])
-            df = df.set_index(index_cols)
-            df.index.names = col_names
-            df = df.drop(["multiindex_columns"], axis=1)
+            columns = ast.literal_eval(df.multiindex_columns.unique()[0])
         else:
-            df = df.set_index(col_names)
-        df = df.drop(["is_multiindex", "multiindex_names"], axis=1)
+            columns = _multiindex_columns(names)
+        df = df.set_index(columns).rename_axis(names)
+        df = df.drop(columns=[c for c in _MULTIINDEX_META if c in df.columns])
 
     # If the date column contains dates only, convert them to a date to avoid encoding time data.
-    if "date" in df.columns:
+    # Numeric values would be read as epoch offsets, so only text and datetimes are parsed.
+    parsed = None
+    if "date" in df.columns and not is_numeric_dtype(df["date"]):
         try:
             # Parse the column in a single call instead of once per row.
             parsed = to_datetime(df["date"])
@@ -61,8 +69,13 @@ def basemodel_to_df(
             # A column that mixes UTC offsets - a series crossing a daylight
             # savings boundary, for instance - has no single datetime64
             # representation, so fall back to parsing each value on its own.
-            parsed = df["date"].apply(to_datetime)
+            try:
+                parsed = df["date"].apply(to_datetime)
+            except (TypeError, ValueError):
+                # Not a date column after all, so leave it as it is.
+                parsed = None
 
+    if parsed is not None:
         df["date"] = parsed
 
         if parsed.dtype == object:
@@ -87,6 +100,7 @@ def df_to_basemodel(
     """Convert from a Pandas DataFrame to list of BaseModel."""
     pd = require_optional("pandas")
     MultiIndex, Series, to_datetime = pd.MultiIndex, pd.Series, pd.to_datetime  # type: ignore[union-attr]
+    is_numeric_dtype = pd.api.types.is_numeric_dtype  # type: ignore[union-attr]
 
     is_multiindex = isinstance(df.index, MultiIndex)
 
@@ -97,17 +111,36 @@ def df_to_basemodel(
 
     # Check if df has multiindex.  If so, add the index names to the df and a boolean column
     if isinstance(df.index, MultiIndex):
+        names = list(df.index.names)
+        default_columns = _multiindex_columns(names)
+        # A level whose column name is already taken, by a column or another level,
+        # gets a free name instead so that reset_index does not fail.
+        taken = set(df.columns) | set(_MULTIINDEX_META)
+        columns = []
+        for default in default_columns:
+            column = default
+            while column in taken:
+                column = f"_{column}"
+            taken.add(column)
+            columns.append(column)
+        df = df.rename_axis(columns).reset_index()
         df["is_multiindex"] = True
-        df["multiindex_names"] = str(list(df.index.names))
-        n_levels = df.index.nlevels
-        df = df.reset_index()
-        df["multiindex_columns"] = str(list(df.columns[:n_levels]))
+        df["multiindex_names"] = str(names)
+        if columns != default_columns:
+            df["multiindex_columns"] = str(columns)
 
     # Converting to JSON will add T00:00:00.000 to all dates with no time element unless we format it as a string first.
-    if "date" in df.columns:
-        df["date"] = df["date"].apply(to_datetime)
-        if all(t.time() == time(0, 0) for t in df["date"]):
-            df["date"] = df["date"].apply(lambda x: x.date().strftime("%Y-%m-%d"))
+    # Numeric values would be read as epoch offsets, so only text and datetimes are parsed.
+    if "date" in df.columns and not is_numeric_dtype(df["date"]):
+        try:
+            dates = df["date"].apply(to_datetime)
+        except (TypeError, ValueError):
+            # Not a date column after all, so leave it as it is.
+            dates = None
+        if dates is not None:
+            df["date"] = dates
+            if all(t.time() == time(0, 0) for t in df["date"]):
+                df["date"] = df["date"].apply(lambda x: x.date().strftime("%Y-%m-%d"))
 
     return [
         Data(**d) for d in json.loads(df.to_json(orient="records", date_format="iso"))
