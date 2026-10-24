@@ -164,25 +164,23 @@ def test_safe_fromtimestamp_negative_on_non_windows():
 
 def test_safe_fromtimestamp_windows_negative_branch(monkeypatch):
     """Force the os.name=='nt' branch to test the timedelta fallback path."""
-    from datetime import timezone
 
     from openbb_core.provider.utils import helpers
 
     monkeypatch.setattr(helpers, "os", type("FakeOs", (), {"name": "nt"}))
-    out = helpers.safe_fromtimestamp(-3600, tz=timezone.utc)
+    out = helpers.safe_fromtimestamp(-3600, tz=dt.UTC)
     assert out.year == 1969
 
 
 def test_safe_fromtimestamp_windows_non_negative_uses_datetime_fromtimestamp(
     monkeypatch,
 ):
-    from datetime import timezone
 
     from openbb_core.provider.utils import helpers
 
     monkeypatch.setattr(helpers, "os", type("FakeOs", (), {"name": "nt"}))
-    out = helpers.safe_fromtimestamp(0, tz=timezone.utc)
-    assert out == dt.datetime(1970, 1, 1, tzinfo=timezone.utc)
+    out = helpers.safe_fromtimestamp(0, tz=dt.UTC)
+    assert out == dt.datetime(1970, 1, 1, tzinfo=dt.UTC)
 
 
 def test_check_item_suggests_similar():
