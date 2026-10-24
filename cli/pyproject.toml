@@ -14,7 +14,6 @@ dependencies = [
     "openpyxl>=3.1.5,<4.0.0",
     "httpx>=0.28.0,<1.0.0",
     "pyyaml>=6.0",
-    "tomli>=2.0;python_version<'3.11'",
 ]
 
 [project.optional-dependencies]
