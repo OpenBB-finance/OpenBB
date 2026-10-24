@@ -3,9 +3,11 @@
 import asyncio
 import datetime as dt
 from pathlib import Path
+from typing import Any, cast
 
 import pytest
 
+from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.utils.client import ClientSession
 from openbb_core.provider.utils.helpers import (
     amake_request,
@@ -126,7 +128,7 @@ async def test_amake_request(monkeypatch):
         )
 
     with pytest.raises(ValueError):
-        await amake_request("http://mock.url", method="PUT")  # type: ignore[arg-type]
+        await amake_request("http://mock.url", method=cast(Any, "PUT"))
 
 
 @pytest.mark.asyncio
@@ -581,7 +583,7 @@ def test_get_requests_session_proxies_and_kwargs_update(monkeypatch):
     sess = helpers.get_requests_session(params={"a": 1})
     assert sess.proxies["http"] == "http://same"
     assert sess.proxies["https"] == "http://same"
-    assert sess.params["a"] == 1
+    assert cast(dict, sess.params)["a"] == 1
 
 
 def test_get_requests_session_kwargs_attribute_error_branch(monkeypatch):
@@ -855,9 +857,9 @@ def test_run_async_async_path():
     assert run_async(_coro, 2) == 3
 
 
-class _Item:
+class _Item(Data):
     def __init__(self, dt):
-        self.date = dt
+        super().__init__(date=dt)
 
 
 def test_filter_by_dates_no_bounds_returns_input():
@@ -880,7 +882,7 @@ def test_filter_by_dates_only_start():
 
 
 def test_filter_by_dates_only_end_and_missing_date():
-    class _NoDate:
+    class _NoDate(Data):
         pass
 
     data = [_Item(dt.date(2024, 3, 1)), _NoDate()]
