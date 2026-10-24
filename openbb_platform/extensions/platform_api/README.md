@@ -10,7 +10,7 @@ Launcher and widgets builder for the OpenBB Workspace [custom backend](https://d
 pip install openbb-platform-api
 ```
 
-Python ≥ 3.10. Already included when you install [`openbb`](https://docs.openbb.co/platform/installation).
+Python ≥ 3.11. Already included when you install [`openbb`](https://docs.openbb.co/platform/installation).
 
 ### Launch OpenBB Platform
 
